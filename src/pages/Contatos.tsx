@@ -1,11 +1,5 @@
 import { useState, useMemo } from 'react'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import {
@@ -37,6 +31,14 @@ import {
   PaginationEllipsis,
 } from '@/components/ui/pagination'
 import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
+import {
   Search,
   Plus,
   Filter,
@@ -49,6 +51,7 @@ import {
   FileDown,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { ContactForm } from '@/components/contacts/ContactForm'
 
 // Mock Data
 type Tag = 'VIP' | 'Frequente' | 'Ativo' | 'Inativo' | 'Novo Lead'
@@ -274,6 +277,7 @@ export default function Contatos() {
     direction: 'asc' | 'desc'
   }>({ key: 'lastContact', direction: 'desc' })
   const [currentPage, setCurrentPage] = useState(1)
+  const [isSheetOpen, setSheetOpen] = useState(false)
   const itemsPerPage = 10
 
   // Filter and Sort Logic
@@ -363,9 +367,24 @@ export default function Contatos() {
             Gerencie todos os seus clientes e leads em um só lugar.
           </p>
         </div>
-        <Button className="bg-primary hover:bg-primary/90 text-white shadow-md">
-          <Plus className="mr-2 h-4 w-4" /> Adicionar novo contato
-        </Button>
+
+        <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
+          <SheetTrigger asChild>
+            <Button className="bg-primary hover:bg-primary/90 text-white shadow-md">
+              <Plus className="mr-2 h-4 w-4" /> Adicionar novo contato
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+            <SheetHeader>
+              <SheetTitle>Novo Contato</SheetTitle>
+              <SheetDescription>
+                Preencha as informações abaixo para adicionar um novo cliente ou
+                lead.
+              </SheetDescription>
+            </SheetHeader>
+            <ContactForm onSuccess={() => setSheetOpen(false)} />
+          </SheetContent>
+        </Sheet>
       </div>
 
       <Card className="border-t-4 border-t-primary shadow-sm">
@@ -508,7 +527,6 @@ export default function Contatos() {
                           {contact.email}
                         </div>
                       </TableCell>
-                      {/* Added whitespace-nowrap to prevent phone number wrapping as per user request */}
                       <TableCell>
                         <div className="flex items-center text-muted-foreground text-sm whitespace-nowrap">
                           <Phone className="mr-2 h-3 w-3 opacity-70" />
@@ -634,7 +652,6 @@ export default function Contatos() {
 
                   {[...Array(totalPages)].map((_, i) => {
                     const page = i + 1
-                    // Logic to show limited pages with ellipsis could be added here for very large datasets
                     if (
                       totalPages > 7 &&
                       page > 2 &&
