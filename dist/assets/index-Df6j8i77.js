@@ -27317,6 +27317,7 @@ var DropdownMenuShortcut = ({ className, ...props }) => {
 	});
 };
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
+var editedimage_1769630541473_88067_default = "/assets/editedimage_1769630541473-88067-DImnTPbz.png";
 var NAV_ITEMS = [
 	{
 		label: "Dashboard",
@@ -27362,19 +27363,14 @@ function AppSidebar() {
 		collapsible: "icon",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarHeader, {
-				className: "h-16 flex items-center justify-center border-b border-sidebar-border/20 px-4",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center gap-2 w-full overflow-hidden transition-all duration-300 group-data-[collapsible=icon]:justify-center",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "h-8 w-8 rounded-full bg-secondary flex items-center justify-center shrink-0",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "text-white font-display font-bold",
-							children: "M"
-						})
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "font-display font-semibold text-lg text-sidebar-foreground truncate group-data-[collapsible=icon]:hidden",
-						children: "Milan Horses"
-					})]
+				className: "h-20 flex items-center justify-center border-b border-sidebar-border/20 px-4 py-2",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex items-center gap-2 w-full overflow-hidden transition-all duration-300 justify-start group-data-[collapsible=icon]:justify-center",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+						src: editedimage_1769630541473_88067_default,
+						alt: "Milan Horses",
+						className: "h-14 w-auto object-contain transition-all duration-300 group-data-[collapsible=icon]:h-8"
+					})
 				})
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, {
@@ -27426,18 +27422,13 @@ function TopHeader() {
 			className: "flex items-center gap-4",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarTrigger, { className: "-ml-2 md:hidden" }),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "flex items-center gap-2 md:hidden",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "h-6 w-6 rounded-full bg-primary flex items-center justify-center",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "text-white font-display text-xs font-bold",
-							children: "M"
-						})
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "font-display font-semibold text-primary",
-						children: "Milan Horses"
-					})]
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+						src: editedimage_1769630541473_88067_default,
+						alt: "Milan Horses",
+						className: "h-8 w-auto object-contain"
+					})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "hidden md:flex relative w-96",
@@ -52360,4 +52351,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BzD5b__K.js.map
+//# sourceMappingURL=index-Df6j8i77.js.map

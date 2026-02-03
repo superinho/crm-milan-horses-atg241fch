@@ -35,6 +35,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import logoImg from '@/assets/editedimage_1769630541473-88067.png'
 
 const NAV_ITEMS = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/' },
@@ -51,15 +52,17 @@ function AppSidebar() {
 
   return (
     <Sidebar variant="sidebar" side="left" collapsible="icon">
-      <SidebarHeader className="h-16 flex items-center justify-center border-b border-sidebar-border/20 px-4">
-        <div className="flex items-center gap-2 w-full overflow-hidden transition-all duration-300 group-data-[collapsible=icon]:justify-center">
-          {/* Logo Placeholder - In a real app, use an img tag */}
-          <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center shrink-0">
-            <span className="text-white font-display font-bold">M</span>
-          </div>
-          <span className="font-display font-semibold text-lg text-sidebar-foreground truncate group-data-[collapsible=icon]:hidden">
-            Milan Horses
-          </span>
+      <SidebarHeader className="h-20 flex items-center justify-center border-b border-sidebar-border/20 px-4 py-2">
+        <div className="flex items-center gap-2 w-full overflow-hidden transition-all duration-300 justify-start group-data-[collapsible=icon]:justify-center">
+          {/* Replaced placeholder with Official Logo */}
+          <img
+            src={logoImg}
+            alt="Milan Horses"
+            className="h-14 w-auto object-contain transition-all duration-300 group-data-[collapsible=icon]:h-8"
+          />
+          {/* We hide the text because the logo likely contains it, or to avoid duplication. 
+                If the logo doesn't have text, uncomment below. 
+                Assuming the provided image is the full lockup. */}
         </div>
       </SidebarHeader>
 
@@ -132,12 +135,11 @@ function TopHeader() {
 
         {/* Mobile Logo */}
         <div className="flex items-center gap-2 md:hidden">
-          <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center">
-            <span className="text-white font-display text-xs font-bold">M</span>
-          </div>
-          <span className="font-display font-semibold text-primary">
-            Milan Horses
-          </span>
+          <img
+            src={logoImg}
+            alt="Milan Horses"
+            className="h-8 w-auto object-contain"
+          />
         </div>
 
         {/* Desktop Search */}

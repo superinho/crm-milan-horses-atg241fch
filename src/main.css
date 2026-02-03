@@ -10,49 +10,49 @@
   :root {
     /* Milan Horses Brand Colors */
     --background: 210 20% 98%; /* #F8FAFC */
-    --foreground: 96 57% 10%;
+    --foreground: 215 90% 15%; /* Deep Blue-Black text */
 
     --card: 0 0% 100%;
-    --card-foreground: 96 57% 10%;
+    --card-foreground: 215 90% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 96 57% 10%;
+    --popover-foreground: 215 90% 15%;
 
-    /* Primary: Deep Green #2D5016 -> HSL(96, 57%, 20%) */
-    --primary: 96 57% 20%;
+    /* Primary: Milan Dark Blue -> HSL(215, 90%, 22%) */
+    --primary: 215 90% 22%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary: Equestrian Gold #A38550 -> HSL(38, 34%, 48%) */
+    /* Secondary: Equestrian Gold -> HSL(38, 34%, 48%) - Conserved for harmony */
     --secondary: 38 34% 48%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted-foreground: 215 16% 47%;
 
     --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent-foreground: 215 90% 22%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 96 57% 20%;
+    --ring: 215 90% 22%; /* Matches Primary */
 
     --radius: 0.5rem;
 
-    /* Sidebar Theme - Deep Green Background */
-    --sidebar-background: 96 57% 20%;
+    /* Sidebar Theme - Deep Blue Background */
+    --sidebar-background: 215 90% 22%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 38 34% 48%; /* Gold for primary accents in sidebar */
+    --sidebar-primary: 38 34% 48%; /* Gold accents in sidebar */
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 96 57% 25%; /* Slightly lighter green for hover */
+    --sidebar-accent: 215 80% 28%; /* Slightly lighter blue for hover */
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 96 57% 25%;
+    --sidebar-border: 215 80% 28%;
     --sidebar-ring: 38 34% 48%;
 
     /* Chart Colors */
-    --chart-1: 96 57% 20%; /* Green */
+    --chart-1: 215 90% 22%; /* Blue */
     --chart-2: 38 34% 48%; /* Gold */
     --chart-3: 209 100% 32%; /* Blue support */
     --chart-4: 42 100% 50%;
