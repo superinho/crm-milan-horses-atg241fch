@@ -18894,6 +18894,24 @@ var ArrowRight = createLucideIcon("arrow-right", [["path", {
 	d: "m12 5 7 7-7 7",
 	key: "xquz4c"
 }]]);
+var ArrowUpDown = createLucideIcon("arrow-up-down", [
+	["path", {
+		d: "m21 16-4 4-4-4",
+		key: "f6ql7i"
+	}],
+	["path", {
+		d: "M17 20V4",
+		key: "1ejh1v"
+	}],
+	["path", {
+		d: "m3 8 4-4 4 4",
+		key: "11wl7u"
+	}],
+	["path", {
+		d: "M7 4v16",
+		key: "1glfcx"
+	}]
+]);
 var ArrowUp = createLucideIcon("arrow-up", [["path", {
 	d: "m5 12 7-7 7 7",
 	key: "hav0vg"
@@ -18976,6 +18994,10 @@ var ChartNoAxesColumn = createLucideIcon("chart-no-axes-column", [
 var Check = createLucideIcon("check", [["path", {
 	d: "M20 6 9 17l-5-5",
 	key: "1gmf2c"
+}]]);
+var ChevronLeft = createLucideIcon("chevron-left", [["path", {
+	d: "m15 18-6-6 6-6",
+	key: "1wnfg3"
 }]]);
 var ChevronRight = createLucideIcon("chevron-right", [["path", {
 	d: "m9 18 6-6-6-6",
@@ -19077,6 +19099,33 @@ var Ellipsis = createLucideIcon("ellipsis", [
 		key: "1pcz8c"
 	}]
 ]);
+var Eye = createLucideIcon("eye", [["path", {
+	d: "M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0",
+	key: "1nclc0"
+}], ["circle", {
+	cx: "12",
+	cy: "12",
+	r: "3",
+	key: "1v7zrd"
+}]]);
+var FileDown = createLucideIcon("file-down", [
+	["path", {
+		d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
+		key: "1oefj6"
+	}],
+	["path", {
+		d: "M14 2v5a1 1 0 0 0 1 1h5",
+		key: "wfsgrz"
+	}],
+	["path", {
+		d: "M12 18v-6",
+		key: "17g6i2"
+	}],
+	["path", {
+		d: "m9 15 3 3 3-3",
+		key: "1npd3o"
+	}]
+]);
 var Funnel = createLucideIcon("funnel", [["path", {
 	d: "M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z",
 	key: "sc7q7i"
@@ -19168,6 +19217,13 @@ var PanelLeft = createLucideIcon("panel-left", [["rect", {
 }], ["path", {
 	d: "M9 3v18",
 	key: "fh3hqa"
+}]]);
+var Pencil = createLucideIcon("pencil", [["path", {
+	d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+	key: "1a8usu"
+}], ["path", {
+	d: "m15 5 4 4",
+	key: "1mk7zo"
 }]]);
 var Phone = createLucideIcon("phone", [["path", {
 	d: "M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384",
@@ -50244,13 +50300,68 @@ function Badge({ className, variant, ...props }) {
 		...props
 	});
 }
-var CONTACTS_DATA = [
+var Pagination = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
+	role: "navigation",
+	"aria-label": "pagination",
+	className: cn("mx-auto flex w-full justify-center", className),
+	...props
+});
+Pagination.displayName = "Pagination";
+var PaginationContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+	ref,
+	className: cn("flex flex-row items-center gap-1", className),
+	...props
+}));
+PaginationContent.displayName = "PaginationContent";
+var PaginationItem = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
+	ref,
+	className: cn("", className),
+	...props
+}));
+PaginationItem.displayName = "PaginationItem";
+var PaginationLink = ({ className, isActive, size: size$3 = "icon", ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+	"aria-current": isActive ? "page" : void 0,
+	className: cn(buttonVariants({
+		variant: isActive ? "outline" : "ghost",
+		size: size$3
+	}), className),
+	...props
+});
+PaginationLink.displayName = "PaginationLink";
+var PaginationPrevious = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PaginationLink, {
+	"aria-label": "Go to previous page",
+	size: "default",
+	className: cn("gap-1 pl-2.5", className),
+	...props,
+	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronLeft, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Previous" })]
+});
+PaginationPrevious.displayName = "PaginationPrevious";
+var PaginationNext = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PaginationLink, {
+	"aria-label": "Go to next page",
+	size: "default",
+	className: cn("gap-1 pr-2.5", className),
+	...props,
+	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Next" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronRight, { className: "h-4 w-4" })]
+});
+PaginationNext.displayName = "PaginationNext";
+var PaginationEllipsis = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+	"aria-hidden": true,
+	className: cn("flex h-9 w-9 items-center justify-center", className),
+	...props,
+	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ellipsis, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+		className: "sr-only",
+		children: "More pages"
+	})]
+});
+PaginationEllipsis.displayName = "PaginationEllipsis";
+var MOCK_CONTACTS = [
 	{
 		id: 1,
 		name: "Roberto Almeida",
 		email: "roberto@fazendaalmeida.com",
 		phone: "(11) 99876-5432",
-		type: "Criador",
+		tags: ["VIP", "Ativo"],
+		totalInvested: 15e4,
 		lastContact: "2023-10-25"
 	},
 	{
@@ -50258,7 +50369,8 @@ var CONTACTS_DATA = [
 		name: "Fernanda Lima",
 		email: "fernanda.lima@email.com",
 		phone: "(21) 98765-4321",
-		type: "Comprador",
+		tags: ["Frequente", "Ativo"],
+		totalInvested: 85e3,
 		lastContact: "2023-10-24"
 	},
 	{
@@ -50266,7 +50378,8 @@ var CONTACTS_DATA = [
 		name: "Carlos Venturini",
 		email: "carlos.v@vet.com",
 		phone: "(31) 91234-5678",
-		type: "Veterinário",
+		tags: ["Novo Lead"],
+		totalInvested: 0,
 		lastContact: "2023-10-23"
 	},
 	{
@@ -50274,7 +50387,8 @@ var CONTACTS_DATA = [
 		name: "Haras Pôr do Sol",
 		email: "contato@haraspordosol.com.br",
 		phone: "(19) 3456-7890",
-		type: "Parceiro",
+		tags: ["VIP", "Frequente"],
+		totalInvested: 54e4,
 		lastContact: "2023-10-22"
 	},
 	{
@@ -50282,7 +50396,8 @@ var CONTACTS_DATA = [
 		name: "Juliana Paes",
 		email: "ju.paes@invest.com",
 		phone: "(11) 95555-4444",
-		type: "Investidora",
+		tags: ["Ativo"],
+		totalInvested: 45e3,
 		lastContact: "2023-10-21"
 	},
 	{
@@ -50290,15 +50405,17 @@ var CONTACTS_DATA = [
 		name: "Ricardo Souza",
 		email: "ricardo@equestre.com",
 		phone: "(41) 98888-7777",
-		type: "Treinador",
-		lastContact: "2023-10-20"
+		tags: ["Inativo"],
+		totalInvested: 12e3,
+		lastContact: "2023-09-15"
 	},
 	{
 		id: 7,
 		name: "Mariana Costa",
 		email: "mari.costa@email.com",
 		phone: "(51) 99999-1111",
-		type: "Comprador",
+		tags: ["Novo Lead"],
+		totalInvested: 0,
 		lastContact: "2023-10-19"
 	},
 	{
@@ -50306,23 +50423,202 @@ var CONTACTS_DATA = [
 		name: "Fazenda Santa Fé",
 		email: "adm@santafe.com",
 		phone: "(62) 3333-2222",
-		type: "Criador",
+		tags: ["VIP"],
+		totalInvested: 23e4,
 		lastContact: "2023-10-18"
+	},
+	{
+		id: 9,
+		name: "Pedro Martins",
+		email: "pedro.m@outlook.com",
+		phone: "(11) 97777-6666",
+		tags: ["Frequente"],
+		totalInvested: 67e3,
+		lastContact: "2023-10-15"
+	},
+	{
+		id: 10,
+		name: "Ana Beatriz",
+		email: "ana.bea@gmail.com",
+		phone: "(31) 96666-5555",
+		tags: ["Ativo"],
+		totalInvested: 25e3,
+		lastContact: "2023-10-14"
+	},
+	{
+		id: 11,
+		name: "João Silva",
+		email: "joao.silva@uol.com.br",
+		phone: "(11) 91111-2222",
+		tags: ["Inativo"],
+		totalInvested: 5e3,
+		lastContact: "2023-08-20"
+	},
+	{
+		id: 12,
+		name: "Clube Hípico SP",
+		email: "contato@chsp.com.br",
+		phone: "(11) 3333-4444",
+		tags: [
+			"VIP",
+			"Frequente",
+			"Ativo"
+		],
+		totalInvested: 89e4,
+		lastContact: "2023-10-25"
+	},
+	{
+		id: 13,
+		name: "Dr. Marcelo Ramos",
+		email: "m.ramos@vetcenter.com",
+		phone: "(19) 98888-1111",
+		tags: ["Novo Lead"],
+		totalInvested: 0,
+		lastContact: "2023-10-20"
+	},
+	{
+		id: 14,
+		name: "Sofia Oliveira",
+		email: "sofia.o@yahoo.com",
+		phone: "(21) 97777-3333",
+		tags: ["Ativo"],
+		totalInvested: 15e3,
+		lastContact: "2023-10-12"
+	},
+	{
+		id: 15,
+		name: "Miguel Santos",
+		email: "miguel.santos@gmail.com",
+		phone: "(31) 99988-7766",
+		tags: ["Novo Lead"],
+		totalInvested: 0,
+		lastContact: "2023-10-24"
+	},
+	{
+		id: 16,
+		name: "Haras Imperial",
+		email: "contato@harasimperial.com",
+		phone: "(15) 3232-4545",
+		tags: ["VIP"],
+		totalInvested: 345e3,
+		lastContact: "2023-10-23"
+	},
+	{
+		id: 17,
+		name: "Lucas Ferreira",
+		email: "lucas.ferreira@hotmail.com",
+		phone: "(41) 95555-8888",
+		tags: ["Inativo"],
+		totalInvested: 8e3,
+		lastContact: "2023-07-10"
+	},
+	{
+		id: 18,
+		name: "Beatriz Costa",
+		email: "bia.costa@gmail.com",
+		phone: "(51) 94444-3333",
+		tags: ["Frequente", "Ativo"],
+		totalInvested: 56e3,
+		lastContact: "2023-10-05"
+	},
+	{
+		id: 19,
+		name: "Rancho fundo",
+		email: "vendas@ranchofundo.com",
+		phone: "(62) 3456-7890",
+		tags: ["Ativo"],
+		totalInvested: 32e3,
+		lastContact: "2023-10-01"
+	},
+	{
+		id: 20,
+		name: "Gabriel Souza",
+		email: "gabriel.s@outlook.com",
+		phone: "(11) 92222-1111",
+		tags: ["Novo Lead"],
+		totalInvested: 0,
+		lastContact: "2023-10-25"
+	},
+	{
+		id: 21,
+		name: "Amanda Nunes",
+		email: "amanda.n@gmail.com",
+		phone: "(21) 93333-4444",
+		tags: ["Ativo"],
+		totalInvested: 18e3,
+		lastContact: "2023-09-28"
+	},
+	{
+		id: 22,
+		name: "Paulo Cesar",
+		email: "pc.invest@gmail.com",
+		phone: "(31) 96666-7777",
+		tags: ["VIP", "Inativo"],
+		totalInvested: 125e3,
+		lastContact: "2023-06-15"
 	}
+];
+var ALL_TAGS = [
+	"VIP",
+	"Frequente",
+	"Ativo",
+	"Inativo",
+	"Novo Lead"
 ];
 function Contatos() {
 	const [searchTerm, setSearchTerm] = (0, import_react.useState)("");
-	const filteredContacts = CONTACTS_DATA.filter((contact) => contact.name.toLowerCase().includes(searchTerm.toLowerCase()) || contact.email.toLowerCase().includes(searchTerm.toLowerCase()) || contact.type.toLowerCase().includes(searchTerm.toLowerCase()));
-	const getBadgeVariant = (type) => {
-		switch (type) {
-			case "Comprador": return "default";
-			case "Criador": return "secondary";
-			case "Veterinário": return "outline";
-			default: return "outline";
+	const [selectedTags, setSelectedTags] = (0, import_react.useState)([]);
+	const [sortConfig, setSortConfig] = (0, import_react.useState)({
+		key: "lastContact",
+		direction: "desc"
+	});
+	const [currentPage, setCurrentPage] = (0, import_react.useState)(1);
+	const itemsPerPage = 10;
+	const filteredAndSortedContacts = (0, import_react.useMemo)(() => {
+		let result = [...MOCK_CONTACTS];
+		if (searchTerm) {
+			const lowerSearch = searchTerm.toLowerCase();
+			result = result.filter((contact) => contact.name.toLowerCase().includes(lowerSearch) || contact.email.toLowerCase().includes(lowerSearch));
+		}
+		if (selectedTags.length > 0) result = result.filter((contact) => contact.tags.some((tag) => selectedTags.includes(tag)));
+		result.sort((a$1, b$1) => {
+			const aValue = a$1[sortConfig.key];
+			const bValue = b$1[sortConfig.key];
+			if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+			if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+			return 0;
+		});
+		return result;
+	}, [
+		searchTerm,
+		selectedTags,
+		sortConfig
+	]);
+	const totalPages = Math.ceil(filteredAndSortedContacts.length / itemsPerPage);
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const paginatedContacts = filteredAndSortedContacts.slice(startIndex, startIndex + itemsPerPage);
+	const handleSort = (key) => {
+		setSortConfig((current) => ({
+			key,
+			direction: current.key === key && current.direction === "asc" ? "desc" : "asc"
+		}));
+	};
+	const toggleTag = (tag) => {
+		setSelectedTags((current) => current.includes(tag) ? current.filter((t) => t !== tag) : [...current, tag]);
+		setCurrentPage(1);
+	};
+	const getBadgeStyle = (tag) => {
+		switch (tag) {
+			case "VIP": return "bg-secondary text-secondary-foreground hover:bg-secondary/80";
+			case "Novo Lead": return "bg-primary text-primary-foreground hover:bg-primary/90";
+			case "Frequente": return "bg-blue-500 text-white hover:bg-blue-600";
+			case "Ativo": return "bg-green-600 text-white hover:bg-green-700";
+			case "Inativo": return "bg-gray-500 text-white hover:bg-gray-600";
+			default: return "bg-primary text-primary-foreground";
 		}
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6",
+		className: "space-y-6 animate-fade-in",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex flex-col md:flex-row md:items-center justify-between gap-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
@@ -50330,106 +50626,261 @@ function Contatos() {
 				children: "Contatos"
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground",
-				children: "Gerencie seus clientes, parceiros e leads."
+				children: "Gerencie todos os seus clientes e leads em um só lugar."
 			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-				className: "bg-primary hover:bg-primary/90 text-white",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "mr-2 h-4 w-4" }), " Novo Contato"]
+				className: "bg-primary hover:bg-primary/90 text-white shadow-md",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "mr-2 h-4 w-4" }), " Adicionar novo contato"]
 			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-			className: "pb-3",
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center justify-between",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-					className: "text-lg font-medium",
-					children: "Lista de Contatos"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "relative w-64",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-							placeholder: "Buscar por nome, email ou tipo...",
-							className: "pl-9",
-							value: searchTerm,
-							onChange: (e) => setSearchTerm(e.target.value)
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-						variant: "outline",
-						size: "icon",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Funnel, { className: "h-4 w-4 text-muted-foreground" })
-					})]
-				})]
-			})
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Nome" }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Email" }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Telefone" }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tipo" }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Último Contato" }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-				className: "text-right",
-				children: "Ações"
-			})
-		] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: filteredContacts.length > 0 ? filteredContacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
-			className: "group hover:bg-muted/30",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-					className: "font-medium",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-3",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
-							className: "h-9 w-9",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${contact.id}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: contact.name.substring(0, 2).toUpperCase() })]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: contact.name })]
-					})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center text-muted-foreground",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "mr-2 h-3 w-3" }), contact.email]
-				}) }),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center text-muted-foreground",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Phone, { className: "mr-2 h-3 w-3" }), contact.phone]
-				}) }),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-					variant: getBadgeVariant(contact.type),
-					children: contact.type
-				}) }),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-					className: "text-muted-foreground",
-					children: new Date(contact.lastContact).toLocaleDateString("pt-BR")
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-					className: "text-right",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
-						asChild: true,
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							variant: "ghost",
-							className: "h-8 w-8 p-0",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "sr-only",
-								children: "Abrir menu"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ellipsis, { className: "h-4 w-4" })]
-						})
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
-						align: "end",
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+			className: "border-t-4 border-t-primary shadow-sm",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+				className: "pb-3",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col md:flex-row items-start md:items-center justify-between gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+						className: "text-lg font-medium hidden md:block",
+						children: "Lista de Contatos"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col md:flex-row items-center gap-2 w-full md:w-auto",
 						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuLabel, { children: "Ações" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, { children: "Ver detalhes" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, { children: "Editar contato" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, {
-								className: "text-destructive",
-								children: "Excluir"
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "relative w-full md:w-72",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									placeholder: "Buscar por nome ou email...",
+									className: "pl-9",
+									value: searchTerm,
+									onChange: (e) => setSearchTerm(e.target.value)
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
+								asChild: true,
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+									variant: "outline",
+									className: "w-full md:w-auto ml-auto",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Funnel, { className: "mr-2 h-4 w-4 text-muted-foreground" }),
+										"Filtrar Tags",
+										selectedTags.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+											variant: "secondary",
+											className: "ml-2 h-5 px-1.5 rounded-full text-xs",
+											children: selectedTags.length
+										})
+									]
+								})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
+								align: "end",
+								className: "w-56",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuLabel, { children: "Filtrar por Status" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
+									ALL_TAGS.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuCheckboxItem, {
+										checked: selectedTags.includes(tag),
+										onCheckedChange: () => toggleTag(tag),
+										children: tag
+									}, tag)),
+									selectedTags.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, {
+										className: "justify-center text-center font-medium text-destructive cursor-pointer",
+										onClick: () => setSelectedTags([]),
+										children: "Limpar Filtros"
+									})] })
+								]
+							})] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								variant: "outline",
+								size: "icon",
+								className: "hidden md:flex",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileDown, { className: "h-4 w-4 text-muted-foreground" })
 							})
 						]
-					})] })
+					})]
 				})
-			]
-		}, contact.id)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-			colSpan: 6,
-			className: "h-24 text-center",
-			children: "Nenhum contato encontrado."
-		}) }) })] }) })] })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "rounded-md border",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+					className: "bg-muted/50 hover:bg-muted/50",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "w-[300px]",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								variant: "ghost",
+								className: "p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1",
+								onClick: () => handleSort("name"),
+								children: ["Nome", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowUpDown, { className: "h-3 w-3" })]
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "E-mail" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Telefone" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tags" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							variant: "ghost",
+							className: "p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1",
+							onClick: () => handleSort("totalInvested"),
+							children: ["Valor Investido", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowUpDown, { className: "h-3 w-3" })]
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							variant: "ghost",
+							className: "p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1",
+							onClick: () => handleSort("lastContact"),
+							children: ["Último Contato", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowUpDown, { className: "h-3 w-3" })]
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "text-right",
+							children: "Ações"
+						})
+					]
+				}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: paginatedContacts.length > 0 ? paginatedContacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+					className: "group hover:bg-muted/30 transition-colors",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							className: "font-medium",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center gap-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
+									className: "h-9 w-9 border border-muted",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${contact.id}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, {
+										className: "bg-primary/10 text-primary font-bold",
+										children: contact.name.substring(0, 2).toUpperCase()
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "flex flex-col",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-semibold text-foreground",
+										children: contact.name
+									})
+								})]
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center text-muted-foreground text-sm",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "mr-2 h-3 w-3 opacity-70" }), contact.email]
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center text-muted-foreground text-sm",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Phone, { className: "mr-2 h-3 w-3 opacity-70" }), contact.phone]
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex flex-wrap gap-1",
+							children: contact.tags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+								className: cn("font-normal border-0", getBadgeStyle(tag)),
+								children: tag
+							}, tag))
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "font-medium text-foreground",
+							children: new Intl.NumberFormat("pt-BR", {
+								style: "currency",
+								currency: "BRL"
+							}).format(contact.totalInvested)
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							className: "text-muted-foreground text-sm",
+							children: new Date(contact.lastContact).toLocaleDateString("pt-BR")
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							className: "text-right",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-end gap-1",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+										variant: "ghost",
+										size: "icon",
+										className: "h-8 w-8 text-muted-foreground hover:text-primary",
+										title: "Ver detalhes",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Eye, { className: "h-4 w-4" })
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+										variant: "ghost",
+										size: "icon",
+										className: "h-8 w-8 text-muted-foreground hover:text-secondary",
+										title: "Editar",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pencil, { className: "h-4 w-4" })
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
+										asChild: true,
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+											variant: "ghost",
+											size: "icon",
+											className: "h-8 w-8 text-muted-foreground",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "sr-only",
+												children: "Abrir menu"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ellipsis, { className: "h-4 w-4" })]
+										})
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
+										align: "end",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuLabel, { children: "Ações" }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, { children: "Enviar E-mail" }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, { children: "Agendar Reunião" }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, {
+												className: "text-destructive",
+												children: "Excluir Contato"
+											})
+										]
+									})] })
+								]
+							})
+						})
+					]
+				}, contact.id)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					colSpan: 7,
+					className: "h-32 text-center",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col items-center justify-center text-muted-foreground",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "h-8 w-8 mb-2 opacity-50" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Nenhum contato encontrado com os filtros atuais." }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								variant: "link",
+								onClick: () => {
+									setSearchTerm("");
+									setSelectedTags([]);
+								},
+								className: "mt-2 text-primary",
+								children: "Limpar todos os filtros"
+							})
+						]
+					})
+				}) }) })] })
+			}), totalPages > 1 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "mt-4",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pagination, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PaginationContent, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationPrevious, {
+						href: "#",
+						onClick: (e) => {
+							e.preventDefault();
+							setCurrentPage((p) => Math.max(1, p - 1));
+						},
+						className: currentPage === 1 ? "pointer-events-none opacity-50" : ""
+					}) }),
+					[...Array(totalPages)].map((_$1, i) => {
+						const page = i + 1;
+						if (totalPages > 7 && page > 2 && page < totalPages - 1 && Math.abs(page - currentPage) > 1) {
+							if (page === currentPage + 2 || page === currentPage - 2) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationEllipsis, {}) }, page);
+							return null;
+						}
+						return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationLink, {
+							href: "#",
+							onClick: (e) => {
+								e.preventDefault();
+								setCurrentPage(page);
+							},
+							isActive: currentPage === page,
+							children: page
+						}) }, page);
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationNext, {
+						href: "#",
+						onClick: (e) => {
+							e.preventDefault();
+							setCurrentPage((p) => Math.min(totalPages, p + 1));
+						},
+						className: currentPage === totalPages ? "pointer-events-none opacity-50" : ""
+					}) })
+				] }) })
+			})] })]
+		})]
 	});
 }
 function clamp(value, [min$4, max$5]) {
@@ -52351,4 +52802,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BdGe3BqD.js.map
+//# sourceMappingURL=index-Dh4XUG6R.js.map
