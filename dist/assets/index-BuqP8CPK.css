@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:ital,wght@0,100..900;1,100..900&display=swap');section[aria-label^='Notifications'] {
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&display=swap');section[aria-label^='Notifications'] {
   padding: 0 !important;
   margin: 0 !important;
 }
 
 
-
 /* Global styles - Theme, font, utilities, animations and global components */
+/* Import only Inter font for standardization across the app */
 *, ::before, ::after{
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -145,7 +145,7 @@ html,
   -moz-tab-size: 4; /* 3 */
   -o-tab-size: 4;
      tab-size: 4; /* 3 */
-  font-family: Inter var, SF Pro Display, system-ui, sans-serif; /* 4 */
+  font-family: Inter, sans-serif; /* 4 */
   font-feature-settings: normal; /* 5 */
   font-variation-settings: normal; /* 6 */
   -webkit-tap-highlight-color: transparent; /* 7 */
@@ -523,20 +523,20 @@ video {
 *{
   border-color: hsl(var(--border));
 }
-body{
-  background-color: hsl(var(--background));
-  font-family: Inter var, SF Pro Display, system-ui, sans-serif;
-  color: hsl(var(--foreground));
-    font-family: 'Inter', sans-serif;
-}
+body {
+    /* Apply font-sans globally, which now maps to Inter */
+    background-color: hsl(var(--background));
+    font-family: Inter, sans-serif;
+    color: hsl(var(--foreground));
+  }
+/* Headings also use Inter via font-display mapping in tailwind config */
 h1,
   h2,
   h3,
   h4,
   h5,
   h6{
-  font-family: SF Pro Display, Inter var, system-ui, sans-serif;
-    font-family: 'Playfair Display', serif;
+  font-family: Inter, sans-serif;
 }
 .sr-only{
   position: absolute;
@@ -1693,7 +1693,7 @@ h1,
   vertical-align: middle;
 }
 .font-display{
-  font-family: SF Pro Display, Inter var, system-ui, sans-serif;
+  font-family: Inter, sans-serif;
 }
 .font-mono{
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -2069,9 +2069,6 @@ h1,
 .ease-linear{
   animation-timing-function: linear;
 }
-.font-display {
-    font-family: 'Playfair Display', serif;
-  }
 /* Custom Scrollbar for tables if needed */
 .\[--cell-size\:2rem\]{
   --cell-size: 2rem;

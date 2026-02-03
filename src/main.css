@@ -1,6 +1,7 @@
 /* Global styles - Theme, font, utilities, animations and global components */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:ital,wght@0,100..900;1,100..900&display=swap');
+/* Import only Inter font for standardization across the app */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -96,8 +97,10 @@
     @apply border-border;
   }
   body {
+    /* Apply font-sans globally, which now maps to Inter */
     @apply bg-background text-foreground font-sans;
   }
+  /* Headings also use Inter via font-display mapping in tailwind config */
   h1,
   h2,
   h3,
@@ -109,13 +112,6 @@
 }
 
 @layer utilities {
-  .font-display {
-    font-family: 'Playfair Display', serif;
-  }
-  .font-sans {
-    font-family: 'Inter', sans-serif;
-  }
-
   /* Custom Scrollbar for tables if needed */
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
