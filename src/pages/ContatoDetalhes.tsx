@@ -41,6 +41,8 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
 import { contactsService, type Contact } from '@/services/contacts'
+import { cn } from '@/lib/utils'
+import { ContactPurchases } from '@/components/ContactPurchases'
 
 export default function ContatoDetalhes() {
   const { id } = useParams<{ id: string }>()
@@ -69,9 +71,6 @@ export default function ContatoDetalhes() {
   }, [id, toast])
 
   const handleAddNote = () => {
-    // Note implementation would typically POST to a contact_notes table or update jsonb
-    // For now, we mock success as per minimal user story reqs on this specific action or use DB if table existed
-    // The instructions asked for contacts table to have 'notes' TEXT. So we update that.
     toast({
       title: 'Nota',
       description:
@@ -95,7 +94,7 @@ export default function ContatoDetalhes() {
     }
   }
 
-  // Calculate financials
+  // Calculate financials for the summary card
   const totalInvested =
     contact?.purchases?.reduce((acc, curr) => acc + Number(curr.value), 0) || 0
   const horsesBought = contact?.purchases?.length || 0
@@ -491,6 +490,10 @@ export default function ContatoDetalhes() {
           </div>
         </div>
       </div>
+
+      {/* New Purchase History Section */}
+      <Separator className="my-8" />
+      <ContactPurchases contactId={contact.id} />
     </div>
   )
 }

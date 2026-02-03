@@ -29,6 +29,9 @@ export type Purchase = {
   value: number
   date: string
   contact_id: string
+  auction_id?: string | null
+  lot_number?: string | null
+  description?: string | null
 }
 
 type GetContactsParams = {
@@ -76,25 +79,14 @@ export const contactsService = {
 
     // Sorting
     if (sortBy === 'lastContact') {
-      // Since we don't have a direct lastContact field in the simple schema, we sort by updated_at or create a computed logic
-      // For now, mapping lastContact to updated_at
       query = query.order('updated_at', { ascending: sortDirection === 'asc' })
     } else if (sortBy === 'totalInvested') {
-      // Sorting by computed values (sum of purchases) is complex in simple PostgREST
-      // We will sort by name as fallback or implement a DB view if strictly needed.
-      // For now, let's sort by name if totalInvested is requested to avoid error, or updated_at
       query = query.order('name', { ascending: sortDirection === 'asc' })
     } else {
       query = query.order(sortBy as any, { ascending: sortDirection === 'asc' })
     }
 
-    // Tag filtering needs special handling or inner join
     if (tags && tags.length > 0) {
-      // Logic: contacts where contact_tags has tag.name in tags
-      // This is complex with simple syntax. We can use !inner on contact_tags
-      // But we need to filter by tag name
-      // Constructing query:
-      // We first find contact IDs that have these tags
       const { data: taggedContactIds, error: tagError } = await supabase
         .from('contact_tags')
         .select('contact_id, tags!inner(name)')
@@ -106,7 +98,6 @@ export const contactsService = {
       if (ids.length > 0) {
         query = query.in('id', ids)
       } else {
-        // If tags selected but no contacts found, return empty
         return { data: [], count: 0, error: null }
       }
     }
@@ -115,18 +106,16 @@ export const contactsService = {
 
     const { data, error, count } = await query
 
-    // Transform data to match frontend expectations if necessary
     const formattedData = data?.map((contact) => ({
       ...contact,
       tags: contact.contact_tags?.map((ct: any) => ct.tags) || [],
       purchases: contact.purchases || [],
-      // Calculated fields for frontend convenience
       totalInvested:
         contact.purchases?.reduce(
           (acc: number, curr: any) => acc + Number(curr.value),
           0,
         ) || 0,
-      lastContact: contact.updated_at, // mock mapping
+      lastContact: contact.updated_at,
     }))
 
     return { data: formattedData as Contact[], error, count }
@@ -150,7 +139,8 @@ export const contactsService = {
           value,
           date,
           lot_number,
-          auction_id
+          auction_id,
+          description
         ),
         contact_interactions (
            id,
@@ -168,17 +158,26 @@ export const contactsService = {
     return {
       ...data,
       tags: data.contact_tags?.map((ct: any) => ct.tags) || [],
-      // Ensure arrays
       purchases: data.purchases || [],
       interactions: data.contact_interactions || [],
     }
   },
 
+  async getPurchasesByContactId(contactId: string) {
+    const { data, error } = await supabase
+      .from('purchases')
+      .select('*')
+      .eq('contact_id', contactId)
+      .order('date', { ascending: false })
+
+    if (error) throw error
+
+    return data as Purchase[]
+  },
+
   async createContact(contactData: any) {
-    // 1. Insert Contact
     const { tags: tagNames, ...data } = contactData
 
-    // Remove computed/extra fields if any
     const dbData = {
       name: data.name,
       email: data.email,
@@ -204,9 +203,7 @@ export const contactsService = {
 
     if (error) throw error
 
-    // 2. Associate Tags
     if (tagNames && tagNames.length > 0) {
-      // Fetch tag IDs
       const { data: existingTags } = await supabase
         .from('tags')
         .select('id, name')
