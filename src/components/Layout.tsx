@@ -52,17 +52,14 @@ function AppSidebar() {
 
   return (
     <Sidebar variant="sidebar" side="left" collapsible="icon">
-      <SidebarHeader className="h-20 flex items-center justify-center border-b border-sidebar-border/20 px-4 py-2">
+      <SidebarHeader className="h-24 flex items-center justify-center border-b border-sidebar-border px-4 py-2">
         <div className="flex items-center gap-2 w-full overflow-hidden transition-all duration-300 justify-start group-data-[collapsible=icon]:justify-center">
-          {/* Replaced placeholder with Official Logo */}
+          {/* Optimized Logo Size */}
           <img
             src={logoImg}
             alt="Milan Horses"
-            className="h-14 w-auto object-contain transition-all duration-300 group-data-[collapsible=icon]:h-8"
+            className="h-20 w-auto object-contain transition-all duration-300 group-data-[collapsible=icon]:h-8"
           />
-          {/* We hide the text because the logo likely contains it, or to avoid duplication. 
-                If the logo doesn't have text, uncomment below. 
-                Assuming the provided image is the full lockup. */}
         </div>
       </SidebarHeader>
 
@@ -77,8 +74,9 @@ function AppSidebar() {
                   tooltip={item.label}
                   className={cn(
                     'w-full justify-start gap-3 px-3 py-6 transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:scale-[1.02]',
+                    // Active state updated to use Brand Dark Blue background to maintain theme identity on White sidebar
                     isActive &&
-                      'bg-white/10 text-white font-medium border-l-4 border-l-secondary shadow-sm',
+                      'bg-primary text-primary-foreground font-medium border-l-4 border-l-secondary shadow-sm hover:bg-primary/90',
                   )}
                 >
                   <Link to={item.path} className="flex items-center gap-3">
@@ -92,7 +90,9 @@ function AppSidebar() {
                     />
                     <span
                       className={cn(
-                        isActive ? 'text-white' : 'text-sidebar-foreground/90',
+                        isActive
+                          ? 'text-primary-foreground'
+                          : 'text-sidebar-foreground/90',
                       )}
                     >
                       {item.label}
@@ -105,7 +105,7 @@ function AppSidebar() {
         </SidebarMenu>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-sidebar-border/20">
+      <SidebarFooter className="p-4 border-t border-sidebar-border">
         <div className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center">
           <Avatar className="h-9 w-9 border border-secondary">
             <AvatarImage src="https://img.usecurling.com/ppl/thumbnail?gender=male&seed=3" />

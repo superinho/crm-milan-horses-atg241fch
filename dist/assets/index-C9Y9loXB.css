@@ -473,15 +473,15 @@ video {
 
     --radius: 0.5rem;
 
-    /* Sidebar Theme - Deep Blue Background */
-    --sidebar-background: 215 90% 22%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 38 34% 48%; /* Gold accents in sidebar */
+    /* Sidebar Theme - Updated to White Background */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 215 90% 22%;
+    --sidebar-primary: 215 90% 22%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 215 80% 28%; /* Slightly lighter blue for hover */
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 215 80% 28%;
-    --sidebar-ring: 38 34% 48%;
+    --sidebar-accent: 210 40% 96.1%;
+    --sidebar-accent-foreground: 215 90% 22%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 215 90% 22%;
 
     /* Chart Colors */
     --chart-1: 215 90% 22%; /* Blue */
@@ -817,9 +817,6 @@ h1,
 }
 .h-12{
   height: 3rem;
-}
-.h-14{
-  height: 3.5rem;
 }
 .h-16{
   height: 4rem;
@@ -1402,9 +1399,6 @@ h1,
 .border-sidebar-border{
   border-color: hsl(var(--sidebar-border));
 }
-.border-sidebar-border\/20{
-  border-color: hsl(var(--sidebar-border) / 0.2);
-}
 .border-transparent{
   border-color: transparent;
 }
@@ -1530,9 +1524,6 @@ h1,
 .bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-}
-.bg-white\/10{
-  background-color: rgb(255 255 255 / 0.1);
 }
 .bg-yellow-100{
   --tw-bg-opacity: 1;

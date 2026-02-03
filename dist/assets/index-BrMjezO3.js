@@ -27363,13 +27363,13 @@ function AppSidebar() {
 		collapsible: "icon",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarHeader, {
-				className: "h-20 flex items-center justify-center border-b border-sidebar-border/20 px-4 py-2",
+				className: "h-24 flex items-center justify-center border-b border-sidebar-border px-4 py-2",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "flex items-center gap-2 w-full overflow-hidden transition-all duration-300 justify-start group-data-[collapsible=icon]:justify-center",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
 						src: editedimage_1769630541473_88067_default,
 						alt: "Milan Horses",
-						className: "h-14 w-auto object-contain transition-all duration-300 group-data-[collapsible=icon]:h-8"
+						className: "h-20 w-auto object-contain transition-all duration-300 group-data-[collapsible=icon]:h-8"
 					})
 				})
 			}),
@@ -27380,12 +27380,12 @@ function AppSidebar() {
 					return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuButton, {
 						asChild: true,
 						tooltip: item.label,
-						className: cn("w-full justify-start gap-3 px-3 py-6 transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:scale-[1.02]", isActive && "bg-white/10 text-white font-medium border-l-4 border-l-secondary shadow-sm"),
+						className: cn("w-full justify-start gap-3 px-3 py-6 transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:scale-[1.02]", isActive && "bg-primary text-primary-foreground font-medium border-l-4 border-l-secondary shadow-sm hover:bg-primary/90"),
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
 							to: item.path,
 							className: "flex items-center gap-3",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(item.icon, { className: cn("size-5", isActive ? "text-secondary" : "text-sidebar-foreground/70") }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: cn(isActive ? "text-white" : "text-sidebar-foreground/90"),
+								className: cn(isActive ? "text-primary-foreground" : "text-sidebar-foreground/90"),
 								children: item.label
 							})]
 						})
@@ -27393,7 +27393,7 @@ function AppSidebar() {
 				}) })
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarFooter, {
-				className: "p-4 border-t border-sidebar-border/20",
+				className: "p-4 border-t border-sidebar-border",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center gap-3 group-data-[collapsible=icon]:justify-center",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
@@ -52351,4 +52351,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Df6j8i77.js.map
+//# sourceMappingURL=index-BrMjezO3.js.map
