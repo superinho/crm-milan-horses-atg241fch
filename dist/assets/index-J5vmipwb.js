@@ -19058,6 +19058,28 @@ var ChevronsUpDown = createLucideIcon("chevrons-up-down", [["path", {
 	d: "m7 9 5-5 5 5",
 	key: "sgt6xg"
 }]]);
+var CircleAlert = createLucideIcon("circle-alert", [
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "10",
+		key: "1mglay"
+	}],
+	["line", {
+		x1: "12",
+		x2: "12",
+		y1: "8",
+		y2: "12",
+		key: "1pkeuh"
+	}],
+	["line", {
+		x1: "12",
+		x2: "12.01",
+		y1: "16",
+		y2: "16",
+		key: "4dfq90"
+	}]
+]);
 var CirclePause = createLucideIcon("circle-pause", [
 	["circle", {
 		cx: "12",
@@ -72265,17 +72287,45 @@ var NotFound = () => {
 	});
 };
 var NotFound_default = NotFound;
+var alertVariants = cva("relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground", {
+	variants: { variant: {
+		default: "bg-background text-foreground",
+		destructive: "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive"
+	} },
+	defaultVariants: { variant: "default" }
+});
+var Alert = import_react.forwardRef(({ className, variant, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	ref,
+	role: "alert",
+	className: cn$1(alertVariants({ variant }), className),
+	...props
+}));
+Alert.displayName = "Alert";
+var AlertTitle = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h5", {
+	ref,
+	className: cn$1("mb-1 font-medium leading-none tracking-tight", className),
+	...props
+}));
+AlertTitle.displayName = "AlertTitle";
+var AlertDescription = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	ref,
+	className: cn$1("text-sm [&_p]:leading-relaxed", className),
+	...props
+}));
+AlertDescription.displayName = "AlertDescription";
 function Login() {
 	const [email$1, setEmail] = (0, import_react.useState)("");
 	const [password, setPassword] = (0, import_react.useState)("");
 	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
 	const [isSignUp, setIsSignUp] = (0, import_react.useState)(false);
+	const [authError, setAuthError] = (0, import_react.useState)(null);
 	const { signIn, signUp } = useAuth();
 	const navigate = useNavigate();
 	const { toast: toast$2 } = useToast();
 	const handleAuth = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
+		setAuthError(null);
 		try {
 			if (isSignUp) {
 				const { error } = await signUp(email$1, password);
@@ -72286,7 +72336,10 @@ function Login() {
 				});
 			} else {
 				const { error } = await signIn(email$1, password);
-				if (error) throw error;
+				if (error) {
+					if (error.message?.includes("Email not confirmed")) throw new Error("Seu email ainda não foi confirmado. Por favor, verifique sua caixa de entrada e confirme o cadastro antes de fazer login.");
+					throw error;
+				}
 				navigate("/");
 				toast$2({
 					title: "Login realizado com sucesso",
@@ -72294,14 +72347,14 @@ function Login() {
 				});
 			}
 		} catch (error) {
-			toast$2({
-				variant: "destructive",
-				title: "Erro na autenticação",
-				description: error.message || "Ocorreu um erro ao tentar entrar."
-			});
+			setAuthError(error.message || "Ocorreu um erro ao tentar entrar.");
 		} finally {
 			setIsLoading(false);
 		}
+	};
+	const toggleMode = () => {
+		setIsSignUp(!isSignUp);
+		setAuthError(null);
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "min-h-screen flex items-center justify-center bg-gray-50/50 px-4",
@@ -72328,7 +72381,15 @@ function Login() {
 				className: "shadow-lg border-t-4 border-t-primary",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: isSignUp ? "Criar Conta" : "Login" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: isSignUp ? "Preencha os dados abaixo para criar sua conta." : "Digite seu email e senha para acessar." })] }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [authError && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Alert, {
+						variant: "destructive",
+						className: "mb-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleAlert, { className: "h-4 w-4" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlertTitle, { children: "Erro" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlertDescription, { children: authError })
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
 						onSubmit: handleAuth,
 						className: "space-y-4",
 						children: [
@@ -72342,7 +72403,10 @@ function Login() {
 									type: "email",
 									placeholder: "admin@milanhorses.com",
 									value: email$1,
-									onChange: (e) => setEmail(e.target.value),
+									onChange: (e) => {
+										setEmail(e.target.value);
+										if (authError) setAuthError(null);
+									},
 									required: true
 								})]
 							}),
@@ -72355,7 +72419,10 @@ function Login() {
 									id: "password",
 									type: "password",
 									value: password,
-									onChange: (e) => setPassword(e.target.value),
+									onChange: (e) => {
+										setPassword(e.target.value);
+										if (authError) setAuthError(null);
+									},
 									required: true,
 									minLength: 6
 								})]
@@ -72367,12 +72434,12 @@ function Login() {
 								children: isLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }), isSignUp ? "Criando..." : "Entrando..."] }) : isSignUp ? "Criar Conta" : "Entrar"
 							})
 						]
-					}) }),
+					})] }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardFooter, {
 						className: "flex justify-center",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 							variant: "link",
-							onClick: () => setIsSignUp(!isSignUp),
+							onClick: toggleMode,
 							className: "text-sm text-muted-foreground",
 							children: isSignUp ? "Já tem uma conta? Faça login" : "Não tem uma conta? Cadastre-se"
 						})
@@ -72454,4 +72521,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BUOMPMns.js.map
+//# sourceMappingURL=index-J5vmipwb.js.map

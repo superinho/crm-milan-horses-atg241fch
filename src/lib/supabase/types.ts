@@ -15,7 +15,208 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      companies: {
+        Row: {
+          address: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          name: string
+          phone: string | null
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          name: string
+          phone?: string | null
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          name?: string
+          phone?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      contact_interactions: {
+        Row: {
+          contact_id: string | null
+          created_at: string | null
+          created_by: string | null
+          date: string | null
+          description: string | null
+          id: string
+          type: string
+        }
+        Insert: {
+          contact_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          date?: string | null
+          description?: string | null
+          id?: string
+          type: string
+        }
+        Update: {
+          contact_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          date?: string | null
+          description?: string | null
+          id?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'contact_interactions_contact_id_fkey'
+            columns: ['contact_id']
+            isOneToOne: false
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      contact_tags: {
+        Row: {
+          contact_id: string
+          tag_id: string
+        }
+        Insert: {
+          contact_id: string
+          tag_id: string
+        }
+        Update: {
+          contact_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'contact_tags_contact_id_fkey'
+            columns: ['contact_id']
+            isOneToOne: false
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'contact_tags_tag_id_fkey'
+            columns: ['tag_id']
+            isOneToOne: false
+            referencedRelation: 'tags'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      contacts: {
+        Row: {
+          address: string | null
+          birth_date: string | null
+          cpf: string | null
+          created_at: string | null
+          email: string
+          id: string
+          name: string
+          notes: string | null
+          origin: string | null
+          phone: string
+          preferences: Json | null
+          updated_at: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          address?: string | null
+          birth_date?: string | null
+          cpf?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          name: string
+          notes?: string | null
+          origin?: string | null
+          phone: string
+          preferences?: Json | null
+          updated_at?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          address?: string | null
+          birth_date?: string | null
+          cpf?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          origin?: string | null
+          phone?: string
+          preferences?: Json | null
+          updated_at?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      purchases: {
+        Row: {
+          auction_id: string | null
+          contact_id: string | null
+          created_at: string | null
+          date: string | null
+          id: string
+          lot_number: string | null
+          value: number
+        }
+        Insert: {
+          auction_id?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          date?: string | null
+          id?: string
+          lot_number?: string | null
+          value?: number
+        }
+        Update: {
+          auction_id?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          date?: string | null
+          id?: string
+          lot_number?: string | null
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'purchases_contact_id_fkey'
+            columns: ['contact_id']
+            isOneToOne: false
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      tags: {
+        Row: {
+          color: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          color?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          color?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

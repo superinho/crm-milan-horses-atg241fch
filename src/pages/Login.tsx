@@ -12,7 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Loader2 } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Loader2, AlertCircle } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import logoImg from '@/assets/editedimage_1769630541473-88067.png'
 
@@ -21,6 +22,7 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSignUp, setIsSignUp] = useState(false)
+  const [authError, setAuthError] = useState<string | null>(null)
   const { signIn, signUp } = useAuth()
   const navigate = useNavigate()
   const { toast } = useToast()
@@ -28,6 +30,7 @@ export default function Login() {
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setAuthError(null)
 
     try {
       if (isSignUp) {
@@ -39,7 +42,16 @@ export default function Login() {
         })
       } else {
         const { error } = await signIn(email, password)
-        if (error) throw error
+        if (error) {
+          // Check specifically for unconfirmed email error
+          // Supabase generally returns "Email not confirmed" in the message
+          if (error.message?.includes('Email not confirmed')) {
+            throw new Error(
+              'Seu email ainda não foi confirmado. Por favor, verifique sua caixa de entrada e confirme o cadastro antes de fazer login.',
+            )
+          }
+          throw error
+        }
         navigate('/')
         toast({
           title: 'Login realizado com sucesso',
@@ -47,14 +59,16 @@ export default function Login() {
         })
       }
     } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: 'Erro na autenticação',
-        description: error.message || 'Ocorreu um erro ao tentar entrar.',
-      })
+      const message = error.message || 'Ocorreu um erro ao tentar entrar.'
+      setAuthError(message)
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const toggleMode = () => {
+    setIsSignUp(!isSignUp)
+    setAuthError(null)
   }
 
   return (
@@ -84,6 +98,13 @@ export default function Login() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {authError && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Erro</AlertTitle>
+                <AlertDescription>{authError}</AlertDescription>
+              </Alert>
+            )}
             <form onSubmit={handleAuth} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -92,7 +113,10 @@ export default function Login() {
                   type="email"
                   placeholder="admin@milanhorses.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value)
+                    if (authError) setAuthError(null)
+                  }}
                   required
                 />
               </div>
@@ -102,7 +126,10 @@ export default function Login() {
                   id="password"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value)
+                    if (authError) setAuthError(null)
+                  }}
                   required
                   minLength={6}
                 />
@@ -124,7 +151,7 @@ export default function Login() {
           <CardFooter className="flex justify-center">
             <Button
               variant="link"
-              onClick={() => setIsSignUp(!isSignUp)}
+              onClick={toggleMode}
               className="text-sm text-muted-foreground"
             >
               {isSignUp
