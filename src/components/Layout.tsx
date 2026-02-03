@@ -1,4 +1,4 @@
-import { Outlet, useLocation, Link } from 'react-router-dom'
+import { Outlet, useLocation, Link, useNavigate } from 'react-router-dom'
 import {
   Sidebar,
   SidebarContent,
@@ -36,6 +36,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import logoImg from '@/assets/editedimage_1769630541473-88067.png'
+import { useAuth } from '@/hooks/use-auth'
 
 const NAV_ITEMS = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/' },
@@ -49,12 +50,12 @@ const NAV_ITEMS = [
 
 function AppSidebar() {
   const location = useLocation()
+  const { user } = useAuth()
 
   return (
     <Sidebar variant="sidebar" side="left" collapsible="icon">
       <SidebarHeader className="h-24 flex items-center justify-center border-b border-sidebar-border px-4 py-2">
         <div className="flex items-center gap-2 w-full overflow-hidden transition-all duration-300 justify-start group-data-[collapsible=icon]:justify-center">
-          {/* Optimized Logo Size with max-w-full to fit narrower sidebar */}
           <img
             src={logoImg}
             alt="Milan Horses"
@@ -74,7 +75,6 @@ function AppSidebar() {
                   tooltip={item.label}
                   className={cn(
                     'w-full justify-start gap-3 px-3 py-6 transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:scale-[1.02]',
-                    // Active state updated to use Brand Dark Blue background to maintain theme identity on White sidebar
                     isActive &&
                       'bg-primary text-primary-foreground font-medium border-l-4 border-l-secondary shadow-sm hover:bg-primary/90',
                   )}
@@ -108,15 +108,25 @@ function AppSidebar() {
       <SidebarFooter className="p-4 border-t border-sidebar-border">
         <div className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center">
           <Avatar className="h-9 w-9 border border-secondary">
-            <AvatarImage src="https://img.usecurling.com/ppl/thumbnail?gender=male&seed=3" />
-            <AvatarFallback>AD</AvatarFallback>
+            <AvatarImage
+              src={`https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}`}
+            />
+            <AvatarFallback>
+              {user?.email?.substring(0, 2).toUpperCase()}
+            </AvatarFallback>
           </Avatar>
           <div className="flex flex-col overflow-hidden group-data-[collapsible=icon]:hidden">
-            <span className="text-sm font-medium text-sidebar-foreground">
-              Admin User
+            <span
+              className="text-sm font-medium text-sidebar-foreground truncate"
+              title={user?.email}
+            >
+              {user?.email?.split('@')[0]}
             </span>
-            <span className="text-xs text-sidebar-foreground/60 truncate">
-              admin@milanhorses.com
+            <span
+              className="text-xs text-sidebar-foreground/60 truncate"
+              title={user?.email}
+            >
+              {user?.email}
             </span>
           </div>
         </div>
@@ -127,13 +137,19 @@ function AppSidebar() {
 
 function TopHeader() {
   const { isMobile, toggleSidebar } = useSidebar()
+  const { user, signOut } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    await signOut()
+    navigate('/login')
+  }
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm md:px-6">
       <div className="flex items-center gap-4">
         <SidebarTrigger className="-ml-2 md:hidden" />
 
-        {/* Mobile Logo */}
         <div className="flex items-center gap-2 md:hidden">
           <img
             src={logoImg}
@@ -142,7 +158,6 @@ function TopHeader() {
           />
         </div>
 
-        {/* Desktop Search */}
         <div className="hidden md:flex relative w-96">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -162,8 +177,12 @@ function TopHeader() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="h-8 w-8 cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all">
-              <AvatarImage src="https://img.usecurling.com/ppl/thumbnail?gender=male&seed=3" />
-              <AvatarFallback>AD</AvatarFallback>
+              <AvatarImage
+                src={`https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}`}
+              />
+              <AvatarFallback>
+                {user?.email?.substring(0, 2).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
@@ -176,7 +195,10 @@ function TopHeader() {
               <Zap className="mr-2 h-4 w-4" /> Configurações
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">
+            <DropdownMenuItem
+              className="text-destructive"
+              onClick={handleLogout}
+            >
               <LogOut className="mr-2 h-4 w-4" /> Sair
             </DropdownMenuItem>
           </DropdownMenuContent>

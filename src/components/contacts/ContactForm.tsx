@@ -16,7 +16,6 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  FormDescription,
 } from '@/components/ui/form'
 import {
   Select,
@@ -33,6 +32,7 @@ import {
 import { Calendar } from '@/components/ui/calendar'
 import { useToast } from '@/hooks/use-toast'
 import { MultiSelect } from '@/components/ui/multi-select'
+import { contactsService } from '@/services/contacts'
 
 const formSchema = z.object({
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres.'),
@@ -51,23 +51,24 @@ const formSchema = z.object({
   modalities: z.array(z.string()).default([]),
   origin: z.string({ required_error: 'Selecione a origem do lead.' }),
   notes: z.string().optional(),
+  tags: z.array(z.string()).default([]),
 })
 
 const BREEDS = [
-  { label: 'Lusitano', value: 'lusitano' },
-  { label: 'Brasileiro de Hipismo', value: 'bh' },
-  { label: 'Quarto de Milha', value: 'qm' },
-  { label: 'Árabe', value: 'arabe' },
-  { label: 'Manga Larga', value: 'mangalarga' },
-  { label: 'Puro Sangue Inglês', value: 'psi' },
+  { label: 'Lusitano', value: 'Lusitano' },
+  { label: 'Brasileiro de Hipismo', value: 'BH' },
+  { label: 'Quarto de Milha', value: 'Quarto de Milha' },
+  { label: 'Árabe', value: 'Árabe' },
+  { label: 'Manga Larga', value: 'Manga Larga' },
+  { label: 'Puro Sangue Inglês', value: 'PSI' },
 ]
 
 const MODALITIES = [
-  { label: 'Salto', value: 'salto' },
-  { label: 'Adestramento', value: 'adestramento' },
-  { label: 'Enduro', value: 'enduro' },
-  { label: 'Lazer', value: 'lazer' },
-  { label: 'Trabalho', value: 'trabalho' },
+  { label: 'Salto', value: 'Salto' },
+  { label: 'Adestramento', value: 'Adestramento' },
+  { label: 'Enduro', value: 'Enduro' },
+  { label: 'Lazer', value: 'Lazer' },
+  { label: 'Trabalho', value: 'Trabalho' },
 ]
 
 const ORIGINS = [
@@ -76,6 +77,15 @@ const ORIGINS = [
   'Site',
   'Evento',
   'Outros',
+]
+
+// Available tags hardcoded for now or fetchable
+const TAGS = [
+  { label: 'VIP', value: 'VIP' },
+  { label: 'Frequente', value: 'Frequente' },
+  { label: 'Ativo', value: 'Ativo' },
+  { label: 'Novo Lead', value: 'Novo Lead' },
+  { label: 'Inativo', value: 'Inativo' },
 ]
 
 export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
@@ -94,6 +104,7 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
       favoriteBreeds: [],
       modalities: [],
       notes: '',
+      tags: [],
     },
   })
 
@@ -117,17 +128,24 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true)
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Form Submitted:', values)
+    try {
+      await contactsService.createContact(values)
       toast({
         title: 'Contato cadastrado!',
         description: `${values.name} foi adicionado com sucesso.`,
       })
-      setLoading(false)
       form.reset()
       onSuccess?.()
-    }, 1500)
+    } catch (error: any) {
+      console.error(error)
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao cadastrar',
+        description: error.message || 'Não foi possível salvar o contato.',
+      })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -324,10 +342,16 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="low">Até R$ 50k</SelectItem>
-                      <SelectItem value="mid">R$ 50k - R$ 100k</SelectItem>
-                      <SelectItem value="high">R$ 100k - R$ 300k</SelectItem>
-                      <SelectItem value="premium">Acima de R$ 300k</SelectItem>
+                      <SelectItem value="Até R$ 50k">Até R$ 50k</SelectItem>
+                      <SelectItem value="R$ 50k - R$ 100k">
+                        R$ 50k - R$ 100k
+                      </SelectItem>
+                      <SelectItem value="R$ 100k - R$ 300k">
+                        R$ 100k - R$ 300k
+                      </SelectItem>
+                      <SelectItem value="Acima de R$ 300k">
+                        Acima de R$ 300k
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -383,6 +407,24 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
                     ))}
                   </SelectContent>
                 </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tags Iniciais</FormLabel>
+                <FormControl>
+                  <MultiSelect
+                    options={TAGS}
+                    selected={field.value}
+                    onChange={field.onChange}
+                    placeholder="Selecione tags..."
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

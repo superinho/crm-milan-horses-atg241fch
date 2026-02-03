@@ -340,7 +340,7 @@ var require_react_development = /* @__PURE__ */ __commonJSMin(((exports, module)
 			this.refs = emptyObject;
 			this.updater = updater || ReactNoopUpdateQueue;
 		}
-		function noop$2() {}
+		function noop$4() {}
 		function testStringCoercion(value) {
 			return "" + value;
 		}
@@ -501,7 +501,7 @@ var require_react_development = /* @__PURE__ */ __commonJSMin(((exports, module)
 			switch (thenable.status) {
 				case "fulfilled": return thenable.value;
 				case "rejected": throw thenable.reason;
-				default: switch ("string" === typeof thenable.status ? thenable.then(noop$2, noop$2) : (thenable.status = "pending", thenable.then(function(fulfilledValue) {
+				default: switch ("string" === typeof thenable.status ? thenable.then(noop$4, noop$4) : (thenable.status = "pending", thenable.then(function(fulfilledValue) {
 					"pending" === thenable.status && (thenable.status = "fulfilled", thenable.value = fulfilledValue);
 				}, function(error) {
 					"pending" === thenable.status && (thenable.status = "rejected", thenable.reason = error);
@@ -982,7 +982,7 @@ var require_react_development = /* @__PURE__ */ __commonJSMin(((exports, module)
 			try {
 				var returnValue = scope(), onStartTransitionFinish = ReactSharedInternals.S;
 				null !== onStartTransitionFinish && onStartTransitionFinish(currentTransition, returnValue);
-				"object" === typeof returnValue && null !== returnValue && "function" === typeof returnValue.then && (ReactSharedInternals.asyncTransitions++, returnValue.then(releaseAsyncTransition, releaseAsyncTransition), returnValue.then(noop$2, reportGlobalError));
+				"object" === typeof returnValue && null !== returnValue && "function" === typeof returnValue.then && (ReactSharedInternals.asyncTransitions++, returnValue.then(releaseAsyncTransition, releaseAsyncTransition), returnValue.then(noop$4, reportGlobalError));
 			} catch (error) {
 				reportGlobalError(error);
 			} finally {
@@ -1072,7 +1072,7 @@ var require_react = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 */
 var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => {
 	(function() {
-		function noop$2() {}
+		function noop$4() {}
 		function testStringCoercion(value) {
 			return "" + value;
 		}
@@ -1111,17 +1111,17 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
 		var React$64 = require_react(), Internals = {
 			d: {
-				f: noop$2,
+				f: noop$4,
 				r: function() {
 					throw Error("Invalid form element. requestFormReset must be passed a form that was rendered by React.");
 				},
-				D: noop$2,
-				C: noop$2,
-				L: noop$2,
-				m: noop$2,
-				X: noop$2,
-				S: noop$2,
-				M: noop$2
+				D: noop$4,
+				C: noop$4,
+				L: noop$4,
+				m: noop$4,
+				X: noop$4,
+				S: noop$4,
+				M: noop$4
 			},
 			p: 0,
 			findDOMNode: null
@@ -1291,7 +1291,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 		function warnInvalidContextAccess() {
 			console.error("Context can only be read while React is rendering. In classes, you can read it in the render method or getDerivedStateFromProps. In function components, you can read it directly in the function body, but not inside Hooks like useReducer() or useMemo().");
 		}
-		function noop$2() {}
+		function noop$4() {}
 		function warnForMissingKey() {}
 		function setToSortedString(set$1) {
 			var array$1 = [];
@@ -1868,13 +1868,13 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 		function checkFormFieldValueStringCoercion(value) {
 			if (willCoercionThrow(value)) return console.error("Form field values (value, checked, defaultValue, or defaultChecked props) must be strings, not %s. This value must be coerced to a string before using it here.", typeName(value)), testStringCoercion(value);
 		}
-		function injectInternals(internals) {
+		function injectInternals(internals$1) {
 			if ("undefined" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__) return !1;
 			var hook = __REACT_DEVTOOLS_GLOBAL_HOOK__;
 			if (hook.isDisabled) return !0;
 			if (!hook.supportsFiber) return console.error("The installed version of React DevTools is too old and will not work with the current version of React. Please update React DevTools. https://react.dev/link/react-devtools"), !0;
 			try {
-				rendererID = hook.inject(internals), injectedHook = hook;
+				rendererID = hook.inject(internals$1), injectedHook = hook;
 			} catch (err) {
 				console.error("React instrumentation encountered an error: %o.", err);
 			}
@@ -2268,11 +2268,11 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 		function trackValueOnNode(node, valueField, currentValue) {
 			var descriptor = Object.getOwnPropertyDescriptor(node.constructor.prototype, valueField);
 			if (!node.hasOwnProperty(valueField) && "undefined" !== typeof descriptor && "function" === typeof descriptor.get && "function" === typeof descriptor.set) {
-				var get$9 = descriptor.get, set$1 = descriptor.set;
+				var get$10 = descriptor.get, set$1 = descriptor.set;
 				Object.defineProperty(node, valueField, {
 					configurable: !0,
 					get: function() {
-						return get$9.call(this);
+						return get$10.call(this);
 					},
 					set: function(value) {
 						checkFormFieldValueStringCoercion(value);
@@ -6004,7 +6004,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			if (5 !== formFiber.tag) throw Error("Expected the form instance to be a HostComponent. This is a bug in React.");
 			var queue = ensureFormComponentIsStateful(formFiber).queue;
 			startHostActionTimer(formFiber);
-			startTransition(formFiber, queue, pendingState, NotPendingTransition, null === action ? noop$2 : function() {
+			startTransition(formFiber, queue, pendingState, NotPendingTransition, null === action ? noop$4 : function() {
 				requestFormReset$1(formFiber);
 				return action(formData);
 			});
@@ -15298,28 +15298,28 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			return componentOrElement;
 		};
 		if (!(function() {
-			var internals = {
+			var internals$1 = {
 				bundleType: 1,
 				version: "19.2.3",
 				rendererPackageName: "react-dom",
 				currentDispatcherRef: ReactSharedInternals,
 				reconcilerVersion: "19.2.3"
 			};
-			internals.overrideHookState = overrideHookState;
-			internals.overrideHookStateDeletePath = overrideHookStateDeletePath;
-			internals.overrideHookStateRenamePath = overrideHookStateRenamePath;
-			internals.overrideProps = overrideProps;
-			internals.overridePropsDeletePath = overridePropsDeletePath;
-			internals.overridePropsRenamePath = overridePropsRenamePath;
-			internals.scheduleUpdate = scheduleUpdate;
-			internals.scheduleRetry = scheduleRetry;
-			internals.setErrorHandler = setErrorHandler;
-			internals.setSuspenseHandler = setSuspenseHandler;
-			internals.scheduleRefresh = scheduleRefresh;
-			internals.scheduleRoot = scheduleRoot;
-			internals.setRefreshHandler = setRefreshHandler;
-			internals.getCurrentFiber = getCurrentFiberForDevTools;
-			return injectInternals(internals);
+			internals$1.overrideHookState = overrideHookState;
+			internals$1.overrideHookStateDeletePath = overrideHookStateDeletePath;
+			internals$1.overrideHookStateRenamePath = overrideHookStateRenamePath;
+			internals$1.overrideProps = overrideProps;
+			internals$1.overridePropsDeletePath = overridePropsDeletePath;
+			internals$1.overridePropsRenamePath = overridePropsRenamePath;
+			internals$1.scheduleUpdate = scheduleUpdate;
+			internals$1.scheduleRetry = scheduleRetry;
+			internals$1.setErrorHandler = setErrorHandler;
+			internals$1.setSuspenseHandler = setSuspenseHandler;
+			internals$1.scheduleRefresh = scheduleRefresh;
+			internals$1.scheduleRoot = scheduleRoot;
+			internals$1.setRefreshHandler = setRefreshHandler;
+			internals$1.getCurrentFiber = getCurrentFiberForDevTools;
+			return injectInternals(internals$1);
 		})() && canUseDOM$1 && window.top === window.self && (-1 < navigator.userAgent.indexOf("Chrome") && -1 === navigator.userAgent.indexOf("Edge") || -1 < navigator.userAgent.indexOf("Firefox"))) {
 			var protocol = window.location.protocol;
 			/^(https?|file):$/.test(protocol) && console.info("%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools" + ("file:" === protocol ? "\nYou might need to use a local HTTP server (instead of file://): https://react.dev/link/react-devtools-faq" : ""), "font-weight:bold");
@@ -15876,7 +15876,7 @@ function isRouteErrorResponse(error) {
 function getRoutePattern(matches) {
 	return matches.map((m$1) => m$1.route.path).filter(Boolean).join("/").replace(/\/\/*/g, "/") || "/";
 }
-var isBrowser = typeof window !== "undefined" && typeof window.document !== "undefined" && typeof window.document.createElement !== "undefined";
+var isBrowser$1 = typeof window !== "undefined" && typeof window.document !== "undefined" && typeof window.document.createElement !== "undefined";
 function parseToInfo(_to, basename) {
 	let to = _to;
 	if (typeof to !== "string" || !ABSOLUTE_URL_REGEX.test(to)) return {
@@ -15886,7 +15886,7 @@ function parseToInfo(_to, basename) {
 	};
 	let absoluteURL = to;
 	let isExternal = false;
-	if (isBrowser) try {
+	if (isBrowser$1) try {
 		let currentUrl = new URL(window.location.href);
 		let targetUrl = to.startsWith("//") ? new URL(currentUrl.protocol + to) : new URL(to);
 		let path$1 = stripBasename(targetUrl.pathname, basename);
@@ -16140,7 +16140,7 @@ function RSCErrorHandler({ children, error }) {
 			let existingRedirect = errorRedirectHandledMap.get(error);
 			if (existingRedirect) throw existingRedirect;
 			let parsed = parseToInfo(redirect2.location, basename);
-			if (isBrowser && !errorRedirectHandledMap.get(error)) if (parsed.isExternal || redirect2.reloadDocument) window.location.href = parsed.absoluteURL || parsed.to;
+			if (isBrowser$1 && !errorRedirectHandledMap.get(error)) if (parsed.isExternal || redirect2.reloadDocument) window.location.href = parsed.absoluteURL || parsed.to;
 			else {
 				const redirectPromise = Promise.resolve().then(() => window.__reactRouterDataRouter.navigate(parsed.to, { replace: redirect2.replace }));
 				errorRedirectHandledMap.set(error, redirectPromise);
@@ -16318,6 +16318,30 @@ import_react.useOptimistic;
 import_react.memo(DataRoutes);
 function DataRoutes({ routes, future, state, onError }) {
 	return useRoutesImpl(routes, void 0, state, onError, future);
+}
+function Navigate({ to, replace: replace2, state, relative }) {
+	invariant$1(useInRouterContext(), `<Navigate> may be used only in the context of a <Router> component.`);
+	let { static: isStatic } = import_react.useContext(NavigationContext);
+	warning(!isStatic, `<Navigate> must not be used on the initial render in a <StaticRouter>. This is a no-op, but you should modify your code so the <Navigate> is only ever rendered in response to some user interaction or state change.`);
+	let { matches } = import_react.useContext(RouteContext);
+	let { pathname: locationPathname } = useLocation();
+	let navigate = useNavigate();
+	let path$1 = resolveTo(to, getResolveToMatches(matches), locationPathname, relative === "path");
+	let jsonPath = JSON.stringify(path$1);
+	import_react.useEffect(() => {
+		navigate(JSON.parse(jsonPath), {
+			replace: replace2,
+			state,
+			relative
+		});
+	}, [
+		navigate,
+		jsonPath,
+		relative,
+		replace2,
+		state
+	]);
+	return null;
 }
 function Outlet(props) {
 	return useOutlet(props.context);
@@ -19316,13 +19340,6 @@ var PanelLeft = createLucideIcon("panel-left", [["rect", {
 	d: "M9 3v18",
 	key: "fh3hqa"
 }]]);
-var Pencil = createLucideIcon("pencil", [["path", {
-	d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
-	key: "1a8usu"
-}], ["path", {
-	d: "m15 5 4 4",
-	key: "1mk7zo"
-}]]);
 var Phone = createLucideIcon("phone", [["path", {
 	d: "M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384",
 	key: "9njp5v"
@@ -20853,13 +20870,13 @@ var getDefaultConfig = () => {
 	};
 };
 var twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
-function cn(...inputs) {
+function cn$1(...inputs) {
 	return twMerge(clsx(inputs));
 }
 var ToastProvider = Provider$1;
 var ToastViewport = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Viewport$2, {
 	ref,
-	className: cn("fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]", className),
+	className: cn$1("fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]", className),
 	...props
 }));
 ToastViewport.displayName = Viewport$2.displayName;
@@ -20873,20 +20890,20 @@ var toastVariants = cva("group pointer-events-auto relative flex w-full items-ce
 var Toast$1 = import_react.forwardRef(({ className, variant, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
 		ref,
-		className: cn(toastVariants({ variant }), className),
+		className: cn$1(toastVariants({ variant }), className),
 		...props
 	});
 });
 Toast$1.displayName = Root2$4.displayName;
 var ToastAction = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Action, {
 	ref,
-	className: cn("inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive", className),
+	className: cn$1("inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive", className),
 	...props
 }));
 ToastAction.displayName = Action.displayName;
 var ToastClose = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Close$1, {
 	ref,
-	className: cn("absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600", className),
+	className: cn$1("absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600", className),
 	"toast-close": "",
 	...props,
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-4 w-4" })
@@ -20894,13 +20911,13 @@ var ToastClose = import_react.forwardRef(({ className, ...props }, ref) => /* @_
 ToastClose.displayName = Close$1.displayName;
 var ToastTitle = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Title$1, {
 	ref,
-	className: cn("text-sm font-semibold", className),
+	className: cn$1("text-sm font-semibold", className),
 	...props
 }));
 ToastTitle.displayName = Title$1.displayName;
 var ToastDescription = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Description$1, {
 	ref,
-	className: cn("text-sm opacity-90", className),
+	className: cn$1("text-sm opacity-90", className),
 	...props
 }));
 ToastDescription.displayName = Description$1.displayName;
@@ -20967,10 +20984,10 @@ import_react.memo(({ forcedTheme: e, storageKey: i$2, attribute: s$3, enableSyst
 var import_react_dom$3 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 function __insertCSS(code) {
 	if (!code || typeof document == "undefined") return;
-	let head = document.head || document.getElementsByTagName("head")[0];
+	let head$1 = document.head || document.getElementsByTagName("head")[0];
 	let style = document.createElement("style");
 	style.type = "text/css";
-	head.appendChild(style);
+	head$1.appendChild(style);
 	style.styleSheet ? style.styleSheet.cssText = code : style.appendChild(document.createTextNode(code));
 }
 var getAsset = (type) => {
@@ -21316,7 +21333,7 @@ var TOAST_WIDTH = 356;
 var GAP = 14;
 var SWIPE_THRESHOLD = 45;
 var TIME_BEFORE_UNMOUNT = 200;
-function cn$1(...classes) {
+function cn$2(...classes) {
 	return classes.filter(Boolean).join(" ");
 }
 function getDefaultSwipeDirections(position) {
@@ -21469,12 +21486,12 @@ var Toast = (props) => {
 		if (icons == null ? void 0 : icons.loading) {
 			var _toast_classNames1$1;
 			return /* @__PURE__ */ import_react.createElement("div", {
-				className: cn$1(classNames == null ? void 0 : classNames.loader, toast$2 == null ? void 0 : (_toast_classNames1$1 = toast$2.classNames) == null ? void 0 : _toast_classNames1$1.loader, "sonner-loader"),
+				className: cn$2(classNames == null ? void 0 : classNames.loader, toast$2 == null ? void 0 : (_toast_classNames1$1 = toast$2.classNames) == null ? void 0 : _toast_classNames1$1.loader, "sonner-loader"),
 				"data-visible": toastType === "loading"
 			}, icons.loading);
 		}
 		return /* @__PURE__ */ import_react.createElement(Loader, {
-			className: cn$1(classNames == null ? void 0 : classNames.loader, toast$2 == null ? void 0 : (_toast_classNames$1 = toast$2.classNames) == null ? void 0 : _toast_classNames$1.loader),
+			className: cn$2(classNames == null ? void 0 : classNames.loader, toast$2 == null ? void 0 : (_toast_classNames$1 = toast$2.classNames) == null ? void 0 : _toast_classNames$1.loader),
 			visible: toastType === "loading"
 		});
 	}
@@ -21483,7 +21500,7 @@ var Toast = (props) => {
 	return /* @__PURE__ */ import_react.createElement("li", {
 		tabIndex: 0,
 		ref: toastRef,
-		className: cn$1(className, toastClassname, classNames == null ? void 0 : classNames.toast, toast$2 == null ? void 0 : (_toast_classNames = toast$2.classNames) == null ? void 0 : _toast_classNames.toast, classNames == null ? void 0 : classNames.default, classNames == null ? void 0 : classNames[toastType], toast$2 == null ? void 0 : (_toast_classNames1 = toast$2.classNames) == null ? void 0 : _toast_classNames1[toastType]),
+		className: cn$2(className, toastClassname, classNames == null ? void 0 : classNames.toast, toast$2 == null ? void 0 : (_toast_classNames = toast$2.classNames) == null ? void 0 : _toast_classNames.toast, classNames == null ? void 0 : classNames.default, classNames == null ? void 0 : classNames[toastType], toast$2 == null ? void 0 : (_toast_classNames1 = toast$2.classNames) == null ? void 0 : _toast_classNames1[toastType]),
 		"data-sonner-toast": "",
 		"data-rich-colors": (_toast_richColors = toast$2.richColors) != null ? _toast_richColors : defaultRichColors,
 		"data-styled": !Boolean(toast$2.jsx || toast$2.unstyled || unstyled),
@@ -21598,19 +21615,19 @@ var Toast = (props) => {
 			deleteToast();
 			toast$2.onDismiss == null || toast$2.onDismiss.call(toast$2, toast$2);
 		},
-		className: cn$1(classNames == null ? void 0 : classNames.closeButton, toast$2 == null ? void 0 : (_toast_classNames2 = toast$2.classNames) == null ? void 0 : _toast_classNames2.closeButton)
+		className: cn$2(classNames == null ? void 0 : classNames.closeButton, toast$2 == null ? void 0 : (_toast_classNames2 = toast$2.classNames) == null ? void 0 : _toast_classNames2.closeButton)
 	}, (_icons_close = icons == null ? void 0 : icons.close) != null ? _icons_close : CloseIcon) : null, (toastType || toast$2.icon || toast$2.promise) && toast$2.icon !== null && ((icons == null ? void 0 : icons[toastType]) !== null || toast$2.icon) ? /* @__PURE__ */ import_react.createElement("div", {
 		"data-icon": "",
-		className: cn$1(classNames == null ? void 0 : classNames.icon, toast$2 == null ? void 0 : (_toast_classNames3 = toast$2.classNames) == null ? void 0 : _toast_classNames3.icon)
+		className: cn$2(classNames == null ? void 0 : classNames.icon, toast$2 == null ? void 0 : (_toast_classNames3 = toast$2.classNames) == null ? void 0 : _toast_classNames3.icon)
 	}, toast$2.promise || toast$2.type === "loading" && !toast$2.icon ? toast$2.icon || getLoadingIcon() : null, toast$2.type !== "loading" ? icon : null) : null, /* @__PURE__ */ import_react.createElement("div", {
 		"data-content": "",
-		className: cn$1(classNames == null ? void 0 : classNames.content, toast$2 == null ? void 0 : (_toast_classNames4 = toast$2.classNames) == null ? void 0 : _toast_classNames4.content)
+		className: cn$2(classNames == null ? void 0 : classNames.content, toast$2 == null ? void 0 : (_toast_classNames4 = toast$2.classNames) == null ? void 0 : _toast_classNames4.content)
 	}, /* @__PURE__ */ import_react.createElement("div", {
 		"data-title": "",
-		className: cn$1(classNames == null ? void 0 : classNames.title, toast$2 == null ? void 0 : (_toast_classNames5 = toast$2.classNames) == null ? void 0 : _toast_classNames5.title)
+		className: cn$2(classNames == null ? void 0 : classNames.title, toast$2 == null ? void 0 : (_toast_classNames5 = toast$2.classNames) == null ? void 0 : _toast_classNames5.title)
 	}, toast$2.jsx ? toast$2.jsx : typeof toast$2.title === "function" ? toast$2.title() : toast$2.title), toast$2.description ? /* @__PURE__ */ import_react.createElement("div", {
 		"data-description": "",
-		className: cn$1(descriptionClassName, toastDescriptionClassname, classNames == null ? void 0 : classNames.description, toast$2 == null ? void 0 : (_toast_classNames6 = toast$2.classNames) == null ? void 0 : _toast_classNames6.description)
+		className: cn$2(descriptionClassName, toastDescriptionClassname, classNames == null ? void 0 : classNames.description, toast$2 == null ? void 0 : (_toast_classNames6 = toast$2.classNames) == null ? void 0 : _toast_classNames6.description)
 	}, typeof toast$2.description === "function" ? toast$2.description() : toast$2.description) : null), /* @__PURE__ */ import_react.isValidElement(toast$2.cancel) ? toast$2.cancel : toast$2.cancel && isAction(toast$2.cancel) ? /* @__PURE__ */ import_react.createElement("button", {
 		"data-button": true,
 		"data-cancel": true,
@@ -21621,7 +21638,7 @@ var Toast = (props) => {
 			toast$2.cancel.onClick == null || toast$2.cancel.onClick.call(toast$2.cancel, event);
 			deleteToast();
 		},
-		className: cn$1(classNames == null ? void 0 : classNames.cancelButton, toast$2 == null ? void 0 : (_toast_classNames7 = toast$2.classNames) == null ? void 0 : _toast_classNames7.cancelButton)
+		className: cn$2(classNames == null ? void 0 : classNames.cancelButton, toast$2 == null ? void 0 : (_toast_classNames7 = toast$2.classNames) == null ? void 0 : _toast_classNames7.cancelButton)
 	}, toast$2.cancel.label) : null, /* @__PURE__ */ import_react.isValidElement(toast$2.action) ? toast$2.action : toast$2.action && isAction(toast$2.action) ? /* @__PURE__ */ import_react.createElement("button", {
 		"data-button": true,
 		"data-action": true,
@@ -21632,7 +21649,7 @@ var Toast = (props) => {
 			if (event.defaultPrevented) return;
 			deleteToast();
 		},
-		className: cn$1(classNames == null ? void 0 : classNames.actionButton, toast$2 == null ? void 0 : (_toast_classNames8 = toast$2.classNames) == null ? void 0 : _toast_classNames8.actionButton)
+		className: cn$2(classNames == null ? void 0 : classNames.actionButton, toast$2 == null ? void 0 : (_toast_classNames8 = toast$2.classNames) == null ? void 0 : _toast_classNames8.actionButton)
 	}, toast$2.action.label) : null);
 };
 function getDocumentDirection() {
@@ -23144,7 +23161,7 @@ var computePosition = (reference, floating, options$1) => {
 	});
 };
 var import_react_dom$2 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
-var index = typeof document !== "undefined" ? import_react.useLayoutEffect : function noop$2() {};
+var index = typeof document !== "undefined" ? import_react.useLayoutEffect : function noop$4() {};
 function deepEqual$2(a$2, b$1) {
 	if (a$2 === b$1) return true;
 	if (typeof a$2 !== typeof b$1) return false;
@@ -24156,7 +24173,7 @@ var TooltipTrigger = Trigger$4;
 var TooltipContent = import_react.forwardRef(({ className, sideOffset = 4, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2$4, {
 	ref,
 	sideOffset,
-	className: cn("z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin]", className),
+	className: cn$1("z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin]", className),
 	...props
 }));
 TooltipContent.displayName = Content2$4.displayName;
@@ -24290,7 +24307,7 @@ var buttonVariants = cva("inline-flex items-center justify-center gap-2 whitespa
 });
 var Button = import_react.forwardRef(({ className, variant, size: size$3, asChild = false, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "button", {
-		className: cn(buttonVariants({
+		className: cn$1(buttonVariants({
 			variant,
 			size: size$3,
 			className
@@ -24303,7 +24320,7 @@ Button.displayName = "Button";
 var Input = import_react.forwardRef(({ className, type, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
 		type,
-		className: cn("flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm", className),
+		className: cn$1("flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm", className),
 		ref,
 		...props
 	});
@@ -24372,7 +24389,7 @@ var Separator = import_react.forwardRef(({ className, orientation = "horizontal"
 	ref,
 	decorative,
 	orientation,
-	className: cn("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className),
+	className: cn$1("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className),
 	...props
 }));
 Separator.displayName = Root$8.displayName;
@@ -24603,6 +24620,33 @@ function __rest(s$3, e) {
 		for (var i$2 = 0, p$1 = Object.getOwnPropertySymbols(s$3); i$2 < p$1.length; i$2++) if (e.indexOf(p$1[i$2]) < 0 && Object.prototype.propertyIsEnumerable.call(s$3, p$1[i$2])) t$1[p$1[i$2]] = s$3[p$1[i$2]];
 	}
 	return t$1;
+}
+function __awaiter(thisArg, _arguments, P$1, generator) {
+	function adopt(value) {
+		return value instanceof P$1 ? value : new P$1(function(resolve) {
+			resolve(value);
+		});
+	}
+	return new (P$1 || (P$1 = Promise))(function(resolve, reject) {
+		function fulfilled(value) {
+			try {
+				step(generator.next(value));
+			} catch (e) {
+				reject(e);
+			}
+		}
+		function rejected(value) {
+			try {
+				step(generator["throw"](value));
+			} catch (e) {
+				reject(e);
+			}
+		}
+		function step(result) {
+			result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+		}
+		step((generator = generator.apply(thisArg, _arguments || [])).next());
+	});
 }
 function __spreadArray(to, from, pack) {
 	if (pack || arguments.length === 2) {
@@ -25558,7 +25602,7 @@ var Sheet = Root$7;
 var SheetTrigger = Trigger$3;
 var SheetPortal = Portal$4;
 var SheetOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
-	className: cn("fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
+	className: cn$1("fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
 	...props,
 	ref
 }));
@@ -25574,7 +25618,7 @@ var sheetVariants = cva("fixed z-50 gap-4 bg-background p-6 shadow-lg transition
 });
 var SheetContent = import_react.forwardRef(({ side = "right", className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content, {
 	ref,
-	className: cn(sheetVariants({ side }), className),
+	className: cn$1(sheetVariants({ side }), className),
 	...props,
 	children: [children, /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Close, {
 		className: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary",
@@ -25586,30 +25630,30 @@ var SheetContent = import_react.forwardRef(({ side = "right", className, childre
 })] }));
 SheetContent.displayName = Content.displayName;
 var SheetHeader = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-	className: cn("flex flex-col space-y-2 text-center sm:text-left", className),
+	className: cn$1("flex flex-col space-y-2 text-center sm:text-left", className),
 	...props
 });
 SheetHeader.displayName = "SheetHeader";
 var SheetFooter = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-	className: cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className),
+	className: cn$1("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className),
 	...props
 });
 SheetFooter.displayName = "SheetFooter";
 var SheetTitle = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Title, {
 	ref,
-	className: cn("text-lg font-semibold text-foreground", className),
+	className: cn$1("text-lg font-semibold text-foreground", className),
 	...props
 }));
 SheetTitle.displayName = Title.displayName;
 var SheetDescription = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Description, {
 	ref,
-	className: cn("text-sm text-muted-foreground", className),
+	className: cn$1("text-sm text-muted-foreground", className),
 	...props
 }));
 SheetDescription.displayName = Description.displayName;
 function Skeleton({ className, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: cn("animate-pulse rounded-md bg-muted", className),
+		className: cn$1("animate-pulse rounded-md bg-muted", className),
 		...props
 	});
 }
@@ -25681,7 +25725,7 @@ var SidebarProvider = import_react.forwardRef(({ defaultOpen = true, open: openP
 					"--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
 					...style
 				},
-				className: cn("group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar", className),
+				className: cn$1("group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar", className),
 				ref,
 				...props,
 				children
@@ -25693,7 +25737,7 @@ SidebarProvider.displayName = "SidebarProvider";
 var Sidebar = import_react.forwardRef(({ side = "left", variant = "sidebar", collapsible = "offcanvas", className, children, ...props }, ref) => {
 	const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
 	if (collapsible === "none") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: cn("flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground", className),
+		className: cn$1("flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground", className),
 		ref,
 		...props,
 		children
@@ -25724,8 +25768,8 @@ var Sidebar = import_react.forwardRef(({ side = "left", variant = "sidebar", col
 		"data-collapsible": state === "collapsed" ? collapsible : "",
 		"data-variant": variant,
 		"data-side": side,
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: cn("relative w-[--sidebar-width] bg-transparent transition-[width] duration-200 ease-linear", "group-data-[collapsible=offcanvas]:w-0", "group-data-[side=right]:rotate-180", variant === "floating" || variant === "inset" ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]" : "group-data-[collapsible=icon]:w-[--sidebar-width-icon]") }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: cn("fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-200 ease-linear md:flex", side === "left" ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]" : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]", variant === "floating" || variant === "inset" ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]" : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l", className),
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: cn$1("relative w-[--sidebar-width] bg-transparent transition-[width] duration-200 ease-linear", "group-data-[collapsible=offcanvas]:w-0", "group-data-[side=right]:rotate-180", variant === "floating" || variant === "inset" ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]" : "group-data-[collapsible=icon]:w-[--sidebar-width-icon]") }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: cn$1("fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-200 ease-linear md:flex", side === "left" ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]" : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]", variant === "floating" || variant === "inset" ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]" : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l", className),
 			...props,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				"data-sidebar": "sidebar",
@@ -25743,7 +25787,7 @@ var SidebarTrigger = import_react.forwardRef(({ className, onClick, ...props }, 
 		"data-sidebar": "trigger",
 		variant: "ghost",
 		size: "icon",
-		className: cn("h-7 w-7", className),
+		className: cn$1("h-7 w-7", className),
 		onClick: (event) => {
 			onClick?.(event);
 			toggleSidebar();
@@ -25765,7 +25809,7 @@ var SidebarRail = import_react.forwardRef(({ className, ...props }, ref) => {
 		tabIndex: -1,
 		onClick: toggleSidebar,
 		title: "Toggle Sidebar",
-		className: cn("absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex", "[[data-side=left]_&]:cursor-w-resize [[data-side=right]_&]:cursor-e-resize", "[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize", "group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full group-data-[collapsible=offcanvas]:hover:bg-sidebar", "[[data-side=left][data-collapsible=offcanvas]_&]:-right-2", "[[data-side=right][data-collapsible=offcanvas]_&]:-left-2", className),
+		className: cn$1("absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex", "[[data-side=left]_&]:cursor-w-resize [[data-side=right]_&]:cursor-e-resize", "[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize", "group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full group-data-[collapsible=offcanvas]:hover:bg-sidebar", "[[data-side=left][data-collapsible=offcanvas]_&]:-right-2", "[[data-side=right][data-collapsible=offcanvas]_&]:-left-2", className),
 		...props
 	});
 });
@@ -25773,7 +25817,7 @@ SidebarRail.displayName = "SidebarRail";
 var SidebarInset = import_react.forwardRef(({ className, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
 		ref,
-		className: cn("relative flex w-full flex-1 flex-col bg-background", "md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow", className),
+		className: cn$1("relative flex w-full flex-1 flex-col bg-background", "md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow", className),
 		...props
 	});
 });
@@ -25782,7 +25826,7 @@ var SidebarInput = import_react.forwardRef(({ className, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
 		ref,
 		"data-sidebar": "input",
-		className: cn("h-8 w-full bg-background shadow-none focus-visible:ring-2 focus-visible:ring-sidebar-ring", className),
+		className: cn$1("h-8 w-full bg-background shadow-none focus-visible:ring-2 focus-visible:ring-sidebar-ring", className),
 		...props
 	});
 });
@@ -25791,7 +25835,7 @@ var SidebarHeader = import_react.forwardRef(({ className, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		ref,
 		"data-sidebar": "header",
-		className: cn("flex flex-col gap-2 p-2", className),
+		className: cn$1("flex flex-col gap-2 p-2", className),
 		...props
 	});
 });
@@ -25800,7 +25844,7 @@ var SidebarFooter = import_react.forwardRef(({ className, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		ref,
 		"data-sidebar": "footer",
-		className: cn("flex flex-col gap-2 p-2", className),
+		className: cn$1("flex flex-col gap-2 p-2", className),
 		...props
 	});
 });
@@ -25809,7 +25853,7 @@ var SidebarSeparator = import_react.forwardRef(({ className, ...props }, ref) =>
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {
 		ref,
 		"data-sidebar": "separator",
-		className: cn("mx-2 w-auto bg-sidebar-border", className),
+		className: cn$1("mx-2 w-auto bg-sidebar-border", className),
 		...props
 	});
 });
@@ -25818,7 +25862,7 @@ var SidebarContent = import_react.forwardRef(({ className, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		ref,
 		"data-sidebar": "content",
-		className: cn("flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden", className),
+		className: cn$1("flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden", className),
 		...props
 	});
 });
@@ -25827,7 +25871,7 @@ var SidebarGroup = import_react.forwardRef(({ className, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		ref,
 		"data-sidebar": "group",
-		className: cn("relative flex w-full min-w-0 flex-col p-2", className),
+		className: cn$1("relative flex w-full min-w-0 flex-col p-2", className),
 		...props
 	});
 });
@@ -25836,7 +25880,7 @@ var SidebarGroupLabel = import_react.forwardRef(({ className, asChild = false, .
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "div", {
 		ref,
 		"data-sidebar": "group-label",
-		className: cn("flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-none ring-sidebar-ring transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0", "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0", className),
+		className: cn$1("flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-none ring-sidebar-ring transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0", "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0", className),
 		...props
 	});
 });
@@ -25845,7 +25889,7 @@ var SidebarGroupAction = import_react.forwardRef(({ className, asChild = false, 
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "button", {
 		ref,
 		"data-sidebar": "group-action",
-		className: cn("absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0", "after:absolute after:-inset-2 after:md:hidden", "group-data-[collapsible=icon]:hidden", className),
+		className: cn$1("absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0", "after:absolute after:-inset-2 after:md:hidden", "group-data-[collapsible=icon]:hidden", className),
 		...props
 	});
 });
@@ -25853,21 +25897,21 @@ SidebarGroupAction.displayName = "SidebarGroupAction";
 var SidebarGroupContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	ref,
 	"data-sidebar": "group-content",
-	className: cn("w-full text-sm", className),
+	className: cn$1("w-full text-sm", className),
 	...props
 }));
 SidebarGroupContent.displayName = "SidebarGroupContent";
 var SidebarMenu = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
 	ref,
 	"data-sidebar": "menu",
-	className: cn("flex w-full min-w-0 flex-col gap-1", className),
+	className: cn$1("flex w-full min-w-0 flex-col gap-1", className),
 	...props
 }));
 SidebarMenu.displayName = "SidebarMenu";
 var SidebarMenuItem = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
 	ref,
 	"data-sidebar": "menu-item",
-	className: cn("group/menu-item relative", className),
+	className: cn$1("group/menu-item relative", className),
 	...props
 }));
 SidebarMenuItem.displayName = "SidebarMenuItem";
@@ -25896,7 +25940,7 @@ var SidebarMenuButton = import_react.forwardRef(({ asChild = false, isActive = f
 		"data-sidebar": "menu-button",
 		"data-size": size$3,
 		"data-active": isActive,
-		className: cn(sidebarMenuButtonVariants({
+		className: cn$1(sidebarMenuButtonVariants({
 			variant,
 			size: size$3
 		}), className),
@@ -25919,7 +25963,7 @@ var SidebarMenuAction = import_react.forwardRef(({ className, asChild = false, s
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "button", {
 		ref,
 		"data-sidebar": "menu-action",
-		className: cn("absolute right-1 top-1.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 peer-hover/menu-button:text-sidebar-accent-foreground [&>svg]:size-4 [&>svg]:shrink-0", "after:absolute after:-inset-2 after:md:hidden", "peer-data-[size=sm]/menu-button:top-1", "peer-data-[size=default]/menu-button:top-1.5", "peer-data-[size=lg]/menu-button:top-2.5", "group-data-[collapsible=icon]:hidden", showOnHover && "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0", className),
+		className: cn$1("absolute right-1 top-1.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 peer-hover/menu-button:text-sidebar-accent-foreground [&>svg]:size-4 [&>svg]:shrink-0", "after:absolute after:-inset-2 after:md:hidden", "peer-data-[size=sm]/menu-button:top-1", "peer-data-[size=default]/menu-button:top-1.5", "peer-data-[size=lg]/menu-button:top-2.5", "group-data-[collapsible=icon]:hidden", showOnHover && "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0", className),
 		...props
 	});
 });
@@ -25927,7 +25971,7 @@ SidebarMenuAction.displayName = "SidebarMenuAction";
 var SidebarMenuBadge = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	ref,
 	"data-sidebar": "menu-badge",
-	className: cn("pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums text-sidebar-foreground", "peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[active=true]/menu-button:text-sidebar-accent-foreground", "peer-data-[size=sm]/menu-button:top-1", "peer-data-[size=default]/menu-button:top-1.5", "peer-data-[size=lg]/menu-button:top-2.5", "group-data-[collapsible=icon]:hidden", className),
+	className: cn$1("pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums text-sidebar-foreground", "peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[active=true]/menu-button:text-sidebar-accent-foreground", "peer-data-[size=sm]/menu-button:top-1", "peer-data-[size=default]/menu-button:top-1.5", "peer-data-[size=lg]/menu-button:top-2.5", "group-data-[collapsible=icon]:hidden", className),
 	...props
 }));
 SidebarMenuBadge.displayName = "SidebarMenuBadge";
@@ -25938,7 +25982,7 @@ var SidebarMenuSkeleton = import_react.forwardRef(({ className, showIcon = false
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		ref,
 		"data-sidebar": "menu-skeleton",
-		className: cn("flex h-8 items-center gap-2 rounded-md px-2", className),
+		className: cn$1("flex h-8 items-center gap-2 rounded-md px-2", className),
 		...props,
 		children: [showIcon && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Skeleton, {
 			className: "size-4 rounded-md",
@@ -25954,7 +25998,7 @@ SidebarMenuSkeleton.displayName = "SidebarMenuSkeleton";
 var SidebarMenuSub = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
 	ref,
 	"data-sidebar": "menu-sub",
-	className: cn("mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5", "group-data-[collapsible=icon]:hidden", className),
+	className: cn$1("mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5", "group-data-[collapsible=icon]:hidden", className),
 	...props
 }));
 SidebarMenuSub.displayName = "SidebarMenuSub";
@@ -25969,7 +26013,7 @@ var SidebarMenuSubButton = import_react.forwardRef(({ asChild = false, size: siz
 		"data-sidebar": "menu-sub-button",
 		"data-size": size$3,
 		"data-active": isActive,
-		className: cn("flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground", "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground", size$3 === "sm" && "text-xs", size$3 === "md" && "text-sm", "group-data-[collapsible=icon]:hidden", className),
+		className: cn$1("flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground", "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground", size$3 === "sm" && "text-xs", size$3 === "md" && "text-sm", "group-data-[collapsible=icon]:hidden", className),
 		...props
 	});
 });
@@ -26058,7 +26102,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$11({ inst: {
+			cachedValue = useState$13({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26072,7 +26116,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$6(function() {
+			useEffect$8(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26095,7 +26139,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$11 = React$64.useState, useEffect$6 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$13 = React$64.useState, useEffect$8 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$64.useSyncExternalStore ? React$64.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -26186,14 +26230,14 @@ function useImageLoadingStatus(src, { referrerPolicy, crossOrigin }) {
 		};
 		if (!image) return;
 		const handleLoad = updateStatus("loaded");
-		const handleError = updateStatus("error");
+		const handleError$2 = updateStatus("error");
 		image.addEventListener("load", handleLoad);
-		image.addEventListener("error", handleError);
+		image.addEventListener("error", handleError$2);
 		if (referrerPolicy) image.referrerPolicy = referrerPolicy;
 		if (typeof crossOrigin === "string") image.crossOrigin = crossOrigin;
 		return () => {
 			image.removeEventListener("load", handleLoad);
-			image.removeEventListener("error", handleError);
+			image.removeEventListener("error", handleError$2);
 		};
 	}, [
 		image,
@@ -26207,19 +26251,19 @@ var Image = AvatarImage$1;
 var Fallback = AvatarFallback$1;
 var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
 	ref,
-	className: cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className),
+	className: cn$1("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className),
 	...props
 }));
 Avatar.displayName = Root$6.displayName;
 var AvatarImage = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Image, {
 	ref,
-	className: cn("aspect-square h-full w-full", className),
+	className: cn$1("aspect-square h-full w-full", className),
 	...props
 }));
 AvatarImage.displayName = Image.displayName;
 var AvatarFallback = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Fallback, {
 	ref,
-	className: cn("flex h-full w-full items-center justify-center rounded-full bg-muted", className),
+	className: cn$1("flex h-full w-full items-center justify-center rounded-full bg-muted", className),
 	...props
 }));
 AvatarFallback.displayName = Fallback.displayName;
@@ -27428,33 +27472,33 @@ var DropdownMenu = Root2$2;
 var DropdownMenuTrigger = Trigger$2;
 var DropdownMenuSubTrigger = import_react.forwardRef(({ className, inset, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SubTrigger2, {
 	ref,
-	className: cn("flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", inset && "pl-8", className),
+	className: cn$1("flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", inset && "pl-8", className),
 	...props,
 	children: [children, /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronRight, { className: "ml-auto" })]
 }));
 DropdownMenuSubTrigger.displayName = SubTrigger2.displayName;
 var DropdownMenuSubContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SubContent2, {
 	ref,
-	className: cn("z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]", className),
+	className: cn$1("z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]", className),
 	...props
 }));
 DropdownMenuSubContent.displayName = SubContent2.displayName;
 var DropdownMenuContent = import_react.forwardRef(({ className, sideOffset = 4, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal2, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2$2, {
 	ref,
 	sideOffset,
-	className: cn("z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]", className),
+	className: cn$1("z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]", className),
 	...props
 }) }));
 DropdownMenuContent.displayName = Content2$2.displayName;
 var DropdownMenuItem = import_react.forwardRef(({ className, inset, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2, {
 	ref,
-	className: cn("relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", inset && "pl-8", className),
+	className: cn$1("relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", inset && "pl-8", className),
 	...props
 }));
 DropdownMenuItem.displayName = Item2.displayName;
 var DropdownMenuCheckboxItem = import_react.forwardRef(({ className, children, checked, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CheckboxItem2, {
 	ref,
-	className: cn("relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className),
+	className: cn$1("relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className),
 	checked,
 	...props,
 	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
@@ -27465,7 +27509,7 @@ var DropdownMenuCheckboxItem = import_react.forwardRef(({ className, children, c
 DropdownMenuCheckboxItem.displayName = CheckboxItem2.displayName;
 var DropdownMenuRadioItem = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadioItem2, {
 	ref,
-	className: cn("relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className),
+	className: cn$1("relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className),
 	...props,
 	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 		className: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center",
@@ -27475,24 +27519,7686 @@ var DropdownMenuRadioItem = import_react.forwardRef(({ className, children, ...p
 DropdownMenuRadioItem.displayName = RadioItem2.displayName;
 var DropdownMenuLabel = import_react.forwardRef(({ className, inset, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label2, {
 	ref,
-	className: cn("px-2 py-1.5 text-sm font-semibold", inset && "pl-8", className),
+	className: cn$1("px-2 py-1.5 text-sm font-semibold", inset && "pl-8", className),
 	...props
 }));
 DropdownMenuLabel.displayName = Label2.displayName;
 var DropdownMenuSeparator = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator2, {
 	ref,
-	className: cn("-mx-1 my-1 h-px bg-muted", className),
+	className: cn$1("-mx-1 my-1 h-px bg-muted", className),
 	...props
 }));
 DropdownMenuSeparator.displayName = Separator2.displayName;
 var DropdownMenuShortcut = ({ className, ...props }) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-		className: cn("ml-auto text-xs tracking-widest opacity-60", className),
+		className: cn$1("ml-auto text-xs tracking-widest opacity-60", className),
 		...props
 	});
 };
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
 var editedimage_1769630541473_88067_default = "/assets/editedimage_1769630541473-88067-DImnTPbz.png";
+const resolveFetch$3 = (customFetch) => {
+	if (customFetch) return (...args) => customFetch(...args);
+	return (...args) => fetch(...args);
+};
+var FunctionsError = class extends Error {
+	constructor(message$1, name = "FunctionsError", context) {
+		super(message$1);
+		this.name = name;
+		this.context = context;
+	}
+};
+var FunctionsFetchError = class extends FunctionsError {
+	constructor(context) {
+		super("Failed to send a request to the Edge Function", "FunctionsFetchError", context);
+	}
+};
+var FunctionsRelayError = class extends FunctionsError {
+	constructor(context) {
+		super("Relay Error invoking the Edge Function", "FunctionsRelayError", context);
+	}
+};
+var FunctionsHttpError = class extends FunctionsError {
+	constructor(context) {
+		super("Edge Function returned a non-2xx status code", "FunctionsHttpError", context);
+	}
+};
+var FunctionRegion;
+(function(FunctionRegion$1) {
+	FunctionRegion$1["Any"] = "any";
+	FunctionRegion$1["ApNortheast1"] = "ap-northeast-1";
+	FunctionRegion$1["ApNortheast2"] = "ap-northeast-2";
+	FunctionRegion$1["ApSouth1"] = "ap-south-1";
+	FunctionRegion$1["ApSoutheast1"] = "ap-southeast-1";
+	FunctionRegion$1["ApSoutheast2"] = "ap-southeast-2";
+	FunctionRegion$1["CaCentral1"] = "ca-central-1";
+	FunctionRegion$1["EuCentral1"] = "eu-central-1";
+	FunctionRegion$1["EuWest1"] = "eu-west-1";
+	FunctionRegion$1["EuWest2"] = "eu-west-2";
+	FunctionRegion$1["EuWest3"] = "eu-west-3";
+	FunctionRegion$1["SaEast1"] = "sa-east-1";
+	FunctionRegion$1["UsEast1"] = "us-east-1";
+	FunctionRegion$1["UsWest1"] = "us-west-1";
+	FunctionRegion$1["UsWest2"] = "us-west-2";
+})(FunctionRegion || (FunctionRegion = {}));
+var FunctionsClient = class {
+	constructor(url, { headers = {}, customFetch, region = FunctionRegion.Any } = {}) {
+		this.url = url;
+		this.headers = headers;
+		this.region = region;
+		this.fetch = resolveFetch$3(customFetch);
+	}
+	setAuth(token) {
+		this.headers.Authorization = `Bearer ${token}`;
+	}
+	invoke(functionName_1) {
+		return __awaiter(this, arguments, void 0, function* (functionName, options$1 = {}) {
+			var _a$1;
+			let timeoutId;
+			let timeoutController;
+			try {
+				const { headers, method, body: functionArgs, signal, timeout } = options$1;
+				let _headers = {};
+				let { region } = options$1;
+				if (!region) region = this.region;
+				const url = new URL(`${this.url}/${functionName}`);
+				if (region && region !== "any") {
+					_headers["x-region"] = region;
+					url.searchParams.set("forceFunctionRegion", region);
+				}
+				let body;
+				if (functionArgs && (headers && !Object.prototype.hasOwnProperty.call(headers, "Content-Type") || !headers)) if (typeof Blob !== "undefined" && functionArgs instanceof Blob || functionArgs instanceof ArrayBuffer) {
+					_headers["Content-Type"] = "application/octet-stream";
+					body = functionArgs;
+				} else if (typeof functionArgs === "string") {
+					_headers["Content-Type"] = "text/plain";
+					body = functionArgs;
+				} else if (typeof FormData !== "undefined" && functionArgs instanceof FormData) body = functionArgs;
+				else {
+					_headers["Content-Type"] = "application/json";
+					body = JSON.stringify(functionArgs);
+				}
+				else if (functionArgs && typeof functionArgs !== "string" && !(typeof Blob !== "undefined" && functionArgs instanceof Blob) && !(functionArgs instanceof ArrayBuffer) && !(typeof FormData !== "undefined" && functionArgs instanceof FormData)) body = JSON.stringify(functionArgs);
+				else body = functionArgs;
+				let effectiveSignal = signal;
+				if (timeout) {
+					timeoutController = new AbortController();
+					timeoutId = setTimeout(() => timeoutController.abort(), timeout);
+					if (signal) {
+						effectiveSignal = timeoutController.signal;
+						signal.addEventListener("abort", () => timeoutController.abort());
+					} else effectiveSignal = timeoutController.signal;
+				}
+				const response = yield this.fetch(url.toString(), {
+					method: method || "POST",
+					headers: Object.assign(Object.assign(Object.assign({}, _headers), this.headers), headers),
+					body,
+					signal: effectiveSignal
+				}).catch((fetchError) => {
+					throw new FunctionsFetchError(fetchError);
+				});
+				const isRelayError = response.headers.get("x-relay-error");
+				if (isRelayError && isRelayError === "true") throw new FunctionsRelayError(response);
+				if (!response.ok) throw new FunctionsHttpError(response);
+				let responseType = ((_a$1 = response.headers.get("Content-Type")) !== null && _a$1 !== void 0 ? _a$1 : "text/plain").split(";")[0].trim();
+				let data;
+				if (responseType === "application/json") data = yield response.json();
+				else if (responseType === "application/octet-stream" || responseType === "application/pdf") data = yield response.blob();
+				else if (responseType === "text/event-stream") data = response;
+				else if (responseType === "multipart/form-data") data = yield response.formData();
+				else data = yield response.text();
+				return {
+					data,
+					error: null,
+					response
+				};
+			} catch (error) {
+				return {
+					data: null,
+					error,
+					response: error instanceof FunctionsHttpError || error instanceof FunctionsRelayError ? error.context : void 0
+				};
+			} finally {
+				if (timeoutId) clearTimeout(timeoutId);
+			}
+		});
+	}
+};
+var PostgrestError = class extends Error {
+	constructor(context) {
+		super(context.message);
+		this.name = "PostgrestError";
+		this.details = context.details;
+		this.hint = context.hint;
+		this.code = context.code;
+	}
+};
+var PostgrestBuilder = class {
+	constructor(builder) {
+		var _builder$shouldThrowO, _builder$isMaybeSingl, _builder$urlLengthLim;
+		this.shouldThrowOnError = false;
+		this.method = builder.method;
+		this.url = builder.url;
+		this.headers = new Headers(builder.headers);
+		this.schema = builder.schema;
+		this.body = builder.body;
+		this.shouldThrowOnError = (_builder$shouldThrowO = builder.shouldThrowOnError) !== null && _builder$shouldThrowO !== void 0 ? _builder$shouldThrowO : false;
+		this.signal = builder.signal;
+		this.isMaybeSingle = (_builder$isMaybeSingl = builder.isMaybeSingle) !== null && _builder$isMaybeSingl !== void 0 ? _builder$isMaybeSingl : false;
+		this.urlLengthLimit = (_builder$urlLengthLim = builder.urlLengthLimit) !== null && _builder$urlLengthLim !== void 0 ? _builder$urlLengthLim : 8e3;
+		if (builder.fetch) this.fetch = builder.fetch;
+		else this.fetch = fetch;
+	}
+	throwOnError() {
+		this.shouldThrowOnError = true;
+		return this;
+	}
+	setHeader(name, value) {
+		this.headers = new Headers(this.headers);
+		this.headers.set(name, value);
+		return this;
+	}
+	then(onfulfilled, onrejected) {
+		var _this = this;
+		if (this.schema === void 0) {} else if (["GET", "HEAD"].includes(this.method)) this.headers.set("Accept-Profile", this.schema);
+		else this.headers.set("Content-Profile", this.schema);
+		if (this.method !== "GET" && this.method !== "HEAD") this.headers.set("Content-Type", "application/json");
+		const _fetch = this.fetch;
+		let res = _fetch(this.url.toString(), {
+			method: this.method,
+			headers: this.headers,
+			body: JSON.stringify(this.body),
+			signal: this.signal
+		}).then(async (res$1) => {
+			let error = null;
+			let data = null;
+			let count$3 = null;
+			let status = res$1.status;
+			let statusText = res$1.statusText;
+			if (res$1.ok) {
+				var _this$headers$get2, _res$headers$get;
+				if (_this.method !== "HEAD") {
+					var _this$headers$get;
+					const body = await res$1.text();
+					if (body === "") {} else if (_this.headers.get("Accept") === "text/csv") data = body;
+					else if (_this.headers.get("Accept") && ((_this$headers$get = _this.headers.get("Accept")) === null || _this$headers$get === void 0 ? void 0 : _this$headers$get.includes("application/vnd.pgrst.plan+text"))) data = body;
+					else data = JSON.parse(body);
+				}
+				const countHeader = (_this$headers$get2 = _this.headers.get("Prefer")) === null || _this$headers$get2 === void 0 ? void 0 : _this$headers$get2.match(/count=(exact|planned|estimated)/);
+				const contentRange = (_res$headers$get = res$1.headers.get("content-range")) === null || _res$headers$get === void 0 ? void 0 : _res$headers$get.split("/");
+				if (countHeader && contentRange && contentRange.length > 1) count$3 = parseInt(contentRange[1]);
+				if (_this.isMaybeSingle && _this.method === "GET" && Array.isArray(data)) if (data.length > 1) {
+					error = {
+						code: "PGRST116",
+						details: `Results contain ${data.length} rows, application/vnd.pgrst.object+json requires 1 row`,
+						hint: null,
+						message: "JSON object requested, multiple (or no) rows returned"
+					};
+					data = null;
+					count$3 = null;
+					status = 406;
+					statusText = "Not Acceptable";
+				} else if (data.length === 1) data = data[0];
+				else data = null;
+			} else {
+				var _error$details;
+				const body = await res$1.text();
+				try {
+					error = JSON.parse(body);
+					if (Array.isArray(error) && res$1.status === 404) {
+						data = [];
+						error = null;
+						status = 200;
+						statusText = "OK";
+					}
+				} catch (_unused) {
+					if (res$1.status === 404 && body === "") {
+						status = 204;
+						statusText = "No Content";
+					} else error = { message: body };
+				}
+				if (error && _this.isMaybeSingle && (error === null || error === void 0 || (_error$details = error.details) === null || _error$details === void 0 ? void 0 : _error$details.includes("0 rows"))) {
+					error = null;
+					status = 200;
+					statusText = "OK";
+				}
+				if (error && _this.shouldThrowOnError) throw new PostgrestError(error);
+			}
+			return {
+				error,
+				data,
+				count: count$3,
+				status,
+				statusText
+			};
+		});
+		if (!this.shouldThrowOnError) res = res.catch((fetchError) => {
+			var _fetchError$name2;
+			let errorDetails = "";
+			let hint = "";
+			let code = "";
+			const cause = fetchError === null || fetchError === void 0 ? void 0 : fetchError.cause;
+			if (cause) {
+				var _cause$message, _cause$code, _fetchError$name, _cause$name;
+				const causeMessage = (_cause$message = cause === null || cause === void 0 ? void 0 : cause.message) !== null && _cause$message !== void 0 ? _cause$message : "";
+				const causeCode = (_cause$code = cause === null || cause === void 0 ? void 0 : cause.code) !== null && _cause$code !== void 0 ? _cause$code : "";
+				errorDetails = `${(_fetchError$name = fetchError === null || fetchError === void 0 ? void 0 : fetchError.name) !== null && _fetchError$name !== void 0 ? _fetchError$name : "FetchError"}: ${fetchError === null || fetchError === void 0 ? void 0 : fetchError.message}`;
+				errorDetails += `\n\nCaused by: ${(_cause$name = cause === null || cause === void 0 ? void 0 : cause.name) !== null && _cause$name !== void 0 ? _cause$name : "Error"}: ${causeMessage}`;
+				if (causeCode) errorDetails += ` (${causeCode})`;
+				if (cause === null || cause === void 0 ? void 0 : cause.stack) errorDetails += `\n${cause.stack}`;
+			} else {
+				var _fetchError$stack;
+				errorDetails = (_fetchError$stack = fetchError === null || fetchError === void 0 ? void 0 : fetchError.stack) !== null && _fetchError$stack !== void 0 ? _fetchError$stack : "";
+			}
+			const urlLength = this.url.toString().length;
+			if ((fetchError === null || fetchError === void 0 ? void 0 : fetchError.name) === "AbortError" || (fetchError === null || fetchError === void 0 ? void 0 : fetchError.code) === "ABORT_ERR") {
+				code = "";
+				hint = "Request was aborted (timeout or manual cancellation)";
+				if (urlLength > this.urlLengthLimit) hint += `. Note: Your request URL is ${urlLength} characters, which may exceed server limits. If selecting many fields, consider using views. If filtering with large arrays (e.g., .in('id', [many IDs])), consider using an RPC function to pass values server-side.`;
+			} else if ((cause === null || cause === void 0 ? void 0 : cause.name) === "HeadersOverflowError" || (cause === null || cause === void 0 ? void 0 : cause.code) === "UND_ERR_HEADERS_OVERFLOW") {
+				code = "";
+				hint = "HTTP headers exceeded server limits (typically 16KB)";
+				if (urlLength > this.urlLengthLimit) hint += `. Your request URL is ${urlLength} characters. If selecting many fields, consider using views. If filtering with large arrays (e.g., .in('id', [200+ IDs])), consider using an RPC function instead.`;
+			}
+			return {
+				error: {
+					message: `${(_fetchError$name2 = fetchError === null || fetchError === void 0 ? void 0 : fetchError.name) !== null && _fetchError$name2 !== void 0 ? _fetchError$name2 : "FetchError"}: ${fetchError === null || fetchError === void 0 ? void 0 : fetchError.message}`,
+					details: errorDetails,
+					hint,
+					code
+				},
+				data: null,
+				count: null,
+				status: 0,
+				statusText: ""
+			};
+		});
+		return res.then(onfulfilled, onrejected);
+	}
+	returns() {
+		/* istanbul ignore next */
+		return this;
+	}
+	overrideTypes() {
+		return this;
+	}
+};
+var PostgrestTransformBuilder = class extends PostgrestBuilder {
+	select(columns) {
+		let quoted = false;
+		const cleanedColumns = (columns !== null && columns !== void 0 ? columns : "*").split("").map((c$1) => {
+			if (/\s/.test(c$1) && !quoted) return "";
+			if (c$1 === "\"") quoted = !quoted;
+			return c$1;
+		}).join("");
+		this.url.searchParams.set("select", cleanedColumns);
+		this.headers.append("Prefer", "return=representation");
+		return this;
+	}
+	order(column, { ascending: ascending$1 = true, nullsFirst, foreignTable, referencedTable = foreignTable } = {}) {
+		const key = referencedTable ? `${referencedTable}.order` : "order";
+		const existingOrder = this.url.searchParams.get(key);
+		this.url.searchParams.set(key, `${existingOrder ? `${existingOrder},` : ""}${column}.${ascending$1 ? "asc" : "desc"}${nullsFirst === void 0 ? "" : nullsFirst ? ".nullsfirst" : ".nullslast"}`);
+		return this;
+	}
+	limit(count$3, { foreignTable, referencedTable = foreignTable } = {}) {
+		const key = typeof referencedTable === "undefined" ? "limit" : `${referencedTable}.limit`;
+		this.url.searchParams.set(key, `${count$3}`);
+		return this;
+	}
+	range(from, to, { foreignTable, referencedTable = foreignTable } = {}) {
+		const keyOffset = typeof referencedTable === "undefined" ? "offset" : `${referencedTable}.offset`;
+		const keyLimit = typeof referencedTable === "undefined" ? "limit" : `${referencedTable}.limit`;
+		this.url.searchParams.set(keyOffset, `${from}`);
+		this.url.searchParams.set(keyLimit, `${to - from + 1}`);
+		return this;
+	}
+	abortSignal(signal) {
+		this.signal = signal;
+		return this;
+	}
+	single() {
+		this.headers.set("Accept", "application/vnd.pgrst.object+json");
+		return this;
+	}
+	maybeSingle() {
+		if (this.method === "GET") this.headers.set("Accept", "application/json");
+		else this.headers.set("Accept", "application/vnd.pgrst.object+json");
+		this.isMaybeSingle = true;
+		return this;
+	}
+	csv() {
+		this.headers.set("Accept", "text/csv");
+		return this;
+	}
+	geojson() {
+		this.headers.set("Accept", "application/geo+json");
+		return this;
+	}
+	explain({ analyze = false, verbose = false, settings = false, buffers = false, wal = false, format: format$2 = "text" } = {}) {
+		var _this$headers$get;
+		const options$1 = [
+			analyze ? "analyze" : null,
+			verbose ? "verbose" : null,
+			settings ? "settings" : null,
+			buffers ? "buffers" : null,
+			wal ? "wal" : null
+		].filter(Boolean).join("|");
+		const forMediatype = (_this$headers$get = this.headers.get("Accept")) !== null && _this$headers$get !== void 0 ? _this$headers$get : "application/json";
+		this.headers.set("Accept", `application/vnd.pgrst.plan+${format$2}; for="${forMediatype}"; options=${options$1};`);
+		if (format$2 === "json") return this;
+		else return this;
+	}
+	rollback() {
+		this.headers.append("Prefer", "tx=rollback");
+		return this;
+	}
+	returns() {
+		return this;
+	}
+	maxAffected(value) {
+		this.headers.append("Prefer", "handling=strict");
+		this.headers.append("Prefer", `max-affected=${value}`);
+		return this;
+	}
+};
+var PostgrestReservedCharsRegexp = /* @__PURE__ */ new RegExp("[,()]");
+var PostgrestFilterBuilder = class extends PostgrestTransformBuilder {
+	eq(column, value) {
+		this.url.searchParams.append(column, `eq.${value}`);
+		return this;
+	}
+	neq(column, value) {
+		this.url.searchParams.append(column, `neq.${value}`);
+		return this;
+	}
+	gt(column, value) {
+		this.url.searchParams.append(column, `gt.${value}`);
+		return this;
+	}
+	gte(column, value) {
+		this.url.searchParams.append(column, `gte.${value}`);
+		return this;
+	}
+	lt(column, value) {
+		this.url.searchParams.append(column, `lt.${value}`);
+		return this;
+	}
+	lte(column, value) {
+		this.url.searchParams.append(column, `lte.${value}`);
+		return this;
+	}
+	like(column, pattern) {
+		this.url.searchParams.append(column, `like.${pattern}`);
+		return this;
+	}
+	likeAllOf(column, patterns) {
+		this.url.searchParams.append(column, `like(all).{${patterns.join(",")}}`);
+		return this;
+	}
+	likeAnyOf(column, patterns) {
+		this.url.searchParams.append(column, `like(any).{${patterns.join(",")}}`);
+		return this;
+	}
+	ilike(column, pattern) {
+		this.url.searchParams.append(column, `ilike.${pattern}`);
+		return this;
+	}
+	ilikeAllOf(column, patterns) {
+		this.url.searchParams.append(column, `ilike(all).{${patterns.join(",")}}`);
+		return this;
+	}
+	ilikeAnyOf(column, patterns) {
+		this.url.searchParams.append(column, `ilike(any).{${patterns.join(",")}}`);
+		return this;
+	}
+	regexMatch(column, pattern) {
+		this.url.searchParams.append(column, `match.${pattern}`);
+		return this;
+	}
+	regexIMatch(column, pattern) {
+		this.url.searchParams.append(column, `imatch.${pattern}`);
+		return this;
+	}
+	is(column, value) {
+		this.url.searchParams.append(column, `is.${value}`);
+		return this;
+	}
+	isDistinct(column, value) {
+		this.url.searchParams.append(column, `isdistinct.${value}`);
+		return this;
+	}
+	in(column, values) {
+		const cleanedValues = Array.from(new Set(values)).map((s$3) => {
+			if (typeof s$3 === "string" && PostgrestReservedCharsRegexp.test(s$3)) return `"${s$3}"`;
+			else return `${s$3}`;
+		}).join(",");
+		this.url.searchParams.append(column, `in.(${cleanedValues})`);
+		return this;
+	}
+	notIn(column, values) {
+		const cleanedValues = Array.from(new Set(values)).map((s$3) => {
+			if (typeof s$3 === "string" && PostgrestReservedCharsRegexp.test(s$3)) return `"${s$3}"`;
+			else return `${s$3}`;
+		}).join(",");
+		this.url.searchParams.append(column, `not.in.(${cleanedValues})`);
+		return this;
+	}
+	contains(column, value) {
+		if (typeof value === "string") this.url.searchParams.append(column, `cs.${value}`);
+		else if (Array.isArray(value)) this.url.searchParams.append(column, `cs.{${value.join(",")}}`);
+		else this.url.searchParams.append(column, `cs.${JSON.stringify(value)}`);
+		return this;
+	}
+	containedBy(column, value) {
+		if (typeof value === "string") this.url.searchParams.append(column, `cd.${value}`);
+		else if (Array.isArray(value)) this.url.searchParams.append(column, `cd.{${value.join(",")}}`);
+		else this.url.searchParams.append(column, `cd.${JSON.stringify(value)}`);
+		return this;
+	}
+	rangeGt(column, range$5) {
+		this.url.searchParams.append(column, `sr.${range$5}`);
+		return this;
+	}
+	rangeGte(column, range$5) {
+		this.url.searchParams.append(column, `nxl.${range$5}`);
+		return this;
+	}
+	rangeLt(column, range$5) {
+		this.url.searchParams.append(column, `sl.${range$5}`);
+		return this;
+	}
+	rangeLte(column, range$5) {
+		this.url.searchParams.append(column, `nxr.${range$5}`);
+		return this;
+	}
+	rangeAdjacent(column, range$5) {
+		this.url.searchParams.append(column, `adj.${range$5}`);
+		return this;
+	}
+	overlaps(column, value) {
+		if (typeof value === "string") this.url.searchParams.append(column, `ov.${value}`);
+		else this.url.searchParams.append(column, `ov.{${value.join(",")}}`);
+		return this;
+	}
+	textSearch(column, query, { config: config$1, type } = {}) {
+		let typePart = "";
+		if (type === "plain") typePart = "pl";
+		else if (type === "phrase") typePart = "ph";
+		else if (type === "websearch") typePart = "w";
+		const configPart = config$1 === void 0 ? "" : `(${config$1})`;
+		this.url.searchParams.append(column, `${typePart}fts${configPart}.${query}`);
+		return this;
+	}
+	match(query) {
+		Object.entries(query).forEach(([column, value]) => {
+			this.url.searchParams.append(column, `eq.${value}`);
+		});
+		return this;
+	}
+	not(column, operator, value) {
+		this.url.searchParams.append(column, `not.${operator}.${value}`);
+		return this;
+	}
+	or(filters, { foreignTable, referencedTable = foreignTable } = {}) {
+		const key = referencedTable ? `${referencedTable}.or` : "or";
+		this.url.searchParams.append(key, `(${filters})`);
+		return this;
+	}
+	filter(column, operator, value) {
+		this.url.searchParams.append(column, `${operator}.${value}`);
+		return this;
+	}
+};
+var PostgrestQueryBuilder = class {
+	constructor(url, { headers = {}, schema, fetch: fetch$1, urlLengthLimit = 8e3 }) {
+		this.url = url;
+		this.headers = new Headers(headers);
+		this.schema = schema;
+		this.fetch = fetch$1;
+		this.urlLengthLimit = urlLengthLimit;
+	}
+	cloneRequestState() {
+		return {
+			url: new URL(this.url.toString()),
+			headers: new Headers(this.headers)
+		};
+	}
+	select(columns, options$1) {
+		const { head: head$1 = false, count: count$3 } = options$1 !== null && options$1 !== void 0 ? options$1 : {};
+		const method = head$1 ? "HEAD" : "GET";
+		let quoted = false;
+		const cleanedColumns = (columns !== null && columns !== void 0 ? columns : "*").split("").map((c$1) => {
+			if (/\s/.test(c$1) && !quoted) return "";
+			if (c$1 === "\"") quoted = !quoted;
+			return c$1;
+		}).join("");
+		const { url, headers } = this.cloneRequestState();
+		url.searchParams.set("select", cleanedColumns);
+		if (count$3) headers.append("Prefer", `count=${count$3}`);
+		return new PostgrestFilterBuilder({
+			method,
+			url,
+			headers,
+			schema: this.schema,
+			fetch: this.fetch,
+			urlLengthLimit: this.urlLengthLimit
+		});
+	}
+	insert(values, { count: count$3, defaultToNull = true } = {}) {
+		var _this$fetch;
+		const method = "POST";
+		const { url, headers } = this.cloneRequestState();
+		if (count$3) headers.append("Prefer", `count=${count$3}`);
+		if (!defaultToNull) headers.append("Prefer", `missing=default`);
+		if (Array.isArray(values)) {
+			const columns = values.reduce((acc, x$2) => acc.concat(Object.keys(x$2)), []);
+			if (columns.length > 0) {
+				const uniqueColumns = [...new Set(columns)].map((column) => `"${column}"`);
+				url.searchParams.set("columns", uniqueColumns.join(","));
+			}
+		}
+		return new PostgrestFilterBuilder({
+			method,
+			url,
+			headers,
+			schema: this.schema,
+			body: values,
+			fetch: (_this$fetch = this.fetch) !== null && _this$fetch !== void 0 ? _this$fetch : fetch,
+			urlLengthLimit: this.urlLengthLimit
+		});
+	}
+	upsert(values, { onConflict, ignoreDuplicates = false, count: count$3, defaultToNull = true } = {}) {
+		var _this$fetch2;
+		const method = "POST";
+		const { url, headers } = this.cloneRequestState();
+		headers.append("Prefer", `resolution=${ignoreDuplicates ? "ignore" : "merge"}-duplicates`);
+		if (onConflict !== void 0) url.searchParams.set("on_conflict", onConflict);
+		if (count$3) headers.append("Prefer", `count=${count$3}`);
+		if (!defaultToNull) headers.append("Prefer", "missing=default");
+		if (Array.isArray(values)) {
+			const columns = values.reduce((acc, x$2) => acc.concat(Object.keys(x$2)), []);
+			if (columns.length > 0) {
+				const uniqueColumns = [...new Set(columns)].map((column) => `"${column}"`);
+				url.searchParams.set("columns", uniqueColumns.join(","));
+			}
+		}
+		return new PostgrestFilterBuilder({
+			method,
+			url,
+			headers,
+			schema: this.schema,
+			body: values,
+			fetch: (_this$fetch2 = this.fetch) !== null && _this$fetch2 !== void 0 ? _this$fetch2 : fetch,
+			urlLengthLimit: this.urlLengthLimit
+		});
+	}
+	update(values, { count: count$3 } = {}) {
+		var _this$fetch3;
+		const method = "PATCH";
+		const { url, headers } = this.cloneRequestState();
+		if (count$3) headers.append("Prefer", `count=${count$3}`);
+		return new PostgrestFilterBuilder({
+			method,
+			url,
+			headers,
+			schema: this.schema,
+			body: values,
+			fetch: (_this$fetch3 = this.fetch) !== null && _this$fetch3 !== void 0 ? _this$fetch3 : fetch,
+			urlLengthLimit: this.urlLengthLimit
+		});
+	}
+	delete({ count: count$3 } = {}) {
+		var _this$fetch4;
+		const method = "DELETE";
+		const { url, headers } = this.cloneRequestState();
+		if (count$3) headers.append("Prefer", `count=${count$3}`);
+		return new PostgrestFilterBuilder({
+			method,
+			url,
+			headers,
+			schema: this.schema,
+			fetch: (_this$fetch4 = this.fetch) !== null && _this$fetch4 !== void 0 ? _this$fetch4 : fetch,
+			urlLengthLimit: this.urlLengthLimit
+		});
+	}
+};
+function _typeof$51(o$1) {
+	"@babel/helpers - typeof";
+	return _typeof$51 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1$1) {
+		return typeof o$1$1;
+	} : function(o$1$1) {
+		return o$1$1 && "function" == typeof Symbol && o$1$1.constructor === Symbol && o$1$1 !== Symbol.prototype ? "symbol" : typeof o$1$1;
+	}, _typeof$51(o$1);
+}
+function toPrimitive$2(t$1, r$2) {
+	if ("object" != _typeof$51(t$1) || !t$1) return t$1;
+	var e = t$1[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i$2 = e.call(t$1, r$2 || "default");
+		if ("object" != _typeof$51(i$2)) return i$2;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$2 ? String : Number)(t$1);
+}
+function toPropertyKey$2(t$1) {
+	var i$2 = toPrimitive$2(t$1, "string");
+	return "symbol" == _typeof$51(i$2) ? i$2 : i$2 + "";
+}
+function _defineProperty$46(e, r$2, t$1) {
+	return (r$2 = toPropertyKey$2(r$2)) in e ? Object.defineProperty(e, r$2, {
+		value: t$1,
+		enumerable: !0,
+		configurable: !0,
+		writable: !0
+	}) : e[r$2] = t$1, e;
+}
+function ownKeys$41(e, r$2) {
+	var t$1 = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o$1 = Object.getOwnPropertySymbols(e);
+		r$2 && (o$1 = o$1.filter(function(r$1$1) {
+			return Object.getOwnPropertyDescriptor(e, r$1$1).enumerable;
+		})), t$1.push.apply(t$1, o$1);
+	}
+	return t$1;
+}
+function _objectSpread2$2(e) {
+	for (var r$2 = 1; r$2 < arguments.length; r$2++) {
+		var t$1 = null != arguments[r$2] ? arguments[r$2] : {};
+		r$2 % 2 ? ownKeys$41(Object(t$1), !0).forEach(function(r$1$1) {
+			_defineProperty$46(e, r$1$1, t$1[r$1$1]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t$1)) : ownKeys$41(Object(t$1)).forEach(function(r$1$1) {
+			Object.defineProperty(e, r$1$1, Object.getOwnPropertyDescriptor(t$1, r$1$1));
+		});
+	}
+	return e;
+}
+var PostgrestClient = class PostgrestClient$1 {
+	constructor(url, { headers = {}, schema, fetch: fetch$1, timeout, urlLengthLimit = 8e3 } = {}) {
+		this.url = url;
+		this.headers = new Headers(headers);
+		this.schemaName = schema;
+		this.urlLengthLimit = urlLengthLimit;
+		const originalFetch = fetch$1 !== null && fetch$1 !== void 0 ? fetch$1 : globalThis.fetch;
+		if (timeout !== void 0 && timeout > 0) this.fetch = (input, init) => {
+			const controller = new AbortController();
+			const timeoutId = setTimeout(() => controller.abort(), timeout);
+			const existingSignal = init === null || init === void 0 ? void 0 : init.signal;
+			if (existingSignal) {
+				if (existingSignal.aborted) {
+					clearTimeout(timeoutId);
+					return originalFetch(input, init);
+				}
+				const abortHandler = () => {
+					clearTimeout(timeoutId);
+					controller.abort();
+				};
+				existingSignal.addEventListener("abort", abortHandler, { once: true });
+				return originalFetch(input, _objectSpread2$2(_objectSpread2$2({}, init), {}, { signal: controller.signal })).finally(() => {
+					clearTimeout(timeoutId);
+					existingSignal.removeEventListener("abort", abortHandler);
+				});
+			}
+			return originalFetch(input, _objectSpread2$2(_objectSpread2$2({}, init), {}, { signal: controller.signal })).finally(() => clearTimeout(timeoutId));
+		};
+		else this.fetch = originalFetch;
+	}
+	from(relation) {
+		if (!relation || typeof relation !== "string" || relation.trim() === "") throw new Error("Invalid relation name: relation must be a non-empty string.");
+		return new PostgrestQueryBuilder(new URL(`${this.url}/${relation}`), {
+			headers: new Headers(this.headers),
+			schema: this.schemaName,
+			fetch: this.fetch,
+			urlLengthLimit: this.urlLengthLimit
+		});
+	}
+	schema(schema) {
+		return new PostgrestClient$1(this.url, {
+			headers: this.headers,
+			schema,
+			fetch: this.fetch,
+			urlLengthLimit: this.urlLengthLimit
+		});
+	}
+	rpc(fn, args = {}, { head: head$1 = false, get: get$10 = false, count: count$3 } = {}) {
+		var _this$fetch;
+		let method;
+		const url = new URL(`${this.url}/rpc/${fn}`);
+		let body;
+		const _isObject = (v) => v !== null && typeof v === "object" && (!Array.isArray(v) || v.some(_isObject));
+		const _hasObjectArg = head$1 && Object.values(args).some(_isObject);
+		if (_hasObjectArg) {
+			method = "POST";
+			body = args;
+		} else if (head$1 || get$10) {
+			method = head$1 ? "HEAD" : "GET";
+			Object.entries(args).filter(([_$1, value]) => value !== void 0).map(([name, value]) => [name, Array.isArray(value) ? `{${value.join(",")}}` : `${value}`]).forEach(([name, value]) => {
+				url.searchParams.append(name, value);
+			});
+		} else {
+			method = "POST";
+			body = args;
+		}
+		const headers = new Headers(this.headers);
+		if (_hasObjectArg) headers.set("Prefer", count$3 ? `count=${count$3},return=minimal` : "return=minimal");
+		else if (count$3) headers.set("Prefer", `count=${count$3}`);
+		return new PostgrestFilterBuilder({
+			method,
+			url,
+			headers,
+			schema: this.schemaName,
+			body,
+			fetch: (_this$fetch = this.fetch) !== null && _this$fetch !== void 0 ? _this$fetch : fetch,
+			urlLengthLimit: this.urlLengthLimit
+		});
+	}
+};
+var WebSocketFactory = class {
+	constructor() {}
+	static detectEnvironment() {
+		var _a$1;
+		if (typeof WebSocket !== "undefined") return {
+			type: "native",
+			constructor: WebSocket
+		};
+		if (typeof globalThis !== "undefined" && typeof globalThis.WebSocket !== "undefined") return {
+			type: "native",
+			constructor: globalThis.WebSocket
+		};
+		if (typeof global !== "undefined" && typeof global.WebSocket !== "undefined") return {
+			type: "native",
+			constructor: global.WebSocket
+		};
+		if (typeof globalThis !== "undefined" && typeof globalThis.WebSocketPair !== "undefined" && typeof globalThis.WebSocket === "undefined") return {
+			type: "cloudflare",
+			error: "Cloudflare Workers detected. WebSocket clients are not supported in Cloudflare Workers.",
+			workaround: "Use Cloudflare Workers WebSocket API for server-side WebSocket handling, or deploy to a different runtime."
+		};
+		if (typeof globalThis !== "undefined" && globalThis.EdgeRuntime || typeof navigator !== "undefined" && ((_a$1 = navigator.userAgent) === null || _a$1 === void 0 ? void 0 : _a$1.includes("Vercel-Edge"))) return {
+			type: "unsupported",
+			error: "Edge runtime detected (Vercel Edge/Netlify Edge). WebSockets are not supported in edge functions.",
+			workaround: "Use serverless functions or a different deployment target for WebSocket functionality."
+		};
+		const _process = globalThis["process"];
+		if (_process) {
+			const processVersions = _process["versions"];
+			if (processVersions && processVersions["node"]) {
+				const versionString = processVersions["node"];
+				const nodeVersion = parseInt(versionString.replace(/^v/, "").split(".")[0]);
+				if (nodeVersion >= 22) {
+					if (typeof globalThis.WebSocket !== "undefined") return {
+						type: "native",
+						constructor: globalThis.WebSocket
+					};
+					return {
+						type: "unsupported",
+						error: `Node.js ${nodeVersion} detected but native WebSocket not found.`,
+						workaround: "Provide a WebSocket implementation via the transport option."
+					};
+				}
+				return {
+					type: "unsupported",
+					error: `Node.js ${nodeVersion} detected without native WebSocket support.`,
+					workaround: "For Node.js < 22, install \"ws\" package and provide it via the transport option:\nimport ws from \"ws\"\nnew RealtimeClient(url, { transport: ws })"
+				};
+			}
+		}
+		return {
+			type: "unsupported",
+			error: "Unknown JavaScript runtime without WebSocket support.",
+			workaround: "Ensure you're running in a supported environment (browser, Node.js, Deno) or provide a custom WebSocket implementation."
+		};
+	}
+	static getWebSocketConstructor() {
+		const env = this.detectEnvironment();
+		if (env.constructor) return env.constructor;
+		let errorMessage = env.error || "WebSocket not supported in this environment.";
+		if (env.workaround) errorMessage += `\n\nSuggested solution: ${env.workaround}`;
+		throw new Error(errorMessage);
+	}
+	static createWebSocket(url, protocols) {
+		return new (this.getWebSocketConstructor())(url, protocols);
+	}
+	static isWebSocketSupported() {
+		try {
+			const env = this.detectEnvironment();
+			return env.type === "native" || env.type === "ws";
+		} catch (_a$1) {
+			return false;
+		}
+	}
+};
+var websocket_factory_default = WebSocketFactory;
+const DEFAULT_VERSION = `realtime-js/2.94.0`;
+const VSN_1_0_0 = "1.0.0";
+const VSN_2_0_0 = "2.0.0";
+const DEFAULT_VSN = VSN_2_0_0;
+const DEFAULT_TIMEOUT = 1e4;
+var SOCKET_STATES;
+(function(SOCKET_STATES$1) {
+	SOCKET_STATES$1[SOCKET_STATES$1["connecting"] = 0] = "connecting";
+	SOCKET_STATES$1[SOCKET_STATES$1["open"] = 1] = "open";
+	SOCKET_STATES$1[SOCKET_STATES$1["closing"] = 2] = "closing";
+	SOCKET_STATES$1[SOCKET_STATES$1["closed"] = 3] = "closed";
+})(SOCKET_STATES || (SOCKET_STATES = {}));
+var CHANNEL_STATES;
+(function(CHANNEL_STATES$1) {
+	CHANNEL_STATES$1["closed"] = "closed";
+	CHANNEL_STATES$1["errored"] = "errored";
+	CHANNEL_STATES$1["joined"] = "joined";
+	CHANNEL_STATES$1["joining"] = "joining";
+	CHANNEL_STATES$1["leaving"] = "leaving";
+})(CHANNEL_STATES || (CHANNEL_STATES = {}));
+var CHANNEL_EVENTS;
+(function(CHANNEL_EVENTS$1) {
+	CHANNEL_EVENTS$1["close"] = "phx_close";
+	CHANNEL_EVENTS$1["error"] = "phx_error";
+	CHANNEL_EVENTS$1["join"] = "phx_join";
+	CHANNEL_EVENTS$1["reply"] = "phx_reply";
+	CHANNEL_EVENTS$1["leave"] = "phx_leave";
+	CHANNEL_EVENTS$1["access_token"] = "access_token";
+})(CHANNEL_EVENTS || (CHANNEL_EVENTS = {}));
+var TRANSPORTS;
+(function(TRANSPORTS$1) {
+	TRANSPORTS$1["websocket"] = "websocket";
+})(TRANSPORTS || (TRANSPORTS = {}));
+var CONNECTION_STATE;
+(function(CONNECTION_STATE$1) {
+	CONNECTION_STATE$1["Connecting"] = "connecting";
+	CONNECTION_STATE$1["Open"] = "open";
+	CONNECTION_STATE$1["Closing"] = "closing";
+	CONNECTION_STATE$1["Closed"] = "closed";
+})(CONNECTION_STATE || (CONNECTION_STATE = {}));
+var Serializer = class {
+	constructor(allowedMetadataKeys) {
+		this.HEADER_LENGTH = 1;
+		this.USER_BROADCAST_PUSH_META_LENGTH = 6;
+		this.KINDS = {
+			userBroadcastPush: 3,
+			userBroadcast: 4
+		};
+		this.BINARY_ENCODING = 0;
+		this.JSON_ENCODING = 1;
+		this.BROADCAST_EVENT = "broadcast";
+		this.allowedMetadataKeys = [];
+		this.allowedMetadataKeys = allowedMetadataKeys !== null && allowedMetadataKeys !== void 0 ? allowedMetadataKeys : [];
+	}
+	encode(msg, callback) {
+		if (msg.event === this.BROADCAST_EVENT && !(msg.payload instanceof ArrayBuffer) && typeof msg.payload.event === "string") return callback(this._binaryEncodeUserBroadcastPush(msg));
+		let payload = [
+			msg.join_ref,
+			msg.ref,
+			msg.topic,
+			msg.event,
+			msg.payload
+		];
+		return callback(JSON.stringify(payload));
+	}
+	_binaryEncodeUserBroadcastPush(message$1) {
+		var _a$1;
+		if (this._isArrayBuffer((_a$1 = message$1.payload) === null || _a$1 === void 0 ? void 0 : _a$1.payload)) return this._encodeBinaryUserBroadcastPush(message$1);
+		else return this._encodeJsonUserBroadcastPush(message$1);
+	}
+	_encodeBinaryUserBroadcastPush(message$1) {
+		var _a$1, _b;
+		const userPayload = (_b = (_a$1 = message$1.payload) === null || _a$1 === void 0 ? void 0 : _a$1.payload) !== null && _b !== void 0 ? _b : /* @__PURE__ */ new ArrayBuffer(0);
+		return this._encodeUserBroadcastPush(message$1, this.BINARY_ENCODING, userPayload);
+	}
+	_encodeJsonUserBroadcastPush(message$1) {
+		var _a$1, _b;
+		const userPayload = (_b = (_a$1 = message$1.payload) === null || _a$1 === void 0 ? void 0 : _a$1.payload) !== null && _b !== void 0 ? _b : {};
+		const encodedUserPayload = new TextEncoder().encode(JSON.stringify(userPayload)).buffer;
+		return this._encodeUserBroadcastPush(message$1, this.JSON_ENCODING, encodedUserPayload);
+	}
+	_encodeUserBroadcastPush(message$1, encodingType, encodedPayload) {
+		var _a$1, _b;
+		const topic = message$1.topic;
+		const ref = (_a$1 = message$1.ref) !== null && _a$1 !== void 0 ? _a$1 : "";
+		const joinRef = (_b = message$1.join_ref) !== null && _b !== void 0 ? _b : "";
+		const userEvent = message$1.payload.event;
+		const rest = this.allowedMetadataKeys ? this._pick(message$1.payload, this.allowedMetadataKeys) : {};
+		const metadata = Object.keys(rest).length === 0 ? "" : JSON.stringify(rest);
+		if (joinRef.length > 255) throw new Error(`joinRef length ${joinRef.length} exceeds maximum of 255`);
+		if (ref.length > 255) throw new Error(`ref length ${ref.length} exceeds maximum of 255`);
+		if (topic.length > 255) throw new Error(`topic length ${topic.length} exceeds maximum of 255`);
+		if (userEvent.length > 255) throw new Error(`userEvent length ${userEvent.length} exceeds maximum of 255`);
+		if (metadata.length > 255) throw new Error(`metadata length ${metadata.length} exceeds maximum of 255`);
+		const metaLength = this.USER_BROADCAST_PUSH_META_LENGTH + joinRef.length + ref.length + topic.length + userEvent.length + metadata.length;
+		const header = new ArrayBuffer(this.HEADER_LENGTH + metaLength);
+		let view = new DataView(header);
+		let offset$3 = 0;
+		view.setUint8(offset$3++, this.KINDS.userBroadcastPush);
+		view.setUint8(offset$3++, joinRef.length);
+		view.setUint8(offset$3++, ref.length);
+		view.setUint8(offset$3++, topic.length);
+		view.setUint8(offset$3++, userEvent.length);
+		view.setUint8(offset$3++, metadata.length);
+		view.setUint8(offset$3++, encodingType);
+		Array.from(joinRef, (char) => view.setUint8(offset$3++, char.charCodeAt(0)));
+		Array.from(ref, (char) => view.setUint8(offset$3++, char.charCodeAt(0)));
+		Array.from(topic, (char) => view.setUint8(offset$3++, char.charCodeAt(0)));
+		Array.from(userEvent, (char) => view.setUint8(offset$3++, char.charCodeAt(0)));
+		Array.from(metadata, (char) => view.setUint8(offset$3++, char.charCodeAt(0)));
+		var combined = new Uint8Array(header.byteLength + encodedPayload.byteLength);
+		combined.set(new Uint8Array(header), 0);
+		combined.set(new Uint8Array(encodedPayload), header.byteLength);
+		return combined.buffer;
+	}
+	decode(rawPayload, callback) {
+		if (this._isArrayBuffer(rawPayload)) return callback(this._binaryDecode(rawPayload));
+		if (typeof rawPayload === "string") {
+			const [join_ref, ref, topic, event, payload] = JSON.parse(rawPayload);
+			return callback({
+				join_ref,
+				ref,
+				topic,
+				event,
+				payload
+			});
+		}
+		return callback({});
+	}
+	_binaryDecode(buffer) {
+		const view = new DataView(buffer);
+		const kind = view.getUint8(0);
+		const decoder = new TextDecoder();
+		switch (kind) {
+			case this.KINDS.userBroadcast: return this._decodeUserBroadcast(buffer, view, decoder);
+		}
+	}
+	_decodeUserBroadcast(buffer, view, decoder) {
+		const topicSize = view.getUint8(1);
+		const userEventSize = view.getUint8(2);
+		const metadataSize = view.getUint8(3);
+		const payloadEncoding = view.getUint8(4);
+		let offset$3 = this.HEADER_LENGTH + 4;
+		const topic = decoder.decode(buffer.slice(offset$3, offset$3 + topicSize));
+		offset$3 = offset$3 + topicSize;
+		const userEvent = decoder.decode(buffer.slice(offset$3, offset$3 + userEventSize));
+		offset$3 = offset$3 + userEventSize;
+		const metadata = decoder.decode(buffer.slice(offset$3, offset$3 + metadataSize));
+		offset$3 = offset$3 + metadataSize;
+		const payload = buffer.slice(offset$3, buffer.byteLength);
+		const parsedPayload = payloadEncoding === this.JSON_ENCODING ? JSON.parse(decoder.decode(payload)) : payload;
+		const data = {
+			type: this.BROADCAST_EVENT,
+			event: userEvent,
+			payload: parsedPayload
+		};
+		if (metadataSize > 0) data["meta"] = JSON.parse(metadata);
+		return {
+			join_ref: null,
+			ref: null,
+			topic,
+			event: this.BROADCAST_EVENT,
+			payload: data
+		};
+	}
+	_isArrayBuffer(buffer) {
+		var _a$1;
+		return buffer instanceof ArrayBuffer || ((_a$1 = buffer === null || buffer === void 0 ? void 0 : buffer.constructor) === null || _a$1 === void 0 ? void 0 : _a$1.name) === "ArrayBuffer";
+	}
+	_pick(obj, keys$6) {
+		if (!obj || typeof obj !== "object") return {};
+		return Object.fromEntries(Object.entries(obj).filter(([key]) => keys$6.includes(key)));
+	}
+};
+var Timer = class {
+	constructor(callback, timerCalc) {
+		this.callback = callback;
+		this.timerCalc = timerCalc;
+		this.timer = void 0;
+		this.tries = 0;
+		this.callback = callback;
+		this.timerCalc = timerCalc;
+	}
+	reset() {
+		this.tries = 0;
+		clearTimeout(this.timer);
+		this.timer = void 0;
+	}
+	scheduleTimeout() {
+		clearTimeout(this.timer);
+		this.timer = setTimeout(() => {
+			this.tries = this.tries + 1;
+			this.callback();
+		}, this.timerCalc(this.tries + 1));
+	}
+};
+var PostgresTypes;
+(function(PostgresTypes$1) {
+	PostgresTypes$1["abstime"] = "abstime";
+	PostgresTypes$1["bool"] = "bool";
+	PostgresTypes$1["date"] = "date";
+	PostgresTypes$1["daterange"] = "daterange";
+	PostgresTypes$1["float4"] = "float4";
+	PostgresTypes$1["float8"] = "float8";
+	PostgresTypes$1["int2"] = "int2";
+	PostgresTypes$1["int4"] = "int4";
+	PostgresTypes$1["int4range"] = "int4range";
+	PostgresTypes$1["int8"] = "int8";
+	PostgresTypes$1["int8range"] = "int8range";
+	PostgresTypes$1["json"] = "json";
+	PostgresTypes$1["jsonb"] = "jsonb";
+	PostgresTypes$1["money"] = "money";
+	PostgresTypes$1["numeric"] = "numeric";
+	PostgresTypes$1["oid"] = "oid";
+	PostgresTypes$1["reltime"] = "reltime";
+	PostgresTypes$1["text"] = "text";
+	PostgresTypes$1["time"] = "time";
+	PostgresTypes$1["timestamp"] = "timestamp";
+	PostgresTypes$1["timestamptz"] = "timestamptz";
+	PostgresTypes$1["timetz"] = "timetz";
+	PostgresTypes$1["tsrange"] = "tsrange";
+	PostgresTypes$1["tstzrange"] = "tstzrange";
+})(PostgresTypes || (PostgresTypes = {}));
+const convertChangeData = (columns, record, options$1 = {}) => {
+	var _a$1;
+	const skipTypes = (_a$1 = options$1.skipTypes) !== null && _a$1 !== void 0 ? _a$1 : [];
+	if (!record) return {};
+	return Object.keys(record).reduce((acc, rec_key) => {
+		acc[rec_key] = convertColumn(rec_key, columns, record, skipTypes);
+		return acc;
+	}, {});
+};
+const convertColumn = (columnName, columns, record, skipTypes) => {
+	const column = columns.find((x$2) => x$2.name === columnName);
+	const colType = column === null || column === void 0 ? void 0 : column.type;
+	const value = record[columnName];
+	if (colType && !skipTypes.includes(colType)) return convertCell(colType, value);
+	return noop$3(value);
+};
+const convertCell = (type, value) => {
+	if (type.charAt(0) === "_") return toArray$1(value, type.slice(1, type.length));
+	switch (type) {
+		case PostgresTypes.bool: return toBoolean(value);
+		case PostgresTypes.float4:
+		case PostgresTypes.float8:
+		case PostgresTypes.int2:
+		case PostgresTypes.int4:
+		case PostgresTypes.int8:
+		case PostgresTypes.numeric:
+		case PostgresTypes.oid: return toNumber$3(value);
+		case PostgresTypes.json:
+		case PostgresTypes.jsonb: return toJson(value);
+		case PostgresTypes.timestamp: return toTimestampString(value);
+		case PostgresTypes.abstime:
+		case PostgresTypes.date:
+		case PostgresTypes.daterange:
+		case PostgresTypes.int4range:
+		case PostgresTypes.int8range:
+		case PostgresTypes.money:
+		case PostgresTypes.reltime:
+		case PostgresTypes.text:
+		case PostgresTypes.time:
+		case PostgresTypes.timestamptz:
+		case PostgresTypes.timetz:
+		case PostgresTypes.tsrange:
+		case PostgresTypes.tstzrange: return noop$3(value);
+		default: return noop$3(value);
+	}
+};
+var noop$3 = (value) => {
+	return value;
+};
+const toBoolean = (value) => {
+	switch (value) {
+		case "t": return true;
+		case "f": return false;
+		default: return value;
+	}
+};
+const toNumber$3 = (value) => {
+	if (typeof value === "string") {
+		const parsedValue = parseFloat(value);
+		if (!Number.isNaN(parsedValue)) return parsedValue;
+	}
+	return value;
+};
+const toJson = (value) => {
+	if (typeof value === "string") try {
+		return JSON.parse(value);
+	} catch (_a$1) {
+		return value;
+	}
+	return value;
+};
+const toArray$1 = (value, type) => {
+	if (typeof value !== "string") return value;
+	const lastIdx = value.length - 1;
+	const closeBrace = value[lastIdx];
+	if (value[0] === "{" && closeBrace === "}") {
+		let arr;
+		const valTrim = value.slice(1, lastIdx);
+		try {
+			arr = JSON.parse("[" + valTrim + "]");
+		} catch (_$1) {
+			arr = valTrim ? valTrim.split(",") : [];
+		}
+		return arr.map((val) => convertCell(type, val));
+	}
+	return value;
+};
+const toTimestampString = (value) => {
+	if (typeof value === "string") return value.replace(" ", "T");
+	return value;
+};
+const httpEndpointURL = (socketUrl) => {
+	const wsUrl = new URL(socketUrl);
+	wsUrl.protocol = wsUrl.protocol.replace(/^ws/i, "http");
+	wsUrl.pathname = wsUrl.pathname.replace(/\/+$/, "").replace(/\/socket\/websocket$/i, "").replace(/\/socket$/i, "").replace(/\/websocket$/i, "");
+	if (wsUrl.pathname === "" || wsUrl.pathname === "/") wsUrl.pathname = "/api/broadcast";
+	else wsUrl.pathname = wsUrl.pathname + "/api/broadcast";
+	return wsUrl.href;
+};
+var Push = class {
+	constructor(channel, event, payload = {}, timeout = DEFAULT_TIMEOUT) {
+		this.channel = channel;
+		this.event = event;
+		this.payload = payload;
+		this.timeout = timeout;
+		this.sent = false;
+		this.timeoutTimer = void 0;
+		this.ref = "";
+		this.receivedResp = null;
+		this.recHooks = [];
+		this.refEvent = null;
+	}
+	resend(timeout) {
+		this.timeout = timeout;
+		this._cancelRefEvent();
+		this.ref = "";
+		this.refEvent = null;
+		this.receivedResp = null;
+		this.sent = false;
+		this.send();
+	}
+	send() {
+		if (this._hasReceived("timeout")) return;
+		this.startTimeout();
+		this.sent = true;
+		this.channel.socket.push({
+			topic: this.channel.topic,
+			event: this.event,
+			payload: this.payload,
+			ref: this.ref,
+			join_ref: this.channel._joinRef()
+		});
+	}
+	updatePayload(payload) {
+		this.payload = Object.assign(Object.assign({}, this.payload), payload);
+	}
+	receive(status, callback) {
+		var _a$1;
+		if (this._hasReceived(status)) callback((_a$1 = this.receivedResp) === null || _a$1 === void 0 ? void 0 : _a$1.response);
+		this.recHooks.push({
+			status,
+			callback
+		});
+		return this;
+	}
+	startTimeout() {
+		if (this.timeoutTimer) return;
+		this.ref = this.channel.socket._makeRef();
+		this.refEvent = this.channel._replyEventName(this.ref);
+		const callback = (payload) => {
+			this._cancelRefEvent();
+			this._cancelTimeout();
+			this.receivedResp = payload;
+			this._matchReceive(payload);
+		};
+		this.channel._on(this.refEvent, {}, callback);
+		this.timeoutTimer = setTimeout(() => {
+			this.trigger("timeout", {});
+		}, this.timeout);
+	}
+	trigger(status, response) {
+		if (this.refEvent) this.channel._trigger(this.refEvent, {
+			status,
+			response
+		});
+	}
+	destroy() {
+		this._cancelRefEvent();
+		this._cancelTimeout();
+	}
+	_cancelRefEvent() {
+		if (!this.refEvent) return;
+		this.channel._off(this.refEvent, {});
+	}
+	_cancelTimeout() {
+		clearTimeout(this.timeoutTimer);
+		this.timeoutTimer = void 0;
+	}
+	_matchReceive({ status, response }) {
+		this.recHooks.filter((h) => h.status === status).forEach((h) => h.callback(response));
+	}
+	_hasReceived(status) {
+		return this.receivedResp && this.receivedResp.status === status;
+	}
+};
+var REALTIME_PRESENCE_LISTEN_EVENTS;
+(function(REALTIME_PRESENCE_LISTEN_EVENTS$1) {
+	REALTIME_PRESENCE_LISTEN_EVENTS$1["SYNC"] = "sync";
+	REALTIME_PRESENCE_LISTEN_EVENTS$1["JOIN"] = "join";
+	REALTIME_PRESENCE_LISTEN_EVENTS$1["LEAVE"] = "leave";
+})(REALTIME_PRESENCE_LISTEN_EVENTS || (REALTIME_PRESENCE_LISTEN_EVENTS = {}));
+var RealtimePresence = class RealtimePresence {
+	constructor(channel, opts) {
+		this.channel = channel;
+		this.state = {};
+		this.pendingDiffs = [];
+		this.joinRef = null;
+		this.enabled = false;
+		this.caller = {
+			onJoin: () => {},
+			onLeave: () => {},
+			onSync: () => {}
+		};
+		const events = (opts === null || opts === void 0 ? void 0 : opts.events) || {
+			state: "presence_state",
+			diff: "presence_diff"
+		};
+		this.channel._on(events.state, {}, (newState) => {
+			const { onJoin, onLeave, onSync } = this.caller;
+			this.joinRef = this.channel._joinRef();
+			this.state = RealtimePresence.syncState(this.state, newState, onJoin, onLeave);
+			this.pendingDiffs.forEach((diff) => {
+				this.state = RealtimePresence.syncDiff(this.state, diff, onJoin, onLeave);
+			});
+			this.pendingDiffs = [];
+			onSync();
+		});
+		this.channel._on(events.diff, {}, (diff) => {
+			const { onJoin, onLeave, onSync } = this.caller;
+			if (this.inPendingSyncState()) this.pendingDiffs.push(diff);
+			else {
+				this.state = RealtimePresence.syncDiff(this.state, diff, onJoin, onLeave);
+				onSync();
+			}
+		});
+		this.onJoin((key, currentPresences, newPresences) => {
+			this.channel._trigger("presence", {
+				event: "join",
+				key,
+				currentPresences,
+				newPresences
+			});
+		});
+		this.onLeave((key, currentPresences, leftPresences) => {
+			this.channel._trigger("presence", {
+				event: "leave",
+				key,
+				currentPresences,
+				leftPresences
+			});
+		});
+		this.onSync(() => {
+			this.channel._trigger("presence", { event: "sync" });
+		});
+	}
+	static syncState(currentState, newState, onJoin, onLeave) {
+		const state = this.cloneDeep(currentState);
+		const transformedState = this.transformState(newState);
+		const joins = {};
+		const leaves = {};
+		this.map(state, (key, presences) => {
+			if (!transformedState[key]) leaves[key] = presences;
+		});
+		this.map(transformedState, (key, newPresences) => {
+			const currentPresences = state[key];
+			if (currentPresences) {
+				const newPresenceRefs = newPresences.map((m$1) => m$1.presence_ref);
+				const curPresenceRefs = currentPresences.map((m$1) => m$1.presence_ref);
+				const joinedPresences = newPresences.filter((m$1) => curPresenceRefs.indexOf(m$1.presence_ref) < 0);
+				const leftPresences = currentPresences.filter((m$1) => newPresenceRefs.indexOf(m$1.presence_ref) < 0);
+				if (joinedPresences.length > 0) joins[key] = joinedPresences;
+				if (leftPresences.length > 0) leaves[key] = leftPresences;
+			} else joins[key] = newPresences;
+		});
+		return this.syncDiff(state, {
+			joins,
+			leaves
+		}, onJoin, onLeave);
+	}
+	static syncDiff(state, diff, onJoin, onLeave) {
+		const { joins, leaves } = {
+			joins: this.transformState(diff.joins),
+			leaves: this.transformState(diff.leaves)
+		};
+		if (!onJoin) onJoin = () => {};
+		if (!onLeave) onLeave = () => {};
+		this.map(joins, (key, newPresences) => {
+			var _a$1;
+			const currentPresences = (_a$1 = state[key]) !== null && _a$1 !== void 0 ? _a$1 : [];
+			state[key] = this.cloneDeep(newPresences);
+			if (currentPresences.length > 0) {
+				const joinedPresenceRefs = state[key].map((m$1) => m$1.presence_ref);
+				const curPresences = currentPresences.filter((m$1) => joinedPresenceRefs.indexOf(m$1.presence_ref) < 0);
+				state[key].unshift(...curPresences);
+			}
+			onJoin(key, currentPresences, newPresences);
+		});
+		this.map(leaves, (key, leftPresences) => {
+			let currentPresences = state[key];
+			if (!currentPresences) return;
+			const presenceRefsToRemove = leftPresences.map((m$1) => m$1.presence_ref);
+			currentPresences = currentPresences.filter((m$1) => presenceRefsToRemove.indexOf(m$1.presence_ref) < 0);
+			state[key] = currentPresences;
+			onLeave(key, currentPresences, leftPresences);
+			if (currentPresences.length === 0) delete state[key];
+		});
+		return state;
+	}
+	static map(obj, func) {
+		return Object.getOwnPropertyNames(obj).map((key) => func(key, obj[key]));
+	}
+	static transformState(state) {
+		state = this.cloneDeep(state);
+		return Object.getOwnPropertyNames(state).reduce((newState, key) => {
+			const presences = state[key];
+			if ("metas" in presences) newState[key] = presences.metas.map((presence) => {
+				presence["presence_ref"] = presence["phx_ref"];
+				delete presence["phx_ref"];
+				delete presence["phx_ref_prev"];
+				return presence;
+			});
+			else newState[key] = presences;
+			return newState;
+		}, {});
+	}
+	static cloneDeep(obj) {
+		return JSON.parse(JSON.stringify(obj));
+	}
+	onJoin(callback) {
+		this.caller.onJoin = callback;
+	}
+	onLeave(callback) {
+		this.caller.onLeave = callback;
+	}
+	onSync(callback) {
+		this.caller.onSync = callback;
+	}
+	inPendingSyncState() {
+		return !this.joinRef || this.joinRef !== this.channel._joinRef();
+	}
+};
+var REALTIME_POSTGRES_CHANGES_LISTEN_EVENT;
+(function(REALTIME_POSTGRES_CHANGES_LISTEN_EVENT$1) {
+	REALTIME_POSTGRES_CHANGES_LISTEN_EVENT$1["ALL"] = "*";
+	REALTIME_POSTGRES_CHANGES_LISTEN_EVENT$1["INSERT"] = "INSERT";
+	REALTIME_POSTGRES_CHANGES_LISTEN_EVENT$1["UPDATE"] = "UPDATE";
+	REALTIME_POSTGRES_CHANGES_LISTEN_EVENT$1["DELETE"] = "DELETE";
+})(REALTIME_POSTGRES_CHANGES_LISTEN_EVENT || (REALTIME_POSTGRES_CHANGES_LISTEN_EVENT = {}));
+var REALTIME_LISTEN_TYPES;
+(function(REALTIME_LISTEN_TYPES$1) {
+	REALTIME_LISTEN_TYPES$1["BROADCAST"] = "broadcast";
+	REALTIME_LISTEN_TYPES$1["PRESENCE"] = "presence";
+	REALTIME_LISTEN_TYPES$1["POSTGRES_CHANGES"] = "postgres_changes";
+	REALTIME_LISTEN_TYPES$1["SYSTEM"] = "system";
+})(REALTIME_LISTEN_TYPES || (REALTIME_LISTEN_TYPES = {}));
+var REALTIME_SUBSCRIBE_STATES;
+(function(REALTIME_SUBSCRIBE_STATES$1) {
+	REALTIME_SUBSCRIBE_STATES$1["SUBSCRIBED"] = "SUBSCRIBED";
+	REALTIME_SUBSCRIBE_STATES$1["TIMED_OUT"] = "TIMED_OUT";
+	REALTIME_SUBSCRIBE_STATES$1["CLOSED"] = "CLOSED";
+	REALTIME_SUBSCRIBE_STATES$1["CHANNEL_ERROR"] = "CHANNEL_ERROR";
+})(REALTIME_SUBSCRIBE_STATES || (REALTIME_SUBSCRIBE_STATES = {}));
+var RealtimeChannel = class RealtimeChannel {
+	constructor(topic, params = { config: {} }, socket) {
+		var _a$1, _b;
+		this.topic = topic;
+		this.params = params;
+		this.socket = socket;
+		this.bindings = {};
+		this.state = CHANNEL_STATES.closed;
+		this.joinedOnce = false;
+		this.pushBuffer = [];
+		this.subTopic = topic.replace(/^realtime:/i, "");
+		this.params.config = Object.assign({
+			broadcast: {
+				ack: false,
+				self: false
+			},
+			presence: {
+				key: "",
+				enabled: false
+			},
+			private: false
+		}, params.config);
+		this.timeout = this.socket.timeout;
+		this.joinPush = new Push(this, CHANNEL_EVENTS.join, this.params, this.timeout);
+		this.rejoinTimer = new Timer(() => this._rejoinUntilConnected(), this.socket.reconnectAfterMs);
+		this.joinPush.receive("ok", () => {
+			this.state = CHANNEL_STATES.joined;
+			this.rejoinTimer.reset();
+			this.pushBuffer.forEach((pushEvent) => pushEvent.send());
+			this.pushBuffer = [];
+		});
+		this._onClose(() => {
+			this.rejoinTimer.reset();
+			this.socket.log("channel", `close ${this.topic} ${this._joinRef()}`);
+			this.state = CHANNEL_STATES.closed;
+			this.socket._remove(this);
+		});
+		this._onError((reason) => {
+			if (this._isLeaving() || this._isClosed()) return;
+			this.socket.log("channel", `error ${this.topic}`, reason);
+			this.state = CHANNEL_STATES.errored;
+			this.rejoinTimer.scheduleTimeout();
+		});
+		this.joinPush.receive("timeout", () => {
+			if (!this._isJoining()) return;
+			this.socket.log("channel", `timeout ${this.topic}`, this.joinPush.timeout);
+			this.state = CHANNEL_STATES.errored;
+			this.rejoinTimer.scheduleTimeout();
+		});
+		this.joinPush.receive("error", (reason) => {
+			if (this._isLeaving() || this._isClosed()) return;
+			this.socket.log("channel", `error ${this.topic}`, reason);
+			this.state = CHANNEL_STATES.errored;
+			this.rejoinTimer.scheduleTimeout();
+		});
+		this._on(CHANNEL_EVENTS.reply, {}, (payload, ref) => {
+			this._trigger(this._replyEventName(ref), payload);
+		});
+		this.presence = new RealtimePresence(this);
+		this.broadcastEndpointURL = httpEndpointURL(this.socket.endPoint);
+		this.private = this.params.config.private || false;
+		if (!this.private && ((_b = (_a$1 = this.params.config) === null || _a$1 === void 0 ? void 0 : _a$1.broadcast) === null || _b === void 0 ? void 0 : _b.replay)) throw `tried to use replay on public channel '${this.topic}'. It must be a private channel.`;
+	}
+	subscribe(callback, timeout = this.timeout) {
+		var _a$1, _b, _c;
+		if (!this.socket.isConnected()) this.socket.connect();
+		if (this.state == CHANNEL_STATES.closed) {
+			const { config: { broadcast, presence, private: isPrivate } } = this.params;
+			const postgres_changes = (_b = (_a$1 = this.bindings.postgres_changes) === null || _a$1 === void 0 ? void 0 : _a$1.map((r$2) => r$2.filter)) !== null && _b !== void 0 ? _b : [];
+			const presence_enabled = !!this.bindings[REALTIME_LISTEN_TYPES.PRESENCE] && this.bindings[REALTIME_LISTEN_TYPES.PRESENCE].length > 0 || ((_c = this.params.config.presence) === null || _c === void 0 ? void 0 : _c.enabled) === true;
+			const accessTokenPayload = {};
+			const config$1 = {
+				broadcast,
+				presence: Object.assign(Object.assign({}, presence), { enabled: presence_enabled }),
+				postgres_changes,
+				private: isPrivate
+			};
+			if (this.socket.accessTokenValue) accessTokenPayload.access_token = this.socket.accessTokenValue;
+			this._onError((e) => callback === null || callback === void 0 ? void 0 : callback(REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR, e));
+			this._onClose(() => callback === null || callback === void 0 ? void 0 : callback(REALTIME_SUBSCRIBE_STATES.CLOSED));
+			this.updateJoinPayload(Object.assign({ config: config$1 }, accessTokenPayload));
+			this.joinedOnce = true;
+			this._rejoin(timeout);
+			this.joinPush.receive("ok", async ({ postgres_changes: postgres_changes$1 }) => {
+				var _a$2;
+				if (!this.socket._isManualToken()) this.socket.setAuth();
+				if (postgres_changes$1 === void 0) {
+					callback === null || callback === void 0 || callback(REALTIME_SUBSCRIBE_STATES.SUBSCRIBED);
+					return;
+				} else {
+					const clientPostgresBindings = this.bindings.postgres_changes;
+					const bindingsLen = (_a$2 = clientPostgresBindings === null || clientPostgresBindings === void 0 ? void 0 : clientPostgresBindings.length) !== null && _a$2 !== void 0 ? _a$2 : 0;
+					const newPostgresBindings = [];
+					for (let i$2 = 0; i$2 < bindingsLen; i$2++) {
+						const clientPostgresBinding = clientPostgresBindings[i$2];
+						const { filter: { event, schema, table, filter } } = clientPostgresBinding;
+						const serverPostgresFilter = postgres_changes$1 && postgres_changes$1[i$2];
+						if (serverPostgresFilter && serverPostgresFilter.event === event && RealtimeChannel.isFilterValueEqual(serverPostgresFilter.schema, schema) && RealtimeChannel.isFilterValueEqual(serverPostgresFilter.table, table) && RealtimeChannel.isFilterValueEqual(serverPostgresFilter.filter, filter)) newPostgresBindings.push(Object.assign(Object.assign({}, clientPostgresBinding), { id: serverPostgresFilter.id }));
+						else {
+							this.unsubscribe();
+							this.state = CHANNEL_STATES.errored;
+							callback === null || callback === void 0 || callback(REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR, /* @__PURE__ */ new Error("mismatch between server and client bindings for postgres changes"));
+							return;
+						}
+					}
+					this.bindings.postgres_changes = newPostgresBindings;
+					callback && callback(REALTIME_SUBSCRIBE_STATES.SUBSCRIBED);
+					return;
+				}
+			}).receive("error", (error) => {
+				this.state = CHANNEL_STATES.errored;
+				callback === null || callback === void 0 || callback(REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR, new Error(JSON.stringify(Object.values(error).join(", ") || "error")));
+			}).receive("timeout", () => {
+				callback === null || callback === void 0 || callback(REALTIME_SUBSCRIBE_STATES.TIMED_OUT);
+			});
+		}
+		return this;
+	}
+	presenceState() {
+		return this.presence.state;
+	}
+	async track(payload, opts = {}) {
+		return await this.send({
+			type: "presence",
+			event: "track",
+			payload
+		}, opts.timeout || this.timeout);
+	}
+	async untrack(opts = {}) {
+		return await this.send({
+			type: "presence",
+			event: "untrack"
+		}, opts);
+	}
+	on(type, filter, callback) {
+		if (this.state === CHANNEL_STATES.joined && type === REALTIME_LISTEN_TYPES.PRESENCE) {
+			this.socket.log("channel", `resubscribe to ${this.topic} due to change in presence callbacks on joined channel`);
+			this.unsubscribe().then(async () => await this.subscribe());
+		}
+		return this._on(type, filter, callback);
+	}
+	async httpSend(event, payload, opts = {}) {
+		var _a$1;
+		if (payload === void 0 || payload === null) return Promise.reject("Payload is required for httpSend()");
+		const headers = {
+			apikey: this.socket.apiKey ? this.socket.apiKey : "",
+			"Content-Type": "application/json"
+		};
+		if (this.socket.accessTokenValue) headers["Authorization"] = `Bearer ${this.socket.accessTokenValue}`;
+		const options$1 = {
+			method: "POST",
+			headers,
+			body: JSON.stringify({ messages: [{
+				topic: this.subTopic,
+				event,
+				payload,
+				private: this.private
+			}] })
+		};
+		const response = await this._fetchWithTimeout(this.broadcastEndpointURL, options$1, (_a$1 = opts.timeout) !== null && _a$1 !== void 0 ? _a$1 : this.timeout);
+		if (response.status === 202) return { success: true };
+		let errorMessage = response.statusText;
+		try {
+			const errorBody = await response.json();
+			errorMessage = errorBody.error || errorBody.message || errorMessage;
+		} catch (_b) {}
+		return Promise.reject(new Error(errorMessage));
+	}
+	async send(args, opts = {}) {
+		var _a$1, _b;
+		if (!this._canPush() && args.type === "broadcast") {
+			console.warn("Realtime send() is automatically falling back to REST API. This behavior will be deprecated in the future. Please use httpSend() explicitly for REST delivery.");
+			const { event, payload: endpoint_payload } = args;
+			const headers = {
+				apikey: this.socket.apiKey ? this.socket.apiKey : "",
+				"Content-Type": "application/json"
+			};
+			if (this.socket.accessTokenValue) headers["Authorization"] = `Bearer ${this.socket.accessTokenValue}`;
+			const options$1 = {
+				method: "POST",
+				headers,
+				body: JSON.stringify({ messages: [{
+					topic: this.subTopic,
+					event,
+					payload: endpoint_payload,
+					private: this.private
+				}] })
+			};
+			try {
+				const response = await this._fetchWithTimeout(this.broadcastEndpointURL, options$1, (_a$1 = opts.timeout) !== null && _a$1 !== void 0 ? _a$1 : this.timeout);
+				await ((_b = response.body) === null || _b === void 0 ? void 0 : _b.cancel());
+				return response.ok ? "ok" : "error";
+			} catch (error) {
+				if (error.name === "AbortError") return "timed out";
+				else return "error";
+			}
+		} else return new Promise((resolve) => {
+			var _a$2, _b$1, _c;
+			const push = this._push(args.type, args, opts.timeout || this.timeout);
+			if (args.type === "broadcast" && !((_c = (_b$1 = (_a$2 = this.params) === null || _a$2 === void 0 ? void 0 : _a$2.config) === null || _b$1 === void 0 ? void 0 : _b$1.broadcast) === null || _c === void 0 ? void 0 : _c.ack)) resolve("ok");
+			push.receive("ok", () => resolve("ok"));
+			push.receive("error", () => resolve("error"));
+			push.receive("timeout", () => resolve("timed out"));
+		});
+	}
+	updateJoinPayload(payload) {
+		this.joinPush.updatePayload(payload);
+	}
+	unsubscribe(timeout = this.timeout) {
+		this.state = CHANNEL_STATES.leaving;
+		const onClose = () => {
+			this.socket.log("channel", `leave ${this.topic}`);
+			this._trigger(CHANNEL_EVENTS.close, "leave", this._joinRef());
+		};
+		this.joinPush.destroy();
+		let leavePush = null;
+		return new Promise((resolve) => {
+			leavePush = new Push(this, CHANNEL_EVENTS.leave, {}, timeout);
+			leavePush.receive("ok", () => {
+				onClose();
+				resolve("ok");
+			}).receive("timeout", () => {
+				onClose();
+				resolve("timed out");
+			}).receive("error", () => {
+				resolve("error");
+			});
+			leavePush.send();
+			if (!this._canPush()) leavePush.trigger("ok", {});
+		}).finally(() => {
+			leavePush === null || leavePush === void 0 || leavePush.destroy();
+		});
+	}
+	teardown() {
+		this.pushBuffer.forEach((push) => push.destroy());
+		this.pushBuffer = [];
+		this.rejoinTimer.reset();
+		this.joinPush.destroy();
+		this.state = CHANNEL_STATES.closed;
+		this.bindings = {};
+	}
+	async _fetchWithTimeout(url, options$1, timeout) {
+		const controller = new AbortController();
+		const id = setTimeout(() => controller.abort(), timeout);
+		const response = await this.socket.fetch(url, Object.assign(Object.assign({}, options$1), { signal: controller.signal }));
+		clearTimeout(id);
+		return response;
+	}
+	_push(event, payload, timeout = this.timeout) {
+		if (!this.joinedOnce) throw `tried to push '${event}' to '${this.topic}' before joining. Use channel.subscribe() before pushing events`;
+		let pushEvent = new Push(this, event, payload, timeout);
+		if (this._canPush()) pushEvent.send();
+		else this._addToPushBuffer(pushEvent);
+		return pushEvent;
+	}
+	_addToPushBuffer(pushEvent) {
+		pushEvent.startTimeout();
+		this.pushBuffer.push(pushEvent);
+		if (this.pushBuffer.length > 100) {
+			const removedPush = this.pushBuffer.shift();
+			if (removedPush) {
+				removedPush.destroy();
+				this.socket.log("channel", `discarded push due to buffer overflow: ${removedPush.event}`, removedPush.payload);
+			}
+		}
+	}
+	_onMessage(_event, payload, _ref) {
+		return payload;
+	}
+	_isMember(topic) {
+		return this.topic === topic;
+	}
+	_joinRef() {
+		return this.joinPush.ref;
+	}
+	_trigger(type, payload, ref) {
+		var _a$1, _b;
+		const typeLower = type.toLocaleLowerCase();
+		const { close, error, leave, join } = CHANNEL_EVENTS;
+		if (ref && [
+			close,
+			error,
+			leave,
+			join
+		].indexOf(typeLower) >= 0 && ref !== this._joinRef()) return;
+		let handledPayload = this._onMessage(typeLower, payload, ref);
+		if (payload && !handledPayload) throw "channel onMessage callbacks must return the payload, modified or unmodified";
+		if ([
+			"insert",
+			"update",
+			"delete"
+		].includes(typeLower)) (_a$1 = this.bindings.postgres_changes) === null || _a$1 === void 0 || _a$1.filter((bind) => {
+			var _a$2, _b$1, _c;
+			return ((_a$2 = bind.filter) === null || _a$2 === void 0 ? void 0 : _a$2.event) === "*" || ((_c = (_b$1 = bind.filter) === null || _b$1 === void 0 ? void 0 : _b$1.event) === null || _c === void 0 ? void 0 : _c.toLocaleLowerCase()) === typeLower;
+		}).map((bind) => bind.callback(handledPayload, ref));
+		else (_b = this.bindings[typeLower]) === null || _b === void 0 || _b.filter((bind) => {
+			var _a$2, _b$1, _c, _d, _e$1, _f;
+			if ([
+				"broadcast",
+				"presence",
+				"postgres_changes"
+			].includes(typeLower)) if ("id" in bind) {
+				const bindId = bind.id;
+				const bindEvent = (_a$2 = bind.filter) === null || _a$2 === void 0 ? void 0 : _a$2.event;
+				return bindId && ((_b$1 = payload.ids) === null || _b$1 === void 0 ? void 0 : _b$1.includes(bindId)) && (bindEvent === "*" || (bindEvent === null || bindEvent === void 0 ? void 0 : bindEvent.toLocaleLowerCase()) === ((_c = payload.data) === null || _c === void 0 ? void 0 : _c.type.toLocaleLowerCase()));
+			} else {
+				const bindEvent = (_e$1 = (_d = bind === null || bind === void 0 ? void 0 : bind.filter) === null || _d === void 0 ? void 0 : _d.event) === null || _e$1 === void 0 ? void 0 : _e$1.toLocaleLowerCase();
+				return bindEvent === "*" || bindEvent === ((_f = payload === null || payload === void 0 ? void 0 : payload.event) === null || _f === void 0 ? void 0 : _f.toLocaleLowerCase());
+			}
+			else return bind.type.toLocaleLowerCase() === typeLower;
+		}).map((bind) => {
+			if (typeof handledPayload === "object" && "ids" in handledPayload) {
+				const postgresChanges = handledPayload.data;
+				const { schema, table, commit_timestamp, type: type$1, errors } = postgresChanges;
+				const enrichedPayload = {
+					schema,
+					table,
+					commit_timestamp,
+					eventType: type$1,
+					new: {},
+					old: {},
+					errors
+				};
+				handledPayload = Object.assign(Object.assign({}, enrichedPayload), this._getPayloadRecords(postgresChanges));
+			}
+			bind.callback(handledPayload, ref);
+		});
+	}
+	_isClosed() {
+		return this.state === CHANNEL_STATES.closed;
+	}
+	_isJoined() {
+		return this.state === CHANNEL_STATES.joined;
+	}
+	_isJoining() {
+		return this.state === CHANNEL_STATES.joining;
+	}
+	_isLeaving() {
+		return this.state === CHANNEL_STATES.leaving;
+	}
+	_replyEventName(ref) {
+		return `chan_reply_${ref}`;
+	}
+	_on(type, filter, callback) {
+		const typeLower = type.toLocaleLowerCase();
+		const binding = {
+			type: typeLower,
+			filter,
+			callback
+		};
+		if (this.bindings[typeLower]) this.bindings[typeLower].push(binding);
+		else this.bindings[typeLower] = [binding];
+		return this;
+	}
+	_off(type, filter) {
+		const typeLower = type.toLocaleLowerCase();
+		if (this.bindings[typeLower]) this.bindings[typeLower] = this.bindings[typeLower].filter((bind) => {
+			var _a$1;
+			return !(((_a$1 = bind.type) === null || _a$1 === void 0 ? void 0 : _a$1.toLocaleLowerCase()) === typeLower && RealtimeChannel.isEqual(bind.filter, filter));
+		});
+		return this;
+	}
+	static isEqual(obj1, obj2) {
+		if (Object.keys(obj1).length !== Object.keys(obj2).length) return false;
+		for (const k$3 in obj1) if (obj1[k$3] !== obj2[k$3]) return false;
+		return true;
+	}
+	static isFilterValueEqual(serverValue, clientValue) {
+		return (serverValue !== null && serverValue !== void 0 ? serverValue : void 0) === (clientValue !== null && clientValue !== void 0 ? clientValue : void 0);
+	}
+	_rejoinUntilConnected() {
+		this.rejoinTimer.scheduleTimeout();
+		if (this.socket.isConnected()) this._rejoin();
+	}
+	_onClose(callback) {
+		this._on(CHANNEL_EVENTS.close, {}, callback);
+	}
+	_onError(callback) {
+		this._on(CHANNEL_EVENTS.error, {}, (reason) => callback(reason));
+	}
+	_canPush() {
+		return this.socket.isConnected() && this._isJoined();
+	}
+	_rejoin(timeout = this.timeout) {
+		if (this._isLeaving()) return;
+		this.socket._leaveOpenTopic(this.topic);
+		this.state = CHANNEL_STATES.joining;
+		this.joinPush.resend(timeout);
+	}
+	_getPayloadRecords(payload) {
+		const records = {
+			new: {},
+			old: {}
+		};
+		if (payload.type === "INSERT" || payload.type === "UPDATE") records.new = convertChangeData(payload.columns, payload.record);
+		if (payload.type === "UPDATE" || payload.type === "DELETE") records.old = convertChangeData(payload.columns, payload.old_record);
+		return records;
+	}
+};
+var noop$2 = () => {};
+var CONNECTION_TIMEOUTS = {
+	HEARTBEAT_INTERVAL: 25e3,
+	RECONNECT_DELAY: 10,
+	HEARTBEAT_TIMEOUT_FALLBACK: 100
+};
+var RECONNECT_INTERVALS = [
+	1e3,
+	2e3,
+	5e3,
+	1e4
+];
+var DEFAULT_RECONNECT_FALLBACK = 1e4;
+var WORKER_SCRIPT = `
+  addEventListener("message", (e) => {
+    if (e.data.event === "start") {
+      setInterval(() => postMessage({ event: "keepAlive" }), e.data.interval);
+    }
+  });`;
+var RealtimeClient = class {
+	constructor(endPoint, options$1) {
+		var _a$1;
+		this.accessTokenValue = null;
+		this.apiKey = null;
+		this._manuallySetToken = false;
+		this.channels = new Array();
+		this.endPoint = "";
+		this.httpEndpoint = "";
+		this.headers = {};
+		this.params = {};
+		this.timeout = DEFAULT_TIMEOUT;
+		this.transport = null;
+		this.heartbeatIntervalMs = CONNECTION_TIMEOUTS.HEARTBEAT_INTERVAL;
+		this.heartbeatTimer = void 0;
+		this.pendingHeartbeatRef = null;
+		this.heartbeatCallback = noop$2;
+		this.ref = 0;
+		this.reconnectTimer = null;
+		this.vsn = DEFAULT_VSN;
+		this.logger = noop$2;
+		this.conn = null;
+		this.sendBuffer = [];
+		this.serializer = new Serializer();
+		this.stateChangeCallbacks = {
+			open: [],
+			close: [],
+			error: [],
+			message: []
+		};
+		this.accessToken = null;
+		this._connectionState = "disconnected";
+		this._wasManualDisconnect = false;
+		this._authPromise = null;
+		this._heartbeatSentAt = null;
+		this._resolveFetch = (customFetch) => {
+			if (customFetch) return (...args) => customFetch(...args);
+			return (...args) => fetch(...args);
+		};
+		if (!((_a$1 = options$1 === null || options$1 === void 0 ? void 0 : options$1.params) === null || _a$1 === void 0 ? void 0 : _a$1.apikey)) throw new Error("API key is required to connect to Realtime");
+		this.apiKey = options$1.params.apikey;
+		this.endPoint = `${endPoint}/${TRANSPORTS.websocket}`;
+		this.httpEndpoint = httpEndpointURL(endPoint);
+		this._initializeOptions(options$1);
+		this._setupReconnectionTimer();
+		this.fetch = this._resolveFetch(options$1 === null || options$1 === void 0 ? void 0 : options$1.fetch);
+	}
+	connect() {
+		if (this.isConnecting() || this.isDisconnecting() || this.conn !== null && this.isConnected()) return;
+		this._setConnectionState("connecting");
+		if (this.accessToken && !this._authPromise) this._setAuthSafely("connect");
+		if (this.transport) this.conn = new this.transport(this.endpointURL());
+		else try {
+			this.conn = websocket_factory_default.createWebSocket(this.endpointURL());
+		} catch (error) {
+			this._setConnectionState("disconnected");
+			const errorMessage = error.message;
+			if (errorMessage.includes("Node.js")) throw new Error(`${errorMessage}\n\nTo use Realtime in Node.js, you need to provide a WebSocket implementation:
+
+Option 1: Use Node.js 22+ which has native WebSocket support
+Option 2: Install and provide the "ws" package:
+
+  npm install ws
+
+  import ws from "ws"
+  const client = new RealtimeClient(url, {
+    ...options,
+    transport: ws
+  })`);
+			throw new Error(`WebSocket not available: ${errorMessage}`);
+		}
+		this._setupConnectionHandlers();
+	}
+	endpointURL() {
+		return this._appendParams(this.endPoint, Object.assign({}, this.params, { vsn: this.vsn }));
+	}
+	disconnect(code, reason) {
+		if (this.isDisconnecting()) return;
+		this._setConnectionState("disconnecting", true);
+		if (this.conn) {
+			const fallbackTimer = setTimeout(() => {
+				this._setConnectionState("disconnected");
+			}, 100);
+			this.conn.onclose = () => {
+				clearTimeout(fallbackTimer);
+				this._setConnectionState("disconnected");
+			};
+			if (typeof this.conn.close === "function") if (code) this.conn.close(code, reason !== null && reason !== void 0 ? reason : "");
+			else this.conn.close();
+			this._teardownConnection();
+		} else this._setConnectionState("disconnected");
+	}
+	getChannels() {
+		return this.channels;
+	}
+	async removeChannel(channel) {
+		const status = await channel.unsubscribe();
+		if (this.channels.length === 0) this.disconnect();
+		return status;
+	}
+	async removeAllChannels() {
+		const values_1 = await Promise.all(this.channels.map((channel) => channel.unsubscribe()));
+		this.channels = [];
+		this.disconnect();
+		return values_1;
+	}
+	log(kind, msg, data) {
+		this.logger(kind, msg, data);
+	}
+	connectionState() {
+		switch (this.conn && this.conn.readyState) {
+			case SOCKET_STATES.connecting: return CONNECTION_STATE.Connecting;
+			case SOCKET_STATES.open: return CONNECTION_STATE.Open;
+			case SOCKET_STATES.closing: return CONNECTION_STATE.Closing;
+			default: return CONNECTION_STATE.Closed;
+		}
+	}
+	isConnected() {
+		return this.connectionState() === CONNECTION_STATE.Open;
+	}
+	isConnecting() {
+		return this._connectionState === "connecting";
+	}
+	isDisconnecting() {
+		return this._connectionState === "disconnecting";
+	}
+	channel(topic, params = { config: {} }) {
+		const realtimeTopic = `realtime:${topic}`;
+		const exists = this.getChannels().find((c$1) => c$1.topic === realtimeTopic);
+		if (!exists) {
+			const chan = new RealtimeChannel(`realtime:${topic}`, params, this);
+			this.channels.push(chan);
+			return chan;
+		} else return exists;
+	}
+	push(data) {
+		const { topic, event, payload, ref } = data;
+		const callback = () => {
+			this.encode(data, (result) => {
+				var _a$1;
+				(_a$1 = this.conn) === null || _a$1 === void 0 || _a$1.send(result);
+			});
+		};
+		this.log("push", `${topic} ${event} (${ref})`, payload);
+		if (this.isConnected()) callback();
+		else this.sendBuffer.push(callback);
+	}
+	async setAuth(token = null) {
+		this._authPromise = this._performAuth(token);
+		try {
+			await this._authPromise;
+		} finally {
+			this._authPromise = null;
+		}
+	}
+	_isManualToken() {
+		return this._manuallySetToken;
+	}
+	async sendHeartbeat() {
+		var _a$1;
+		if (!this.isConnected()) {
+			try {
+				this.heartbeatCallback("disconnected");
+			} catch (e) {
+				this.log("error", "error in heartbeat callback", e);
+			}
+			return;
+		}
+		if (this.pendingHeartbeatRef) {
+			this.pendingHeartbeatRef = null;
+			this._heartbeatSentAt = null;
+			this.log("transport", "heartbeat timeout. Attempting to re-establish connection");
+			try {
+				this.heartbeatCallback("timeout");
+			} catch (e) {
+				this.log("error", "error in heartbeat callback", e);
+			}
+			this._wasManualDisconnect = false;
+			(_a$1 = this.conn) === null || _a$1 === void 0 || _a$1.close(1e3, "heartbeat timeout");
+			setTimeout(() => {
+				var _a$2;
+				if (!this.isConnected()) (_a$2 = this.reconnectTimer) === null || _a$2 === void 0 || _a$2.scheduleTimeout();
+			}, CONNECTION_TIMEOUTS.HEARTBEAT_TIMEOUT_FALLBACK);
+			return;
+		}
+		this._heartbeatSentAt = Date.now();
+		this.pendingHeartbeatRef = this._makeRef();
+		this.push({
+			topic: "phoenix",
+			event: "heartbeat",
+			payload: {},
+			ref: this.pendingHeartbeatRef
+		});
+		try {
+			this.heartbeatCallback("sent");
+		} catch (e) {
+			this.log("error", "error in heartbeat callback", e);
+		}
+		this._setAuthSafely("heartbeat");
+	}
+	onHeartbeat(callback) {
+		this.heartbeatCallback = callback;
+	}
+	flushSendBuffer() {
+		if (this.isConnected() && this.sendBuffer.length > 0) {
+			this.sendBuffer.forEach((callback) => callback());
+			this.sendBuffer = [];
+		}
+	}
+	_makeRef() {
+		let newRef = this.ref + 1;
+		if (newRef === this.ref) this.ref = 0;
+		else this.ref = newRef;
+		return this.ref.toString();
+	}
+	_leaveOpenTopic(topic) {
+		let dupChannel = this.channels.find((c$1) => c$1.topic === topic && (c$1._isJoined() || c$1._isJoining()));
+		if (dupChannel) {
+			this.log("transport", `leaving duplicate topic "${topic}"`);
+			dupChannel.unsubscribe();
+		}
+	}
+	_remove(channel) {
+		this.channels = this.channels.filter((c$1) => c$1.topic !== channel.topic);
+	}
+	_onConnMessage(rawMessage) {
+		this.decode(rawMessage.data, (msg) => {
+			if (msg.topic === "phoenix" && msg.event === "phx_reply" && msg.ref && msg.ref === this.pendingHeartbeatRef) {
+				const latency = this._heartbeatSentAt ? Date.now() - this._heartbeatSentAt : void 0;
+				try {
+					this.heartbeatCallback(msg.payload.status === "ok" ? "ok" : "error", latency);
+				} catch (e) {
+					this.log("error", "error in heartbeat callback", e);
+				}
+				this._heartbeatSentAt = null;
+				this.pendingHeartbeatRef = null;
+			}
+			const { topic, event, payload, ref } = msg;
+			const refString = ref ? `(${ref})` : "";
+			const status = payload.status || "";
+			this.log("receive", `${status} ${topic} ${event} ${refString}`.trim(), payload);
+			this.channels.filter((channel) => channel._isMember(topic)).forEach((channel) => channel._trigger(event, payload, ref));
+			this._triggerStateCallbacks("message", msg);
+		});
+	}
+	_clearTimer(timer) {
+		var _a$1;
+		if (timer === "heartbeat" && this.heartbeatTimer) {
+			clearInterval(this.heartbeatTimer);
+			this.heartbeatTimer = void 0;
+		} else if (timer === "reconnect") (_a$1 = this.reconnectTimer) === null || _a$1 === void 0 || _a$1.reset();
+	}
+	_clearAllTimers() {
+		this._clearTimer("heartbeat");
+		this._clearTimer("reconnect");
+	}
+	_setupConnectionHandlers() {
+		if (!this.conn) return;
+		if ("binaryType" in this.conn) this.conn.binaryType = "arraybuffer";
+		this.conn.onopen = () => this._onConnOpen();
+		this.conn.onerror = (error) => this._onConnError(error);
+		this.conn.onmessage = (event) => this._onConnMessage(event);
+		this.conn.onclose = (event) => this._onConnClose(event);
+		if (this.conn.readyState === SOCKET_STATES.open) this._onConnOpen();
+	}
+	_teardownConnection() {
+		if (this.conn) {
+			if (this.conn.readyState === SOCKET_STATES.open || this.conn.readyState === SOCKET_STATES.connecting) try {
+				this.conn.close();
+			} catch (e) {
+				this.log("error", "Error closing connection", e);
+			}
+			this.conn.onopen = null;
+			this.conn.onerror = null;
+			this.conn.onmessage = null;
+			this.conn.onclose = null;
+			this.conn = null;
+		}
+		this._clearAllTimers();
+		this._terminateWorker();
+		this.channels.forEach((channel) => channel.teardown());
+	}
+	_onConnOpen() {
+		this._setConnectionState("connected");
+		this.log("transport", `connected to ${this.endpointURL()}`);
+		(this._authPromise || (this.accessToken && !this.accessTokenValue ? this.setAuth() : Promise.resolve())).then(() => {
+			this.flushSendBuffer();
+		}).catch((e) => {
+			this.log("error", "error waiting for auth on connect", e);
+			this.flushSendBuffer();
+		});
+		this._clearTimer("reconnect");
+		if (!this.worker) this._startHeartbeat();
+		else if (!this.workerRef) this._startWorkerHeartbeat();
+		this._triggerStateCallbacks("open");
+	}
+	_startHeartbeat() {
+		this.heartbeatTimer && clearInterval(this.heartbeatTimer);
+		this.heartbeatTimer = setInterval(() => this.sendHeartbeat(), this.heartbeatIntervalMs);
+	}
+	_startWorkerHeartbeat() {
+		if (this.workerUrl) this.log("worker", `starting worker for from ${this.workerUrl}`);
+		else this.log("worker", `starting default worker`);
+		const objectUrl = this._workerObjectUrl(this.workerUrl);
+		this.workerRef = new Worker(objectUrl);
+		this.workerRef.onerror = (error) => {
+			this.log("worker", "worker error", error.message);
+			this._terminateWorker();
+		};
+		this.workerRef.onmessage = (event) => {
+			if (event.data.event === "keepAlive") this.sendHeartbeat();
+		};
+		this.workerRef.postMessage({
+			event: "start",
+			interval: this.heartbeatIntervalMs
+		});
+	}
+	_terminateWorker() {
+		if (this.workerRef) {
+			this.log("worker", "terminating worker");
+			this.workerRef.terminate();
+			this.workerRef = void 0;
+		}
+	}
+	_onConnClose(event) {
+		var _a$1;
+		this._setConnectionState("disconnected");
+		this.log("transport", "close", event);
+		this._triggerChanError();
+		this._clearTimer("heartbeat");
+		if (!this._wasManualDisconnect) (_a$1 = this.reconnectTimer) === null || _a$1 === void 0 || _a$1.scheduleTimeout();
+		this._triggerStateCallbacks("close", event);
+	}
+	_onConnError(error) {
+		this._setConnectionState("disconnected");
+		this.log("transport", `${error}`);
+		this._triggerChanError();
+		this._triggerStateCallbacks("error", error);
+		try {
+			this.heartbeatCallback("error");
+		} catch (e) {
+			this.log("error", "error in heartbeat callback", e);
+		}
+	}
+	_triggerChanError() {
+		this.channels.forEach((channel) => channel._trigger(CHANNEL_EVENTS.error));
+	}
+	_appendParams(url, params) {
+		if (Object.keys(params).length === 0) return url;
+		return `${url}${url.match(/\?/) ? "&" : "?"}${new URLSearchParams(params)}`;
+	}
+	_workerObjectUrl(url) {
+		let result_url;
+		if (url) result_url = url;
+		else {
+			const blob = new Blob([WORKER_SCRIPT], { type: "application/javascript" });
+			result_url = URL.createObjectURL(blob);
+		}
+		return result_url;
+	}
+	_setConnectionState(state, manual = false) {
+		this._connectionState = state;
+		if (state === "connecting") this._wasManualDisconnect = false;
+		else if (state === "disconnecting") this._wasManualDisconnect = manual;
+	}
+	async _performAuth(token = null) {
+		let tokenToSend;
+		let isManualToken = false;
+		if (token) {
+			tokenToSend = token;
+			isManualToken = true;
+		} else if (this.accessToken) try {
+			tokenToSend = await this.accessToken();
+		} catch (e) {
+			this.log("error", "Error fetching access token from callback", e);
+			tokenToSend = this.accessTokenValue;
+		}
+		else tokenToSend = this.accessTokenValue;
+		if (isManualToken) this._manuallySetToken = true;
+		else if (this.accessToken) this._manuallySetToken = false;
+		if (this.accessTokenValue != tokenToSend) {
+			this.accessTokenValue = tokenToSend;
+			this.channels.forEach((channel) => {
+				const payload = {
+					access_token: tokenToSend,
+					version: DEFAULT_VERSION
+				};
+				tokenToSend && channel.updateJoinPayload(payload);
+				if (channel.joinedOnce && channel._isJoined()) channel._push(CHANNEL_EVENTS.access_token, { access_token: tokenToSend });
+			});
+		}
+	}
+	async _waitForAuthIfNeeded() {
+		if (this._authPromise) await this._authPromise;
+	}
+	_setAuthSafely(context = "general") {
+		if (!this._isManualToken()) this.setAuth().catch((e) => {
+			this.log("error", `Error setting auth in ${context}`, e);
+		});
+	}
+	_triggerStateCallbacks(event, data) {
+		try {
+			this.stateChangeCallbacks[event].forEach((callback) => {
+				try {
+					callback(data);
+				} catch (e) {
+					this.log("error", `error in ${event} callback`, e);
+				}
+			});
+		} catch (e) {
+			this.log("error", `error triggering ${event} callbacks`, e);
+		}
+	}
+	_setupReconnectionTimer() {
+		this.reconnectTimer = new Timer(async () => {
+			setTimeout(async () => {
+				await this._waitForAuthIfNeeded();
+				if (!this.isConnected()) this.connect();
+			}, CONNECTION_TIMEOUTS.RECONNECT_DELAY);
+		}, this.reconnectAfterMs);
+	}
+	_initializeOptions(options$1) {
+		var _a$1, _b, _c, _d, _e$1, _f, _g, _h, _j, _k, _l, _m;
+		this.transport = (_a$1 = options$1 === null || options$1 === void 0 ? void 0 : options$1.transport) !== null && _a$1 !== void 0 ? _a$1 : null;
+		this.timeout = (_b = options$1 === null || options$1 === void 0 ? void 0 : options$1.timeout) !== null && _b !== void 0 ? _b : DEFAULT_TIMEOUT;
+		this.heartbeatIntervalMs = (_c = options$1 === null || options$1 === void 0 ? void 0 : options$1.heartbeatIntervalMs) !== null && _c !== void 0 ? _c : CONNECTION_TIMEOUTS.HEARTBEAT_INTERVAL;
+		this.worker = (_d = options$1 === null || options$1 === void 0 ? void 0 : options$1.worker) !== null && _d !== void 0 ? _d : false;
+		this.accessToken = (_e$1 = options$1 === null || options$1 === void 0 ? void 0 : options$1.accessToken) !== null && _e$1 !== void 0 ? _e$1 : null;
+		this.heartbeatCallback = (_f = options$1 === null || options$1 === void 0 ? void 0 : options$1.heartbeatCallback) !== null && _f !== void 0 ? _f : noop$2;
+		this.vsn = (_g = options$1 === null || options$1 === void 0 ? void 0 : options$1.vsn) !== null && _g !== void 0 ? _g : DEFAULT_VSN;
+		if (options$1 === null || options$1 === void 0 ? void 0 : options$1.params) this.params = options$1.params;
+		if (options$1 === null || options$1 === void 0 ? void 0 : options$1.logger) this.logger = options$1.logger;
+		if ((options$1 === null || options$1 === void 0 ? void 0 : options$1.logLevel) || (options$1 === null || options$1 === void 0 ? void 0 : options$1.log_level)) {
+			this.logLevel = options$1.logLevel || options$1.log_level;
+			this.params = Object.assign(Object.assign({}, this.params), { log_level: this.logLevel });
+		}
+		this.reconnectAfterMs = (_h = options$1 === null || options$1 === void 0 ? void 0 : options$1.reconnectAfterMs) !== null && _h !== void 0 ? _h : ((tries) => {
+			return RECONNECT_INTERVALS[tries - 1] || DEFAULT_RECONNECT_FALLBACK;
+		});
+		switch (this.vsn) {
+			case VSN_1_0_0:
+				this.encode = (_j = options$1 === null || options$1 === void 0 ? void 0 : options$1.encode) !== null && _j !== void 0 ? _j : ((payload, callback) => {
+					return callback(JSON.stringify(payload));
+				});
+				this.decode = (_k = options$1 === null || options$1 === void 0 ? void 0 : options$1.decode) !== null && _k !== void 0 ? _k : ((payload, callback) => {
+					return callback(JSON.parse(payload));
+				});
+				break;
+			case VSN_2_0_0:
+				this.encode = (_l = options$1 === null || options$1 === void 0 ? void 0 : options$1.encode) !== null && _l !== void 0 ? _l : this.serializer.encode.bind(this.serializer);
+				this.decode = (_m = options$1 === null || options$1 === void 0 ? void 0 : options$1.decode) !== null && _m !== void 0 ? _m : this.serializer.decode.bind(this.serializer);
+				break;
+			default: throw new Error(`Unsupported serializer version: ${this.vsn}`);
+		}
+		if (this.worker) {
+			if (typeof window !== "undefined" && !window.Worker) throw new Error("Web Worker is not supported");
+			this.workerUrl = options$1 === null || options$1 === void 0 ? void 0 : options$1.workerUrl;
+		}
+	}
+};
+var IcebergError = class extends Error {
+	constructor(message$1, opts) {
+		super(message$1);
+		this.name = "IcebergError";
+		this.status = opts.status;
+		this.icebergType = opts.icebergType;
+		this.icebergCode = opts.icebergCode;
+		this.details = opts.details;
+		this.isCommitStateUnknown = opts.icebergType === "CommitStateUnknownException" || [
+			500,
+			502,
+			504
+		].includes(opts.status) && opts.icebergType?.includes("CommitState") === true;
+	}
+	isNotFound() {
+		return this.status === 404;
+	}
+	isConflict() {
+		return this.status === 409;
+	}
+	isAuthenticationTimeout() {
+		return this.status === 419;
+	}
+};
+function buildUrl(baseUrl, path$1, query) {
+	const url = new URL(path$1, baseUrl);
+	if (query) {
+		for (const [key, value] of Object.entries(query)) if (value !== void 0) url.searchParams.set(key, value);
+	}
+	return url.toString();
+}
+async function buildAuthHeaders(auth) {
+	if (!auth || auth.type === "none") return {};
+	if (auth.type === "bearer") return { Authorization: `Bearer ${auth.token}` };
+	if (auth.type === "header") return { [auth.name]: auth.value };
+	if (auth.type === "custom") return await auth.getHeaders();
+	return {};
+}
+function createFetchClient(options$1) {
+	const fetchFn = options$1.fetchImpl ?? globalThis.fetch;
+	return { async request({ method, path: path$1, query, body, headers }) {
+		const url = buildUrl(options$1.baseUrl, path$1, query);
+		const authHeaders = await buildAuthHeaders(options$1.auth);
+		const res = await fetchFn(url, {
+			method,
+			headers: {
+				...body ? { "Content-Type": "application/json" } : {},
+				...authHeaders,
+				...headers
+			},
+			body: body ? JSON.stringify(body) : void 0
+		});
+		const text = await res.text();
+		const isJson = (res.headers.get("content-type") || "").includes("application/json");
+		const data = isJson && text ? JSON.parse(text) : text;
+		if (!res.ok) {
+			const errBody = isJson ? data : void 0;
+			const errorDetail = errBody?.error;
+			throw new IcebergError(errorDetail?.message ?? `Request failed with status ${res.status}`, {
+				status: res.status,
+				icebergType: errorDetail?.type,
+				icebergCode: errorDetail?.code,
+				details: errBody
+			});
+		}
+		return {
+			status: res.status,
+			headers: res.headers,
+			data
+		};
+	} };
+}
+function namespaceToPath(namespace) {
+	return namespace.join("");
+}
+var NamespaceOperations = class {
+	constructor(client, prefix$2 = "") {
+		this.client = client;
+		this.prefix = prefix$2;
+	}
+	async listNamespaces(parent) {
+		const query = parent ? { parent: namespaceToPath(parent.namespace) } : void 0;
+		return (await this.client.request({
+			method: "GET",
+			path: `${this.prefix}/namespaces`,
+			query
+		})).data.namespaces.map((ns) => ({ namespace: ns }));
+	}
+	async createNamespace(id, metadata) {
+		const request = {
+			namespace: id.namespace,
+			properties: metadata?.properties
+		};
+		return (await this.client.request({
+			method: "POST",
+			path: `${this.prefix}/namespaces`,
+			body: request
+		})).data;
+	}
+	async dropNamespace(id) {
+		await this.client.request({
+			method: "DELETE",
+			path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
+		});
+	}
+	async loadNamespaceMetadata(id) {
+		return { properties: (await this.client.request({
+			method: "GET",
+			path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
+		})).data.properties };
+	}
+	async namespaceExists(id) {
+		try {
+			await this.client.request({
+				method: "HEAD",
+				path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
+			});
+			return true;
+		} catch (error) {
+			if (error instanceof IcebergError && error.status === 404) return false;
+			throw error;
+		}
+	}
+	async createNamespaceIfNotExists(id, metadata) {
+		try {
+			return await this.createNamespace(id, metadata);
+		} catch (error) {
+			if (error instanceof IcebergError && error.status === 409) return;
+			throw error;
+		}
+	}
+};
+function namespaceToPath2(namespace) {
+	return namespace.join("");
+}
+var TableOperations = class {
+	constructor(client, prefix$2 = "", accessDelegation) {
+		this.client = client;
+		this.prefix = prefix$2;
+		this.accessDelegation = accessDelegation;
+	}
+	async listTables(namespace) {
+		return (await this.client.request({
+			method: "GET",
+			path: `${this.prefix}/namespaces/${namespaceToPath2(namespace.namespace)}/tables`
+		})).data.identifiers;
+	}
+	async createTable(namespace, request) {
+		const headers = {};
+		if (this.accessDelegation) headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
+		return (await this.client.request({
+			method: "POST",
+			path: `${this.prefix}/namespaces/${namespaceToPath2(namespace.namespace)}/tables`,
+			body: request,
+			headers
+		})).data.metadata;
+	}
+	async updateTable(id, request) {
+		const response = await this.client.request({
+			method: "POST",
+			path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
+			body: request
+		});
+		return {
+			"metadata-location": response.data["metadata-location"],
+			metadata: response.data.metadata
+		};
+	}
+	async dropTable(id, options$1) {
+		await this.client.request({
+			method: "DELETE",
+			path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
+			query: { purgeRequested: String(options$1?.purge ?? false) }
+		});
+	}
+	async loadTable(id) {
+		const headers = {};
+		if (this.accessDelegation) headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
+		return (await this.client.request({
+			method: "GET",
+			path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
+			headers
+		})).data.metadata;
+	}
+	async tableExists(id) {
+		const headers = {};
+		if (this.accessDelegation) headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
+		try {
+			await this.client.request({
+				method: "HEAD",
+				path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
+				headers
+			});
+			return true;
+		} catch (error) {
+			if (error instanceof IcebergError && error.status === 404) return false;
+			throw error;
+		}
+	}
+	async createTableIfNotExists(namespace, request) {
+		try {
+			return await this.createTable(namespace, request);
+		} catch (error) {
+			if (error instanceof IcebergError && error.status === 409) return await this.loadTable({
+				namespace: namespace.namespace,
+				name: request.name
+			});
+			throw error;
+		}
+	}
+};
+var IcebergRestCatalog = class {
+	constructor(options$1) {
+		let prefix$2 = "v1";
+		if (options$1.catalogName) prefix$2 += `/${options$1.catalogName}`;
+		this.client = createFetchClient({
+			baseUrl: options$1.baseUrl.endsWith("/") ? options$1.baseUrl : `${options$1.baseUrl}/`,
+			auth: options$1.auth,
+			fetchImpl: options$1.fetch
+		});
+		this.accessDelegation = options$1.accessDelegation?.join(",");
+		this.namespaceOps = new NamespaceOperations(this.client, prefix$2);
+		this.tableOps = new TableOperations(this.client, prefix$2, this.accessDelegation);
+	}
+	async listNamespaces(parent) {
+		return this.namespaceOps.listNamespaces(parent);
+	}
+	async createNamespace(id, metadata) {
+		return this.namespaceOps.createNamespace(id, metadata);
+	}
+	async dropNamespace(id) {
+		await this.namespaceOps.dropNamespace(id);
+	}
+	async loadNamespaceMetadata(id) {
+		return this.namespaceOps.loadNamespaceMetadata(id);
+	}
+	async listTables(namespace) {
+		return this.tableOps.listTables(namespace);
+	}
+	async createTable(namespace, request) {
+		return this.tableOps.createTable(namespace, request);
+	}
+	async updateTable(id, request) {
+		return this.tableOps.updateTable(id, request);
+	}
+	async dropTable(id, options$1) {
+		await this.tableOps.dropTable(id, options$1);
+	}
+	async loadTable(id) {
+		return this.tableOps.loadTable(id);
+	}
+	async namespaceExists(id) {
+		return this.namespaceOps.namespaceExists(id);
+	}
+	async tableExists(id) {
+		return this.tableOps.tableExists(id);
+	}
+	async createNamespaceIfNotExists(id, metadata) {
+		return this.namespaceOps.createNamespaceIfNotExists(id, metadata);
+	}
+	async createTableIfNotExists(namespace, request) {
+		return this.tableOps.createTableIfNotExists(namespace, request);
+	}
+};
+var StorageError = class extends Error {
+	constructor(message$1, namespace = "storage", status, statusCode) {
+		super(message$1);
+		this.__isStorageError = true;
+		this.namespace = namespace;
+		this.name = namespace === "vectors" ? "StorageVectorsError" : "StorageError";
+		this.status = status;
+		this.statusCode = statusCode;
+	}
+};
+function isStorageError(error) {
+	return typeof error === "object" && error !== null && "__isStorageError" in error;
+}
+var StorageApiError = class extends StorageError {
+	constructor(message$1, status, statusCode, namespace = "storage") {
+		super(message$1, namespace, status, statusCode);
+		this.name = namespace === "vectors" ? "StorageVectorsApiError" : "StorageApiError";
+		this.status = status;
+		this.statusCode = statusCode;
+	}
+	toJSON() {
+		return {
+			name: this.name,
+			message: this.message,
+			status: this.status,
+			statusCode: this.statusCode
+		};
+	}
+};
+var StorageUnknownError = class extends StorageError {
+	constructor(message$1, originalError, namespace = "storage") {
+		super(message$1, namespace);
+		this.name = namespace === "vectors" ? "StorageVectorsUnknownError" : "StorageUnknownError";
+		this.originalError = originalError;
+	}
+};
+var resolveFetch$2 = (customFetch) => {
+	if (customFetch) return (...args) => customFetch(...args);
+	return (...args) => fetch(...args);
+};
+var isPlainObject$4 = (value) => {
+	if (typeof value !== "object" || value === null) return false;
+	const prototype = Object.getPrototypeOf(value);
+	return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in value) && !(Symbol.iterator in value);
+};
+var recursiveToCamel = (item) => {
+	if (Array.isArray(item)) return item.map((el) => recursiveToCamel(el));
+	else if (typeof item === "function" || item !== Object(item)) return item;
+	const result = {};
+	Object.entries(item).forEach(([key, value]) => {
+		const newKey = key.replace(/([-_][a-z])/gi, (c$1) => c$1.toUpperCase().replace(/[-_]/g, ""));
+		result[newKey] = recursiveToCamel(value);
+	});
+	return result;
+};
+var isValidBucketName = (bucketName) => {
+	if (!bucketName || typeof bucketName !== "string") return false;
+	if (bucketName.length === 0 || bucketName.length > 100) return false;
+	if (bucketName.trim() !== bucketName) return false;
+	if (bucketName.includes("/") || bucketName.includes("\\")) return false;
+	return /^[\w!.\*'() &$@=;:+,?-]+$/.test(bucketName);
+};
+function _typeof$50(o$1) {
+	"@babel/helpers - typeof";
+	return _typeof$50 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1$1) {
+		return typeof o$1$1;
+	} : function(o$1$1) {
+		return o$1$1 && "function" == typeof Symbol && o$1$1.constructor === Symbol && o$1$1 !== Symbol.prototype ? "symbol" : typeof o$1$1;
+	}, _typeof$50(o$1);
+}
+function toPrimitive$1(t$1, r$2) {
+	if ("object" != _typeof$50(t$1) || !t$1) return t$1;
+	var e = t$1[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i$2 = e.call(t$1, r$2 || "default");
+		if ("object" != _typeof$50(i$2)) return i$2;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$2 ? String : Number)(t$1);
+}
+function toPropertyKey$1(t$1) {
+	var i$2 = toPrimitive$1(t$1, "string");
+	return "symbol" == _typeof$50(i$2) ? i$2 : i$2 + "";
+}
+function _defineProperty$45(e, r$2, t$1) {
+	return (r$2 = toPropertyKey$1(r$2)) in e ? Object.defineProperty(e, r$2, {
+		value: t$1,
+		enumerable: !0,
+		configurable: !0,
+		writable: !0
+	}) : e[r$2] = t$1, e;
+}
+function ownKeys$40(e, r$2) {
+	var t$1 = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o$1 = Object.getOwnPropertySymbols(e);
+		r$2 && (o$1 = o$1.filter(function(r$1$1) {
+			return Object.getOwnPropertyDescriptor(e, r$1$1).enumerable;
+		})), t$1.push.apply(t$1, o$1);
+	}
+	return t$1;
+}
+function _objectSpread2$1(e) {
+	for (var r$2 = 1; r$2 < arguments.length; r$2++) {
+		var t$1 = null != arguments[r$2] ? arguments[r$2] : {};
+		r$2 % 2 ? ownKeys$40(Object(t$1), !0).forEach(function(r$1$1) {
+			_defineProperty$45(e, r$1$1, t$1[r$1$1]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t$1)) : ownKeys$40(Object(t$1)).forEach(function(r$1$1) {
+			Object.defineProperty(e, r$1$1, Object.getOwnPropertyDescriptor(t$1, r$1$1));
+		});
+	}
+	return e;
+}
+var _getErrorMessage$1 = (err) => {
+	var _err$error;
+	return err.msg || err.message || err.error_description || (typeof err.error === "string" ? err.error : (_err$error = err.error) === null || _err$error === void 0 ? void 0 : _err$error.message) || JSON.stringify(err);
+};
+var handleError$1 = async (error, reject, options$1, namespace) => {
+	if (error && typeof error === "object" && "status" in error && "ok" in error && typeof error.status === "number" && !(options$1 === null || options$1 === void 0 ? void 0 : options$1.noResolveJson)) {
+		const responseError = error;
+		const status = responseError.status || 500;
+		if (typeof responseError.json === "function") responseError.json().then((err) => {
+			const statusCode = (err === null || err === void 0 ? void 0 : err.statusCode) || (err === null || err === void 0 ? void 0 : err.code) || status + "";
+			reject(new StorageApiError(_getErrorMessage$1(err), status, statusCode, namespace));
+		}).catch(() => {
+			if (namespace === "vectors") {
+				const statusCode = status + "";
+				reject(new StorageApiError(responseError.statusText || `HTTP ${status} error`, status, statusCode, namespace));
+			} else {
+				const statusCode = status + "";
+				reject(new StorageApiError(responseError.statusText || `HTTP ${status} error`, status, statusCode, namespace));
+			}
+		});
+		else {
+			const statusCode = status + "";
+			reject(new StorageApiError(responseError.statusText || `HTTP ${status} error`, status, statusCode, namespace));
+		}
+	} else reject(new StorageUnknownError(_getErrorMessage$1(error), error, namespace));
+};
+var _getRequestParams$1 = (method, options$1, parameters, body) => {
+	const params = {
+		method,
+		headers: (options$1 === null || options$1 === void 0 ? void 0 : options$1.headers) || {}
+	};
+	if (method === "GET" || method === "HEAD" || !body) return _objectSpread2$1(_objectSpread2$1({}, params), parameters);
+	if (isPlainObject$4(body)) {
+		params.headers = _objectSpread2$1({ "Content-Type": "application/json" }, options$1 === null || options$1 === void 0 ? void 0 : options$1.headers);
+		params.body = JSON.stringify(body);
+	} else params.body = body;
+	if (options$1 === null || options$1 === void 0 ? void 0 : options$1.duplex) params.duplex = options$1.duplex;
+	return _objectSpread2$1(_objectSpread2$1({}, params), parameters);
+};
+async function _handleRequest$1(fetcher, method, url, options$1, parameters, body, namespace) {
+	return new Promise((resolve, reject) => {
+		fetcher(url, _getRequestParams$1(method, options$1, parameters, body)).then((result) => {
+			if (!result.ok) throw result;
+			if (options$1 === null || options$1 === void 0 ? void 0 : options$1.noResolveJson) return result;
+			if (namespace === "vectors") {
+				const contentType = result.headers.get("content-type");
+				if (result.headers.get("content-length") === "0" || result.status === 204) return {};
+				if (!contentType || !contentType.includes("application/json")) return {};
+			}
+			return result.json();
+		}).then((data) => resolve(data)).catch((error) => handleError$1(error, reject, options$1, namespace));
+	});
+}
+function createFetchApi(namespace = "storage") {
+	return {
+		get: async (fetcher, url, options$1, parameters) => {
+			return _handleRequest$1(fetcher, "GET", url, options$1, parameters, void 0, namespace);
+		},
+		post: async (fetcher, url, body, options$1, parameters) => {
+			return _handleRequest$1(fetcher, "POST", url, options$1, parameters, body, namespace);
+		},
+		put: async (fetcher, url, body, options$1, parameters) => {
+			return _handleRequest$1(fetcher, "PUT", url, options$1, parameters, body, namespace);
+		},
+		head: async (fetcher, url, options$1, parameters) => {
+			return _handleRequest$1(fetcher, "HEAD", url, _objectSpread2$1(_objectSpread2$1({}, options$1), {}, { noResolveJson: true }), parameters, void 0, namespace);
+		},
+		remove: async (fetcher, url, body, options$1, parameters) => {
+			return _handleRequest$1(fetcher, "DELETE", url, options$1, parameters, body, namespace);
+		}
+	};
+}
+var { get: get$9, post, put, head, remove } = createFetchApi("storage");
+var vectorsApi = createFetchApi("vectors");
+var BaseApiClient = class {
+	constructor(url, headers = {}, fetch$1, namespace = "storage") {
+		this.shouldThrowOnError = false;
+		this.url = url;
+		this.headers = headers;
+		this.fetch = resolveFetch$2(fetch$1);
+		this.namespace = namespace;
+	}
+	throwOnError() {
+		this.shouldThrowOnError = true;
+		return this;
+	}
+	async handleOperation(operation) {
+		var _this = this;
+		try {
+			return {
+				data: await operation(),
+				error: null
+			};
+		} catch (error) {
+			if (_this.shouldThrowOnError) throw error;
+			if (isStorageError(error)) return {
+				data: null,
+				error
+			};
+			throw error;
+		}
+	}
+};
+var StreamDownloadBuilder = class {
+	constructor(downloadFn, shouldThrowOnError) {
+		this.downloadFn = downloadFn;
+		this.shouldThrowOnError = shouldThrowOnError;
+	}
+	then(onfulfilled, onrejected) {
+		return this.execute().then(onfulfilled, onrejected);
+	}
+	async execute() {
+		var _this = this;
+		try {
+			return {
+				data: (await _this.downloadFn()).body,
+				error: null
+			};
+		} catch (error) {
+			if (_this.shouldThrowOnError) throw error;
+			if (isStorageError(error)) return {
+				data: null,
+				error
+			};
+			throw error;
+		}
+	}
+};
+var _Symbol$toStringTag = Symbol.toStringTag;
+var BlobDownloadBuilder = class {
+	constructor(downloadFn, shouldThrowOnError) {
+		this.downloadFn = downloadFn;
+		this.shouldThrowOnError = shouldThrowOnError;
+		this[_Symbol$toStringTag] = "BlobDownloadBuilder";
+		this.promise = null;
+	}
+	asStream() {
+		return new StreamDownloadBuilder(this.downloadFn, this.shouldThrowOnError);
+	}
+	then(onfulfilled, onrejected) {
+		return this.getPromise().then(onfulfilled, onrejected);
+	}
+	catch(onrejected) {
+		return this.getPromise().catch(onrejected);
+	}
+	finally(onfinally) {
+		return this.getPromise().finally(onfinally);
+	}
+	getPromise() {
+		if (!this.promise) this.promise = this.execute();
+		return this.promise;
+	}
+	async execute() {
+		var _this = this;
+		try {
+			return {
+				data: await (await _this.downloadFn()).blob(),
+				error: null
+			};
+		} catch (error) {
+			if (_this.shouldThrowOnError) throw error;
+			if (isStorageError(error)) return {
+				data: null,
+				error
+			};
+			throw error;
+		}
+	}
+};
+var DEFAULT_SEARCH_OPTIONS = {
+	limit: 100,
+	offset: 0,
+	sortBy: {
+		column: "name",
+		order: "asc"
+	}
+};
+var DEFAULT_FILE_OPTIONS = {
+	cacheControl: "3600",
+	contentType: "text/plain;charset=UTF-8",
+	upsert: false
+};
+var StorageFileApi = class extends BaseApiClient {
+	constructor(url, headers = {}, bucketId, fetch$1) {
+		super(url, headers, fetch$1, "storage");
+		this.bucketId = bucketId;
+	}
+	async uploadOrUpdate(method, path$1, fileBody, fileOptions) {
+		var _this = this;
+		return _this.handleOperation(async () => {
+			let body;
+			const options$1 = _objectSpread2$1(_objectSpread2$1({}, DEFAULT_FILE_OPTIONS), fileOptions);
+			let headers = _objectSpread2$1(_objectSpread2$1({}, _this.headers), method === "POST" && { "x-upsert": String(options$1.upsert) });
+			const metadata = options$1.metadata;
+			if (typeof Blob !== "undefined" && fileBody instanceof Blob) {
+				body = new FormData();
+				body.append("cacheControl", options$1.cacheControl);
+				if (metadata) body.append("metadata", _this.encodeMetadata(metadata));
+				body.append("", fileBody);
+			} else if (typeof FormData !== "undefined" && fileBody instanceof FormData) {
+				body = fileBody;
+				if (!body.has("cacheControl")) body.append("cacheControl", options$1.cacheControl);
+				if (metadata && !body.has("metadata")) body.append("metadata", _this.encodeMetadata(metadata));
+			} else {
+				body = fileBody;
+				headers["cache-control"] = `max-age=${options$1.cacheControl}`;
+				headers["content-type"] = options$1.contentType;
+				if (metadata) headers["x-metadata"] = _this.toBase64(_this.encodeMetadata(metadata));
+				if ((typeof ReadableStream !== "undefined" && body instanceof ReadableStream || body && typeof body === "object" && "pipe" in body && typeof body.pipe === "function") && !options$1.duplex) options$1.duplex = "half";
+			}
+			if (fileOptions === null || fileOptions === void 0 ? void 0 : fileOptions.headers) headers = _objectSpread2$1(_objectSpread2$1({}, headers), fileOptions.headers);
+			const cleanPath = _this._removeEmptyFolders(path$1);
+			const _path = _this._getFinalPath(cleanPath);
+			const data = await (method == "PUT" ? put : post)(_this.fetch, `${_this.url}/object/${_path}`, body, _objectSpread2$1({ headers }, (options$1 === null || options$1 === void 0 ? void 0 : options$1.duplex) ? { duplex: options$1.duplex } : {}));
+			return {
+				path: cleanPath,
+				id: data.Id,
+				fullPath: data.Key
+			};
+		});
+	}
+	async upload(path$1, fileBody, fileOptions) {
+		return this.uploadOrUpdate("POST", path$1, fileBody, fileOptions);
+	}
+	async uploadToSignedUrl(path$1, token, fileBody, fileOptions) {
+		var _this3 = this;
+		const cleanPath = _this3._removeEmptyFolders(path$1);
+		const _path = _this3._getFinalPath(cleanPath);
+		const url = new URL(_this3.url + `/object/upload/sign/${_path}`);
+		url.searchParams.set("token", token);
+		return _this3.handleOperation(async () => {
+			let body;
+			const options$1 = _objectSpread2$1({ upsert: DEFAULT_FILE_OPTIONS.upsert }, fileOptions);
+			const headers = _objectSpread2$1(_objectSpread2$1({}, _this3.headers), { "x-upsert": String(options$1.upsert) });
+			if (typeof Blob !== "undefined" && fileBody instanceof Blob) {
+				body = new FormData();
+				body.append("cacheControl", options$1.cacheControl);
+				body.append("", fileBody);
+			} else if (typeof FormData !== "undefined" && fileBody instanceof FormData) {
+				body = fileBody;
+				body.append("cacheControl", options$1.cacheControl);
+			} else {
+				body = fileBody;
+				headers["cache-control"] = `max-age=${options$1.cacheControl}`;
+				headers["content-type"] = options$1.contentType;
+			}
+			return {
+				path: cleanPath,
+				fullPath: (await put(_this3.fetch, url.toString(), body, { headers })).Key
+			};
+		});
+	}
+	async createSignedUploadUrl(path$1, options$1) {
+		var _this4 = this;
+		return _this4.handleOperation(async () => {
+			let _path = _this4._getFinalPath(path$1);
+			const headers = _objectSpread2$1({}, _this4.headers);
+			if (options$1 === null || options$1 === void 0 ? void 0 : options$1.upsert) headers["x-upsert"] = "true";
+			const data = await post(_this4.fetch, `${_this4.url}/object/upload/sign/${_path}`, {}, { headers });
+			const url = new URL(_this4.url + data.url);
+			const token = url.searchParams.get("token");
+			if (!token) throw new StorageError("No token returned by API");
+			return {
+				signedUrl: url.toString(),
+				path: path$1,
+				token
+			};
+		});
+	}
+	async update(path$1, fileBody, fileOptions) {
+		return this.uploadOrUpdate("PUT", path$1, fileBody, fileOptions);
+	}
+	async move(fromPath, toPath, options$1) {
+		var _this6 = this;
+		return _this6.handleOperation(async () => {
+			return await post(_this6.fetch, `${_this6.url}/object/move`, {
+				bucketId: _this6.bucketId,
+				sourceKey: fromPath,
+				destinationKey: toPath,
+				destinationBucket: options$1 === null || options$1 === void 0 ? void 0 : options$1.destinationBucket
+			}, { headers: _this6.headers });
+		});
+	}
+	async copy(fromPath, toPath, options$1) {
+		var _this7 = this;
+		return _this7.handleOperation(async () => {
+			return { path: (await post(_this7.fetch, `${_this7.url}/object/copy`, {
+				bucketId: _this7.bucketId,
+				sourceKey: fromPath,
+				destinationKey: toPath,
+				destinationBucket: options$1 === null || options$1 === void 0 ? void 0 : options$1.destinationBucket
+			}, { headers: _this7.headers })).Key };
+		});
+	}
+	async createSignedUrl(path$1, expiresIn, options$1) {
+		var _this8 = this;
+		return _this8.handleOperation(async () => {
+			let _path = _this8._getFinalPath(path$1);
+			let data = await post(_this8.fetch, `${_this8.url}/object/sign/${_path}`, _objectSpread2$1({ expiresIn }, (options$1 === null || options$1 === void 0 ? void 0 : options$1.transform) ? { transform: options$1.transform } : {}), { headers: _this8.headers });
+			const downloadQueryParam = (options$1 === null || options$1 === void 0 ? void 0 : options$1.download) ? `&download=${options$1.download === true ? "" : options$1.download}` : "";
+			return { signedUrl: encodeURI(`${_this8.url}${data.signedURL}${downloadQueryParam}`) };
+		});
+	}
+	async createSignedUrls(paths, expiresIn, options$1) {
+		var _this9 = this;
+		return _this9.handleOperation(async () => {
+			const data = await post(_this9.fetch, `${_this9.url}/object/sign/${_this9.bucketId}`, {
+				expiresIn,
+				paths
+			}, { headers: _this9.headers });
+			const downloadQueryParam = (options$1 === null || options$1 === void 0 ? void 0 : options$1.download) ? `&download=${options$1.download === true ? "" : options$1.download}` : "";
+			return data.map((datum) => _objectSpread2$1(_objectSpread2$1({}, datum), {}, { signedUrl: datum.signedURL ? encodeURI(`${_this9.url}${datum.signedURL}${downloadQueryParam}`) : null }));
+		});
+	}
+	download(path$1, options$1) {
+		const renderPath = typeof (options$1 === null || options$1 === void 0 ? void 0 : options$1.transform) !== "undefined" ? "render/image/authenticated" : "object";
+		const transformationQuery = this.transformOptsToQueryString((options$1 === null || options$1 === void 0 ? void 0 : options$1.transform) || {});
+		const queryString = transformationQuery ? `?${transformationQuery}` : "";
+		const _path = this._getFinalPath(path$1);
+		const downloadFn = () => get$9(this.fetch, `${this.url}/${renderPath}/${_path}${queryString}`, {
+			headers: this.headers,
+			noResolveJson: true
+		});
+		return new BlobDownloadBuilder(downloadFn, this.shouldThrowOnError);
+	}
+	async info(path$1) {
+		var _this10 = this;
+		const _path = _this10._getFinalPath(path$1);
+		return _this10.handleOperation(async () => {
+			return recursiveToCamel(await get$9(_this10.fetch, `${_this10.url}/object/info/${_path}`, { headers: _this10.headers }));
+		});
+	}
+	async exists(path$1) {
+		var _this11 = this;
+		const _path = _this11._getFinalPath(path$1);
+		try {
+			await head(_this11.fetch, `${_this11.url}/object/${_path}`, { headers: _this11.headers });
+			return {
+				data: true,
+				error: null
+			};
+		} catch (error) {
+			if (_this11.shouldThrowOnError) throw error;
+			if (isStorageError(error) && error instanceof StorageUnknownError) {
+				const originalError = error.originalError;
+				if ([400, 404].includes(originalError === null || originalError === void 0 ? void 0 : originalError.status)) return {
+					data: false,
+					error
+				};
+			}
+			throw error;
+		}
+	}
+	getPublicUrl(path$1, options$1) {
+		const _path = this._getFinalPath(path$1);
+		const _queryString = [];
+		const downloadQueryParam = (options$1 === null || options$1 === void 0 ? void 0 : options$1.download) ? `download=${options$1.download === true ? "" : options$1.download}` : "";
+		if (downloadQueryParam !== "") _queryString.push(downloadQueryParam);
+		const renderPath = typeof (options$1 === null || options$1 === void 0 ? void 0 : options$1.transform) !== "undefined" ? "render/image" : "object";
+		const transformationQuery = this.transformOptsToQueryString((options$1 === null || options$1 === void 0 ? void 0 : options$1.transform) || {});
+		if (transformationQuery !== "") _queryString.push(transformationQuery);
+		let queryString = _queryString.join("&");
+		if (queryString !== "") queryString = `?${queryString}`;
+		return { data: { publicUrl: encodeURI(`${this.url}/${renderPath}/public/${_path}${queryString}`) } };
+	}
+	async remove(paths) {
+		var _this12 = this;
+		return _this12.handleOperation(async () => {
+			return await remove(_this12.fetch, `${_this12.url}/object/${_this12.bucketId}`, { prefixes: paths }, { headers: _this12.headers });
+		});
+	}
+	async list(path$1, options$1, parameters) {
+		var _this13 = this;
+		return _this13.handleOperation(async () => {
+			const body = _objectSpread2$1(_objectSpread2$1(_objectSpread2$1({}, DEFAULT_SEARCH_OPTIONS), options$1), {}, { prefix: path$1 || "" });
+			return await post(_this13.fetch, `${_this13.url}/object/list/${_this13.bucketId}`, body, { headers: _this13.headers }, parameters);
+		});
+	}
+	async listV2(options$1, parameters) {
+		var _this14 = this;
+		return _this14.handleOperation(async () => {
+			const body = _objectSpread2$1({}, options$1);
+			return await post(_this14.fetch, `${_this14.url}/object/list-v2/${_this14.bucketId}`, body, { headers: _this14.headers }, parameters);
+		});
+	}
+	encodeMetadata(metadata) {
+		return JSON.stringify(metadata);
+	}
+	toBase64(data) {
+		if (typeof Buffer !== "undefined") return Buffer.from(data).toString("base64");
+		return btoa(data);
+	}
+	_getFinalPath(path$1) {
+		return `${this.bucketId}/${path$1.replace(/^\/+/, "")}`;
+	}
+	_removeEmptyFolders(path$1) {
+		return path$1.replace(/^\/|\/$/g, "").replace(/\/+/g, "/");
+	}
+	transformOptsToQueryString(transform$1) {
+		const params = [];
+		if (transform$1.width) params.push(`width=${transform$1.width}`);
+		if (transform$1.height) params.push(`height=${transform$1.height}`);
+		if (transform$1.resize) params.push(`resize=${transform$1.resize}`);
+		if (transform$1.format) params.push(`format=${transform$1.format}`);
+		if (transform$1.quality) params.push(`quality=${transform$1.quality}`);
+		return params.join("&");
+	}
+};
+var version$3 = "2.94.0";
+var DEFAULT_HEADERS$1 = { "X-Client-Info": `storage-js/${version$3}` };
+var StorageBucketApi = class extends BaseApiClient {
+	constructor(url, headers = {}, fetch$1, opts) {
+		const baseUrl = new URL(url);
+		if (opts === null || opts === void 0 ? void 0 : opts.useNewHostname) {
+			if (/supabase\.(co|in|red)$/.test(baseUrl.hostname) && !baseUrl.hostname.includes("storage.supabase.")) baseUrl.hostname = baseUrl.hostname.replace("supabase.", "storage.supabase.");
+		}
+		const finalUrl = baseUrl.href.replace(/\/$/, "");
+		const finalHeaders = _objectSpread2$1(_objectSpread2$1({}, DEFAULT_HEADERS$1), headers);
+		super(finalUrl, finalHeaders, fetch$1, "storage");
+	}
+	async listBuckets(options$1) {
+		var _this = this;
+		return _this.handleOperation(async () => {
+			const queryString = _this.listBucketOptionsToQueryString(options$1);
+			return await get$9(_this.fetch, `${_this.url}/bucket${queryString}`, { headers: _this.headers });
+		});
+	}
+	async getBucket(id) {
+		var _this2 = this;
+		return _this2.handleOperation(async () => {
+			return await get$9(_this2.fetch, `${_this2.url}/bucket/${id}`, { headers: _this2.headers });
+		});
+	}
+	async createBucket(id, options$1 = { public: false }) {
+		var _this3 = this;
+		return _this3.handleOperation(async () => {
+			return await post(_this3.fetch, `${_this3.url}/bucket`, {
+				id,
+				name: id,
+				type: options$1.type,
+				public: options$1.public,
+				file_size_limit: options$1.fileSizeLimit,
+				allowed_mime_types: options$1.allowedMimeTypes
+			}, { headers: _this3.headers });
+		});
+	}
+	async updateBucket(id, options$1) {
+		var _this4 = this;
+		return _this4.handleOperation(async () => {
+			return await put(_this4.fetch, `${_this4.url}/bucket/${id}`, {
+				id,
+				name: id,
+				public: options$1.public,
+				file_size_limit: options$1.fileSizeLimit,
+				allowed_mime_types: options$1.allowedMimeTypes
+			}, { headers: _this4.headers });
+		});
+	}
+	async emptyBucket(id) {
+		var _this5 = this;
+		return _this5.handleOperation(async () => {
+			return await post(_this5.fetch, `${_this5.url}/bucket/${id}/empty`, {}, { headers: _this5.headers });
+		});
+	}
+	async deleteBucket(id) {
+		var _this6 = this;
+		return _this6.handleOperation(async () => {
+			return await remove(_this6.fetch, `${_this6.url}/bucket/${id}`, {}, { headers: _this6.headers });
+		});
+	}
+	listBucketOptionsToQueryString(options$1) {
+		const params = {};
+		if (options$1) {
+			if ("limit" in options$1) params.limit = String(options$1.limit);
+			if ("offset" in options$1) params.offset = String(options$1.offset);
+			if (options$1.search) params.search = options$1.search;
+			if (options$1.sortColumn) params.sortColumn = options$1.sortColumn;
+			if (options$1.sortOrder) params.sortOrder = options$1.sortOrder;
+		}
+		return Object.keys(params).length > 0 ? "?" + new URLSearchParams(params).toString() : "";
+	}
+};
+var StorageAnalyticsClient = class extends BaseApiClient {
+	constructor(url, headers = {}, fetch$1) {
+		const finalUrl = url.replace(/\/$/, "");
+		const finalHeaders = _objectSpread2$1(_objectSpread2$1({}, DEFAULT_HEADERS$1), headers);
+		super(finalUrl, finalHeaders, fetch$1, "storage");
+	}
+	async createBucket(name) {
+		var _this = this;
+		return _this.handleOperation(async () => {
+			return await post(_this.fetch, `${_this.url}/bucket`, { name }, { headers: _this.headers });
+		});
+	}
+	async listBuckets(options$1) {
+		var _this2 = this;
+		return _this2.handleOperation(async () => {
+			const queryParams = new URLSearchParams();
+			if ((options$1 === null || options$1 === void 0 ? void 0 : options$1.limit) !== void 0) queryParams.set("limit", options$1.limit.toString());
+			if ((options$1 === null || options$1 === void 0 ? void 0 : options$1.offset) !== void 0) queryParams.set("offset", options$1.offset.toString());
+			if (options$1 === null || options$1 === void 0 ? void 0 : options$1.sortColumn) queryParams.set("sortColumn", options$1.sortColumn);
+			if (options$1 === null || options$1 === void 0 ? void 0 : options$1.sortOrder) queryParams.set("sortOrder", options$1.sortOrder);
+			if (options$1 === null || options$1 === void 0 ? void 0 : options$1.search) queryParams.set("search", options$1.search);
+			const queryString = queryParams.toString();
+			const url = queryString ? `${_this2.url}/bucket?${queryString}` : `${_this2.url}/bucket`;
+			return await get$9(_this2.fetch, url, { headers: _this2.headers });
+		});
+	}
+	async deleteBucket(bucketName) {
+		var _this3 = this;
+		return _this3.handleOperation(async () => {
+			return await remove(_this3.fetch, `${_this3.url}/bucket/${bucketName}`, {}, { headers: _this3.headers });
+		});
+	}
+	from(bucketName) {
+		var _this4 = this;
+		if (!isValidBucketName(bucketName)) throw new StorageError("Invalid bucket name: File, folder, and bucket names must follow AWS object key naming guidelines and should avoid the use of any other characters.");
+		const catalog = new IcebergRestCatalog({
+			baseUrl: this.url,
+			catalogName: bucketName,
+			auth: {
+				type: "custom",
+				getHeaders: async () => _this4.headers
+			},
+			fetch: this.fetch
+		});
+		const shouldThrowOnError = this.shouldThrowOnError;
+		return new Proxy(catalog, { get(target, prop) {
+			const value = target[prop];
+			if (typeof value !== "function") return value;
+			return async (...args) => {
+				try {
+					return {
+						data: await value.apply(target, args),
+						error: null
+					};
+				} catch (error) {
+					if (shouldThrowOnError) throw error;
+					return {
+						data: null,
+						error
+					};
+				}
+			};
+		} });
+	}
+};
+var VectorIndexApi = class extends BaseApiClient {
+	constructor(url, headers = {}, fetch$1) {
+		const finalUrl = url.replace(/\/$/, "");
+		const finalHeaders = _objectSpread2$1(_objectSpread2$1({}, DEFAULT_HEADERS$1), {}, { "Content-Type": "application/json" }, headers);
+		super(finalUrl, finalHeaders, fetch$1, "vectors");
+	}
+	async createIndex(options$1) {
+		var _this = this;
+		return _this.handleOperation(async () => {
+			return await vectorsApi.post(_this.fetch, `${_this.url}/CreateIndex`, options$1, { headers: _this.headers }) || {};
+		});
+	}
+	async getIndex(vectorBucketName, indexName) {
+		var _this2 = this;
+		return _this2.handleOperation(async () => {
+			return await vectorsApi.post(_this2.fetch, `${_this2.url}/GetIndex`, {
+				vectorBucketName,
+				indexName
+			}, { headers: _this2.headers });
+		});
+	}
+	async listIndexes(options$1) {
+		var _this3 = this;
+		return _this3.handleOperation(async () => {
+			return await vectorsApi.post(_this3.fetch, `${_this3.url}/ListIndexes`, options$1, { headers: _this3.headers });
+		});
+	}
+	async deleteIndex(vectorBucketName, indexName) {
+		var _this4 = this;
+		return _this4.handleOperation(async () => {
+			return await vectorsApi.post(_this4.fetch, `${_this4.url}/DeleteIndex`, {
+				vectorBucketName,
+				indexName
+			}, { headers: _this4.headers }) || {};
+		});
+	}
+};
+var VectorDataApi = class extends BaseApiClient {
+	constructor(url, headers = {}, fetch$1) {
+		const finalUrl = url.replace(/\/$/, "");
+		const finalHeaders = _objectSpread2$1(_objectSpread2$1({}, DEFAULT_HEADERS$1), {}, { "Content-Type": "application/json" }, headers);
+		super(finalUrl, finalHeaders, fetch$1, "vectors");
+	}
+	async putVectors(options$1) {
+		var _this = this;
+		if (options$1.vectors.length < 1 || options$1.vectors.length > 500) throw new Error("Vector batch size must be between 1 and 500 items");
+		return _this.handleOperation(async () => {
+			return await vectorsApi.post(_this.fetch, `${_this.url}/PutVectors`, options$1, { headers: _this.headers }) || {};
+		});
+	}
+	async getVectors(options$1) {
+		var _this2 = this;
+		return _this2.handleOperation(async () => {
+			return await vectorsApi.post(_this2.fetch, `${_this2.url}/GetVectors`, options$1, { headers: _this2.headers });
+		});
+	}
+	async listVectors(options$1) {
+		var _this3 = this;
+		if (options$1.segmentCount !== void 0) {
+			if (options$1.segmentCount < 1 || options$1.segmentCount > 16) throw new Error("segmentCount must be between 1 and 16");
+			if (options$1.segmentIndex !== void 0) {
+				if (options$1.segmentIndex < 0 || options$1.segmentIndex >= options$1.segmentCount) throw new Error(`segmentIndex must be between 0 and ${options$1.segmentCount - 1}`);
+			}
+		}
+		return _this3.handleOperation(async () => {
+			return await vectorsApi.post(_this3.fetch, `${_this3.url}/ListVectors`, options$1, { headers: _this3.headers });
+		});
+	}
+	async queryVectors(options$1) {
+		var _this4 = this;
+		return _this4.handleOperation(async () => {
+			return await vectorsApi.post(_this4.fetch, `${_this4.url}/QueryVectors`, options$1, { headers: _this4.headers });
+		});
+	}
+	async deleteVectors(options$1) {
+		var _this5 = this;
+		if (options$1.keys.length < 1 || options$1.keys.length > 500) throw new Error("Keys batch size must be between 1 and 500 items");
+		return _this5.handleOperation(async () => {
+			return await vectorsApi.post(_this5.fetch, `${_this5.url}/DeleteVectors`, options$1, { headers: _this5.headers }) || {};
+		});
+	}
+};
+var VectorBucketApi = class extends BaseApiClient {
+	constructor(url, headers = {}, fetch$1) {
+		const finalUrl = url.replace(/\/$/, "");
+		const finalHeaders = _objectSpread2$1(_objectSpread2$1({}, DEFAULT_HEADERS$1), {}, { "Content-Type": "application/json" }, headers);
+		super(finalUrl, finalHeaders, fetch$1, "vectors");
+	}
+	async createBucket(vectorBucketName) {
+		var _this = this;
+		return _this.handleOperation(async () => {
+			return await vectorsApi.post(_this.fetch, `${_this.url}/CreateVectorBucket`, { vectorBucketName }, { headers: _this.headers }) || {};
+		});
+	}
+	async getBucket(vectorBucketName) {
+		var _this2 = this;
+		return _this2.handleOperation(async () => {
+			return await vectorsApi.post(_this2.fetch, `${_this2.url}/GetVectorBucket`, { vectorBucketName }, { headers: _this2.headers });
+		});
+	}
+	async listBuckets(options$1 = {}) {
+		var _this3 = this;
+		return _this3.handleOperation(async () => {
+			return await vectorsApi.post(_this3.fetch, `${_this3.url}/ListVectorBuckets`, options$1, { headers: _this3.headers });
+		});
+	}
+	async deleteBucket(vectorBucketName) {
+		var _this4 = this;
+		return _this4.handleOperation(async () => {
+			return await vectorsApi.post(_this4.fetch, `${_this4.url}/DeleteVectorBucket`, { vectorBucketName }, { headers: _this4.headers }) || {};
+		});
+	}
+};
+var StorageVectorsClient = class extends VectorBucketApi {
+	constructor(url, options$1 = {}) {
+		super(url, options$1.headers || {}, options$1.fetch);
+	}
+	from(vectorBucketName) {
+		return new VectorBucketScope(this.url, this.headers, vectorBucketName, this.fetch);
+	}
+	async createBucket(vectorBucketName) {
+		var _superprop_getCreateBucket = () => super.createBucket, _this = this;
+		return _superprop_getCreateBucket().call(_this, vectorBucketName);
+	}
+	async getBucket(vectorBucketName) {
+		var _superprop_getGetBucket = () => super.getBucket, _this2 = this;
+		return _superprop_getGetBucket().call(_this2, vectorBucketName);
+	}
+	async listBuckets(options$1 = {}) {
+		var _superprop_getListBuckets = () => super.listBuckets, _this3 = this;
+		return _superprop_getListBuckets().call(_this3, options$1);
+	}
+	async deleteBucket(vectorBucketName) {
+		var _superprop_getDeleteBucket = () => super.deleteBucket, _this4 = this;
+		return _superprop_getDeleteBucket().call(_this4, vectorBucketName);
+	}
+};
+var VectorBucketScope = class extends VectorIndexApi {
+	constructor(url, headers, vectorBucketName, fetch$1) {
+		super(url, headers, fetch$1);
+		this.vectorBucketName = vectorBucketName;
+	}
+	async createIndex(options$1) {
+		var _superprop_getCreateIndex = () => super.createIndex, _this5 = this;
+		return _superprop_getCreateIndex().call(_this5, _objectSpread2$1(_objectSpread2$1({}, options$1), {}, { vectorBucketName: _this5.vectorBucketName }));
+	}
+	async listIndexes(options$1 = {}) {
+		var _superprop_getListIndexes = () => super.listIndexes, _this6 = this;
+		return _superprop_getListIndexes().call(_this6, _objectSpread2$1(_objectSpread2$1({}, options$1), {}, { vectorBucketName: _this6.vectorBucketName }));
+	}
+	async getIndex(indexName) {
+		var _superprop_getGetIndex = () => super.getIndex, _this7 = this;
+		return _superprop_getGetIndex().call(_this7, _this7.vectorBucketName, indexName);
+	}
+	async deleteIndex(indexName) {
+		var _superprop_getDeleteIndex = () => super.deleteIndex, _this8 = this;
+		return _superprop_getDeleteIndex().call(_this8, _this8.vectorBucketName, indexName);
+	}
+	index(indexName) {
+		return new VectorIndexScope(this.url, this.headers, this.vectorBucketName, indexName, this.fetch);
+	}
+};
+var VectorIndexScope = class extends VectorDataApi {
+	constructor(url, headers, vectorBucketName, indexName, fetch$1) {
+		super(url, headers, fetch$1);
+		this.vectorBucketName = vectorBucketName;
+		this.indexName = indexName;
+	}
+	async putVectors(options$1) {
+		var _superprop_getPutVectors = () => super.putVectors, _this9 = this;
+		return _superprop_getPutVectors().call(_this9, _objectSpread2$1(_objectSpread2$1({}, options$1), {}, {
+			vectorBucketName: _this9.vectorBucketName,
+			indexName: _this9.indexName
+		}));
+	}
+	async getVectors(options$1) {
+		var _superprop_getGetVectors = () => super.getVectors, _this10 = this;
+		return _superprop_getGetVectors().call(_this10, _objectSpread2$1(_objectSpread2$1({}, options$1), {}, {
+			vectorBucketName: _this10.vectorBucketName,
+			indexName: _this10.indexName
+		}));
+	}
+	async listVectors(options$1 = {}) {
+		var _superprop_getListVectors = () => super.listVectors, _this11 = this;
+		return _superprop_getListVectors().call(_this11, _objectSpread2$1(_objectSpread2$1({}, options$1), {}, {
+			vectorBucketName: _this11.vectorBucketName,
+			indexName: _this11.indexName
+		}));
+	}
+	async queryVectors(options$1) {
+		var _superprop_getQueryVectors = () => super.queryVectors, _this12 = this;
+		return _superprop_getQueryVectors().call(_this12, _objectSpread2$1(_objectSpread2$1({}, options$1), {}, {
+			vectorBucketName: _this12.vectorBucketName,
+			indexName: _this12.indexName
+		}));
+	}
+	async deleteVectors(options$1) {
+		var _superprop_getDeleteVectors = () => super.deleteVectors, _this13 = this;
+		return _superprop_getDeleteVectors().call(_this13, _objectSpread2$1(_objectSpread2$1({}, options$1), {}, {
+			vectorBucketName: _this13.vectorBucketName,
+			indexName: _this13.indexName
+		}));
+	}
+};
+var StorageClient = class extends StorageBucketApi {
+	constructor(url, headers = {}, fetch$1, opts) {
+		super(url, headers, fetch$1, opts);
+	}
+	from(id) {
+		return new StorageFileApi(this.url, this.headers, id, this.fetch);
+	}
+	get vectors() {
+		return new StorageVectorsClient(this.url + "/vector", {
+			headers: this.headers,
+			fetch: this.fetch
+		});
+	}
+	get analytics() {
+		return new StorageAnalyticsClient(this.url + "/iceberg", this.headers, this.fetch);
+	}
+};
+const version$2 = "2.94.0";
+const AUTO_REFRESH_TICK_DURATION_MS = 30 * 1e3;
+const EXPIRY_MARGIN_MS = 3 * AUTO_REFRESH_TICK_DURATION_MS;
+const GOTRUE_URL = "http://localhost:9999";
+const STORAGE_KEY = "supabase.auth.token";
+const DEFAULT_HEADERS = { "X-Client-Info": `gotrue-js/${version$2}` };
+const API_VERSION_HEADER_NAME = "X-Supabase-Api-Version";
+const API_VERSIONS = { "2024-01-01": {
+	timestamp: Date.parse("2024-01-01T00:00:00.0Z"),
+	name: "2024-01-01"
+} };
+const BASE64URL_REGEX = /^([a-z0-9_-]{4})*($|[a-z0-9_-]{3}$|[a-z0-9_-]{2}$)$/i;
+var AuthError = class extends Error {
+	constructor(message$1, status, code) {
+		super(message$1);
+		this.__isAuthError = true;
+		this.name = "AuthError";
+		this.status = status;
+		this.code = code;
+	}
+};
+function isAuthError(error) {
+	return typeof error === "object" && error !== null && "__isAuthError" in error;
+}
+var AuthApiError = class extends AuthError {
+	constructor(message$1, status, code) {
+		super(message$1, status, code);
+		this.name = "AuthApiError";
+		this.status = status;
+		this.code = code;
+	}
+};
+function isAuthApiError(error) {
+	return isAuthError(error) && error.name === "AuthApiError";
+}
+var AuthUnknownError = class extends AuthError {
+	constructor(message$1, originalError) {
+		super(message$1);
+		this.name = "AuthUnknownError";
+		this.originalError = originalError;
+	}
+};
+var CustomAuthError = class extends AuthError {
+	constructor(message$1, name, status, code) {
+		super(message$1, status, code);
+		this.name = name;
+		this.status = status;
+	}
+};
+var AuthSessionMissingError = class extends CustomAuthError {
+	constructor() {
+		super("Auth session missing!", "AuthSessionMissingError", 400, void 0);
+	}
+};
+function isAuthSessionMissingError(error) {
+	return isAuthError(error) && error.name === "AuthSessionMissingError";
+}
+var AuthInvalidTokenResponseError = class extends CustomAuthError {
+	constructor() {
+		super("Auth session or user missing", "AuthInvalidTokenResponseError", 500, void 0);
+	}
+};
+var AuthInvalidCredentialsError = class extends CustomAuthError {
+	constructor(message$1) {
+		super(message$1, "AuthInvalidCredentialsError", 400, void 0);
+	}
+};
+var AuthImplicitGrantRedirectError = class extends CustomAuthError {
+	constructor(message$1, details = null) {
+		super(message$1, "AuthImplicitGrantRedirectError", 500, void 0);
+		this.details = null;
+		this.details = details;
+	}
+	toJSON() {
+		return {
+			name: this.name,
+			message: this.message,
+			status: this.status,
+			details: this.details
+		};
+	}
+};
+function isAuthImplicitGrantRedirectError(error) {
+	return isAuthError(error) && error.name === "AuthImplicitGrantRedirectError";
+}
+var AuthPKCEGrantCodeExchangeError = class extends CustomAuthError {
+	constructor(message$1, details = null) {
+		super(message$1, "AuthPKCEGrantCodeExchangeError", 500, void 0);
+		this.details = null;
+		this.details = details;
+	}
+	toJSON() {
+		return {
+			name: this.name,
+			message: this.message,
+			status: this.status,
+			details: this.details
+		};
+	}
+};
+var AuthPKCECodeVerifierMissingError = class extends CustomAuthError {
+	constructor() {
+		super("PKCE code verifier not found in storage. This can happen if the auth flow was initiated in a different browser or device, or if the storage was cleared. For SSR frameworks (Next.js, SvelteKit, etc.), use @supabase/ssr on both the server and client to store the code verifier in cookies.", "AuthPKCECodeVerifierMissingError", 400, "pkce_code_verifier_not_found");
+	}
+};
+var AuthRetryableFetchError = class extends CustomAuthError {
+	constructor(message$1, status) {
+		super(message$1, "AuthRetryableFetchError", status, void 0);
+	}
+};
+function isAuthRetryableFetchError(error) {
+	return isAuthError(error) && error.name === "AuthRetryableFetchError";
+}
+var AuthWeakPasswordError = class extends CustomAuthError {
+	constructor(message$1, status, reasons) {
+		super(message$1, "AuthWeakPasswordError", status, "weak_password");
+		this.reasons = reasons;
+	}
+};
+var AuthInvalidJwtError = class extends CustomAuthError {
+	constructor(message$1) {
+		super(message$1, "AuthInvalidJwtError", 400, "invalid_jwt");
+	}
+};
+var TO_BASE64URL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".split("");
+var IGNORE_BASE64URL = " 	\n\r=".split("");
+var FROM_BASE64URL = (() => {
+	const charMap = new Array(128);
+	for (let i$2 = 0; i$2 < charMap.length; i$2 += 1) charMap[i$2] = -1;
+	for (let i$2 = 0; i$2 < IGNORE_BASE64URL.length; i$2 += 1) charMap[IGNORE_BASE64URL[i$2].charCodeAt(0)] = -2;
+	for (let i$2 = 0; i$2 < TO_BASE64URL.length; i$2 += 1) charMap[TO_BASE64URL[i$2].charCodeAt(0)] = i$2;
+	return charMap;
+})();
+function byteToBase64URL(byte, state, emit) {
+	if (byte !== null) {
+		state.queue = state.queue << 8 | byte;
+		state.queuedBits += 8;
+		while (state.queuedBits >= 6) {
+			emit(TO_BASE64URL[state.queue >> state.queuedBits - 6 & 63]);
+			state.queuedBits -= 6;
+		}
+	} else if (state.queuedBits > 0) {
+		state.queue = state.queue << 6 - state.queuedBits;
+		state.queuedBits = 6;
+		while (state.queuedBits >= 6) {
+			emit(TO_BASE64URL[state.queue >> state.queuedBits - 6 & 63]);
+			state.queuedBits -= 6;
+		}
+	}
+}
+function byteFromBase64URL(charCode, state, emit) {
+	const bits = FROM_BASE64URL[charCode];
+	if (bits > -1) {
+		state.queue = state.queue << 6 | bits;
+		state.queuedBits += 6;
+		while (state.queuedBits >= 8) {
+			emit(state.queue >> state.queuedBits - 8 & 255);
+			state.queuedBits -= 8;
+		}
+	} else if (bits === -2) return;
+	else throw new Error(`Invalid Base64-URL character "${String.fromCharCode(charCode)}"`);
+}
+function stringFromBase64URL(str) {
+	const conv = [];
+	const utf8Emit = (codepoint) => {
+		conv.push(String.fromCodePoint(codepoint));
+	};
+	const utf8State = {
+		utf8seq: 0,
+		codepoint: 0
+	};
+	const b64State = {
+		queue: 0,
+		queuedBits: 0
+	};
+	const byteEmit = (byte) => {
+		stringFromUTF8(byte, utf8State, utf8Emit);
+	};
+	for (let i$2 = 0; i$2 < str.length; i$2 += 1) byteFromBase64URL(str.charCodeAt(i$2), b64State, byteEmit);
+	return conv.join("");
+}
+function codepointToUTF8(codepoint, emit) {
+	if (codepoint <= 127) {
+		emit(codepoint);
+		return;
+	} else if (codepoint <= 2047) {
+		emit(192 | codepoint >> 6);
+		emit(128 | codepoint & 63);
+		return;
+	} else if (codepoint <= 65535) {
+		emit(224 | codepoint >> 12);
+		emit(128 | codepoint >> 6 & 63);
+		emit(128 | codepoint & 63);
+		return;
+	} else if (codepoint <= 1114111) {
+		emit(240 | codepoint >> 18);
+		emit(128 | codepoint >> 12 & 63);
+		emit(128 | codepoint >> 6 & 63);
+		emit(128 | codepoint & 63);
+		return;
+	}
+	throw new Error(`Unrecognized Unicode codepoint: ${codepoint.toString(16)}`);
+}
+function stringToUTF8(str, emit) {
+	for (let i$2 = 0; i$2 < str.length; i$2 += 1) {
+		let codepoint = str.charCodeAt(i$2);
+		if (codepoint > 55295 && codepoint <= 56319) {
+			const highSurrogate = (codepoint - 55296) * 1024 & 65535;
+			codepoint = (str.charCodeAt(i$2 + 1) - 56320 & 65535 | highSurrogate) + 65536;
+			i$2 += 1;
+		}
+		codepointToUTF8(codepoint, emit);
+	}
+}
+function stringFromUTF8(byte, state, emit) {
+	if (state.utf8seq === 0) {
+		if (byte <= 127) {
+			emit(byte);
+			return;
+		}
+		for (let leadingBit = 1; leadingBit < 6; leadingBit += 1) if ((byte >> 7 - leadingBit & 1) === 0) {
+			state.utf8seq = leadingBit;
+			break;
+		}
+		if (state.utf8seq === 2) state.codepoint = byte & 31;
+		else if (state.utf8seq === 3) state.codepoint = byte & 15;
+		else if (state.utf8seq === 4) state.codepoint = byte & 7;
+		else throw new Error("Invalid UTF-8 sequence");
+		state.utf8seq -= 1;
+	} else if (state.utf8seq > 0) {
+		if (byte <= 127) throw new Error("Invalid UTF-8 sequence");
+		state.codepoint = state.codepoint << 6 | byte & 63;
+		state.utf8seq -= 1;
+		if (state.utf8seq === 0) emit(state.codepoint);
+	}
+}
+function base64UrlToUint8Array(str) {
+	const result = [];
+	const state = {
+		queue: 0,
+		queuedBits: 0
+	};
+	const onByte = (byte) => {
+		result.push(byte);
+	};
+	for (let i$2 = 0; i$2 < str.length; i$2 += 1) byteFromBase64URL(str.charCodeAt(i$2), state, onByte);
+	return new Uint8Array(result);
+}
+function stringToUint8Array(str) {
+	const result = [];
+	stringToUTF8(str, (byte) => result.push(byte));
+	return new Uint8Array(result);
+}
+function bytesToBase64URL(bytes) {
+	const result = [];
+	const state = {
+		queue: 0,
+		queuedBits: 0
+	};
+	const onChar = (char) => {
+		result.push(char);
+	};
+	bytes.forEach((byte) => byteToBase64URL(byte, state, onChar));
+	byteToBase64URL(null, state, onChar);
+	return result.join("");
+}
+function expiresAt(expiresIn) {
+	return Math.round(Date.now() / 1e3) + expiresIn;
+}
+function generateCallbackId() {
+	return Symbol("auth-callback");
+}
+const isBrowser = () => typeof window !== "undefined" && typeof document !== "undefined";
+var localStorageWriteTests = {
+	tested: false,
+	writable: false
+};
+const supportsLocalStorage = () => {
+	if (!isBrowser()) return false;
+	try {
+		if (typeof globalThis.localStorage !== "object") return false;
+	} catch (e) {
+		return false;
+	}
+	if (localStorageWriteTests.tested) return localStorageWriteTests.writable;
+	const randomKey = `lswt-${Math.random()}${Math.random()}`;
+	try {
+		globalThis.localStorage.setItem(randomKey, randomKey);
+		globalThis.localStorage.removeItem(randomKey);
+		localStorageWriteTests.tested = true;
+		localStorageWriteTests.writable = true;
+	} catch (e) {
+		localStorageWriteTests.tested = true;
+		localStorageWriteTests.writable = false;
+	}
+	return localStorageWriteTests.writable;
+};
+function parseParametersFromURL(href) {
+	const result = {};
+	const url = new URL(href);
+	if (url.hash && url.hash[0] === "#") try {
+		new URLSearchParams(url.hash.substring(1)).forEach((value, key) => {
+			result[key] = value;
+		});
+	} catch (e) {}
+	url.searchParams.forEach((value, key) => {
+		result[key] = value;
+	});
+	return result;
+}
+const resolveFetch$1 = (customFetch) => {
+	if (customFetch) return (...args) => customFetch(...args);
+	return (...args) => fetch(...args);
+};
+const looksLikeFetchResponse = (maybeResponse) => {
+	return typeof maybeResponse === "object" && maybeResponse !== null && "status" in maybeResponse && "ok" in maybeResponse && "json" in maybeResponse && typeof maybeResponse.json === "function";
+};
+const setItemAsync = async (storage, key, data) => {
+	await storage.setItem(key, JSON.stringify(data));
+};
+const getItemAsync = async (storage, key) => {
+	const value = await storage.getItem(key);
+	if (!value) return null;
+	try {
+		return JSON.parse(value);
+	} catch (_a$1) {
+		return value;
+	}
+};
+const removeItemAsync = async (storage, key) => {
+	await storage.removeItem(key);
+};
+var Deferred = class Deferred {
+	constructor() {
+		this.promise = new Deferred.promiseConstructor((res, rej) => {
+			this.resolve = res;
+			this.reject = rej;
+		});
+	}
+};
+Deferred.promiseConstructor = Promise;
+function decodeJWT(token) {
+	const parts = token.split(".");
+	if (parts.length !== 3) throw new AuthInvalidJwtError("Invalid JWT structure");
+	for (let i$2 = 0; i$2 < parts.length; i$2++) if (!BASE64URL_REGEX.test(parts[i$2])) throw new AuthInvalidJwtError("JWT not in base64url format");
+	return {
+		header: JSON.parse(stringFromBase64URL(parts[0])),
+		payload: JSON.parse(stringFromBase64URL(parts[1])),
+		signature: base64UrlToUint8Array(parts[2]),
+		raw: {
+			header: parts[0],
+			payload: parts[1]
+		}
+	};
+}
+async function sleep(time$3) {
+	return await new Promise((accept) => {
+		setTimeout(() => accept(null), time$3);
+	});
+}
+function retryable(fn, isRetryable) {
+	return new Promise((accept, reject) => {
+		(async () => {
+			for (let attempt = 0; attempt < Infinity; attempt++) try {
+				const result = await fn(attempt);
+				if (!isRetryable(attempt, null, result)) {
+					accept(result);
+					return;
+				}
+			} catch (e) {
+				if (!isRetryable(attempt, e)) {
+					reject(e);
+					return;
+				}
+			}
+		})();
+	});
+}
+function dec2hex(dec) {
+	return ("0" + dec.toString(16)).substr(-2);
+}
+function generatePKCEVerifier() {
+	const verifierLength = 56;
+	const array$1 = new Uint32Array(verifierLength);
+	if (typeof crypto === "undefined") {
+		const charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
+		const charSetLen = 66;
+		let verifier = "";
+		for (let i$2 = 0; i$2 < verifierLength; i$2++) verifier += charSet.charAt(Math.floor(Math.random() * charSetLen));
+		return verifier;
+	}
+	crypto.getRandomValues(array$1);
+	return Array.from(array$1, dec2hex).join("");
+}
+async function sha256(randomString) {
+	const encodedData = new TextEncoder().encode(randomString);
+	const hash = await crypto.subtle.digest("SHA-256", encodedData);
+	const bytes = new Uint8Array(hash);
+	return Array.from(bytes).map((c$1) => String.fromCharCode(c$1)).join("");
+}
+async function generatePKCEChallenge(verifier) {
+	if (!(typeof crypto !== "undefined" && typeof crypto.subtle !== "undefined" && typeof TextEncoder !== "undefined")) {
+		console.warn("WebCrypto API is not supported. Code challenge method will default to use plain instead of sha256.");
+		return verifier;
+	}
+	const hashed = await sha256(verifier);
+	return btoa(hashed).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+async function getCodeChallengeAndMethod(storage, storageKey, isPasswordRecovery = false) {
+	const codeVerifier = generatePKCEVerifier();
+	let storedCodeVerifier = codeVerifier;
+	if (isPasswordRecovery) storedCodeVerifier += "/PASSWORD_RECOVERY";
+	await setItemAsync(storage, `${storageKey}-code-verifier`, storedCodeVerifier);
+	const codeChallenge = await generatePKCEChallenge(codeVerifier);
+	return [codeChallenge, codeVerifier === codeChallenge ? "plain" : "s256"];
+}
+var API_VERSION_REGEX = /^2[0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/i;
+function parseResponseAPIVersion(response) {
+	const apiVersion = response.headers.get(API_VERSION_HEADER_NAME);
+	if (!apiVersion) return null;
+	if (!apiVersion.match(API_VERSION_REGEX)) return null;
+	try {
+		return /* @__PURE__ */ new Date(`${apiVersion}T00:00:00.0Z`);
+	} catch (e) {
+		return null;
+	}
+}
+function validateExp(exp) {
+	if (!exp) throw new Error("Missing exp claim");
+	if (exp <= Math.floor(Date.now() / 1e3)) throw new Error("JWT has expired");
+}
+function getAlgorithm(alg) {
+	switch (alg) {
+		case "RS256": return {
+			name: "RSASSA-PKCS1-v1_5",
+			hash: { name: "SHA-256" }
+		};
+		case "ES256": return {
+			name: "ECDSA",
+			namedCurve: "P-256",
+			hash: { name: "SHA-256" }
+		};
+		default: throw new Error("Invalid alg claim");
+	}
+}
+var UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+function validateUUID(str) {
+	if (!UUID_REGEX.test(str)) throw new Error("@supabase/auth-js: Expected parameter to be UUID but is not");
+}
+function userNotAvailableProxy() {
+	return new Proxy({}, {
+		get: (target, prop) => {
+			if (prop === "__isUserNotAvailableProxy") return true;
+			if (typeof prop === "symbol") {
+				const sProp = prop.toString();
+				if (sProp === "Symbol(Symbol.toPrimitive)" || sProp === "Symbol(Symbol.toStringTag)" || sProp === "Symbol(util.inspect.custom)") return;
+			}
+			throw new Error(`@supabase/auth-js: client was created with userStorage option and there was no user stored in the user storage. Accessing the "${prop}" property of the session object is not supported. Please use getUser() instead.`);
+		},
+		set: (_target, prop) => {
+			throw new Error(`@supabase/auth-js: client was created with userStorage option and there was no user stored in the user storage. Setting the "${prop}" property of the session object is not supported. Please use getUser() to fetch a user object you can manipulate.`);
+		},
+		deleteProperty: (_target, prop) => {
+			throw new Error(`@supabase/auth-js: client was created with userStorage option and there was no user stored in the user storage. Deleting the "${prop}" property of the session object is not supported. Please use getUser() to fetch a user object you can manipulate.`);
+		}
+	});
+}
+function insecureUserWarningProxy(user, suppressWarningRef) {
+	return new Proxy(user, { get: (target, prop, receiver) => {
+		if (prop === "__isInsecureUserWarningProxy") return true;
+		if (typeof prop === "symbol") {
+			const sProp = prop.toString();
+			if (sProp === "Symbol(Symbol.toPrimitive)" || sProp === "Symbol(Symbol.toStringTag)" || sProp === "Symbol(util.inspect.custom)" || sProp === "Symbol(nodejs.util.inspect.custom)") return Reflect.get(target, prop, receiver);
+		}
+		if (!suppressWarningRef.value && typeof prop === "string") {
+			console.warn("Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.");
+			suppressWarningRef.value = true;
+		}
+		return Reflect.get(target, prop, receiver);
+	} });
+}
+function deepClone(obj) {
+	return JSON.parse(JSON.stringify(obj));
+}
+var _getErrorMessage = (err) => err.msg || err.message || err.error_description || err.error || JSON.stringify(err);
+var NETWORK_ERROR_CODES = [
+	502,
+	503,
+	504
+];
+async function handleError(error) {
+	var _a$1;
+	if (!looksLikeFetchResponse(error)) throw new AuthRetryableFetchError(_getErrorMessage(error), 0);
+	if (NETWORK_ERROR_CODES.includes(error.status)) throw new AuthRetryableFetchError(_getErrorMessage(error), error.status);
+	let data;
+	try {
+		data = await error.json();
+	} catch (e) {
+		throw new AuthUnknownError(_getErrorMessage(e), e);
+	}
+	let errorCode = void 0;
+	const responseAPIVersion = parseResponseAPIVersion(error);
+	if (responseAPIVersion && responseAPIVersion.getTime() >= API_VERSIONS["2024-01-01"].timestamp && typeof data === "object" && data && typeof data.code === "string") errorCode = data.code;
+	else if (typeof data === "object" && data && typeof data.error_code === "string") errorCode = data.error_code;
+	if (!errorCode) {
+		if (typeof data === "object" && data && typeof data.weak_password === "object" && data.weak_password && Array.isArray(data.weak_password.reasons) && data.weak_password.reasons.length && data.weak_password.reasons.reduce((a$2, i$2) => a$2 && typeof i$2 === "string", true)) throw new AuthWeakPasswordError(_getErrorMessage(data), error.status, data.weak_password.reasons);
+	} else if (errorCode === "weak_password") throw new AuthWeakPasswordError(_getErrorMessage(data), error.status, ((_a$1 = data.weak_password) === null || _a$1 === void 0 ? void 0 : _a$1.reasons) || []);
+	else if (errorCode === "session_not_found") throw new AuthSessionMissingError();
+	throw new AuthApiError(_getErrorMessage(data), error.status || 500, errorCode);
+}
+var _getRequestParams = (method, options$1, parameters, body) => {
+	const params = {
+		method,
+		headers: (options$1 === null || options$1 === void 0 ? void 0 : options$1.headers) || {}
+	};
+	if (method === "GET") return params;
+	params.headers = Object.assign({ "Content-Type": "application/json;charset=UTF-8" }, options$1 === null || options$1 === void 0 ? void 0 : options$1.headers);
+	params.body = JSON.stringify(body);
+	return Object.assign(Object.assign({}, params), parameters);
+};
+async function _request(fetcher, method, url, options$1) {
+	var _a$1;
+	const headers = Object.assign({}, options$1 === null || options$1 === void 0 ? void 0 : options$1.headers);
+	if (!headers["X-Supabase-Api-Version"]) headers[API_VERSION_HEADER_NAME] = API_VERSIONS["2024-01-01"].name;
+	if (options$1 === null || options$1 === void 0 ? void 0 : options$1.jwt) headers["Authorization"] = `Bearer ${options$1.jwt}`;
+	const qs = (_a$1 = options$1 === null || options$1 === void 0 ? void 0 : options$1.query) !== null && _a$1 !== void 0 ? _a$1 : {};
+	if (options$1 === null || options$1 === void 0 ? void 0 : options$1.redirectTo) qs["redirect_to"] = options$1.redirectTo;
+	const data = await _handleRequest(fetcher, method, url + (Object.keys(qs).length ? "?" + new URLSearchParams(qs).toString() : ""), {
+		headers,
+		noResolveJson: options$1 === null || options$1 === void 0 ? void 0 : options$1.noResolveJson
+	}, {}, options$1 === null || options$1 === void 0 ? void 0 : options$1.body);
+	return (options$1 === null || options$1 === void 0 ? void 0 : options$1.xform) ? options$1 === null || options$1 === void 0 ? void 0 : options$1.xform(data) : {
+		data: Object.assign({}, data),
+		error: null
+	};
+}
+async function _handleRequest(fetcher, method, url, options$1, parameters, body) {
+	const requestParams = _getRequestParams(method, options$1, parameters, body);
+	let result;
+	try {
+		result = await fetcher(url, Object.assign({}, requestParams));
+	} catch (e) {
+		console.error(e);
+		throw new AuthRetryableFetchError(_getErrorMessage(e), 0);
+	}
+	if (!result.ok) await handleError(result);
+	if (options$1 === null || options$1 === void 0 ? void 0 : options$1.noResolveJson) return result;
+	try {
+		return await result.json();
+	} catch (e) {
+		await handleError(e);
+	}
+}
+function _sessionResponse(data) {
+	var _a$1;
+	let session = null;
+	if (hasSession(data)) {
+		session = Object.assign({}, data);
+		if (!data.expires_at) session.expires_at = expiresAt(data.expires_in);
+	}
+	const user = (_a$1 = data.user) !== null && _a$1 !== void 0 ? _a$1 : data;
+	return {
+		data: {
+			session,
+			user
+		},
+		error: null
+	};
+}
+function _sessionResponsePassword(data) {
+	const response = _sessionResponse(data);
+	if (!response.error && data.weak_password && typeof data.weak_password === "object" && Array.isArray(data.weak_password.reasons) && data.weak_password.reasons.length && data.weak_password.message && typeof data.weak_password.message === "string" && data.weak_password.reasons.reduce((a$2, i$2) => a$2 && typeof i$2 === "string", true)) response.data.weak_password = data.weak_password;
+	return response;
+}
+function _userResponse(data) {
+	var _a$1;
+	return {
+		data: { user: (_a$1 = data.user) !== null && _a$1 !== void 0 ? _a$1 : data },
+		error: null
+	};
+}
+function _ssoResponse(data) {
+	return {
+		data,
+		error: null
+	};
+}
+function _generateLinkResponse(data) {
+	const { action_link, email_otp, hashed_token, redirect_to, verification_type } = data, rest = __rest(data, [
+		"action_link",
+		"email_otp",
+		"hashed_token",
+		"redirect_to",
+		"verification_type"
+	]);
+	return {
+		data: {
+			properties: {
+				action_link,
+				email_otp,
+				hashed_token,
+				redirect_to,
+				verification_type
+			},
+			user: Object.assign({}, rest)
+		},
+		error: null
+	};
+}
+function _noResolveJsonResponse(data) {
+	return data;
+}
+function hasSession(data) {
+	return data.access_token && data.refresh_token && data.expires_in;
+}
+const SIGN_OUT_SCOPES = [
+	"global",
+	"local",
+	"others"
+];
+var GoTrueAdminApi = class {
+	constructor({ url = "", headers = {}, fetch: fetch$1 }) {
+		this.url = url;
+		this.headers = headers;
+		this.fetch = resolveFetch$1(fetch$1);
+		this.mfa = {
+			listFactors: this._listFactors.bind(this),
+			deleteFactor: this._deleteFactor.bind(this)
+		};
+		this.oauth = {
+			listClients: this._listOAuthClients.bind(this),
+			createClient: this._createOAuthClient.bind(this),
+			getClient: this._getOAuthClient.bind(this),
+			updateClient: this._updateOAuthClient.bind(this),
+			deleteClient: this._deleteOAuthClient.bind(this),
+			regenerateClientSecret: this._regenerateOAuthClientSecret.bind(this)
+		};
+	}
+	async signOut(jwt, scope = SIGN_OUT_SCOPES[0]) {
+		if (SIGN_OUT_SCOPES.indexOf(scope) < 0) throw new Error(`@supabase/auth-js: Parameter scope must be one of ${SIGN_OUT_SCOPES.join(", ")}`);
+		try {
+			await _request(this.fetch, "POST", `${this.url}/logout?scope=${scope}`, {
+				headers: this.headers,
+				jwt,
+				noResolveJson: true
+			});
+			return {
+				data: null,
+				error: null
+			};
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: null,
+				error
+			};
+			throw error;
+		}
+	}
+	async inviteUserByEmail(email$1, options$1 = {}) {
+		try {
+			return await _request(this.fetch, "POST", `${this.url}/invite`, {
+				body: {
+					email: email$1,
+					data: options$1.data
+				},
+				headers: this.headers,
+				redirectTo: options$1.redirectTo,
+				xform: _userResponse
+			});
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: { user: null },
+				error
+			};
+			throw error;
+		}
+	}
+	async generateLink(params) {
+		try {
+			const { options: options$1 } = params, rest = __rest(params, ["options"]);
+			const body = Object.assign(Object.assign({}, rest), options$1);
+			if ("newEmail" in rest) {
+				body.new_email = rest === null || rest === void 0 ? void 0 : rest.newEmail;
+				delete body["newEmail"];
+			}
+			return await _request(this.fetch, "POST", `${this.url}/admin/generate_link`, {
+				body,
+				headers: this.headers,
+				xform: _generateLinkResponse,
+				redirectTo: options$1 === null || options$1 === void 0 ? void 0 : options$1.redirectTo
+			});
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: {
+					properties: null,
+					user: null
+				},
+				error
+			};
+			throw error;
+		}
+	}
+	async createUser(attributes) {
+		try {
+			return await _request(this.fetch, "POST", `${this.url}/admin/users`, {
+				body: attributes,
+				headers: this.headers,
+				xform: _userResponse
+			});
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: { user: null },
+				error
+			};
+			throw error;
+		}
+	}
+	async listUsers(params) {
+		var _a$1, _b, _c, _d, _e$1, _f, _g;
+		try {
+			const pagination = {
+				nextPage: null,
+				lastPage: 0,
+				total: 0
+			};
+			const response = await _request(this.fetch, "GET", `${this.url}/admin/users`, {
+				headers: this.headers,
+				noResolveJson: true,
+				query: {
+					page: (_b = (_a$1 = params === null || params === void 0 ? void 0 : params.page) === null || _a$1 === void 0 ? void 0 : _a$1.toString()) !== null && _b !== void 0 ? _b : "",
+					per_page: (_d = (_c = params === null || params === void 0 ? void 0 : params.perPage) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : ""
+				},
+				xform: _noResolveJsonResponse
+			});
+			if (response.error) throw response.error;
+			const users = await response.json();
+			const total = (_e$1 = response.headers.get("x-total-count")) !== null && _e$1 !== void 0 ? _e$1 : 0;
+			const links = (_g = (_f = response.headers.get("link")) === null || _f === void 0 ? void 0 : _f.split(",")) !== null && _g !== void 0 ? _g : [];
+			if (links.length > 0) {
+				links.forEach((link) => {
+					const page = parseInt(link.split(";")[0].split("=")[1].substring(0, 1));
+					const rel = JSON.parse(link.split(";")[1].split("=")[1]);
+					pagination[`${rel}Page`] = page;
+				});
+				pagination.total = parseInt(total);
+			}
+			return {
+				data: Object.assign(Object.assign({}, users), pagination),
+				error: null
+			};
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: { users: [] },
+				error
+			};
+			throw error;
+		}
+	}
+	async getUserById(uid) {
+		validateUUID(uid);
+		try {
+			return await _request(this.fetch, "GET", `${this.url}/admin/users/${uid}`, {
+				headers: this.headers,
+				xform: _userResponse
+			});
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: { user: null },
+				error
+			};
+			throw error;
+		}
+	}
+	async updateUserById(uid, attributes) {
+		validateUUID(uid);
+		try {
+			return await _request(this.fetch, "PUT", `${this.url}/admin/users/${uid}`, {
+				body: attributes,
+				headers: this.headers,
+				xform: _userResponse
+			});
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: { user: null },
+				error
+			};
+			throw error;
+		}
+	}
+	async deleteUser(id, shouldSoftDelete = false) {
+		validateUUID(id);
+		try {
+			return await _request(this.fetch, "DELETE", `${this.url}/admin/users/${id}`, {
+				headers: this.headers,
+				body: { should_soft_delete: shouldSoftDelete },
+				xform: _userResponse
+			});
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: { user: null },
+				error
+			};
+			throw error;
+		}
+	}
+	async _listFactors(params) {
+		validateUUID(params.userId);
+		try {
+			const { data, error } = await _request(this.fetch, "GET", `${this.url}/admin/users/${params.userId}/factors`, {
+				headers: this.headers,
+				xform: (factors) => {
+					return {
+						data: { factors },
+						error: null
+					};
+				}
+			});
+			return {
+				data,
+				error
+			};
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: null,
+				error
+			};
+			throw error;
+		}
+	}
+	async _deleteFactor(params) {
+		validateUUID(params.userId);
+		validateUUID(params.id);
+		try {
+			return {
+				data: await _request(this.fetch, "DELETE", `${this.url}/admin/users/${params.userId}/factors/${params.id}`, { headers: this.headers }),
+				error: null
+			};
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: null,
+				error
+			};
+			throw error;
+		}
+	}
+	async _listOAuthClients(params) {
+		var _a$1, _b, _c, _d, _e$1, _f, _g;
+		try {
+			const pagination = {
+				nextPage: null,
+				lastPage: 0,
+				total: 0
+			};
+			const response = await _request(this.fetch, "GET", `${this.url}/admin/oauth/clients`, {
+				headers: this.headers,
+				noResolveJson: true,
+				query: {
+					page: (_b = (_a$1 = params === null || params === void 0 ? void 0 : params.page) === null || _a$1 === void 0 ? void 0 : _a$1.toString()) !== null && _b !== void 0 ? _b : "",
+					per_page: (_d = (_c = params === null || params === void 0 ? void 0 : params.perPage) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : ""
+				},
+				xform: _noResolveJsonResponse
+			});
+			if (response.error) throw response.error;
+			const clients = await response.json();
+			const total = (_e$1 = response.headers.get("x-total-count")) !== null && _e$1 !== void 0 ? _e$1 : 0;
+			const links = (_g = (_f = response.headers.get("link")) === null || _f === void 0 ? void 0 : _f.split(",")) !== null && _g !== void 0 ? _g : [];
+			if (links.length > 0) {
+				links.forEach((link) => {
+					const page = parseInt(link.split(";")[0].split("=")[1].substring(0, 1));
+					const rel = JSON.parse(link.split(";")[1].split("=")[1]);
+					pagination[`${rel}Page`] = page;
+				});
+				pagination.total = parseInt(total);
+			}
+			return {
+				data: Object.assign(Object.assign({}, clients), pagination),
+				error: null
+			};
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: { clients: [] },
+				error
+			};
+			throw error;
+		}
+	}
+	async _createOAuthClient(params) {
+		try {
+			return await _request(this.fetch, "POST", `${this.url}/admin/oauth/clients`, {
+				body: params,
+				headers: this.headers,
+				xform: (client) => {
+					return {
+						data: client,
+						error: null
+					};
+				}
+			});
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: null,
+				error
+			};
+			throw error;
+		}
+	}
+	async _getOAuthClient(clientId) {
+		try {
+			return await _request(this.fetch, "GET", `${this.url}/admin/oauth/clients/${clientId}`, {
+				headers: this.headers,
+				xform: (client) => {
+					return {
+						data: client,
+						error: null
+					};
+				}
+			});
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: null,
+				error
+			};
+			throw error;
+		}
+	}
+	async _updateOAuthClient(clientId, params) {
+		try {
+			return await _request(this.fetch, "PUT", `${this.url}/admin/oauth/clients/${clientId}`, {
+				body: params,
+				headers: this.headers,
+				xform: (client) => {
+					return {
+						data: client,
+						error: null
+					};
+				}
+			});
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: null,
+				error
+			};
+			throw error;
+		}
+	}
+	async _deleteOAuthClient(clientId) {
+		try {
+			await _request(this.fetch, "DELETE", `${this.url}/admin/oauth/clients/${clientId}`, {
+				headers: this.headers,
+				noResolveJson: true
+			});
+			return {
+				data: null,
+				error: null
+			};
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: null,
+				error
+			};
+			throw error;
+		}
+	}
+	async _regenerateOAuthClientSecret(clientId) {
+		try {
+			return await _request(this.fetch, "POST", `${this.url}/admin/oauth/clients/${clientId}/regenerate_secret`, {
+				headers: this.headers,
+				xform: (client) => {
+					return {
+						data: client,
+						error: null
+					};
+				}
+			});
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: null,
+				error
+			};
+			throw error;
+		}
+	}
+};
+function memoryLocalStorageAdapter(store = {}) {
+	return {
+		getItem: (key) => {
+			return store[key] || null;
+		},
+		setItem: (key, value) => {
+			store[key] = value;
+		},
+		removeItem: (key) => {
+			delete store[key];
+		}
+	};
+}
+const internals = { debug: !!(globalThis && supportsLocalStorage() && globalThis.localStorage && globalThis.localStorage.getItem("supabase.gotrue-js.locks.debug") === "true") };
+var LockAcquireTimeoutError = class extends Error {
+	constructor(message$1) {
+		super(message$1);
+		this.isAcquireTimeout = true;
+	}
+};
+var NavigatorLockAcquireTimeoutError = class extends LockAcquireTimeoutError {};
+async function navigatorLock(name, acquireTimeout, fn) {
+	if (internals.debug) console.log("@supabase/gotrue-js: navigatorLock: acquire lock", name, acquireTimeout);
+	const abortController = new globalThis.AbortController();
+	if (acquireTimeout > 0) setTimeout(() => {
+		abortController.abort();
+		if (internals.debug) console.log("@supabase/gotrue-js: navigatorLock acquire timed out", name);
+	}, acquireTimeout);
+	return await Promise.resolve().then(() => globalThis.navigator.locks.request(name, acquireTimeout === 0 ? {
+		mode: "exclusive",
+		ifAvailable: true
+	} : {
+		mode: "exclusive",
+		signal: abortController.signal
+	}, async (lock) => {
+		if (lock) {
+			if (internals.debug) console.log("@supabase/gotrue-js: navigatorLock: acquired", name, lock.name);
+			try {
+				return await fn();
+			} finally {
+				if (internals.debug) console.log("@supabase/gotrue-js: navigatorLock: released", name, lock.name);
+			}
+		} else if (acquireTimeout === 0) {
+			if (internals.debug) console.log("@supabase/gotrue-js: navigatorLock: not immediately available", name);
+			throw new NavigatorLockAcquireTimeoutError(`Acquiring an exclusive Navigator LockManager lock "${name}" immediately failed`);
+		} else {
+			if (internals.debug) try {
+				const result = await globalThis.navigator.locks.query();
+				console.log("@supabase/gotrue-js: Navigator LockManager state", JSON.stringify(result, null, "  "));
+			} catch (e) {
+				console.warn("@supabase/gotrue-js: Error when querying Navigator LockManager state", e);
+			}
+			console.warn("@supabase/gotrue-js: Navigator LockManager returned a null lock when using #request without ifAvailable set to true, it appears this browser is not following the LockManager spec https://developer.mozilla.org/en-US/docs/Web/API/LockManager/request");
+			return await fn();
+		}
+	}));
+}
+function polyfillGlobalThis() {
+	if (typeof globalThis === "object") return;
+	try {
+		Object.defineProperty(Object.prototype, "__magic__", {
+			get: function() {
+				return this;
+			},
+			configurable: true
+		});
+		__magic__.globalThis = __magic__;
+		delete Object.prototype.__magic__;
+	} catch (e) {
+		if (typeof self !== "undefined") self.globalThis = self;
+	}
+}
+function getAddress(address) {
+	if (!/^0x[a-fA-F0-9]{40}$/.test(address)) throw new Error(`@supabase/auth-js: Address "${address}" is invalid.`);
+	return address.toLowerCase();
+}
+function fromHex(hex$1) {
+	return parseInt(hex$1, 16);
+}
+function toHex(value) {
+	const bytes = new TextEncoder().encode(value);
+	return "0x" + Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+function createSiweMessage(parameters) {
+	var _a$1;
+	const { chainId, domain, expirationTime, issuedAt = /* @__PURE__ */ new Date(), nonce, notBefore, requestId, resources, scheme, uri, version: version$5 } = parameters;
+	if (!Number.isInteger(chainId)) throw new Error(`@supabase/auth-js: Invalid SIWE message field "chainId". Chain ID must be a EIP-155 chain ID. Provided value: ${chainId}`);
+	if (!domain) throw new Error(`@supabase/auth-js: Invalid SIWE message field "domain". Domain must be provided.`);
+	if (nonce && nonce.length < 8) throw new Error(`@supabase/auth-js: Invalid SIWE message field "nonce". Nonce must be at least 8 characters. Provided value: ${nonce}`);
+	if (!uri) throw new Error(`@supabase/auth-js: Invalid SIWE message field "uri". URI must be provided.`);
+	if (version$5 !== "1") throw new Error(`@supabase/auth-js: Invalid SIWE message field "version". Version must be '1'. Provided value: ${version$5}`);
+	if ((_a$1 = parameters.statement) === null || _a$1 === void 0 ? void 0 : _a$1.includes("\n")) throw new Error(`@supabase/auth-js: Invalid SIWE message field "statement". Statement must not include '\\n'. Provided value: ${parameters.statement}`);
+	const address = getAddress(parameters.address);
+	const prefix$2 = `${scheme ? `${scheme}://${domain}` : domain} wants you to sign in with your Ethereum account:\n${address}\n\n${parameters.statement ? `${parameters.statement}\n` : ""}`;
+	let suffix = `URI: ${uri}\nVersion: ${version$5}\nChain ID: ${chainId}${nonce ? `\nNonce: ${nonce}` : ""}\nIssued At: ${issuedAt.toISOString()}`;
+	if (expirationTime) suffix += `\nExpiration Time: ${expirationTime.toISOString()}`;
+	if (notBefore) suffix += `\nNot Before: ${notBefore.toISOString()}`;
+	if (requestId) suffix += `\nRequest ID: ${requestId}`;
+	if (resources) {
+		let content = "\nResources:";
+		for (const resource of resources) {
+			if (!resource || typeof resource !== "string") throw new Error(`@supabase/auth-js: Invalid SIWE message field "resources". Every resource must be a valid string. Provided value: ${resource}`);
+			content += `\n- ${resource}`;
+		}
+		suffix += content;
+	}
+	return `${prefix$2}\n${suffix}`;
+}
+var WebAuthnError = class extends Error {
+	constructor({ message: message$1, code, cause, name }) {
+		var _a$1;
+		super(message$1, { cause });
+		this.__isWebAuthnError = true;
+		this.name = (_a$1 = name !== null && name !== void 0 ? name : cause instanceof Error ? cause.name : void 0) !== null && _a$1 !== void 0 ? _a$1 : "Unknown Error";
+		this.code = code;
+	}
+};
+var WebAuthnUnknownError = class extends WebAuthnError {
+	constructor(message$1, originalError) {
+		super({
+			code: "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY",
+			cause: originalError,
+			message: message$1
+		});
+		this.name = "WebAuthnUnknownError";
+		this.originalError = originalError;
+	}
+};
+function identifyRegistrationError({ error, options: options$1 }) {
+	var _a$1, _b, _c;
+	const { publicKey } = options$1;
+	if (!publicKey) throw Error("options was missing required publicKey property");
+	if (error.name === "AbortError") {
+		if (options$1.signal instanceof AbortSignal) return new WebAuthnError({
+			message: "Registration ceremony was sent an abort signal",
+			code: "ERROR_CEREMONY_ABORTED",
+			cause: error
+		});
+	} else if (error.name === "ConstraintError") {
+		if (((_a$1 = publicKey.authenticatorSelection) === null || _a$1 === void 0 ? void 0 : _a$1.requireResidentKey) === true) return new WebAuthnError({
+			message: "Discoverable credentials were required but no available authenticator supported it",
+			code: "ERROR_AUTHENTICATOR_MISSING_DISCOVERABLE_CREDENTIAL_SUPPORT",
+			cause: error
+		});
+		else if (options$1.mediation === "conditional" && ((_b = publicKey.authenticatorSelection) === null || _b === void 0 ? void 0 : _b.userVerification) === "required") return new WebAuthnError({
+			message: "User verification was required during automatic registration but it could not be performed",
+			code: "ERROR_AUTO_REGISTER_USER_VERIFICATION_FAILURE",
+			cause: error
+		});
+		else if (((_c = publicKey.authenticatorSelection) === null || _c === void 0 ? void 0 : _c.userVerification) === "required") return new WebAuthnError({
+			message: "User verification was required but no available authenticator supported it",
+			code: "ERROR_AUTHENTICATOR_MISSING_USER_VERIFICATION_SUPPORT",
+			cause: error
+		});
+	} else if (error.name === "InvalidStateError") return new WebAuthnError({
+		message: "The authenticator was previously registered",
+		code: "ERROR_AUTHENTICATOR_PREVIOUSLY_REGISTERED",
+		cause: error
+	});
+	else if (error.name === "NotAllowedError") return new WebAuthnError({
+		message: error.message,
+		code: "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY",
+		cause: error
+	});
+	else if (error.name === "NotSupportedError") {
+		if (publicKey.pubKeyCredParams.filter((param) => param.type === "public-key").length === 0) return new WebAuthnError({
+			message: "No entry in pubKeyCredParams was of type \"public-key\"",
+			code: "ERROR_MALFORMED_PUBKEYCREDPARAMS",
+			cause: error
+		});
+		return new WebAuthnError({
+			message: "No available authenticator supported any of the specified pubKeyCredParams algorithms",
+			code: "ERROR_AUTHENTICATOR_NO_SUPPORTED_PUBKEYCREDPARAMS_ALG",
+			cause: error
+		});
+	} else if (error.name === "SecurityError") {
+		const effectiveDomain = window.location.hostname;
+		if (!isValidDomain(effectiveDomain)) return new WebAuthnError({
+			message: `${window.location.hostname} is an invalid domain`,
+			code: "ERROR_INVALID_DOMAIN",
+			cause: error
+		});
+		else if (publicKey.rp.id !== effectiveDomain) return new WebAuthnError({
+			message: `The RP ID "${publicKey.rp.id}" is invalid for this domain`,
+			code: "ERROR_INVALID_RP_ID",
+			cause: error
+		});
+	} else if (error.name === "TypeError") {
+		if (publicKey.user.id.byteLength < 1 || publicKey.user.id.byteLength > 64) return new WebAuthnError({
+			message: "User ID was not between 1 and 64 characters",
+			code: "ERROR_INVALID_USER_ID_LENGTH",
+			cause: error
+		});
+	} else if (error.name === "UnknownError") return new WebAuthnError({
+		message: "The authenticator was unable to process the specified options, or could not create a new credential",
+		code: "ERROR_AUTHENTICATOR_GENERAL_ERROR",
+		cause: error
+	});
+	return new WebAuthnError({
+		message: "a Non-Webauthn related error has occurred",
+		code: "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY",
+		cause: error
+	});
+}
+function identifyAuthenticationError({ error, options: options$1 }) {
+	const { publicKey } = options$1;
+	if (!publicKey) throw Error("options was missing required publicKey property");
+	if (error.name === "AbortError") {
+		if (options$1.signal instanceof AbortSignal) return new WebAuthnError({
+			message: "Authentication ceremony was sent an abort signal",
+			code: "ERROR_CEREMONY_ABORTED",
+			cause: error
+		});
+	} else if (error.name === "NotAllowedError") return new WebAuthnError({
+		message: error.message,
+		code: "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY",
+		cause: error
+	});
+	else if (error.name === "SecurityError") {
+		const effectiveDomain = window.location.hostname;
+		if (!isValidDomain(effectiveDomain)) return new WebAuthnError({
+			message: `${window.location.hostname} is an invalid domain`,
+			code: "ERROR_INVALID_DOMAIN",
+			cause: error
+		});
+		else if (publicKey.rpId !== effectiveDomain) return new WebAuthnError({
+			message: `The RP ID "${publicKey.rpId}" is invalid for this domain`,
+			code: "ERROR_INVALID_RP_ID",
+			cause: error
+		});
+	} else if (error.name === "UnknownError") return new WebAuthnError({
+		message: "The authenticator was unable to process the specified options, or could not create a new assertion signature",
+		code: "ERROR_AUTHENTICATOR_GENERAL_ERROR",
+		cause: error
+	});
+	return new WebAuthnError({
+		message: "a Non-Webauthn related error has occurred",
+		code: "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY",
+		cause: error
+	});
+}
+var WebAuthnAbortService = class {
+	createNewAbortSignal() {
+		if (this.controller) {
+			const abortError = /* @__PURE__ */ new Error("Cancelling existing WebAuthn API call for new one");
+			abortError.name = "AbortError";
+			this.controller.abort(abortError);
+		}
+		const newController = new AbortController();
+		this.controller = newController;
+		return newController.signal;
+	}
+	cancelCeremony() {
+		if (this.controller) {
+			const abortError = /* @__PURE__ */ new Error("Manually cancelling existing WebAuthn API call");
+			abortError.name = "AbortError";
+			this.controller.abort(abortError);
+			this.controller = void 0;
+		}
+	}
+};
+const webAuthnAbortService = new WebAuthnAbortService();
+function deserializeCredentialCreationOptions(options$1) {
+	if (!options$1) throw new Error("Credential creation options are required");
+	if (typeof PublicKeyCredential !== "undefined" && "parseCreationOptionsFromJSON" in PublicKeyCredential && typeof PublicKeyCredential.parseCreationOptionsFromJSON === "function") return PublicKeyCredential.parseCreationOptionsFromJSON(options$1);
+	const { challenge: challengeStr, user: userOpts, excludeCredentials } = options$1, restOptions = __rest(options$1, [
+		"challenge",
+		"user",
+		"excludeCredentials"
+	]);
+	const challenge = base64UrlToUint8Array(challengeStr).buffer;
+	const user = Object.assign(Object.assign({}, userOpts), { id: base64UrlToUint8Array(userOpts.id).buffer });
+	const result = Object.assign(Object.assign({}, restOptions), {
+		challenge,
+		user
+	});
+	if (excludeCredentials && excludeCredentials.length > 0) {
+		result.excludeCredentials = new Array(excludeCredentials.length);
+		for (let i$2 = 0; i$2 < excludeCredentials.length; i$2++) {
+			const cred = excludeCredentials[i$2];
+			result.excludeCredentials[i$2] = Object.assign(Object.assign({}, cred), {
+				id: base64UrlToUint8Array(cred.id).buffer,
+				type: cred.type || "public-key",
+				transports: cred.transports
+			});
+		}
+	}
+	return result;
+}
+function deserializeCredentialRequestOptions(options$1) {
+	if (!options$1) throw new Error("Credential request options are required");
+	if (typeof PublicKeyCredential !== "undefined" && "parseRequestOptionsFromJSON" in PublicKeyCredential && typeof PublicKeyCredential.parseRequestOptionsFromJSON === "function") return PublicKeyCredential.parseRequestOptionsFromJSON(options$1);
+	const { challenge: challengeStr, allowCredentials } = options$1, restOptions = __rest(options$1, ["challenge", "allowCredentials"]);
+	const challenge = base64UrlToUint8Array(challengeStr).buffer;
+	const result = Object.assign(Object.assign({}, restOptions), { challenge });
+	if (allowCredentials && allowCredentials.length > 0) {
+		result.allowCredentials = new Array(allowCredentials.length);
+		for (let i$2 = 0; i$2 < allowCredentials.length; i$2++) {
+			const cred = allowCredentials[i$2];
+			result.allowCredentials[i$2] = Object.assign(Object.assign({}, cred), {
+				id: base64UrlToUint8Array(cred.id).buffer,
+				type: cred.type || "public-key",
+				transports: cred.transports
+			});
+		}
+	}
+	return result;
+}
+function serializeCredentialCreationResponse(credential) {
+	var _a$1;
+	if ("toJSON" in credential && typeof credential.toJSON === "function") return credential.toJSON();
+	const credentialWithAttachment = credential;
+	return {
+		id: credential.id,
+		rawId: credential.id,
+		response: {
+			attestationObject: bytesToBase64URL(new Uint8Array(credential.response.attestationObject)),
+			clientDataJSON: bytesToBase64URL(new Uint8Array(credential.response.clientDataJSON))
+		},
+		type: "public-key",
+		clientExtensionResults: credential.getClientExtensionResults(),
+		authenticatorAttachment: (_a$1 = credentialWithAttachment.authenticatorAttachment) !== null && _a$1 !== void 0 ? _a$1 : void 0
+	};
+}
+function serializeCredentialRequestResponse(credential) {
+	var _a$1;
+	if ("toJSON" in credential && typeof credential.toJSON === "function") return credential.toJSON();
+	const credentialWithAttachment = credential;
+	const clientExtensionResults = credential.getClientExtensionResults();
+	const assertionResponse = credential.response;
+	return {
+		id: credential.id,
+		rawId: credential.id,
+		response: {
+			authenticatorData: bytesToBase64URL(new Uint8Array(assertionResponse.authenticatorData)),
+			clientDataJSON: bytesToBase64URL(new Uint8Array(assertionResponse.clientDataJSON)),
+			signature: bytesToBase64URL(new Uint8Array(assertionResponse.signature)),
+			userHandle: assertionResponse.userHandle ? bytesToBase64URL(new Uint8Array(assertionResponse.userHandle)) : void 0
+		},
+		type: "public-key",
+		clientExtensionResults,
+		authenticatorAttachment: (_a$1 = credentialWithAttachment.authenticatorAttachment) !== null && _a$1 !== void 0 ? _a$1 : void 0
+	};
+}
+function isValidDomain(hostname) {
+	return hostname === "localhost" || /^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/i.test(hostname);
+}
+function browserSupportsWebAuthn() {
+	var _a$1, _b;
+	return !!(isBrowser() && "PublicKeyCredential" in window && window.PublicKeyCredential && "credentials" in navigator && typeof ((_a$1 = navigator === null || navigator === void 0 ? void 0 : navigator.credentials) === null || _a$1 === void 0 ? void 0 : _a$1.create) === "function" && typeof ((_b = navigator === null || navigator === void 0 ? void 0 : navigator.credentials) === null || _b === void 0 ? void 0 : _b.get) === "function");
+}
+async function createCredential(options$1) {
+	try {
+		const response = await navigator.credentials.create(options$1);
+		if (!response) return {
+			data: null,
+			error: new WebAuthnUnknownError("Empty credential response", response)
+		};
+		if (!(response instanceof PublicKeyCredential)) return {
+			data: null,
+			error: new WebAuthnUnknownError("Browser returned unexpected credential type", response)
+		};
+		return {
+			data: response,
+			error: null
+		};
+	} catch (err) {
+		return {
+			data: null,
+			error: identifyRegistrationError({
+				error: err,
+				options: options$1
+			})
+		};
+	}
+}
+async function getCredential(options$1) {
+	try {
+		const response = await navigator.credentials.get(options$1);
+		if (!response) return {
+			data: null,
+			error: new WebAuthnUnknownError("Empty credential response", response)
+		};
+		if (!(response instanceof PublicKeyCredential)) return {
+			data: null,
+			error: new WebAuthnUnknownError("Browser returned unexpected credential type", response)
+		};
+		return {
+			data: response,
+			error: null
+		};
+	} catch (err) {
+		return {
+			data: null,
+			error: identifyAuthenticationError({
+				error: err,
+				options: options$1
+			})
+		};
+	}
+}
+const DEFAULT_CREATION_OPTIONS = {
+	hints: ["security-key"],
+	authenticatorSelection: {
+		authenticatorAttachment: "cross-platform",
+		requireResidentKey: false,
+		userVerification: "preferred",
+		residentKey: "discouraged"
+	},
+	attestation: "direct"
+};
+const DEFAULT_REQUEST_OPTIONS = {
+	userVerification: "preferred",
+	hints: ["security-key"],
+	attestation: "direct"
+};
+function deepMerge(...sources) {
+	const isObject$14 = (val) => val !== null && typeof val === "object" && !Array.isArray(val);
+	const isArrayBufferLike = (val) => val instanceof ArrayBuffer || ArrayBuffer.isView(val);
+	const result = {};
+	for (const source of sources) {
+		if (!source) continue;
+		for (const key in source) {
+			const value = source[key];
+			if (value === void 0) continue;
+			if (Array.isArray(value)) result[key] = value;
+			else if (isArrayBufferLike(value)) result[key] = value;
+			else if (isObject$14(value)) {
+				const existing = result[key];
+				if (isObject$14(existing)) result[key] = deepMerge(existing, value);
+				else result[key] = deepMerge(value);
+			} else result[key] = value;
+		}
+	}
+	return result;
+}
+function mergeCredentialCreationOptions(baseOptions, overrides) {
+	return deepMerge(DEFAULT_CREATION_OPTIONS, baseOptions, overrides || {});
+}
+function mergeCredentialRequestOptions(baseOptions, overrides) {
+	return deepMerge(DEFAULT_REQUEST_OPTIONS, baseOptions, overrides || {});
+}
+var WebAuthnApi = class {
+	constructor(client) {
+		this.client = client;
+		this.enroll = this._enroll.bind(this);
+		this.challenge = this._challenge.bind(this);
+		this.verify = this._verify.bind(this);
+		this.authenticate = this._authenticate.bind(this);
+		this.register = this._register.bind(this);
+	}
+	async _enroll(params) {
+		return this.client.mfa.enroll(Object.assign(Object.assign({}, params), { factorType: "webauthn" }));
+	}
+	async _challenge({ factorId, webauthn, friendlyName, signal }, overrides) {
+		var _a$1;
+		try {
+			const { data: challengeResponse, error: challengeError } = await this.client.mfa.challenge({
+				factorId,
+				webauthn
+			});
+			if (!challengeResponse) return {
+				data: null,
+				error: challengeError
+			};
+			const abortSignal = signal !== null && signal !== void 0 ? signal : webAuthnAbortService.createNewAbortSignal();
+			if (challengeResponse.webauthn.type === "create") {
+				const { user } = challengeResponse.webauthn.credential_options.publicKey;
+				if (!user.name) {
+					const nameToUse = friendlyName;
+					if (!nameToUse) {
+						const userData = (await this.client.getUser()).data.user;
+						const fallbackName = ((_a$1 = userData === null || userData === void 0 ? void 0 : userData.user_metadata) === null || _a$1 === void 0 ? void 0 : _a$1.name) || (userData === null || userData === void 0 ? void 0 : userData.email) || (userData === null || userData === void 0 ? void 0 : userData.id) || "User";
+						user.name = `${user.id}:${fallbackName}`;
+					} else user.name = `${user.id}:${nameToUse}`;
+				}
+				if (!user.displayName) user.displayName = user.name;
+			}
+			switch (challengeResponse.webauthn.type) {
+				case "create": {
+					const { data, error } = await createCredential({
+						publicKey: mergeCredentialCreationOptions(challengeResponse.webauthn.credential_options.publicKey, overrides === null || overrides === void 0 ? void 0 : overrides.create),
+						signal: abortSignal
+					});
+					if (data) return {
+						data: {
+							factorId,
+							challengeId: challengeResponse.id,
+							webauthn: {
+								type: challengeResponse.webauthn.type,
+								credential_response: data
+							}
+						},
+						error: null
+					};
+					return {
+						data: null,
+						error
+					};
+				}
+				case "request": {
+					const options$1 = mergeCredentialRequestOptions(challengeResponse.webauthn.credential_options.publicKey, overrides === null || overrides === void 0 ? void 0 : overrides.request);
+					const { data, error } = await getCredential(Object.assign(Object.assign({}, challengeResponse.webauthn.credential_options), {
+						publicKey: options$1,
+						signal: abortSignal
+					}));
+					if (data) return {
+						data: {
+							factorId,
+							challengeId: challengeResponse.id,
+							webauthn: {
+								type: challengeResponse.webauthn.type,
+								credential_response: data
+							}
+						},
+						error: null
+					};
+					return {
+						data: null,
+						error
+					};
+				}
+			}
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: null,
+				error
+			};
+			return {
+				data: null,
+				error: new AuthUnknownError("Unexpected error in challenge", error)
+			};
+		}
+	}
+	async _verify({ challengeId, factorId, webauthn }) {
+		return this.client.mfa.verify({
+			factorId,
+			challengeId,
+			webauthn
+		});
+	}
+	async _authenticate({ factorId, webauthn: { rpId = typeof window !== "undefined" ? window.location.hostname : void 0, rpOrigins = typeof window !== "undefined" ? [window.location.origin] : void 0, signal } = {} }, overrides) {
+		if (!rpId) return {
+			data: null,
+			error: new AuthError("rpId is required for WebAuthn authentication")
+		};
+		try {
+			if (!browserSupportsWebAuthn()) return {
+				data: null,
+				error: new AuthUnknownError("Browser does not support WebAuthn", null)
+			};
+			const { data: challengeResponse, error: challengeError } = await this.challenge({
+				factorId,
+				webauthn: {
+					rpId,
+					rpOrigins
+				},
+				signal
+			}, { request: overrides });
+			if (!challengeResponse) return {
+				data: null,
+				error: challengeError
+			};
+			const { webauthn } = challengeResponse;
+			return this._verify({
+				factorId,
+				challengeId: challengeResponse.challengeId,
+				webauthn: {
+					type: webauthn.type,
+					rpId,
+					rpOrigins,
+					credential_response: webauthn.credential_response
+				}
+			});
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: null,
+				error
+			};
+			return {
+				data: null,
+				error: new AuthUnknownError("Unexpected error in authenticate", error)
+			};
+		}
+	}
+	async _register({ friendlyName, webauthn: { rpId = typeof window !== "undefined" ? window.location.hostname : void 0, rpOrigins = typeof window !== "undefined" ? [window.location.origin] : void 0, signal } = {} }, overrides) {
+		if (!rpId) return {
+			data: null,
+			error: new AuthError("rpId is required for WebAuthn registration")
+		};
+		try {
+			if (!browserSupportsWebAuthn()) return {
+				data: null,
+				error: new AuthUnknownError("Browser does not support WebAuthn", null)
+			};
+			const { data: factor, error: enrollError } = await this._enroll({ friendlyName });
+			if (!factor) {
+				await this.client.mfa.listFactors().then((factors) => {
+					var _a$1;
+					return (_a$1 = factors.data) === null || _a$1 === void 0 ? void 0 : _a$1.all.find((v) => v.factor_type === "webauthn" && v.friendly_name === friendlyName && v.status !== "unverified");
+				}).then((factor$1) => factor$1 ? this.client.mfa.unenroll({ factorId: factor$1 === null || factor$1 === void 0 ? void 0 : factor$1.id }) : void 0);
+				return {
+					data: null,
+					error: enrollError
+				};
+			}
+			const { data: challengeResponse, error: challengeError } = await this._challenge({
+				factorId: factor.id,
+				friendlyName: factor.friendly_name,
+				webauthn: {
+					rpId,
+					rpOrigins
+				},
+				signal
+			}, { create: overrides });
+			if (!challengeResponse) return {
+				data: null,
+				error: challengeError
+			};
+			return this._verify({
+				factorId: factor.id,
+				challengeId: challengeResponse.challengeId,
+				webauthn: {
+					rpId,
+					rpOrigins,
+					type: challengeResponse.webauthn.type,
+					credential_response: challengeResponse.webauthn.credential_response
+				}
+			});
+		} catch (error) {
+			if (isAuthError(error)) return {
+				data: null,
+				error
+			};
+			return {
+				data: null,
+				error: new AuthUnknownError("Unexpected error in register", error)
+			};
+		}
+	}
+};
+polyfillGlobalThis();
+var DEFAULT_OPTIONS = {
+	url: GOTRUE_URL,
+	storageKey: STORAGE_KEY,
+	autoRefreshToken: true,
+	persistSession: true,
+	detectSessionInUrl: true,
+	headers: DEFAULT_HEADERS,
+	flowType: "implicit",
+	debug: false,
+	hasCustomAuthorizationHeader: false,
+	throwOnError: false,
+	lockAcquireTimeout: 1e4
+};
+async function lockNoOp(name, acquireTimeout, fn) {
+	return await fn();
+}
+var GLOBAL_JWKS = {};
+var GoTrueClient = class GoTrueClient {
+	get jwks() {
+		var _a$1, _b;
+		return (_b = (_a$1 = GLOBAL_JWKS[this.storageKey]) === null || _a$1 === void 0 ? void 0 : _a$1.jwks) !== null && _b !== void 0 ? _b : { keys: [] };
+	}
+	set jwks(value) {
+		GLOBAL_JWKS[this.storageKey] = Object.assign(Object.assign({}, GLOBAL_JWKS[this.storageKey]), { jwks: value });
+	}
+	get jwks_cached_at() {
+		var _a$1, _b;
+		return (_b = (_a$1 = GLOBAL_JWKS[this.storageKey]) === null || _a$1 === void 0 ? void 0 : _a$1.cachedAt) !== null && _b !== void 0 ? _b : Number.MIN_SAFE_INTEGER;
+	}
+	set jwks_cached_at(value) {
+		GLOBAL_JWKS[this.storageKey] = Object.assign(Object.assign({}, GLOBAL_JWKS[this.storageKey]), { cachedAt: value });
+	}
+	constructor(options$1) {
+		var _a$1, _b, _c;
+		this.userStorage = null;
+		this.memoryStorage = null;
+		this.stateChangeEmitters = /* @__PURE__ */ new Map();
+		this.autoRefreshTicker = null;
+		this.autoRefreshTickTimeout = null;
+		this.visibilityChangedCallback = null;
+		this.refreshingDeferred = null;
+		this.initializePromise = null;
+		this.detectSessionInUrl = true;
+		this.hasCustomAuthorizationHeader = false;
+		this.suppressGetSessionWarning = false;
+		this.lockAcquired = false;
+		this.pendingInLock = [];
+		this.broadcastChannel = null;
+		this.logger = console.log;
+		const settings = Object.assign(Object.assign({}, DEFAULT_OPTIONS), options$1);
+		this.storageKey = settings.storageKey;
+		this.instanceID = (_a$1 = GoTrueClient.nextInstanceID[this.storageKey]) !== null && _a$1 !== void 0 ? _a$1 : 0;
+		GoTrueClient.nextInstanceID[this.storageKey] = this.instanceID + 1;
+		this.logDebugMessages = !!settings.debug;
+		if (typeof settings.debug === "function") this.logger = settings.debug;
+		if (this.instanceID > 0 && isBrowser()) {
+			const message$1 = `${this._logPrefix()} Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.`;
+			console.warn(message$1);
+			if (this.logDebugMessages) console.trace(message$1);
+		}
+		this.persistSession = settings.persistSession;
+		this.autoRefreshToken = settings.autoRefreshToken;
+		this.admin = new GoTrueAdminApi({
+			url: settings.url,
+			headers: settings.headers,
+			fetch: settings.fetch
+		});
+		this.url = settings.url;
+		this.headers = settings.headers;
+		this.fetch = resolveFetch$1(settings.fetch);
+		this.lock = settings.lock || lockNoOp;
+		this.detectSessionInUrl = settings.detectSessionInUrl;
+		this.flowType = settings.flowType;
+		this.hasCustomAuthorizationHeader = settings.hasCustomAuthorizationHeader;
+		this.throwOnError = settings.throwOnError;
+		this.lockAcquireTimeout = settings.lockAcquireTimeout;
+		if (settings.lock) this.lock = settings.lock;
+		else if (this.persistSession && isBrowser() && ((_b = globalThis === null || globalThis === void 0 ? void 0 : globalThis.navigator) === null || _b === void 0 ? void 0 : _b.locks)) this.lock = navigatorLock;
+		else this.lock = lockNoOp;
+		if (!this.jwks) {
+			this.jwks = { keys: [] };
+			this.jwks_cached_at = Number.MIN_SAFE_INTEGER;
+		}
+		this.mfa = {
+			verify: this._verify.bind(this),
+			enroll: this._enroll.bind(this),
+			unenroll: this._unenroll.bind(this),
+			challenge: this._challenge.bind(this),
+			listFactors: this._listFactors.bind(this),
+			challengeAndVerify: this._challengeAndVerify.bind(this),
+			getAuthenticatorAssuranceLevel: this._getAuthenticatorAssuranceLevel.bind(this),
+			webauthn: new WebAuthnApi(this)
+		};
+		this.oauth = {
+			getAuthorizationDetails: this._getAuthorizationDetails.bind(this),
+			approveAuthorization: this._approveAuthorization.bind(this),
+			denyAuthorization: this._denyAuthorization.bind(this),
+			listGrants: this._listOAuthGrants.bind(this),
+			revokeGrant: this._revokeOAuthGrant.bind(this)
+		};
+		if (this.persistSession) {
+			if (settings.storage) this.storage = settings.storage;
+			else if (supportsLocalStorage()) this.storage = globalThis.localStorage;
+			else {
+				this.memoryStorage = {};
+				this.storage = memoryLocalStorageAdapter(this.memoryStorage);
+			}
+			if (settings.userStorage) this.userStorage = settings.userStorage;
+		} else {
+			this.memoryStorage = {};
+			this.storage = memoryLocalStorageAdapter(this.memoryStorage);
+		}
+		if (isBrowser() && globalThis.BroadcastChannel && this.persistSession && this.storageKey) {
+			try {
+				this.broadcastChannel = new globalThis.BroadcastChannel(this.storageKey);
+			} catch (e) {
+				console.error("Failed to create a new BroadcastChannel, multi-tab state changes will not be available", e);
+			}
+			(_c = this.broadcastChannel) === null || _c === void 0 || _c.addEventListener("message", async (event) => {
+				this._debug("received broadcast notification from other tab or client", event);
+				try {
+					await this._notifyAllSubscribers(event.data.event, event.data.session, false);
+				} catch (error) {
+					this._debug("#broadcastChannel", "error", error);
+				}
+			});
+		}
+		this.initialize().catch((error) => {
+			this._debug("#initialize()", "error", error);
+		});
+	}
+	isThrowOnErrorEnabled() {
+		return this.throwOnError;
+	}
+	_returnResult(result) {
+		if (this.throwOnError && result && result.error) throw result.error;
+		return result;
+	}
+	_logPrefix() {
+		return `GoTrueClient@${this.storageKey}:${this.instanceID} (${version$2}) ${(/* @__PURE__ */ new Date()).toISOString()}`;
+	}
+	_debug(...args) {
+		if (this.logDebugMessages) this.logger(this._logPrefix(), ...args);
+		return this;
+	}
+	async initialize() {
+		if (this.initializePromise) return await this.initializePromise;
+		this.initializePromise = (async () => {
+			return await this._acquireLock(this.lockAcquireTimeout, async () => {
+				return await this._initialize();
+			});
+		})();
+		return await this.initializePromise;
+	}
+	async _initialize() {
+		var _a$1;
+		try {
+			let params = {};
+			let callbackUrlType = "none";
+			if (isBrowser()) {
+				params = parseParametersFromURL(window.location.href);
+				if (this._isImplicitGrantCallback(params)) callbackUrlType = "implicit";
+				else if (await this._isPKCECallback(params)) callbackUrlType = "pkce";
+			}
+			if (isBrowser() && this.detectSessionInUrl && callbackUrlType !== "none") {
+				const { data, error } = await this._getSessionFromURL(params, callbackUrlType);
+				if (error) {
+					this._debug("#_initialize()", "error detecting session from URL", error);
+					if (isAuthImplicitGrantRedirectError(error)) {
+						const errorCode = (_a$1 = error.details) === null || _a$1 === void 0 ? void 0 : _a$1.code;
+						if (errorCode === "identity_already_exists" || errorCode === "identity_not_found" || errorCode === "single_identity_not_deletable") return { error };
+					}
+					return { error };
+				}
+				const { session, redirectType } = data;
+				this._debug("#_initialize()", "detected session in URL", session, "redirect type", redirectType);
+				await this._saveSession(session);
+				setTimeout(async () => {
+					if (redirectType === "recovery") await this._notifyAllSubscribers("PASSWORD_RECOVERY", session);
+					else await this._notifyAllSubscribers("SIGNED_IN", session);
+				}, 0);
+				return { error: null };
+			}
+			await this._recoverAndRefresh();
+			return { error: null };
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({ error });
+			return this._returnResult({ error: new AuthUnknownError("Unexpected error during initialization", error) });
+		} finally {
+			await this._handleVisibilityChange();
+			this._debug("#_initialize()", "end");
+		}
+	}
+	async signInAnonymously(credentials) {
+		var _a$1, _b, _c;
+		try {
+			const { data, error } = await _request(this.fetch, "POST", `${this.url}/signup`, {
+				headers: this.headers,
+				body: {
+					data: (_b = (_a$1 = credentials === null || credentials === void 0 ? void 0 : credentials.options) === null || _a$1 === void 0 ? void 0 : _a$1.data) !== null && _b !== void 0 ? _b : {},
+					gotrue_meta_security: { captcha_token: (_c = credentials === null || credentials === void 0 ? void 0 : credentials.options) === null || _c === void 0 ? void 0 : _c.captchaToken }
+				},
+				xform: _sessionResponse
+			});
+			if (error || !data) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			const session = data.session;
+			const user = data.user;
+			if (data.session) {
+				await this._saveSession(data.session);
+				await this._notifyAllSubscribers("SIGNED_IN", session);
+			}
+			return this._returnResult({
+				data: {
+					user,
+					session
+				},
+				error: null
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async signUp(credentials) {
+		var _a$1, _b, _c;
+		try {
+			let res;
+			if ("email" in credentials) {
+				const { email: email$1, password, options: options$1 } = credentials;
+				let codeChallenge = null;
+				let codeChallengeMethod = null;
+				if (this.flowType === "pkce") [codeChallenge, codeChallengeMethod] = await getCodeChallengeAndMethod(this.storage, this.storageKey);
+				res = await _request(this.fetch, "POST", `${this.url}/signup`, {
+					headers: this.headers,
+					redirectTo: options$1 === null || options$1 === void 0 ? void 0 : options$1.emailRedirectTo,
+					body: {
+						email: email$1,
+						password,
+						data: (_a$1 = options$1 === null || options$1 === void 0 ? void 0 : options$1.data) !== null && _a$1 !== void 0 ? _a$1 : {},
+						gotrue_meta_security: { captcha_token: options$1 === null || options$1 === void 0 ? void 0 : options$1.captchaToken },
+						code_challenge: codeChallenge,
+						code_challenge_method: codeChallengeMethod
+					},
+					xform: _sessionResponse
+				});
+			} else if ("phone" in credentials) {
+				const { phone, password, options: options$1 } = credentials;
+				res = await _request(this.fetch, "POST", `${this.url}/signup`, {
+					headers: this.headers,
+					body: {
+						phone,
+						password,
+						data: (_b = options$1 === null || options$1 === void 0 ? void 0 : options$1.data) !== null && _b !== void 0 ? _b : {},
+						channel: (_c = options$1 === null || options$1 === void 0 ? void 0 : options$1.channel) !== null && _c !== void 0 ? _c : "sms",
+						gotrue_meta_security: { captcha_token: options$1 === null || options$1 === void 0 ? void 0 : options$1.captchaToken }
+					},
+					xform: _sessionResponse
+				});
+			} else throw new AuthInvalidCredentialsError("You must provide either an email or phone number and a password");
+			const { data, error } = res;
+			if (error || !data) {
+				await removeItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+				return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error
+				});
+			}
+			const session = data.session;
+			const user = data.user;
+			if (data.session) {
+				await this._saveSession(data.session);
+				await this._notifyAllSubscribers("SIGNED_IN", session);
+			}
+			return this._returnResult({
+				data: {
+					user,
+					session
+				},
+				error: null
+			});
+		} catch (error) {
+			await removeItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async signInWithPassword(credentials) {
+		try {
+			let res;
+			if ("email" in credentials) {
+				const { email: email$1, password, options: options$1 } = credentials;
+				res = await _request(this.fetch, "POST", `${this.url}/token?grant_type=password`, {
+					headers: this.headers,
+					body: {
+						email: email$1,
+						password,
+						gotrue_meta_security: { captcha_token: options$1 === null || options$1 === void 0 ? void 0 : options$1.captchaToken }
+					},
+					xform: _sessionResponsePassword
+				});
+			} else if ("phone" in credentials) {
+				const { phone, password, options: options$1 } = credentials;
+				res = await _request(this.fetch, "POST", `${this.url}/token?grant_type=password`, {
+					headers: this.headers,
+					body: {
+						phone,
+						password,
+						gotrue_meta_security: { captcha_token: options$1 === null || options$1 === void 0 ? void 0 : options$1.captchaToken }
+					},
+					xform: _sessionResponsePassword
+				});
+			} else throw new AuthInvalidCredentialsError("You must provide either an email or phone number and a password");
+			const { data, error } = res;
+			if (error) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			else if (!data || !data.session || !data.user) {
+				const invalidTokenError = new AuthInvalidTokenResponseError();
+				return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error: invalidTokenError
+				});
+			}
+			if (data.session) {
+				await this._saveSession(data.session);
+				await this._notifyAllSubscribers("SIGNED_IN", data.session);
+			}
+			return this._returnResult({
+				data: Object.assign({
+					user: data.user,
+					session: data.session
+				}, data.weak_password ? { weakPassword: data.weak_password } : null),
+				error
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async signInWithOAuth(credentials) {
+		var _a$1, _b, _c, _d;
+		return await this._handleProviderSignIn(credentials.provider, {
+			redirectTo: (_a$1 = credentials.options) === null || _a$1 === void 0 ? void 0 : _a$1.redirectTo,
+			scopes: (_b = credentials.options) === null || _b === void 0 ? void 0 : _b.scopes,
+			queryParams: (_c = credentials.options) === null || _c === void 0 ? void 0 : _c.queryParams,
+			skipBrowserRedirect: (_d = credentials.options) === null || _d === void 0 ? void 0 : _d.skipBrowserRedirect
+		});
+	}
+	async exchangeCodeForSession(authCode) {
+		await this.initializePromise;
+		return this._acquireLock(this.lockAcquireTimeout, async () => {
+			return this._exchangeCodeForSession(authCode);
+		});
+	}
+	async signInWithWeb3(credentials) {
+		const { chain } = credentials;
+		switch (chain) {
+			case "ethereum": return await this.signInWithEthereum(credentials);
+			case "solana": return await this.signInWithSolana(credentials);
+			default: throw new Error(`@supabase/auth-js: Unsupported chain "${chain}"`);
+		}
+	}
+	async signInWithEthereum(credentials) {
+		var _a$1, _b, _c, _d, _e$1, _f, _g, _h, _j, _k, _l;
+		let message$1;
+		let signature;
+		if ("message" in credentials) {
+			message$1 = credentials.message;
+			signature = credentials.signature;
+		} else {
+			const { chain, wallet, statement, options: options$1 } = credentials;
+			let resolvedWallet;
+			if (!isBrowser()) {
+				if (typeof wallet !== "object" || !(options$1 === null || options$1 === void 0 ? void 0 : options$1.url)) throw new Error("@supabase/auth-js: Both wallet and url must be specified in non-browser environments.");
+				resolvedWallet = wallet;
+			} else if (typeof wallet === "object") resolvedWallet = wallet;
+			else {
+				const windowAny = window;
+				if ("ethereum" in windowAny && typeof windowAny.ethereum === "object" && "request" in windowAny.ethereum && typeof windowAny.ethereum.request === "function") resolvedWallet = windowAny.ethereum;
+				else throw new Error(`@supabase/auth-js: No compatible Ethereum wallet interface on the window object (window.ethereum) detected. Make sure the user already has a wallet installed and connected for this app. Prefer passing the wallet interface object directly to signInWithWeb3({ chain: 'ethereum', wallet: resolvedUserWallet }) instead.`);
+			}
+			const url = new URL((_a$1 = options$1 === null || options$1 === void 0 ? void 0 : options$1.url) !== null && _a$1 !== void 0 ? _a$1 : window.location.href);
+			const accounts = await resolvedWallet.request({ method: "eth_requestAccounts" }).then((accs) => accs).catch(() => {
+				throw new Error(`@supabase/auth-js: Wallet method eth_requestAccounts is missing or invalid`);
+			});
+			if (!accounts || accounts.length === 0) throw new Error(`@supabase/auth-js: No accounts available. Please ensure the wallet is connected.`);
+			const address = getAddress(accounts[0]);
+			let chainId = (_b = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithEthereum) === null || _b === void 0 ? void 0 : _b.chainId;
+			if (!chainId) chainId = fromHex(await resolvedWallet.request({ method: "eth_chainId" }));
+			message$1 = createSiweMessage({
+				domain: url.host,
+				address,
+				statement,
+				uri: url.href,
+				version: "1",
+				chainId,
+				nonce: (_c = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithEthereum) === null || _c === void 0 ? void 0 : _c.nonce,
+				issuedAt: (_e$1 = (_d = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithEthereum) === null || _d === void 0 ? void 0 : _d.issuedAt) !== null && _e$1 !== void 0 ? _e$1 : /* @__PURE__ */ new Date(),
+				expirationTime: (_f = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithEthereum) === null || _f === void 0 ? void 0 : _f.expirationTime,
+				notBefore: (_g = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithEthereum) === null || _g === void 0 ? void 0 : _g.notBefore,
+				requestId: (_h = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithEthereum) === null || _h === void 0 ? void 0 : _h.requestId,
+				resources: (_j = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithEthereum) === null || _j === void 0 ? void 0 : _j.resources
+			});
+			signature = await resolvedWallet.request({
+				method: "personal_sign",
+				params: [toHex(message$1), address]
+			});
+		}
+		try {
+			const { data, error } = await _request(this.fetch, "POST", `${this.url}/token?grant_type=web3`, {
+				headers: this.headers,
+				body: Object.assign({
+					chain: "ethereum",
+					message: message$1,
+					signature
+				}, ((_k = credentials.options) === null || _k === void 0 ? void 0 : _k.captchaToken) ? { gotrue_meta_security: { captcha_token: (_l = credentials.options) === null || _l === void 0 ? void 0 : _l.captchaToken } } : null),
+				xform: _sessionResponse
+			});
+			if (error) throw error;
+			if (!data || !data.session || !data.user) {
+				const invalidTokenError = new AuthInvalidTokenResponseError();
+				return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error: invalidTokenError
+				});
+			}
+			if (data.session) {
+				await this._saveSession(data.session);
+				await this._notifyAllSubscribers("SIGNED_IN", data.session);
+			}
+			return this._returnResult({
+				data: Object.assign({}, data),
+				error
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async signInWithSolana(credentials) {
+		var _a$1, _b, _c, _d, _e$1, _f, _g, _h, _j, _k, _l, _m;
+		let message$1;
+		let signature;
+		if ("message" in credentials) {
+			message$1 = credentials.message;
+			signature = credentials.signature;
+		} else {
+			const { chain, wallet, statement, options: options$1 } = credentials;
+			let resolvedWallet;
+			if (!isBrowser()) {
+				if (typeof wallet !== "object" || !(options$1 === null || options$1 === void 0 ? void 0 : options$1.url)) throw new Error("@supabase/auth-js: Both wallet and url must be specified in non-browser environments.");
+				resolvedWallet = wallet;
+			} else if (typeof wallet === "object") resolvedWallet = wallet;
+			else {
+				const windowAny = window;
+				if ("solana" in windowAny && typeof windowAny.solana === "object" && ("signIn" in windowAny.solana && typeof windowAny.solana.signIn === "function" || "signMessage" in windowAny.solana && typeof windowAny.solana.signMessage === "function")) resolvedWallet = windowAny.solana;
+				else throw new Error(`@supabase/auth-js: No compatible Solana wallet interface on the window object (window.solana) detected. Make sure the user already has a wallet installed and connected for this app. Prefer passing the wallet interface object directly to signInWithWeb3({ chain: 'solana', wallet: resolvedUserWallet }) instead.`);
+			}
+			const url = new URL((_a$1 = options$1 === null || options$1 === void 0 ? void 0 : options$1.url) !== null && _a$1 !== void 0 ? _a$1 : window.location.href);
+			if ("signIn" in resolvedWallet && resolvedWallet.signIn) {
+				const output = await resolvedWallet.signIn(Object.assign(Object.assign(Object.assign({ issuedAt: (/* @__PURE__ */ new Date()).toISOString() }, options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithSolana), {
+					version: "1",
+					domain: url.host,
+					uri: url.href
+				}), statement ? { statement } : null));
+				let outputToProcess;
+				if (Array.isArray(output) && output[0] && typeof output[0] === "object") outputToProcess = output[0];
+				else if (output && typeof output === "object" && "signedMessage" in output && "signature" in output) outputToProcess = output;
+				else throw new Error("@supabase/auth-js: Wallet method signIn() returned unrecognized value");
+				if ("signedMessage" in outputToProcess && "signature" in outputToProcess && (typeof outputToProcess.signedMessage === "string" || outputToProcess.signedMessage instanceof Uint8Array) && outputToProcess.signature instanceof Uint8Array) {
+					message$1 = typeof outputToProcess.signedMessage === "string" ? outputToProcess.signedMessage : new TextDecoder().decode(outputToProcess.signedMessage);
+					signature = outputToProcess.signature;
+				} else throw new Error("@supabase/auth-js: Wallet method signIn() API returned object without signedMessage and signature fields");
+			} else {
+				if (!("signMessage" in resolvedWallet) || typeof resolvedWallet.signMessage !== "function" || !("publicKey" in resolvedWallet) || typeof resolvedWallet !== "object" || !resolvedWallet.publicKey || !("toBase58" in resolvedWallet.publicKey) || typeof resolvedWallet.publicKey.toBase58 !== "function") throw new Error("@supabase/auth-js: Wallet does not have a compatible signMessage() and publicKey.toBase58() API");
+				message$1 = [
+					`${url.host} wants you to sign in with your Solana account:`,
+					resolvedWallet.publicKey.toBase58(),
+					...statement ? [
+						"",
+						statement,
+						""
+					] : [""],
+					"Version: 1",
+					`URI: ${url.href}`,
+					`Issued At: ${(_c = (_b = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithSolana) === null || _b === void 0 ? void 0 : _b.issuedAt) !== null && _c !== void 0 ? _c : (/* @__PURE__ */ new Date()).toISOString()}`,
+					...((_d = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithSolana) === null || _d === void 0 ? void 0 : _d.notBefore) ? [`Not Before: ${options$1.signInWithSolana.notBefore}`] : [],
+					...((_e$1 = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithSolana) === null || _e$1 === void 0 ? void 0 : _e$1.expirationTime) ? [`Expiration Time: ${options$1.signInWithSolana.expirationTime}`] : [],
+					...((_f = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithSolana) === null || _f === void 0 ? void 0 : _f.chainId) ? [`Chain ID: ${options$1.signInWithSolana.chainId}`] : [],
+					...((_g = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithSolana) === null || _g === void 0 ? void 0 : _g.nonce) ? [`Nonce: ${options$1.signInWithSolana.nonce}`] : [],
+					...((_h = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithSolana) === null || _h === void 0 ? void 0 : _h.requestId) ? [`Request ID: ${options$1.signInWithSolana.requestId}`] : [],
+					...((_k = (_j = options$1 === null || options$1 === void 0 ? void 0 : options$1.signInWithSolana) === null || _j === void 0 ? void 0 : _j.resources) === null || _k === void 0 ? void 0 : _k.length) ? ["Resources", ...options$1.signInWithSolana.resources.map((resource) => `- ${resource}`)] : []
+				].join("\n");
+				const maybeSignature = await resolvedWallet.signMessage(new TextEncoder().encode(message$1), "utf8");
+				if (!maybeSignature || !(maybeSignature instanceof Uint8Array)) throw new Error("@supabase/auth-js: Wallet signMessage() API returned an recognized value");
+				signature = maybeSignature;
+			}
+		}
+		try {
+			const { data, error } = await _request(this.fetch, "POST", `${this.url}/token?grant_type=web3`, {
+				headers: this.headers,
+				body: Object.assign({
+					chain: "solana",
+					message: message$1,
+					signature: bytesToBase64URL(signature)
+				}, ((_l = credentials.options) === null || _l === void 0 ? void 0 : _l.captchaToken) ? { gotrue_meta_security: { captcha_token: (_m = credentials.options) === null || _m === void 0 ? void 0 : _m.captchaToken } } : null),
+				xform: _sessionResponse
+			});
+			if (error) throw error;
+			if (!data || !data.session || !data.user) {
+				const invalidTokenError = new AuthInvalidTokenResponseError();
+				return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error: invalidTokenError
+				});
+			}
+			if (data.session) {
+				await this._saveSession(data.session);
+				await this._notifyAllSubscribers("SIGNED_IN", data.session);
+			}
+			return this._returnResult({
+				data: Object.assign({}, data),
+				error
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async _exchangeCodeForSession(authCode) {
+		const storageItem = await getItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+		const [codeVerifier, redirectType] = (storageItem !== null && storageItem !== void 0 ? storageItem : "").split("/");
+		try {
+			if (!codeVerifier && this.flowType === "pkce") throw new AuthPKCECodeVerifierMissingError();
+			const { data, error } = await _request(this.fetch, "POST", `${this.url}/token?grant_type=pkce`, {
+				headers: this.headers,
+				body: {
+					auth_code: authCode,
+					code_verifier: codeVerifier
+				},
+				xform: _sessionResponse
+			});
+			await removeItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+			if (error) throw error;
+			if (!data || !data.session || !data.user) {
+				const invalidTokenError = new AuthInvalidTokenResponseError();
+				return this._returnResult({
+					data: {
+						user: null,
+						session: null,
+						redirectType: null
+					},
+					error: invalidTokenError
+				});
+			}
+			if (data.session) {
+				await this._saveSession(data.session);
+				await this._notifyAllSubscribers("SIGNED_IN", data.session);
+			}
+			return this._returnResult({
+				data: Object.assign(Object.assign({}, data), { redirectType: redirectType !== null && redirectType !== void 0 ? redirectType : null }),
+				error
+			});
+		} catch (error) {
+			await removeItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					user: null,
+					session: null,
+					redirectType: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async signInWithIdToken(credentials) {
+		try {
+			const { options: options$1, provider, token, access_token, nonce } = credentials;
+			const { data, error } = await _request(this.fetch, "POST", `${this.url}/token?grant_type=id_token`, {
+				headers: this.headers,
+				body: {
+					provider,
+					id_token: token,
+					access_token,
+					nonce,
+					gotrue_meta_security: { captcha_token: options$1 === null || options$1 === void 0 ? void 0 : options$1.captchaToken }
+				},
+				xform: _sessionResponse
+			});
+			if (error) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			else if (!data || !data.session || !data.user) {
+				const invalidTokenError = new AuthInvalidTokenResponseError();
+				return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error: invalidTokenError
+				});
+			}
+			if (data.session) {
+				await this._saveSession(data.session);
+				await this._notifyAllSubscribers("SIGNED_IN", data.session);
+			}
+			return this._returnResult({
+				data,
+				error
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async signInWithOtp(credentials) {
+		var _a$1, _b, _c, _d, _e$1;
+		try {
+			if ("email" in credentials) {
+				const { email: email$1, options: options$1 } = credentials;
+				let codeChallenge = null;
+				let codeChallengeMethod = null;
+				if (this.flowType === "pkce") [codeChallenge, codeChallengeMethod] = await getCodeChallengeAndMethod(this.storage, this.storageKey);
+				const { error } = await _request(this.fetch, "POST", `${this.url}/otp`, {
+					headers: this.headers,
+					body: {
+						email: email$1,
+						data: (_a$1 = options$1 === null || options$1 === void 0 ? void 0 : options$1.data) !== null && _a$1 !== void 0 ? _a$1 : {},
+						create_user: (_b = options$1 === null || options$1 === void 0 ? void 0 : options$1.shouldCreateUser) !== null && _b !== void 0 ? _b : true,
+						gotrue_meta_security: { captcha_token: options$1 === null || options$1 === void 0 ? void 0 : options$1.captchaToken },
+						code_challenge: codeChallenge,
+						code_challenge_method: codeChallengeMethod
+					},
+					redirectTo: options$1 === null || options$1 === void 0 ? void 0 : options$1.emailRedirectTo
+				});
+				return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error
+				});
+			}
+			if ("phone" in credentials) {
+				const { phone, options: options$1 } = credentials;
+				const { data, error } = await _request(this.fetch, "POST", `${this.url}/otp`, {
+					headers: this.headers,
+					body: {
+						phone,
+						data: (_c = options$1 === null || options$1 === void 0 ? void 0 : options$1.data) !== null && _c !== void 0 ? _c : {},
+						create_user: (_d = options$1 === null || options$1 === void 0 ? void 0 : options$1.shouldCreateUser) !== null && _d !== void 0 ? _d : true,
+						gotrue_meta_security: { captcha_token: options$1 === null || options$1 === void 0 ? void 0 : options$1.captchaToken },
+						channel: (_e$1 = options$1 === null || options$1 === void 0 ? void 0 : options$1.channel) !== null && _e$1 !== void 0 ? _e$1 : "sms"
+					}
+				});
+				return this._returnResult({
+					data: {
+						user: null,
+						session: null,
+						messageId: data === null || data === void 0 ? void 0 : data.message_id
+					},
+					error
+				});
+			}
+			throw new AuthInvalidCredentialsError("You must provide either an email or phone number.");
+		} catch (error) {
+			await removeItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async verifyOtp(params) {
+		var _a$1, _b;
+		try {
+			let redirectTo = void 0;
+			let captchaToken = void 0;
+			if ("options" in params) {
+				redirectTo = (_a$1 = params.options) === null || _a$1 === void 0 ? void 0 : _a$1.redirectTo;
+				captchaToken = (_b = params.options) === null || _b === void 0 ? void 0 : _b.captchaToken;
+			}
+			const { data, error } = await _request(this.fetch, "POST", `${this.url}/verify`, {
+				headers: this.headers,
+				body: Object.assign(Object.assign({}, params), { gotrue_meta_security: { captcha_token: captchaToken } }),
+				redirectTo,
+				xform: _sessionResponse
+			});
+			if (error) throw error;
+			if (!data) throw /* @__PURE__ */ new Error("An error occurred on token verification.");
+			const session = data.session;
+			const user = data.user;
+			if (session === null || session === void 0 ? void 0 : session.access_token) {
+				await this._saveSession(session);
+				await this._notifyAllSubscribers(params.type == "recovery" ? "PASSWORD_RECOVERY" : "SIGNED_IN", session);
+			}
+			return this._returnResult({
+				data: {
+					user,
+					session
+				},
+				error: null
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async signInWithSSO(params) {
+		var _a$1, _b, _c, _d, _e$1;
+		try {
+			let codeChallenge = null;
+			let codeChallengeMethod = null;
+			if (this.flowType === "pkce") [codeChallenge, codeChallengeMethod] = await getCodeChallengeAndMethod(this.storage, this.storageKey);
+			const result = await _request(this.fetch, "POST", `${this.url}/sso`, {
+				body: Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, "providerId" in params ? { provider_id: params.providerId } : null), "domain" in params ? { domain: params.domain } : null), { redirect_to: (_b = (_a$1 = params.options) === null || _a$1 === void 0 ? void 0 : _a$1.redirectTo) !== null && _b !== void 0 ? _b : void 0 }), ((_c = params === null || params === void 0 ? void 0 : params.options) === null || _c === void 0 ? void 0 : _c.captchaToken) ? { gotrue_meta_security: { captcha_token: params.options.captchaToken } } : null), {
+					skip_http_redirect: true,
+					code_challenge: codeChallenge,
+					code_challenge_method: codeChallengeMethod
+				}),
+				headers: this.headers,
+				xform: _ssoResponse
+			});
+			if (((_d = result.data) === null || _d === void 0 ? void 0 : _d.url) && isBrowser() && !((_e$1 = params.options) === null || _e$1 === void 0 ? void 0 : _e$1.skipBrowserRedirect)) window.location.assign(result.data.url);
+			return this._returnResult(result);
+		} catch (error) {
+			await removeItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+	}
+	async reauthenticate() {
+		await this.initializePromise;
+		return await this._acquireLock(this.lockAcquireTimeout, async () => {
+			return await this._reauthenticate();
+		});
+	}
+	async _reauthenticate() {
+		try {
+			return await this._useSession(async (result) => {
+				const { data: { session }, error: sessionError } = result;
+				if (sessionError) throw sessionError;
+				if (!session) throw new AuthSessionMissingError();
+				const { error } = await _request(this.fetch, "GET", `${this.url}/reauthenticate`, {
+					headers: this.headers,
+					jwt: session.access_token
+				});
+				return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error
+				});
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async resend(credentials) {
+		try {
+			const endpoint = `${this.url}/resend`;
+			if ("email" in credentials) {
+				const { email: email$1, type, options: options$1 } = credentials;
+				const { error } = await _request(this.fetch, "POST", endpoint, {
+					headers: this.headers,
+					body: {
+						email: email$1,
+						type,
+						gotrue_meta_security: { captcha_token: options$1 === null || options$1 === void 0 ? void 0 : options$1.captchaToken }
+					},
+					redirectTo: options$1 === null || options$1 === void 0 ? void 0 : options$1.emailRedirectTo
+				});
+				return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error
+				});
+			} else if ("phone" in credentials) {
+				const { phone, type, options: options$1 } = credentials;
+				const { data, error } = await _request(this.fetch, "POST", endpoint, {
+					headers: this.headers,
+					body: {
+						phone,
+						type,
+						gotrue_meta_security: { captcha_token: options$1 === null || options$1 === void 0 ? void 0 : options$1.captchaToken }
+					}
+				});
+				return this._returnResult({
+					data: {
+						user: null,
+						session: null,
+						messageId: data === null || data === void 0 ? void 0 : data.message_id
+					},
+					error
+				});
+			}
+			throw new AuthInvalidCredentialsError("You must provide either an email or phone number and a type");
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async getSession() {
+		await this.initializePromise;
+		return await this._acquireLock(this.lockAcquireTimeout, async () => {
+			return this._useSession(async (result) => {
+				return result;
+			});
+		});
+	}
+	async _acquireLock(acquireTimeout, fn) {
+		this._debug("#_acquireLock", "begin", acquireTimeout);
+		try {
+			if (this.lockAcquired) {
+				const last$2 = this.pendingInLock.length ? this.pendingInLock[this.pendingInLock.length - 1] : Promise.resolve();
+				const result = (async () => {
+					await last$2;
+					return await fn();
+				})();
+				this.pendingInLock.push((async () => {
+					try {
+						await result;
+					} catch (e) {}
+				})());
+				return result;
+			}
+			return await this.lock(`lock:${this.storageKey}`, acquireTimeout, async () => {
+				this._debug("#_acquireLock", "lock acquired for storage key", this.storageKey);
+				try {
+					this.lockAcquired = true;
+					const result = fn();
+					this.pendingInLock.push((async () => {
+						try {
+							await result;
+						} catch (e) {}
+					})());
+					await result;
+					while (this.pendingInLock.length) {
+						const waitOn = [...this.pendingInLock];
+						await Promise.all(waitOn);
+						this.pendingInLock.splice(0, waitOn.length);
+					}
+					return await result;
+				} finally {
+					this._debug("#_acquireLock", "lock released for storage key", this.storageKey);
+					this.lockAcquired = false;
+				}
+			});
+		} finally {
+			this._debug("#_acquireLock", "end");
+		}
+	}
+	async _useSession(fn) {
+		this._debug("#_useSession", "begin");
+		try {
+			return await fn(await this.__loadSession());
+		} finally {
+			this._debug("#_useSession", "end");
+		}
+	}
+	async __loadSession() {
+		this._debug("#__loadSession()", "begin");
+		if (!this.lockAcquired) this._debug("#__loadSession()", "used outside of an acquired lock!", (/* @__PURE__ */ new Error()).stack);
+		try {
+			let currentSession = null;
+			const maybeSession = await getItemAsync(this.storage, this.storageKey);
+			this._debug("#getSession()", "session from storage", maybeSession);
+			if (maybeSession !== null) if (this._isValidSession(maybeSession)) currentSession = maybeSession;
+			else {
+				this._debug("#getSession()", "session from storage is not valid");
+				await this._removeSession();
+			}
+			if (!currentSession) return {
+				data: { session: null },
+				error: null
+			};
+			const hasExpired = currentSession.expires_at ? currentSession.expires_at * 1e3 - Date.now() < EXPIRY_MARGIN_MS : false;
+			this._debug("#__loadSession()", `session has${hasExpired ? "" : " not"} expired`, "expires_at", currentSession.expires_at);
+			if (!hasExpired) {
+				if (this.userStorage) {
+					const maybeUser = await getItemAsync(this.userStorage, this.storageKey + "-user");
+					if (maybeUser === null || maybeUser === void 0 ? void 0 : maybeUser.user) currentSession.user = maybeUser.user;
+					else currentSession.user = userNotAvailableProxy();
+				}
+				if (this.storage.isServer && currentSession.user && !currentSession.user.__isUserNotAvailableProxy) {
+					const suppressWarningRef = { value: this.suppressGetSessionWarning };
+					currentSession.user = insecureUserWarningProxy(currentSession.user, suppressWarningRef);
+					if (suppressWarningRef.value) this.suppressGetSessionWarning = true;
+				}
+				return {
+					data: { session: currentSession },
+					error: null
+				};
+			}
+			const { data: session, error } = await this._callRefreshToken(currentSession.refresh_token);
+			if (error) return this._returnResult({
+				data: { session: null },
+				error
+			});
+			return this._returnResult({
+				data: { session },
+				error: null
+			});
+		} finally {
+			this._debug("#__loadSession()", "end");
+		}
+	}
+	async getUser(jwt) {
+		if (jwt) return await this._getUser(jwt);
+		await this.initializePromise;
+		const result = await this._acquireLock(this.lockAcquireTimeout, async () => {
+			return await this._getUser();
+		});
+		if (result.data.user) this.suppressGetSessionWarning = true;
+		return result;
+	}
+	async _getUser(jwt) {
+		try {
+			if (jwt) return await _request(this.fetch, "GET", `${this.url}/user`, {
+				headers: this.headers,
+				jwt,
+				xform: _userResponse
+			});
+			return await this._useSession(async (result) => {
+				var _a$1, _b, _c;
+				const { data, error } = result;
+				if (error) throw error;
+				if (!((_a$1 = data.session) === null || _a$1 === void 0 ? void 0 : _a$1.access_token) && !this.hasCustomAuthorizationHeader) return {
+					data: { user: null },
+					error: new AuthSessionMissingError()
+				};
+				return await _request(this.fetch, "GET", `${this.url}/user`, {
+					headers: this.headers,
+					jwt: (_c = (_b = data.session) === null || _b === void 0 ? void 0 : _b.access_token) !== null && _c !== void 0 ? _c : void 0,
+					xform: _userResponse
+				});
+			});
+		} catch (error) {
+			if (isAuthError(error)) {
+				if (isAuthSessionMissingError(error)) {
+					await this._removeSession();
+					await removeItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+				}
+				return this._returnResult({
+					data: { user: null },
+					error
+				});
+			}
+			throw error;
+		}
+	}
+	async updateUser(attributes, options$1 = {}) {
+		await this.initializePromise;
+		return await this._acquireLock(this.lockAcquireTimeout, async () => {
+			return await this._updateUser(attributes, options$1);
+		});
+	}
+	async _updateUser(attributes, options$1 = {}) {
+		try {
+			return await this._useSession(async (result) => {
+				const { data: sessionData, error: sessionError } = result;
+				if (sessionError) throw sessionError;
+				if (!sessionData.session) throw new AuthSessionMissingError();
+				const session = sessionData.session;
+				let codeChallenge = null;
+				let codeChallengeMethod = null;
+				if (this.flowType === "pkce" && attributes.email != null) [codeChallenge, codeChallengeMethod] = await getCodeChallengeAndMethod(this.storage, this.storageKey);
+				const { data, error: userError } = await _request(this.fetch, "PUT", `${this.url}/user`, {
+					headers: this.headers,
+					redirectTo: options$1 === null || options$1 === void 0 ? void 0 : options$1.emailRedirectTo,
+					body: Object.assign(Object.assign({}, attributes), {
+						code_challenge: codeChallenge,
+						code_challenge_method: codeChallengeMethod
+					}),
+					jwt: session.access_token,
+					xform: _userResponse
+				});
+				if (userError) throw userError;
+				session.user = data.user;
+				await this._saveSession(session);
+				await this._notifyAllSubscribers("USER_UPDATED", session);
+				return this._returnResult({
+					data: { user: session.user },
+					error: null
+				});
+			});
+		} catch (error) {
+			await removeItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+			if (isAuthError(error)) return this._returnResult({
+				data: { user: null },
+				error
+			});
+			throw error;
+		}
+	}
+	async setSession(currentSession) {
+		await this.initializePromise;
+		return await this._acquireLock(this.lockAcquireTimeout, async () => {
+			return await this._setSession(currentSession);
+		});
+	}
+	async _setSession(currentSession) {
+		try {
+			if (!currentSession.access_token || !currentSession.refresh_token) throw new AuthSessionMissingError();
+			const timeNow = Date.now() / 1e3;
+			let expiresAt$1 = timeNow;
+			let hasExpired = true;
+			let session = null;
+			const { payload } = decodeJWT(currentSession.access_token);
+			if (payload.exp) {
+				expiresAt$1 = payload.exp;
+				hasExpired = expiresAt$1 <= timeNow;
+			}
+			if (hasExpired) {
+				const { data: refreshedSession, error } = await this._callRefreshToken(currentSession.refresh_token);
+				if (error) return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error
+				});
+				if (!refreshedSession) return {
+					data: {
+						user: null,
+						session: null
+					},
+					error: null
+				};
+				session = refreshedSession;
+			} else {
+				const { data, error } = await this._getUser(currentSession.access_token);
+				if (error) return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error
+				});
+				session = {
+					access_token: currentSession.access_token,
+					refresh_token: currentSession.refresh_token,
+					user: data.user,
+					token_type: "bearer",
+					expires_in: expiresAt$1 - timeNow,
+					expires_at: expiresAt$1
+				};
+				await this._saveSession(session);
+				await this._notifyAllSubscribers("SIGNED_IN", session);
+			}
+			return this._returnResult({
+				data: {
+					user: session.user,
+					session
+				},
+				error: null
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					session: null,
+					user: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async refreshSession(currentSession) {
+		await this.initializePromise;
+		return await this._acquireLock(this.lockAcquireTimeout, async () => {
+			return await this._refreshSession(currentSession);
+		});
+	}
+	async _refreshSession(currentSession) {
+		try {
+			return await this._useSession(async (result) => {
+				var _a$1;
+				if (!currentSession) {
+					const { data, error: error$1 } = result;
+					if (error$1) throw error$1;
+					currentSession = (_a$1 = data.session) !== null && _a$1 !== void 0 ? _a$1 : void 0;
+				}
+				if (!(currentSession === null || currentSession === void 0 ? void 0 : currentSession.refresh_token)) throw new AuthSessionMissingError();
+				const { data: session, error } = await this._callRefreshToken(currentSession.refresh_token);
+				if (error) return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error
+				});
+				if (!session) return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error: null
+				});
+				return this._returnResult({
+					data: {
+						user: session.user,
+						session
+					},
+					error: null
+				});
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					user: null,
+					session: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async _getSessionFromURL(params, callbackUrlType) {
+		try {
+			if (!isBrowser()) throw new AuthImplicitGrantRedirectError("No browser detected.");
+			if (params.error || params.error_description || params.error_code) throw new AuthImplicitGrantRedirectError(params.error_description || "Error in URL with unspecified error_description", {
+				error: params.error || "unspecified_error",
+				code: params.error_code || "unspecified_code"
+			});
+			switch (callbackUrlType) {
+				case "implicit":
+					if (this.flowType === "pkce") throw new AuthPKCEGrantCodeExchangeError("Not a valid PKCE flow url.");
+					break;
+				case "pkce":
+					if (this.flowType === "implicit") throw new AuthImplicitGrantRedirectError("Not a valid implicit grant flow url.");
+					break;
+				default:
+			}
+			if (callbackUrlType === "pkce") {
+				this._debug("#_initialize()", "begin", "is PKCE flow", true);
+				if (!params.code) throw new AuthPKCEGrantCodeExchangeError("No code detected.");
+				const { data: data$1, error: error$1 } = await this._exchangeCodeForSession(params.code);
+				if (error$1) throw error$1;
+				const url = new URL(window.location.href);
+				url.searchParams.delete("code");
+				window.history.replaceState(window.history.state, "", url.toString());
+				return {
+					data: {
+						session: data$1.session,
+						redirectType: null
+					},
+					error: null
+				};
+			}
+			const { provider_token, provider_refresh_token, access_token, refresh_token, expires_in, expires_at, token_type } = params;
+			if (!access_token || !expires_in || !refresh_token || !token_type) throw new AuthImplicitGrantRedirectError("No session defined in URL");
+			const timeNow = Math.round(Date.now() / 1e3);
+			const expiresIn = parseInt(expires_in);
+			let expiresAt$1 = timeNow + expiresIn;
+			if (expires_at) expiresAt$1 = parseInt(expires_at);
+			const actuallyExpiresIn = expiresAt$1 - timeNow;
+			if (actuallyExpiresIn * 1e3 <= 3e4) console.warn(`@supabase/gotrue-js: Session as retrieved from URL expires in ${actuallyExpiresIn}s, should have been closer to ${expiresIn}s`);
+			const issuedAt = expiresAt$1 - expiresIn;
+			if (timeNow - issuedAt >= 120) console.warn("@supabase/gotrue-js: Session as retrieved from URL was issued over 120s ago, URL could be stale", issuedAt, expiresAt$1, timeNow);
+			else if (timeNow - issuedAt < 0) console.warn("@supabase/gotrue-js: Session as retrieved from URL was issued in the future? Check the device clock for skew", issuedAt, expiresAt$1, timeNow);
+			const { data, error } = await this._getUser(access_token);
+			if (error) throw error;
+			const session = {
+				provider_token,
+				provider_refresh_token,
+				access_token,
+				expires_in: expiresIn,
+				expires_at: expiresAt$1,
+				refresh_token,
+				token_type,
+				user: data.user
+			};
+			window.location.hash = "";
+			this._debug("#_getSessionFromURL()", "clearing window.location.hash");
+			return this._returnResult({
+				data: {
+					session,
+					redirectType: params.type
+				},
+				error: null
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					session: null,
+					redirectType: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	_isImplicitGrantCallback(params) {
+		if (typeof this.detectSessionInUrl === "function") return this.detectSessionInUrl(new URL(window.location.href), params);
+		return Boolean(params.access_token || params.error_description);
+	}
+	async _isPKCECallback(params) {
+		const currentStorageContent = await getItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+		return !!(params.code && currentStorageContent);
+	}
+	async signOut(options$1 = { scope: "global" }) {
+		await this.initializePromise;
+		return await this._acquireLock(this.lockAcquireTimeout, async () => {
+			return await this._signOut(options$1);
+		});
+	}
+	async _signOut({ scope } = { scope: "global" }) {
+		return await this._useSession(async (result) => {
+			var _a$1;
+			const { data, error: sessionError } = result;
+			if (sessionError && !isAuthSessionMissingError(sessionError)) return this._returnResult({ error: sessionError });
+			const accessToken = (_a$1 = data.session) === null || _a$1 === void 0 ? void 0 : _a$1.access_token;
+			if (accessToken) {
+				const { error } = await this.admin.signOut(accessToken, scope);
+				if (error) {
+					if (!(isAuthApiError(error) && (error.status === 404 || error.status === 401 || error.status === 403) || isAuthSessionMissingError(error))) return this._returnResult({ error });
+				}
+			}
+			if (scope !== "others") {
+				await this._removeSession();
+				await removeItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+			}
+			return this._returnResult({ error: null });
+		});
+	}
+	onAuthStateChange(callback) {
+		const id = generateCallbackId();
+		const subscription = {
+			id,
+			callback,
+			unsubscribe: () => {
+				this._debug("#unsubscribe()", "state change callback with id removed", id);
+				this.stateChangeEmitters.delete(id);
+			}
+		};
+		this._debug("#onAuthStateChange()", "registered callback with id", id);
+		this.stateChangeEmitters.set(id, subscription);
+		(async () => {
+			await this.initializePromise;
+			await this._acquireLock(this.lockAcquireTimeout, async () => {
+				this._emitInitialSession(id);
+			});
+		})();
+		return { data: { subscription } };
+	}
+	async _emitInitialSession(id) {
+		return await this._useSession(async (result) => {
+			var _a$1, _b;
+			try {
+				const { data: { session }, error } = result;
+				if (error) throw error;
+				await ((_a$1 = this.stateChangeEmitters.get(id)) === null || _a$1 === void 0 ? void 0 : _a$1.callback("INITIAL_SESSION", session));
+				this._debug("INITIAL_SESSION", "callback id", id, "session", session);
+			} catch (err) {
+				await ((_b = this.stateChangeEmitters.get(id)) === null || _b === void 0 ? void 0 : _b.callback("INITIAL_SESSION", null));
+				this._debug("INITIAL_SESSION", "callback id", id, "error", err);
+				console.error(err);
+			}
+		});
+	}
+	async resetPasswordForEmail(email$1, options$1 = {}) {
+		let codeChallenge = null;
+		let codeChallengeMethod = null;
+		if (this.flowType === "pkce") [codeChallenge, codeChallengeMethod] = await getCodeChallengeAndMethod(this.storage, this.storageKey, true);
+		try {
+			return await _request(this.fetch, "POST", `${this.url}/recover`, {
+				body: {
+					email: email$1,
+					code_challenge: codeChallenge,
+					code_challenge_method: codeChallengeMethod,
+					gotrue_meta_security: { captcha_token: options$1.captchaToken }
+				},
+				headers: this.headers,
+				redirectTo: options$1.redirectTo
+			});
+		} catch (error) {
+			await removeItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+	}
+	async getUserIdentities() {
+		var _a$1;
+		try {
+			const { data, error } = await this.getUser();
+			if (error) throw error;
+			return this._returnResult({
+				data: { identities: (_a$1 = data.user.identities) !== null && _a$1 !== void 0 ? _a$1 : [] },
+				error: null
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+	}
+	async linkIdentity(credentials) {
+		if ("token" in credentials) return this.linkIdentityIdToken(credentials);
+		return this.linkIdentityOAuth(credentials);
+	}
+	async linkIdentityOAuth(credentials) {
+		var _a$1;
+		try {
+			const { data, error } = await this._useSession(async (result) => {
+				var _a$2, _b, _c, _d, _e$1;
+				const { data: data$1, error: error$1 } = result;
+				if (error$1) throw error$1;
+				const url = await this._getUrlForProvider(`${this.url}/user/identities/authorize`, credentials.provider, {
+					redirectTo: (_a$2 = credentials.options) === null || _a$2 === void 0 ? void 0 : _a$2.redirectTo,
+					scopes: (_b = credentials.options) === null || _b === void 0 ? void 0 : _b.scopes,
+					queryParams: (_c = credentials.options) === null || _c === void 0 ? void 0 : _c.queryParams,
+					skipBrowserRedirect: true
+				});
+				return await _request(this.fetch, "GET", url, {
+					headers: this.headers,
+					jwt: (_e$1 = (_d = data$1.session) === null || _d === void 0 ? void 0 : _d.access_token) !== null && _e$1 !== void 0 ? _e$1 : void 0
+				});
+			});
+			if (error) throw error;
+			if (isBrowser() && !((_a$1 = credentials.options) === null || _a$1 === void 0 ? void 0 : _a$1.skipBrowserRedirect)) window.location.assign(data === null || data === void 0 ? void 0 : data.url);
+			return this._returnResult({
+				data: {
+					provider: credentials.provider,
+					url: data === null || data === void 0 ? void 0 : data.url
+				},
+				error: null
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					provider: credentials.provider,
+					url: null
+				},
+				error
+			});
+			throw error;
+		}
+	}
+	async linkIdentityIdToken(credentials) {
+		return await this._useSession(async (result) => {
+			var _a$1;
+			try {
+				const { error: sessionError, data: { session } } = result;
+				if (sessionError) throw sessionError;
+				const { options: options$1, provider, token, access_token, nonce } = credentials;
+				const { data, error } = await _request(this.fetch, "POST", `${this.url}/token?grant_type=id_token`, {
+					headers: this.headers,
+					jwt: (_a$1 = session === null || session === void 0 ? void 0 : session.access_token) !== null && _a$1 !== void 0 ? _a$1 : void 0,
+					body: {
+						provider,
+						id_token: token,
+						access_token,
+						nonce,
+						link_identity: true,
+						gotrue_meta_security: { captcha_token: options$1 === null || options$1 === void 0 ? void 0 : options$1.captchaToken }
+					},
+					xform: _sessionResponse
+				});
+				if (error) return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error
+				});
+				else if (!data || !data.session || !data.user) return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error: new AuthInvalidTokenResponseError()
+				});
+				if (data.session) {
+					await this._saveSession(data.session);
+					await this._notifyAllSubscribers("USER_UPDATED", data.session);
+				}
+				return this._returnResult({
+					data,
+					error
+				});
+			} catch (error) {
+				await removeItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+				if (isAuthError(error)) return this._returnResult({
+					data: {
+						user: null,
+						session: null
+					},
+					error
+				});
+				throw error;
+			}
+		});
+	}
+	async unlinkIdentity(identity$11) {
+		try {
+			return await this._useSession(async (result) => {
+				var _a$1, _b;
+				const { data, error } = result;
+				if (error) throw error;
+				return await _request(this.fetch, "DELETE", `${this.url}/user/identities/${identity$11.identity_id}`, {
+					headers: this.headers,
+					jwt: (_b = (_a$1 = data.session) === null || _a$1 === void 0 ? void 0 : _a$1.access_token) !== null && _b !== void 0 ? _b : void 0
+				});
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+	}
+	async _refreshAccessToken(refreshToken) {
+		const debugName = `#_refreshAccessToken(${refreshToken.substring(0, 5)}...)`;
+		this._debug(debugName, "begin");
+		try {
+			const startedAt = Date.now();
+			return await retryable(async (attempt) => {
+				if (attempt > 0) await sleep(200 * Math.pow(2, attempt - 1));
+				this._debug(debugName, "refreshing attempt", attempt);
+				return await _request(this.fetch, "POST", `${this.url}/token?grant_type=refresh_token`, {
+					body: { refresh_token: refreshToken },
+					headers: this.headers,
+					xform: _sessionResponse
+				});
+			}, (attempt, error) => {
+				const nextBackOffInterval = 200 * Math.pow(2, attempt);
+				return error && isAuthRetryableFetchError(error) && Date.now() + nextBackOffInterval - startedAt < 3e4;
+			});
+		} catch (error) {
+			this._debug(debugName, "error", error);
+			if (isAuthError(error)) return this._returnResult({
+				data: {
+					session: null,
+					user: null
+				},
+				error
+			});
+			throw error;
+		} finally {
+			this._debug(debugName, "end");
+		}
+	}
+	_isValidSession(maybeSession) {
+		return typeof maybeSession === "object" && maybeSession !== null && "access_token" in maybeSession && "refresh_token" in maybeSession && "expires_at" in maybeSession;
+	}
+	async _handleProviderSignIn(provider, options$1) {
+		const url = await this._getUrlForProvider(`${this.url}/authorize`, provider, {
+			redirectTo: options$1.redirectTo,
+			scopes: options$1.scopes,
+			queryParams: options$1.queryParams
+		});
+		this._debug("#_handleProviderSignIn()", "provider", provider, "options", options$1, "url", url);
+		if (isBrowser() && !options$1.skipBrowserRedirect) window.location.assign(url);
+		return {
+			data: {
+				provider,
+				url
+			},
+			error: null
+		};
+	}
+	async _recoverAndRefresh() {
+		var _a$1, _b;
+		const debugName = "#_recoverAndRefresh()";
+		this._debug(debugName, "begin");
+		try {
+			const currentSession = await getItemAsync(this.storage, this.storageKey);
+			if (currentSession && this.userStorage) {
+				let maybeUser = await getItemAsync(this.userStorage, this.storageKey + "-user");
+				if (!this.storage.isServer && Object.is(this.storage, this.userStorage) && !maybeUser) {
+					maybeUser = { user: currentSession.user };
+					await setItemAsync(this.userStorage, this.storageKey + "-user", maybeUser);
+				}
+				currentSession.user = (_a$1 = maybeUser === null || maybeUser === void 0 ? void 0 : maybeUser.user) !== null && _a$1 !== void 0 ? _a$1 : userNotAvailableProxy();
+			} else if (currentSession && !currentSession.user) {
+				if (!currentSession.user) {
+					const separateUser = await getItemAsync(this.storage, this.storageKey + "-user");
+					if (separateUser && (separateUser === null || separateUser === void 0 ? void 0 : separateUser.user)) {
+						currentSession.user = separateUser.user;
+						await removeItemAsync(this.storage, this.storageKey + "-user");
+						await setItemAsync(this.storage, this.storageKey, currentSession);
+					} else currentSession.user = userNotAvailableProxy();
+				}
+			}
+			this._debug(debugName, "session from storage", currentSession);
+			if (!this._isValidSession(currentSession)) {
+				this._debug(debugName, "session is not valid");
+				if (currentSession !== null) await this._removeSession();
+				return;
+			}
+			const expiresWithMargin = ((_b = currentSession.expires_at) !== null && _b !== void 0 ? _b : Infinity) * 1e3 - Date.now() < EXPIRY_MARGIN_MS;
+			this._debug(debugName, `session has${expiresWithMargin ? "" : " not"} expired with margin of ${EXPIRY_MARGIN_MS}s`);
+			if (expiresWithMargin) {
+				if (this.autoRefreshToken && currentSession.refresh_token) {
+					const { error } = await this._callRefreshToken(currentSession.refresh_token);
+					if (error) {
+						console.error(error);
+						if (!isAuthRetryableFetchError(error)) {
+							this._debug(debugName, "refresh failed with a non-retryable error, removing the session", error);
+							await this._removeSession();
+						}
+					}
+				}
+			} else if (currentSession.user && currentSession.user.__isUserNotAvailableProxy === true) try {
+				const { data, error: userError } = await this._getUser(currentSession.access_token);
+				if (!userError && (data === null || data === void 0 ? void 0 : data.user)) {
+					currentSession.user = data.user;
+					await this._saveSession(currentSession);
+					await this._notifyAllSubscribers("SIGNED_IN", currentSession);
+				} else this._debug(debugName, "could not get user data, skipping SIGNED_IN notification");
+			} catch (getUserError) {
+				console.error("Error getting user data:", getUserError);
+				this._debug(debugName, "error getting user data, skipping SIGNED_IN notification", getUserError);
+			}
+			else await this._notifyAllSubscribers("SIGNED_IN", currentSession);
+		} catch (err) {
+			this._debug(debugName, "error", err);
+			console.error(err);
+			return;
+		} finally {
+			this._debug(debugName, "end");
+		}
+	}
+	async _callRefreshToken(refreshToken) {
+		var _a$1, _b;
+		if (!refreshToken) throw new AuthSessionMissingError();
+		if (this.refreshingDeferred) return this.refreshingDeferred.promise;
+		const debugName = `#_callRefreshToken(${refreshToken.substring(0, 5)}...)`;
+		this._debug(debugName, "begin");
+		try {
+			this.refreshingDeferred = new Deferred();
+			const { data, error } = await this._refreshAccessToken(refreshToken);
+			if (error) throw error;
+			if (!data.session) throw new AuthSessionMissingError();
+			await this._saveSession(data.session);
+			await this._notifyAllSubscribers("TOKEN_REFRESHED", data.session);
+			const result = {
+				data: data.session,
+				error: null
+			};
+			this.refreshingDeferred.resolve(result);
+			return result;
+		} catch (error) {
+			this._debug(debugName, "error", error);
+			if (isAuthError(error)) {
+				const result = {
+					data: null,
+					error
+				};
+				if (!isAuthRetryableFetchError(error)) await this._removeSession();
+				(_a$1 = this.refreshingDeferred) === null || _a$1 === void 0 || _a$1.resolve(result);
+				return result;
+			}
+			(_b = this.refreshingDeferred) === null || _b === void 0 || _b.reject(error);
+			throw error;
+		} finally {
+			this.refreshingDeferred = null;
+			this._debug(debugName, "end");
+		}
+	}
+	async _notifyAllSubscribers(event, session, broadcast = true) {
+		const debugName = `#_notifyAllSubscribers(${event})`;
+		this._debug(debugName, "begin", session, `broadcast = ${broadcast}`);
+		try {
+			if (this.broadcastChannel && broadcast) this.broadcastChannel.postMessage({
+				event,
+				session
+			});
+			const errors = [];
+			const promises = Array.from(this.stateChangeEmitters.values()).map(async (x$2) => {
+				try {
+					await x$2.callback(event, session);
+				} catch (e) {
+					errors.push(e);
+				}
+			});
+			await Promise.all(promises);
+			if (errors.length > 0) {
+				for (let i$2 = 0; i$2 < errors.length; i$2 += 1) console.error(errors[i$2]);
+				throw errors[0];
+			}
+		} finally {
+			this._debug(debugName, "end");
+		}
+	}
+	async _saveSession(session) {
+		this._debug("#_saveSession()", session);
+		this.suppressGetSessionWarning = true;
+		await removeItemAsync(this.storage, `${this.storageKey}-code-verifier`);
+		const sessionToProcess = Object.assign({}, session);
+		const userIsProxy = sessionToProcess.user && sessionToProcess.user.__isUserNotAvailableProxy === true;
+		if (this.userStorage) {
+			if (!userIsProxy && sessionToProcess.user) await setItemAsync(this.userStorage, this.storageKey + "-user", { user: sessionToProcess.user });
+			else if (userIsProxy) {}
+			const mainSessionData = Object.assign({}, sessionToProcess);
+			delete mainSessionData.user;
+			const clonedMainSessionData = deepClone(mainSessionData);
+			await setItemAsync(this.storage, this.storageKey, clonedMainSessionData);
+		} else {
+			const clonedSession = deepClone(sessionToProcess);
+			await setItemAsync(this.storage, this.storageKey, clonedSession);
+		}
+	}
+	async _removeSession() {
+		this._debug("#_removeSession()");
+		this.suppressGetSessionWarning = false;
+		await removeItemAsync(this.storage, this.storageKey);
+		await removeItemAsync(this.storage, this.storageKey + "-code-verifier");
+		await removeItemAsync(this.storage, this.storageKey + "-user");
+		if (this.userStorage) await removeItemAsync(this.userStorage, this.storageKey + "-user");
+		await this._notifyAllSubscribers("SIGNED_OUT", null);
+	}
+	_removeVisibilityChangedCallback() {
+		this._debug("#_removeVisibilityChangedCallback()");
+		const callback = this.visibilityChangedCallback;
+		this.visibilityChangedCallback = null;
+		try {
+			if (callback && isBrowser() && (window === null || window === void 0 ? void 0 : window.removeEventListener)) window.removeEventListener("visibilitychange", callback);
+		} catch (e) {
+			console.error("removing visibilitychange callback failed", e);
+		}
+	}
+	async _startAutoRefresh() {
+		await this._stopAutoRefresh();
+		this._debug("#_startAutoRefresh()");
+		const ticker$1 = setInterval(() => this._autoRefreshTokenTick(), AUTO_REFRESH_TICK_DURATION_MS);
+		this.autoRefreshTicker = ticker$1;
+		if (ticker$1 && typeof ticker$1 === "object" && typeof ticker$1.unref === "function") ticker$1.unref();
+		else if (typeof Deno !== "undefined" && typeof Deno.unrefTimer === "function") Deno.unrefTimer(ticker$1);
+		const timeout = setTimeout(async () => {
+			await this.initializePromise;
+			await this._autoRefreshTokenTick();
+		}, 0);
+		this.autoRefreshTickTimeout = timeout;
+		if (timeout && typeof timeout === "object" && typeof timeout.unref === "function") timeout.unref();
+		else if (typeof Deno !== "undefined" && typeof Deno.unrefTimer === "function") Deno.unrefTimer(timeout);
+	}
+	async _stopAutoRefresh() {
+		this._debug("#_stopAutoRefresh()");
+		const ticker$1 = this.autoRefreshTicker;
+		this.autoRefreshTicker = null;
+		if (ticker$1) clearInterval(ticker$1);
+		const timeout = this.autoRefreshTickTimeout;
+		this.autoRefreshTickTimeout = null;
+		if (timeout) clearTimeout(timeout);
+	}
+	async startAutoRefresh() {
+		this._removeVisibilityChangedCallback();
+		await this._startAutoRefresh();
+	}
+	async stopAutoRefresh() {
+		this._removeVisibilityChangedCallback();
+		await this._stopAutoRefresh();
+	}
+	async _autoRefreshTokenTick() {
+		this._debug("#_autoRefreshTokenTick()", "begin");
+		try {
+			await this._acquireLock(0, async () => {
+				try {
+					const now$2 = Date.now();
+					try {
+						return await this._useSession(async (result) => {
+							const { data: { session } } = result;
+							if (!session || !session.refresh_token || !session.expires_at) {
+								this._debug("#_autoRefreshTokenTick()", "no session");
+								return;
+							}
+							const expiresInTicks = Math.floor((session.expires_at * 1e3 - now$2) / AUTO_REFRESH_TICK_DURATION_MS);
+							this._debug("#_autoRefreshTokenTick()", `access token expires in ${expiresInTicks} ticks, a tick lasts ${AUTO_REFRESH_TICK_DURATION_MS}ms, refresh threshold is 3 ticks`);
+							if (expiresInTicks <= 3) await this._callRefreshToken(session.refresh_token);
+						});
+					} catch (e) {
+						console.error("Auto refresh tick failed with error. This is likely a transient error.", e);
+					}
+				} finally {
+					this._debug("#_autoRefreshTokenTick()", "end");
+				}
+			});
+		} catch (e) {
+			if (e.isAcquireTimeout || e instanceof LockAcquireTimeoutError) this._debug("auto refresh token tick lock not available");
+			else throw e;
+		}
+	}
+	async _handleVisibilityChange() {
+		this._debug("#_handleVisibilityChange()");
+		if (!isBrowser() || !(window === null || window === void 0 ? void 0 : window.addEventListener)) {
+			if (this.autoRefreshToken) this.startAutoRefresh();
+			return false;
+		}
+		try {
+			this.visibilityChangedCallback = async () => {
+				try {
+					await this._onVisibilityChanged(false);
+				} catch (error) {
+					this._debug("#visibilityChangedCallback", "error", error);
+				}
+			};
+			window === null || window === void 0 || window.addEventListener("visibilitychange", this.visibilityChangedCallback);
+			await this._onVisibilityChanged(true);
+		} catch (error) {
+			console.error("_handleVisibilityChange", error);
+		}
+	}
+	async _onVisibilityChanged(calledFromInitialize) {
+		const methodName = `#_onVisibilityChanged(${calledFromInitialize})`;
+		this._debug(methodName, "visibilityState", document.visibilityState);
+		if (document.visibilityState === "visible") {
+			if (this.autoRefreshToken) this._startAutoRefresh();
+			if (!calledFromInitialize) {
+				await this.initializePromise;
+				await this._acquireLock(this.lockAcquireTimeout, async () => {
+					if (document.visibilityState !== "visible") {
+						this._debug(methodName, "acquired the lock to recover the session, but the browser visibilityState is no longer visible, aborting");
+						return;
+					}
+					await this._recoverAndRefresh();
+				});
+			}
+		} else if (document.visibilityState === "hidden") {
+			if (this.autoRefreshToken) this._stopAutoRefresh();
+		}
+	}
+	async _getUrlForProvider(url, provider, options$1) {
+		const urlParams = [`provider=${encodeURIComponent(provider)}`];
+		if (options$1 === null || options$1 === void 0 ? void 0 : options$1.redirectTo) urlParams.push(`redirect_to=${encodeURIComponent(options$1.redirectTo)}`);
+		if (options$1 === null || options$1 === void 0 ? void 0 : options$1.scopes) urlParams.push(`scopes=${encodeURIComponent(options$1.scopes)}`);
+		if (this.flowType === "pkce") {
+			const [codeChallenge, codeChallengeMethod] = await getCodeChallengeAndMethod(this.storage, this.storageKey);
+			const flowParams = new URLSearchParams({
+				code_challenge: `${encodeURIComponent(codeChallenge)}`,
+				code_challenge_method: `${encodeURIComponent(codeChallengeMethod)}`
+			});
+			urlParams.push(flowParams.toString());
+		}
+		if (options$1 === null || options$1 === void 0 ? void 0 : options$1.queryParams) {
+			const query = new URLSearchParams(options$1.queryParams);
+			urlParams.push(query.toString());
+		}
+		if (options$1 === null || options$1 === void 0 ? void 0 : options$1.skipBrowserRedirect) urlParams.push(`skip_http_redirect=${options$1.skipBrowserRedirect}`);
+		return `${url}?${urlParams.join("&")}`;
+	}
+	async _unenroll(params) {
+		try {
+			return await this._useSession(async (result) => {
+				var _a$1;
+				const { data: sessionData, error: sessionError } = result;
+				if (sessionError) return this._returnResult({
+					data: null,
+					error: sessionError
+				});
+				return await _request(this.fetch, "DELETE", `${this.url}/factors/${params.factorId}`, {
+					headers: this.headers,
+					jwt: (_a$1 = sessionData === null || sessionData === void 0 ? void 0 : sessionData.session) === null || _a$1 === void 0 ? void 0 : _a$1.access_token
+				});
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+	}
+	async _enroll(params) {
+		try {
+			return await this._useSession(async (result) => {
+				var _a$1, _b;
+				const { data: sessionData, error: sessionError } = result;
+				if (sessionError) return this._returnResult({
+					data: null,
+					error: sessionError
+				});
+				const body = Object.assign({
+					friendly_name: params.friendlyName,
+					factor_type: params.factorType
+				}, params.factorType === "phone" ? { phone: params.phone } : params.factorType === "totp" ? { issuer: params.issuer } : {});
+				const { data, error } = await _request(this.fetch, "POST", `${this.url}/factors`, {
+					body,
+					headers: this.headers,
+					jwt: (_a$1 = sessionData === null || sessionData === void 0 ? void 0 : sessionData.session) === null || _a$1 === void 0 ? void 0 : _a$1.access_token
+				});
+				if (error) return this._returnResult({
+					data: null,
+					error
+				});
+				if (params.factorType === "totp" && data.type === "totp" && ((_b = data === null || data === void 0 ? void 0 : data.totp) === null || _b === void 0 ? void 0 : _b.qr_code)) data.totp.qr_code = `data:image/svg+xml;utf-8,${data.totp.qr_code}`;
+				return this._returnResult({
+					data,
+					error: null
+				});
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+	}
+	async _verify(params) {
+		return this._acquireLock(this.lockAcquireTimeout, async () => {
+			try {
+				return await this._useSession(async (result) => {
+					var _a$1;
+					const { data: sessionData, error: sessionError } = result;
+					if (sessionError) return this._returnResult({
+						data: null,
+						error: sessionError
+					});
+					const body = Object.assign({ challenge_id: params.challengeId }, "webauthn" in params ? { webauthn: Object.assign(Object.assign({}, params.webauthn), { credential_response: params.webauthn.type === "create" ? serializeCredentialCreationResponse(params.webauthn.credential_response) : serializeCredentialRequestResponse(params.webauthn.credential_response) }) } : { code: params.code });
+					const { data, error } = await _request(this.fetch, "POST", `${this.url}/factors/${params.factorId}/verify`, {
+						body,
+						headers: this.headers,
+						jwt: (_a$1 = sessionData === null || sessionData === void 0 ? void 0 : sessionData.session) === null || _a$1 === void 0 ? void 0 : _a$1.access_token
+					});
+					if (error) return this._returnResult({
+						data: null,
+						error
+					});
+					await this._saveSession(Object.assign({ expires_at: Math.round(Date.now() / 1e3) + data.expires_in }, data));
+					await this._notifyAllSubscribers("MFA_CHALLENGE_VERIFIED", data);
+					return this._returnResult({
+						data,
+						error
+					});
+				});
+			} catch (error) {
+				if (isAuthError(error)) return this._returnResult({
+					data: null,
+					error
+				});
+				throw error;
+			}
+		});
+	}
+	async _challenge(params) {
+		return this._acquireLock(this.lockAcquireTimeout, async () => {
+			try {
+				return await this._useSession(async (result) => {
+					var _a$1;
+					const { data: sessionData, error: sessionError } = result;
+					if (sessionError) return this._returnResult({
+						data: null,
+						error: sessionError
+					});
+					const response = await _request(this.fetch, "POST", `${this.url}/factors/${params.factorId}/challenge`, {
+						body: params,
+						headers: this.headers,
+						jwt: (_a$1 = sessionData === null || sessionData === void 0 ? void 0 : sessionData.session) === null || _a$1 === void 0 ? void 0 : _a$1.access_token
+					});
+					if (response.error) return response;
+					const { data } = response;
+					if (data.type !== "webauthn") return {
+						data,
+						error: null
+					};
+					switch (data.webauthn.type) {
+						case "create": return {
+							data: Object.assign(Object.assign({}, data), { webauthn: Object.assign(Object.assign({}, data.webauthn), { credential_options: Object.assign(Object.assign({}, data.webauthn.credential_options), { publicKey: deserializeCredentialCreationOptions(data.webauthn.credential_options.publicKey) }) }) }),
+							error: null
+						};
+						case "request": return {
+							data: Object.assign(Object.assign({}, data), { webauthn: Object.assign(Object.assign({}, data.webauthn), { credential_options: Object.assign(Object.assign({}, data.webauthn.credential_options), { publicKey: deserializeCredentialRequestOptions(data.webauthn.credential_options.publicKey) }) }) }),
+							error: null
+						};
+					}
+				});
+			} catch (error) {
+				if (isAuthError(error)) return this._returnResult({
+					data: null,
+					error
+				});
+				throw error;
+			}
+		});
+	}
+	async _challengeAndVerify(params) {
+		const { data: challengeData, error: challengeError } = await this._challenge({ factorId: params.factorId });
+		if (challengeError) return this._returnResult({
+			data: null,
+			error: challengeError
+		});
+		return await this._verify({
+			factorId: params.factorId,
+			challengeId: challengeData.id,
+			code: params.code
+		});
+	}
+	async _listFactors() {
+		var _a$1;
+		const { data: { user }, error: userError } = await this.getUser();
+		if (userError) return {
+			data: null,
+			error: userError
+		};
+		const data = {
+			all: [],
+			phone: [],
+			totp: [],
+			webauthn: []
+		};
+		for (const factor of (_a$1 = user === null || user === void 0 ? void 0 : user.factors) !== null && _a$1 !== void 0 ? _a$1 : []) {
+			data.all.push(factor);
+			if (factor.status === "verified") data[factor.factor_type].push(factor);
+		}
+		return {
+			data,
+			error: null
+		};
+	}
+	async _getAuthenticatorAssuranceLevel(jwt) {
+		var _a$1, _b, _c, _d;
+		if (jwt) try {
+			const { payload: payload$1 } = decodeJWT(jwt);
+			let currentLevel$1 = null;
+			if (payload$1.aal) currentLevel$1 = payload$1.aal;
+			let nextLevel$1 = currentLevel$1;
+			const { data: { user }, error: userError } = await this.getUser(jwt);
+			if (userError) return this._returnResult({
+				data: null,
+				error: userError
+			});
+			if (((_b = (_a$1 = user === null || user === void 0 ? void 0 : user.factors) === null || _a$1 === void 0 ? void 0 : _a$1.filter((factor) => factor.status === "verified")) !== null && _b !== void 0 ? _b : []).length > 0) nextLevel$1 = "aal2";
+			const currentAuthenticationMethods$1 = payload$1.amr || [];
+			return {
+				data: {
+					currentLevel: currentLevel$1,
+					nextLevel: nextLevel$1,
+					currentAuthenticationMethods: currentAuthenticationMethods$1
+				},
+				error: null
+			};
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+		const { data: { session }, error: sessionError } = await this.getSession();
+		if (sessionError) return this._returnResult({
+			data: null,
+			error: sessionError
+		});
+		if (!session) return {
+			data: {
+				currentLevel: null,
+				nextLevel: null,
+				currentAuthenticationMethods: []
+			},
+			error: null
+		};
+		const { payload } = decodeJWT(session.access_token);
+		let currentLevel = null;
+		if (payload.aal) currentLevel = payload.aal;
+		let nextLevel = currentLevel;
+		if (((_d = (_c = session.user.factors) === null || _c === void 0 ? void 0 : _c.filter((factor) => factor.status === "verified")) !== null && _d !== void 0 ? _d : []).length > 0) nextLevel = "aal2";
+		const currentAuthenticationMethods = payload.amr || [];
+		return {
+			data: {
+				currentLevel,
+				nextLevel,
+				currentAuthenticationMethods
+			},
+			error: null
+		};
+	}
+	async _getAuthorizationDetails(authorizationId) {
+		try {
+			return await this._useSession(async (result) => {
+				const { data: { session }, error: sessionError } = result;
+				if (sessionError) return this._returnResult({
+					data: null,
+					error: sessionError
+				});
+				if (!session) return this._returnResult({
+					data: null,
+					error: new AuthSessionMissingError()
+				});
+				return await _request(this.fetch, "GET", `${this.url}/oauth/authorizations/${authorizationId}`, {
+					headers: this.headers,
+					jwt: session.access_token,
+					xform: (data) => ({
+						data,
+						error: null
+					})
+				});
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+	}
+	async _approveAuthorization(authorizationId, options$1) {
+		try {
+			return await this._useSession(async (result) => {
+				const { data: { session }, error: sessionError } = result;
+				if (sessionError) return this._returnResult({
+					data: null,
+					error: sessionError
+				});
+				if (!session) return this._returnResult({
+					data: null,
+					error: new AuthSessionMissingError()
+				});
+				const response = await _request(this.fetch, "POST", `${this.url}/oauth/authorizations/${authorizationId}/consent`, {
+					headers: this.headers,
+					jwt: session.access_token,
+					body: { action: "approve" },
+					xform: (data) => ({
+						data,
+						error: null
+					})
+				});
+				if (response.data && response.data.redirect_url) {
+					if (isBrowser() && !(options$1 === null || options$1 === void 0 ? void 0 : options$1.skipBrowserRedirect)) window.location.assign(response.data.redirect_url);
+				}
+				return response;
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+	}
+	async _denyAuthorization(authorizationId, options$1) {
+		try {
+			return await this._useSession(async (result) => {
+				const { data: { session }, error: sessionError } = result;
+				if (sessionError) return this._returnResult({
+					data: null,
+					error: sessionError
+				});
+				if (!session) return this._returnResult({
+					data: null,
+					error: new AuthSessionMissingError()
+				});
+				const response = await _request(this.fetch, "POST", `${this.url}/oauth/authorizations/${authorizationId}/consent`, {
+					headers: this.headers,
+					jwt: session.access_token,
+					body: { action: "deny" },
+					xform: (data) => ({
+						data,
+						error: null
+					})
+				});
+				if (response.data && response.data.redirect_url) {
+					if (isBrowser() && !(options$1 === null || options$1 === void 0 ? void 0 : options$1.skipBrowserRedirect)) window.location.assign(response.data.redirect_url);
+				}
+				return response;
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+	}
+	async _listOAuthGrants() {
+		try {
+			return await this._useSession(async (result) => {
+				const { data: { session }, error: sessionError } = result;
+				if (sessionError) return this._returnResult({
+					data: null,
+					error: sessionError
+				});
+				if (!session) return this._returnResult({
+					data: null,
+					error: new AuthSessionMissingError()
+				});
+				return await _request(this.fetch, "GET", `${this.url}/user/oauth/grants`, {
+					headers: this.headers,
+					jwt: session.access_token,
+					xform: (data) => ({
+						data,
+						error: null
+					})
+				});
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+	}
+	async _revokeOAuthGrant(options$1) {
+		try {
+			return await this._useSession(async (result) => {
+				const { data: { session }, error: sessionError } = result;
+				if (sessionError) return this._returnResult({
+					data: null,
+					error: sessionError
+				});
+				if (!session) return this._returnResult({
+					data: null,
+					error: new AuthSessionMissingError()
+				});
+				await _request(this.fetch, "DELETE", `${this.url}/user/oauth/grants`, {
+					headers: this.headers,
+					jwt: session.access_token,
+					query: { client_id: options$1.clientId },
+					noResolveJson: true
+				});
+				return {
+					data: {},
+					error: null
+				};
+			});
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+	}
+	async fetchJwk(kid, jwks = { keys: [] }) {
+		let jwk = jwks.keys.find((key) => key.kid === kid);
+		if (jwk) return jwk;
+		const now$2 = Date.now();
+		jwk = this.jwks.keys.find((key) => key.kid === kid);
+		if (jwk && this.jwks_cached_at + 6e5 > now$2) return jwk;
+		const { data, error } = await _request(this.fetch, "GET", `${this.url}/.well-known/jwks.json`, { headers: this.headers });
+		if (error) throw error;
+		if (!data.keys || data.keys.length === 0) return null;
+		this.jwks = data;
+		this.jwks_cached_at = now$2;
+		jwk = data.keys.find((key) => key.kid === kid);
+		if (!jwk) return null;
+		return jwk;
+	}
+	async getClaims(jwt, options$1 = {}) {
+		try {
+			let token = jwt;
+			if (!token) {
+				const { data, error } = await this.getSession();
+				if (error || !data.session) return this._returnResult({
+					data: null,
+					error
+				});
+				token = data.session.access_token;
+			}
+			const { header, payload, signature, raw: { header: rawHeader, payload: rawPayload } } = decodeJWT(token);
+			if (!(options$1 === null || options$1 === void 0 ? void 0 : options$1.allowExpired)) validateExp(payload.exp);
+			const signingKey = !header.alg || header.alg.startsWith("HS") || !header.kid || !("crypto" in globalThis && "subtle" in globalThis.crypto) ? null : await this.fetchJwk(header.kid, (options$1 === null || options$1 === void 0 ? void 0 : options$1.keys) ? { keys: options$1.keys } : options$1 === null || options$1 === void 0 ? void 0 : options$1.jwks);
+			if (!signingKey) {
+				const { error } = await this.getUser(token);
+				if (error) throw error;
+				return {
+					data: {
+						claims: payload,
+						header,
+						signature
+					},
+					error: null
+				};
+			}
+			const algorithm = getAlgorithm(header.alg);
+			const publicKey = await crypto.subtle.importKey("jwk", signingKey, algorithm, true, ["verify"]);
+			if (!await crypto.subtle.verify(algorithm, publicKey, signature, stringToUint8Array(`${rawHeader}.${rawPayload}`))) throw new AuthInvalidJwtError("Invalid JWT signature");
+			return {
+				data: {
+					claims: payload,
+					header,
+					signature
+				},
+				error: null
+			};
+		} catch (error) {
+			if (isAuthError(error)) return this._returnResult({
+				data: null,
+				error
+			});
+			throw error;
+		}
+	}
+};
+GoTrueClient.nextInstanceID = {};
+var AuthClient_default = GoTrueClient;
+var version$1 = "2.94.0";
+var JS_ENV = "";
+if (typeof Deno !== "undefined") JS_ENV = "deno";
+else if (typeof document !== "undefined") JS_ENV = "web";
+else if (typeof navigator !== "undefined" && navigator.product === "ReactNative") JS_ENV = "react-native";
+else JS_ENV = "node";
+var DEFAULT_GLOBAL_OPTIONS = { headers: { "X-Client-Info": `supabase-js-${JS_ENV}/${version$1}` } };
+var DEFAULT_DB_OPTIONS = { schema: "public" };
+var DEFAULT_AUTH_OPTIONS = {
+	autoRefreshToken: true,
+	persistSession: true,
+	detectSessionInUrl: true,
+	flowType: "implicit"
+};
+var DEFAULT_REALTIME_OPTIONS = {};
+function _typeof$49(o$1) {
+	"@babel/helpers - typeof";
+	return _typeof$49 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1$1) {
+		return typeof o$1$1;
+	} : function(o$1$1) {
+		return o$1$1 && "function" == typeof Symbol && o$1$1.constructor === Symbol && o$1$1 !== Symbol.prototype ? "symbol" : typeof o$1$1;
+	}, _typeof$49(o$1);
+}
+function toPrimitive(t$1, r$2) {
+	if ("object" != _typeof$49(t$1) || !t$1) return t$1;
+	var e = t$1[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i$2 = e.call(t$1, r$2 || "default");
+		if ("object" != _typeof$49(i$2)) return i$2;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$2 ? String : Number)(t$1);
+}
+function toPropertyKey(t$1) {
+	var i$2 = toPrimitive(t$1, "string");
+	return "symbol" == _typeof$49(i$2) ? i$2 : i$2 + "";
+}
+function _defineProperty$44(e, r$2, t$1) {
+	return (r$2 = toPropertyKey(r$2)) in e ? Object.defineProperty(e, r$2, {
+		value: t$1,
+		enumerable: !0,
+		configurable: !0,
+		writable: !0
+	}) : e[r$2] = t$1, e;
+}
+function ownKeys$39(e, r$2) {
+	var t$1 = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o$1 = Object.getOwnPropertySymbols(e);
+		r$2 && (o$1 = o$1.filter(function(r$1$1) {
+			return Object.getOwnPropertyDescriptor(e, r$1$1).enumerable;
+		})), t$1.push.apply(t$1, o$1);
+	}
+	return t$1;
+}
+function _objectSpread2(e) {
+	for (var r$2 = 1; r$2 < arguments.length; r$2++) {
+		var t$1 = null != arguments[r$2] ? arguments[r$2] : {};
+		r$2 % 2 ? ownKeys$39(Object(t$1), !0).forEach(function(r$1$1) {
+			_defineProperty$44(e, r$1$1, t$1[r$1$1]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t$1)) : ownKeys$39(Object(t$1)).forEach(function(r$1$1) {
+			Object.defineProperty(e, r$1$1, Object.getOwnPropertyDescriptor(t$1, r$1$1));
+		});
+	}
+	return e;
+}
+var resolveFetch = (customFetch) => {
+	if (customFetch) return (...args) => customFetch(...args);
+	return (...args) => fetch(...args);
+};
+var resolveHeadersConstructor = () => {
+	return Headers;
+};
+var fetchWithAuth = (supabaseKey, getAccessToken, customFetch) => {
+	const fetch$1 = resolveFetch(customFetch);
+	const HeadersConstructor = resolveHeadersConstructor();
+	return async (input, init) => {
+		var _await$getAccessToken;
+		const accessToken = (_await$getAccessToken = await getAccessToken()) !== null && _await$getAccessToken !== void 0 ? _await$getAccessToken : supabaseKey;
+		let headers = new HeadersConstructor(init === null || init === void 0 ? void 0 : init.headers);
+		if (!headers.has("apikey")) headers.set("apikey", supabaseKey);
+		if (!headers.has("Authorization")) headers.set("Authorization", `Bearer ${accessToken}`);
+		return fetch$1(input, _objectSpread2(_objectSpread2({}, init), {}, { headers }));
+	};
+};
+function ensureTrailingSlash(url) {
+	return url.endsWith("/") ? url : url + "/";
+}
+function applySettingDefaults(options$1, defaults) {
+	var _DEFAULT_GLOBAL_OPTIO, _globalOptions$header;
+	const { db: dbOptions, auth: authOptions, realtime: realtimeOptions, global: globalOptions } = options$1;
+	const { db: DEFAULT_DB_OPTIONS$1, auth: DEFAULT_AUTH_OPTIONS$1, realtime: DEFAULT_REALTIME_OPTIONS$1, global: DEFAULT_GLOBAL_OPTIONS$1 } = defaults;
+	const result = {
+		db: _objectSpread2(_objectSpread2({}, DEFAULT_DB_OPTIONS$1), dbOptions),
+		auth: _objectSpread2(_objectSpread2({}, DEFAULT_AUTH_OPTIONS$1), authOptions),
+		realtime: _objectSpread2(_objectSpread2({}, DEFAULT_REALTIME_OPTIONS$1), realtimeOptions),
+		storage: {},
+		global: _objectSpread2(_objectSpread2(_objectSpread2({}, DEFAULT_GLOBAL_OPTIONS$1), globalOptions), {}, { headers: _objectSpread2(_objectSpread2({}, (_DEFAULT_GLOBAL_OPTIO = DEFAULT_GLOBAL_OPTIONS$1 === null || DEFAULT_GLOBAL_OPTIONS$1 === void 0 ? void 0 : DEFAULT_GLOBAL_OPTIONS$1.headers) !== null && _DEFAULT_GLOBAL_OPTIO !== void 0 ? _DEFAULT_GLOBAL_OPTIO : {}), (_globalOptions$header = globalOptions === null || globalOptions === void 0 ? void 0 : globalOptions.headers) !== null && _globalOptions$header !== void 0 ? _globalOptions$header : {}) }),
+		accessToken: async () => ""
+	};
+	if (options$1.accessToken) result.accessToken = options$1.accessToken;
+	else delete result.accessToken;
+	return result;
+}
+function validateSupabaseUrl(supabaseUrl) {
+	const trimmedUrl = supabaseUrl === null || supabaseUrl === void 0 ? void 0 : supabaseUrl.trim();
+	if (!trimmedUrl) throw new Error("supabaseUrl is required.");
+	if (!trimmedUrl.match(/^https?:\/\//i)) throw new Error("Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.");
+	try {
+		return new URL(ensureTrailingSlash(trimmedUrl));
+	} catch (_unused) {
+		throw Error("Invalid supabaseUrl: Provided URL is malformed.");
+	}
+}
+var SupabaseAuthClient = class extends AuthClient_default {
+	constructor(options$1) {
+		super(options$1);
+	}
+};
+var SupabaseClient = class {
+	constructor(supabaseUrl, supabaseKey, options$1) {
+		var _settings$auth$storag, _settings$global$head;
+		this.supabaseUrl = supabaseUrl;
+		this.supabaseKey = supabaseKey;
+		const baseUrl = validateSupabaseUrl(supabaseUrl);
+		if (!supabaseKey) throw new Error("supabaseKey is required.");
+		this.realtimeUrl = new URL("realtime/v1", baseUrl);
+		this.realtimeUrl.protocol = this.realtimeUrl.protocol.replace("http", "ws");
+		this.authUrl = new URL("auth/v1", baseUrl);
+		this.storageUrl = new URL("storage/v1", baseUrl);
+		this.functionsUrl = new URL("functions/v1", baseUrl);
+		const defaultStorageKey = `sb-${baseUrl.hostname.split(".")[0]}-auth-token`;
+		const DEFAULTS = {
+			db: DEFAULT_DB_OPTIONS,
+			realtime: DEFAULT_REALTIME_OPTIONS,
+			auth: _objectSpread2(_objectSpread2({}, DEFAULT_AUTH_OPTIONS), {}, { storageKey: defaultStorageKey }),
+			global: DEFAULT_GLOBAL_OPTIONS
+		};
+		const settings = applySettingDefaults(options$1 !== null && options$1 !== void 0 ? options$1 : {}, DEFAULTS);
+		this.storageKey = (_settings$auth$storag = settings.auth.storageKey) !== null && _settings$auth$storag !== void 0 ? _settings$auth$storag : "";
+		this.headers = (_settings$global$head = settings.global.headers) !== null && _settings$global$head !== void 0 ? _settings$global$head : {};
+		if (!settings.accessToken) {
+			var _settings$auth;
+			this.auth = this._initSupabaseAuthClient((_settings$auth = settings.auth) !== null && _settings$auth !== void 0 ? _settings$auth : {}, this.headers, settings.global.fetch);
+		} else {
+			this.accessToken = settings.accessToken;
+			this.auth = new Proxy({}, { get: (_$1, prop) => {
+				throw new Error(`@supabase/supabase-js: Supabase Client is configured with the accessToken option, accessing supabase.auth.${String(prop)} is not possible`);
+			} });
+		}
+		this.fetch = fetchWithAuth(supabaseKey, this._getAccessToken.bind(this), settings.global.fetch);
+		this.realtime = this._initRealtimeClient(_objectSpread2({
+			headers: this.headers,
+			accessToken: this._getAccessToken.bind(this)
+		}, settings.realtime));
+		if (this.accessToken) Promise.resolve(this.accessToken()).then((token) => this.realtime.setAuth(token)).catch((e) => console.warn("Failed to set initial Realtime auth token:", e));
+		this.rest = new PostgrestClient(new URL("rest/v1", baseUrl).href, {
+			headers: this.headers,
+			schema: settings.db.schema,
+			fetch: this.fetch,
+			timeout: settings.db.timeout,
+			urlLengthLimit: settings.db.urlLengthLimit
+		});
+		this.storage = new StorageClient(this.storageUrl.href, this.headers, this.fetch, options$1 === null || options$1 === void 0 ? void 0 : options$1.storage);
+		if (!settings.accessToken) this._listenForAuthEvents();
+	}
+	get functions() {
+		return new FunctionsClient(this.functionsUrl.href, {
+			headers: this.headers,
+			customFetch: this.fetch
+		});
+	}
+	from(relation) {
+		return this.rest.from(relation);
+	}
+	schema(schema) {
+		return this.rest.schema(schema);
+	}
+	rpc(fn, args = {}, options$1 = {
+		head: false,
+		get: false,
+		count: void 0
+	}) {
+		return this.rest.rpc(fn, args, options$1);
+	}
+	channel(name, opts = { config: {} }) {
+		return this.realtime.channel(name, opts);
+	}
+	getChannels() {
+		return this.realtime.getChannels();
+	}
+	removeChannel(channel) {
+		return this.realtime.removeChannel(channel);
+	}
+	removeAllChannels() {
+		return this.realtime.removeAllChannels();
+	}
+	async _getAccessToken() {
+		var _this = this;
+		var _data$session$access_, _data$session;
+		if (_this.accessToken) return await _this.accessToken();
+		const { data } = await _this.auth.getSession();
+		return (_data$session$access_ = (_data$session = data.session) === null || _data$session === void 0 ? void 0 : _data$session.access_token) !== null && _data$session$access_ !== void 0 ? _data$session$access_ : _this.supabaseKey;
+	}
+	_initSupabaseAuthClient({ autoRefreshToken, persistSession, detectSessionInUrl, storage, userStorage, storageKey, flowType, lock, debug, throwOnError }, headers, fetch$1) {
+		const authHeaders = {
+			Authorization: `Bearer ${this.supabaseKey}`,
+			apikey: `${this.supabaseKey}`
+		};
+		return new SupabaseAuthClient({
+			url: this.authUrl.href,
+			headers: _objectSpread2(_objectSpread2({}, authHeaders), headers),
+			storageKey,
+			autoRefreshToken,
+			persistSession,
+			detectSessionInUrl,
+			storage,
+			userStorage,
+			flowType,
+			lock,
+			debug,
+			throwOnError,
+			fetch: fetch$1,
+			hasCustomAuthorizationHeader: Object.keys(this.headers).some((key) => key.toLowerCase() === "authorization")
+		});
+	}
+	_initRealtimeClient(options$1) {
+		return new RealtimeClient(this.realtimeUrl.href, _objectSpread2(_objectSpread2({}, options$1), {}, { params: _objectSpread2(_objectSpread2({}, { apikey: this.supabaseKey }), options$1 === null || options$1 === void 0 ? void 0 : options$1.params) }));
+	}
+	_listenForAuthEvents() {
+		return this.auth.onAuthStateChange((event, session) => {
+			this._handleTokenChanged(event, "CLIENT", session === null || session === void 0 ? void 0 : session.access_token);
+		});
+	}
+	_handleTokenChanged(event, source, token) {
+		if ((event === "TOKEN_REFRESHED" || event === "SIGNED_IN") && this.changedAccessToken !== token) {
+			this.changedAccessToken = token;
+			this.realtime.setAuth(token);
+		} else if (event === "SIGNED_OUT") {
+			this.realtime.setAuth();
+			if (source == "STORAGE") this.auth.signOut();
+			this.changedAccessToken = void 0;
+		}
+	}
+};
+var createClient = (supabaseUrl, supabaseKey, options$1) => {
+	return new SupabaseClient(supabaseUrl, supabaseKey, options$1);
+};
+function shouldShowDeprecationWarning() {
+	if (typeof window !== "undefined") return false;
+	const _process = globalThis["process"];
+	if (!_process) return false;
+	const processVersion = _process["version"];
+	if (processVersion === void 0 || processVersion === null) return false;
+	const versionMatch = processVersion.match(/^v(\d+)\./);
+	if (!versionMatch) return false;
+	return parseInt(versionMatch[1], 10) <= 18;
+}
+if (shouldShowDeprecationWarning()) console.warn("⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217");
+const supabase = createClient("https://hllvhxwcgqsksjaudsdn.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsbHZoeHdjZ3Fza3NqYXVkc2RuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxNDg5NTksImV4cCI6MjA4NTcyNDk1OX0.0ftnudlSYJ0d0FniDvcAKkX2zBjiNKE064eElJ86guM", { auth: {
+	storage: localStorage,
+	persistSession: true,
+	autoRefreshToken: true
+} });
+var AuthContext = (0, import_react.createContext)(void 0);
+const useAuth = () => {
+	const context = (0, import_react.useContext)(AuthContext);
+	if (context === void 0) throw new Error("useAuth must be used within an AuthProvider");
+	return context;
+};
+const AuthProvider = ({ children }) => {
+	const [user, setUser] = (0, import_react.useState)(null);
+	const [session, setSession] = (0, import_react.useState)(null);
+	const [loading, setLoading] = (0, import_react.useState)(true);
+	(0, import_react.useEffect)(() => {
+		const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session$1) => {
+			setSession(session$1);
+			setUser(session$1?.user ?? null);
+			setLoading(false);
+		});
+		supabase.auth.getSession().then(({ data: { session: session$1 } }) => {
+			setSession(session$1);
+			setUser(session$1?.user ?? null);
+			setLoading(false);
+		});
+		return () => subscription.unsubscribe();
+	}, []);
+	const signUp = async (email$1, password) => {
+		const redirectUrl = `${window.location.origin}/`;
+		const { error } = await supabase.auth.signUp({
+			email: email$1,
+			password,
+			options: { emailRedirectTo: redirectUrl }
+		});
+		return { error };
+	};
+	const signIn = async (email$1, password) => {
+		const { error } = await supabase.auth.signInWithPassword({
+			email: email$1,
+			password
+		});
+		return { error };
+	};
+	const signOut = async () => {
+		const { error } = await supabase.auth.signOut();
+		return { error };
+	};
+	const value = {
+		user,
+		session,
+		signUp,
+		signIn,
+		signOut,
+		loading
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthContext.Provider, {
+		value,
+		children
+	});
+};
 var NAV_ITEMS = [
 	{
 		label: "Dashboard",
@@ -27532,6 +35238,7 @@ var NAV_ITEMS = [
 ];
 function AppSidebar() {
 	const location = useLocation();
+	const { user } = useAuth();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Sidebar, {
 		variant: "sidebar",
 		side: "left",
@@ -27555,12 +35262,12 @@ function AppSidebar() {
 					return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuButton, {
 						asChild: true,
 						tooltip: item.label,
-						className: cn("w-full justify-start gap-3 px-3 py-6 transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:scale-[1.02]", isActive && "bg-primary text-primary-foreground font-medium border-l-4 border-l-secondary shadow-sm hover:bg-primary/90"),
+						className: cn$1("w-full justify-start gap-3 px-3 py-6 transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:scale-[1.02]", isActive && "bg-primary text-primary-foreground font-medium border-l-4 border-l-secondary shadow-sm hover:bg-primary/90"),
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
 							to: item.path,
 							className: "flex items-center gap-3",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(item.icon, { className: cn("size-5", isActive ? "text-secondary" : "text-sidebar-foreground/70") }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: cn(isActive ? "text-primary-foreground" : "text-sidebar-foreground/90"),
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(item.icon, { className: cn$1("size-5", isActive ? "text-secondary" : "text-sidebar-foreground/70") }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: cn$1(isActive ? "text-primary-foreground" : "text-sidebar-foreground/90"),
 								children: item.label
 							})]
 						})
@@ -27573,15 +35280,17 @@ function AppSidebar() {
 					className: "flex items-center gap-3 group-data-[collapsible=icon]:justify-center",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
 						className: "h-9 w-9 border border-secondary",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=3" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: "AD" })]
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: user?.email?.substring(0, 2).toUpperCase() })]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "flex flex-col overflow-hidden group-data-[collapsible=icon]:hidden",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "text-sm font-medium text-sidebar-foreground",
-							children: "Admin User"
+							className: "text-sm font-medium text-sidebar-foreground truncate",
+							title: user?.email,
+							children: user?.email?.split("@")[0]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 							className: "text-xs text-sidebar-foreground/60 truncate",
-							children: "admin@milanhorses.com"
+							title: user?.email,
+							children: user?.email
 						})]
 					})]
 				})
@@ -27591,6 +35300,12 @@ function AppSidebar() {
 }
 function TopHeader() {
 	const { isMobile, toggleSidebar } = useSidebar();
+	const { user, signOut } = useAuth();
+	const navigate = useNavigate();
+	const handleLogout = async () => {
+		await signOut();
+		navigate("/login");
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 		className: "sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm md:px-6",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -27623,7 +35338,7 @@ function TopHeader() {
 				asChild: true,
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
 					className: "h-8 w-8 cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=3" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: "AD" })]
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: user?.email?.substring(0, 2).toUpperCase() })]
 				})
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
 				align: "end",
@@ -27636,6 +35351,7 @@ function TopHeader() {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
 						className: "text-destructive",
+						onClick: handleLogout,
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LogOut, { className: "mr-2 h-4 w-4" }), " Sair"]
 					})
 				]
@@ -27660,37 +35376,37 @@ function Layout() {
 }
 var Card = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	ref,
-	className: cn("rounded-lg border bg-card text-card-foreground shadow-sm", className),
+	className: cn$1("rounded-lg border bg-card text-card-foreground shadow-sm", className),
 	...props
 }));
 Card.displayName = "Card";
 var CardHeader = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	ref,
-	className: cn("flex flex-col space-y-1.5 p-6", className),
+	className: cn$1("flex flex-col space-y-1.5 p-6", className),
 	...props
 }));
 CardHeader.displayName = "CardHeader";
 var CardTitle = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	ref,
-	className: cn("text-2xl font-semibold leading-none tracking-tight", className),
+	className: cn$1("text-2xl font-semibold leading-none tracking-tight", className),
 	...props
 }));
 CardTitle.displayName = "CardTitle";
 var CardDescription = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	ref,
-	className: cn("text-sm text-muted-foreground", className),
+	className: cn$1("text-sm text-muted-foreground", className),
 	...props
 }));
 CardDescription.displayName = "CardDescription";
 var CardContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	ref,
-	className: cn("p-6 pt-0", className),
+	className: cn$1("p-6 pt-0", className),
 	...props
 }));
 CardContent.displayName = "CardContent";
 var CardFooter = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	ref,
-	className: cn("flex items-center p-6 pt-0", className),
+	className: cn$1("flex items-center p-6 pt-0", className),
 	...props
 }));
 CardFooter.displayName = "CardFooter";
@@ -29028,12 +36744,12 @@ var getDisplayName = function getDisplayName$1(Comp) {
 };
 var lastChildren = null;
 var lastResult = null;
-var toArray = function toArray$1(children) {
+var toArray = function toArray$2(children) {
 	if (children === lastChildren && Array.isArray(lastResult)) return lastResult;
 	var result = [];
 	import_react.Children.forEach(children, function(child) {
 		if ((0, import_isNil$10.default)(child)) return;
-		if ((0, import_react_is.isFragment)(child)) result = result.concat(toArray$1(child.props.children));
+		if ((0, import_react_is.isFragment)(child)) result = result.concat(toArray$2(child.props.children));
 		else result.push(child);
 	});
 	lastResult = result;
@@ -32410,7 +40126,7 @@ var Global = {
 	isSsr: function parseIsSsrByDefault$1() {
 		return !(typeof window !== "undefined" && window.document && window.document.createElement && window.setTimeout);
 	}(),
-	get: function get$9(key) {
+	get: function get$10(key) {
 		return Global[key];
 	},
 	set: function set$1(key, value) {
@@ -32862,7 +40578,7 @@ var ResponsiveContainer = /* @__PURE__ */ (0, import_react.forwardRef)(function(
 	onResizeRef.current = onResize;
 	(0, import_react.useImperativeHandle)(ref, function() {
 		return Object.defineProperty(containerRef.current, "current", {
-			get: function get$9() {
+			get: function get$10() {
 				console.warn("The usage of ref.current.current is deprecated and will no longer be supported.");
 				return containerRef.current;
 			},
@@ -45209,31 +52925,31 @@ var ScaleHelper = /* @__PURE__ */ function() {
 	return _createClass$9(ScaleHelper$1, [
 		{
 			key: "domain",
-			get: function get$9() {
+			get: function get$10() {
 				return this.scale.domain;
 			}
 		},
 		{
 			key: "range",
-			get: function get$9() {
+			get: function get$10() {
 				return this.scale.range;
 			}
 		},
 		{
 			key: "rangeMin",
-			get: function get$9() {
+			get: function get$10() {
 				return this.range()[0];
 			}
 		},
 		{
 			key: "rangeMax",
-			get: function get$9() {
+			get: function get$10() {
 				return this.range()[1];
 			}
 		},
 		{
 			key: "bandwidth",
-			get: function get$9() {
+			get: function get$10() {
 				return this.scale.bandwidth;
 			}
 		},
@@ -49910,7 +57626,7 @@ var ChartContainer = import_react.forwardRef(({ id, className, children, config:
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			"data-chart": chartId,
 			ref,
-			className: cn("flex w-full h-full aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none", className),
+			className: cn$1("flex w-full h-full aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none", className),
 			...props,
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartStyle, {
 				id: chartId,
@@ -49941,12 +57657,12 @@ var ChartTooltipContent = import_react.forwardRef(({ active, payload, className,
 		const itemConfig = getPayloadConfigFromPayload(config$1, item, `${labelKey || item?.dataKey || item?.name || "value"}`);
 		const value = !labelKey && typeof label === "string" ? config$1[label]?.label || label : itemConfig?.label;
 		if (labelFormatter) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: cn("font-medium", labelClassName),
+			className: cn$1("font-medium", labelClassName),
 			children: labelFormatter(value, payload)
 		});
 		if (!value) return null;
 		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: cn("font-medium", labelClassName),
+			className: cn$1("font-medium", labelClassName),
 			children: value
 		});
 	}, [
@@ -49962,16 +57678,16 @@ var ChartTooltipContent = import_react.forwardRef(({ active, payload, className,
 	const nestLabel = payload.length === 1 && indicator !== "dot";
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		ref,
-		className: cn("grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl", className),
+		className: cn$1("grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl", className),
 		children: [!nestLabel ? tooltipLabel : null, /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "grid gap-1.5",
 			children: payload.map((item, index$1) => {
 				const itemConfig = getPayloadConfigFromPayload(config$1, item, `${nameKey || item.name || item.dataKey || "value"}`);
 				const indicatorColor = color$1 || item.payload.fill || item.color;
 				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: cn("flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground", indicator === "dot" && "items-center"),
+					className: cn$1("flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground", indicator === "dot" && "items-center"),
 					children: formatter && item?.value !== void 0 && item.name ? formatter(item.value, item.name, item, index$1, item.payload) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [itemConfig?.icon ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(itemConfig.icon, {}) : !hideIndicator && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: cn("shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg]", {
+						className: cn$1("shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg]", {
 							"h-2.5 w-2.5": indicator === "dot",
 							"w-1": indicator === "line",
 							"w-0 border-[1.5px] border-dashed bg-transparent": indicator === "dashed",
@@ -49982,7 +57698,7 @@ var ChartTooltipContent = import_react.forwardRef(({ active, payload, className,
 							"--color-border": indicatorColor
 						}
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: cn("flex flex-1 justify-between leading-none", nestLabel ? "items-end" : "items-center"),
+						className: cn$1("flex flex-1 justify-between leading-none", nestLabel ? "items-end" : "items-center"),
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "grid gap-1.5",
 							children: [nestLabel ? tooltipLabel : null, /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
@@ -50006,11 +57722,11 @@ var ChartLegendContent = import_react.forwardRef(({ className, hideIcon = false,
 	if (!payload?.length) return null;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		ref,
-		className: cn("flex items-center justify-center gap-4", verticalAlign === "top" ? "pb-3" : "pt-3", className),
+		className: cn$1("flex items-center justify-center gap-4", verticalAlign === "top" ? "pb-3" : "pt-3", className),
 		children: payload.map((item) => {
 			const itemConfig = getPayloadConfigFromPayload(config$1, item, `${nameKey || item.dataKey || "value"}`);
 			return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: cn("flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"),
+				className: cn$1("flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"),
 				children: [itemConfig?.icon && !hideIcon ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(itemConfig.icon, {}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "h-2 w-2 shrink-0 rounded-[2px]",
 					style: { backgroundColor: item.color }
@@ -50357,50 +58073,50 @@ var Table = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE
 	className: "relative w-full overflow-auto",
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("table", {
 		ref,
-		className: cn("w-full caption-bottom text-sm", className),
+		className: cn$1("w-full caption-bottom text-sm", className),
 		...props
 	})
 }));
 Table.displayName = "Table";
 var TableHeader = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", {
 	ref,
-	className: cn("[&_tr]:border-b", className),
+	className: cn$1("[&_tr]:border-b", className),
 	...props
 }));
 TableHeader.displayName = "TableHeader";
 var TableBody = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", {
 	ref,
-	className: cn("[&_tr:last-child]:border-0", className),
+	className: cn$1("[&_tr:last-child]:border-0", className),
 	...props
 }));
 TableBody.displayName = "TableBody";
 var TableFooter = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tfoot", {
 	ref,
-	className: cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className),
+	className: cn$1("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className),
 	...props
 }));
 TableFooter.displayName = "TableFooter";
 var TableRow = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tr", {
 	ref,
-	className: cn("border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted", className),
+	className: cn$1("border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted", className),
 	...props
 }));
 TableRow.displayName = "TableRow";
 var TableHead = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
 	ref,
-	className: cn("h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0", className),
+	className: cn$1("h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0", className),
 	...props
 }));
 TableHead.displayName = "TableHead";
 var TableCell = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
 	ref,
-	className: cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className),
+	className: cn$1("p-4 align-middle [&:has([role=checkbox])]:pr-0", className),
 	...props
 }));
 TableCell.displayName = "TableCell";
 var TableCaption = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("caption", {
 	ref,
-	className: cn("mt-4 text-sm text-muted-foreground", className),
+	className: cn$1("mt-4 text-sm text-muted-foreground", className),
 	...props
 }));
 TableCaption.displayName = "TableCaption";
@@ -50415,32 +58131,32 @@ var badgeVariants = cva("inline-flex items-center rounded-full border px-2.5 py-
 });
 function Badge({ className, variant, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: cn(badgeVariants({ variant }), className),
+		className: cn$1(badgeVariants({ variant }), className),
 		...props
 	});
 }
 var Pagination = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
 	role: "navigation",
 	"aria-label": "pagination",
-	className: cn("mx-auto flex w-full justify-center", className),
+	className: cn$1("mx-auto flex w-full justify-center", className),
 	...props
 });
 Pagination.displayName = "Pagination";
 var PaginationContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
 	ref,
-	className: cn("flex flex-row items-center gap-1", className),
+	className: cn$1("flex flex-row items-center gap-1", className),
 	...props
 }));
 PaginationContent.displayName = "PaginationContent";
 var PaginationItem = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
 	ref,
-	className: cn("", className),
+	className: cn$1("", className),
 	...props
 }));
 PaginationItem.displayName = "PaginationItem";
 var PaginationLink = ({ className, isActive, size: size$3 = "icon", ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
 	"aria-current": isActive ? "page" : void 0,
-	className: cn(buttonVariants({
+	className: cn$1(buttonVariants({
 		variant: isActive ? "outline" : "ghost",
 		size: size$3
 	}), className),
@@ -50450,7 +58166,7 @@ PaginationLink.displayName = "PaginationLink";
 var PaginationPrevious = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PaginationLink, {
 	"aria-label": "Go to previous page",
 	size: "default",
-	className: cn("gap-1 pl-2.5", className),
+	className: cn$1("gap-1 pl-2.5", className),
 	...props,
 	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronLeft, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Previous" })]
 });
@@ -50458,14 +58174,14 @@ PaginationPrevious.displayName = "PaginationPrevious";
 var PaginationNext = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PaginationLink, {
 	"aria-label": "Go to next page",
 	size: "default",
-	className: cn("gap-1 pr-2.5", className),
+	className: cn$1("gap-1 pr-2.5", className),
 	...props,
 	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Next" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronRight, { className: "h-4 w-4" })]
 });
 PaginationNext.displayName = "PaginationNext";
 var PaginationEllipsis = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 	"aria-hidden": true,
-	className: cn("flex h-9 w-9 items-center justify-center", className),
+	className: cn$1("flex h-9 w-9 items-center justify-center", className),
 	...props,
 	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ellipsis, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 		className: "sr-only",
@@ -52658,9 +60374,9 @@ const ksuid = /^[A-Za-z0-9]{27}$/;
 const nanoid = /^[a-zA-Z0-9_-]{21}$/;
 const duration$1 = /^P(?:(\d+W)|(?!.*W)(?=\d|T\d)(\d+Y)?(\d+M)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+([.,]\d+)?S)?)?)$/;
 const guid = /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/;
-const uuid = (version$1) => {
-	if (!version$1) return /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/;
-	return /* @__PURE__ */ new RegExp(`^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-${version$1}[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$`);
+const uuid = (version$5) => {
+	if (!version$5) return /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/;
+	return /* @__PURE__ */ new RegExp(`^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-${version$5}[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$`);
 };
 const email = /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$/;
 var _emoji$1 = `^(\\p{Extended_Pictographic}|\\p{Emoji_Component})+$`;
@@ -57155,7 +64871,7 @@ function setYear(date$4, year, options$1) {
 }
 var Textarea = import_react.forwardRef(({ className, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", {
-		className: cn("flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm", className),
+		className: cn$1("flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm", className),
 		ref,
 		...props
 	});
@@ -57176,12 +64892,12 @@ var Label$2 = import_react.forwardRef((props, forwardedRef) => {
 Label$2.displayName = NAME;
 var Root$4 = Label$2;
 var labelVariants = cva("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
-var Label$1 = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
+var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
 	ref,
-	className: cn(labelVariants(), className),
+	className: cn$1(labelVariants(), className),
 	...props
 }));
-Label$1.displayName = Root$4.displayName;
+Label.displayName = Root$4.displayName;
 var Form = FormProvider;
 var FormFieldContext = import_react.createContext({});
 var FormField = ({ ...props }) => {
@@ -57213,7 +64929,7 @@ var FormItem = import_react.forwardRef(({ className, ...props }, ref) => {
 		value: { id },
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			ref,
-			className: cn("space-y-2", className),
+			className: cn$1("space-y-2", className),
 			...props
 		})
 	});
@@ -57221,9 +64937,9 @@ var FormItem = import_react.forwardRef(({ className, ...props }, ref) => {
 FormItem.displayName = "FormItem";
 var FormLabel = import_react.forwardRef(({ className, ...props }, ref) => {
 	const { error, formItemId } = useFormField();
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label$1, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
 		ref,
-		className: cn(error && "text-destructive", className),
+		className: cn$1(error && "text-destructive", className),
 		htmlFor: formItemId,
 		...props
 	});
@@ -57245,7 +64961,7 @@ var FormDescription = import_react.forwardRef(({ className, ...props }, ref) => 
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 		ref,
 		id: formDescriptionId,
-		className: cn("text-sm text-muted-foreground", className),
+		className: cn$1("text-sm text-muted-foreground", className),
 		...props
 	});
 });
@@ -57257,7 +64973,7 @@ var FormMessage = import_react.forwardRef(({ className, children, ...props }, re
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 		ref,
 		id: formMessageId,
-		className: cn("text-sm font-medium text-destructive", className),
+		className: cn$1("text-sm font-medium text-destructive", className),
 		...props,
 		children: body
 	});
@@ -58222,7 +65938,7 @@ var Icon = SelectIcon;
 var Portal$2 = SelectPortal;
 var Content2$1 = SelectContent$1;
 var Viewport$1 = SelectViewport;
-var Label = SelectLabel$1;
+var Label$1 = SelectLabel$1;
 var Item = SelectItem$1;
 var ItemText = SelectItemText;
 var ItemIndicator = SelectItemIndicator;
@@ -58233,7 +65949,7 @@ var Select = Root2$1;
 var SelectValue = Value;
 var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Trigger$1, {
 	ref,
-	className: cn("flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1", className),
+	className: cn$1("flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1", className),
 	...props,
 	children: [children, /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
 		asChild: true,
@@ -58243,42 +65959,42 @@ var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, 
 SelectTrigger.displayName = Trigger$1.displayName;
 var SelectScrollUpButton = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollUpButton, {
 	ref,
-	className: cn("flex cursor-default items-center justify-center py-1", className),
+	className: cn$1("flex cursor-default items-center justify-center py-1", className),
 	...props,
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronUp, { className: "h-4 w-4" })
 }));
 SelectScrollUpButton.displayName = ScrollUpButton.displayName;
 var SelectScrollDownButton = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollDownButton, {
 	ref,
-	className: cn("flex cursor-default items-center justify-center py-1", className),
+	className: cn$1("flex cursor-default items-center justify-center py-1", className),
 	...props,
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, { className: "h-4 w-4" })
 }));
 SelectScrollDownButton.displayName = ScrollDownButton.displayName;
 var SelectContent = import_react.forwardRef(({ className, children, position = "popper", ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$2, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content2$1, {
 	ref,
-	className: cn("relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-select-content-transform-origin]", position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1", className),
+	className: cn$1("relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-select-content-transform-origin]", position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1", className),
 	position,
 	...props,
 	children: [
 		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectScrollUpButton, {}),
 		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Viewport$1, {
-			className: cn("p-1", position === "popper" && "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"),
+			className: cn$1("p-1", position === "popper" && "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"),
 			children
 		}),
 		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectScrollDownButton, {})
 	]
 }) }));
 SelectContent.displayName = Content2$1.displayName;
-var SelectLabel = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+var SelectLabel = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label$1, {
 	ref,
-	className: cn("py-1.5 pl-8 pr-2 text-sm font-semibold", className),
+	className: cn$1("py-1.5 pl-8 pr-2 text-sm font-semibold", className),
 	...props
 }));
-SelectLabel.displayName = Label.displayName;
+SelectLabel.displayName = Label$1.displayName;
 var SelectItem = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Item, {
 	ref,
-	className: cn("relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className),
+	className: cn$1("relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className),
 	...props,
 	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 		className: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center",
@@ -58288,7 +66004,7 @@ var SelectItem = import_react.forwardRef(({ className, children, ...props }, ref
 SelectItem.displayName = Item.displayName;
 var SelectSeparator = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$1, {
 	ref,
-	className: cn("-mx-1 my-1 h-px bg-muted", className),
+	className: cn$1("-mx-1 my-1 h-px bg-muted", className),
 	...props
 }));
 SelectSeparator.displayName = Separator$1.displayName;
@@ -58536,7 +66252,7 @@ var PopoverContent = import_react.forwardRef(({ className, align = "center", sid
 	ref,
 	align,
 	sideOffset,
-	className: cn("z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-popover-content-transform-origin]", className),
+	className: cn$1("z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-popover-content-transform-origin]", className),
 	...props
 }) }));
 PopoverContent.displayName = Content2.displayName;
@@ -60716,38 +68432,38 @@ function Calendar$1({ className, classNames, showOutsideDays = true, captionLayo
 	const defaultClassNames = getDefaultClassNames();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DayPicker, {
 		showOutsideDays,
-		className: cn("bg-background group/calendar p-3 [--cell-size:2rem] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent", String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`, String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`, className),
+		className: cn$1("bg-background group/calendar p-3 [--cell-size:2rem] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent", String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`, String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`, className),
 		captionLayout,
 		formatters: {
 			formatMonthDropdown: (date$4) => date$4.toLocaleString("default", { month: "short" }),
 			...formatters$1
 		},
 		classNames: {
-			root: cn("w-fit", defaultClassNames.root),
-			months: cn("relative flex flex-col gap-4 md:flex-row", defaultClassNames.months),
-			month: cn("flex w-full flex-col gap-4", defaultClassNames.month),
-			nav: cn("absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1", defaultClassNames.nav),
-			button_previous: cn(buttonVariants({ variant: buttonVariant }), "h-[--cell-size] w-[--cell-size] select-none p-0 aria-disabled:opacity-50", defaultClassNames.button_previous),
-			button_next: cn(buttonVariants({ variant: buttonVariant }), "h-[--cell-size] w-[--cell-size] select-none p-0 aria-disabled:opacity-50", defaultClassNames.button_next),
-			month_caption: cn("flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]", defaultClassNames.month_caption),
-			dropdowns: cn("flex h-[--cell-size] w-full items-center justify-center gap-1.5 text-sm font-medium", defaultClassNames.dropdowns),
-			dropdown_root: cn("has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border", defaultClassNames.dropdown_root),
-			dropdown: cn("absolute inset-0 opacity-0", defaultClassNames.dropdown),
-			caption_label: cn("select-none font-medium", captionLayout === "label" ? "text-sm" : "[&>svg]:text-muted-foreground flex h-8 items-center gap-1 rounded-md pl-2 pr-1 text-sm [&>svg]:size-3.5", defaultClassNames.caption_label),
+			root: cn$1("w-fit", defaultClassNames.root),
+			months: cn$1("relative flex flex-col gap-4 md:flex-row", defaultClassNames.months),
+			month: cn$1("flex w-full flex-col gap-4", defaultClassNames.month),
+			nav: cn$1("absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1", defaultClassNames.nav),
+			button_previous: cn$1(buttonVariants({ variant: buttonVariant }), "h-[--cell-size] w-[--cell-size] select-none p-0 aria-disabled:opacity-50", defaultClassNames.button_previous),
+			button_next: cn$1(buttonVariants({ variant: buttonVariant }), "h-[--cell-size] w-[--cell-size] select-none p-0 aria-disabled:opacity-50", defaultClassNames.button_next),
+			month_caption: cn$1("flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]", defaultClassNames.month_caption),
+			dropdowns: cn$1("flex h-[--cell-size] w-full items-center justify-center gap-1.5 text-sm font-medium", defaultClassNames.dropdowns),
+			dropdown_root: cn$1("has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border", defaultClassNames.dropdown_root),
+			dropdown: cn$1("absolute inset-0 opacity-0", defaultClassNames.dropdown),
+			caption_label: cn$1("select-none font-medium", captionLayout === "label" ? "text-sm" : "[&>svg]:text-muted-foreground flex h-8 items-center gap-1 rounded-md pl-2 pr-1 text-sm [&>svg]:size-3.5", defaultClassNames.caption_label),
 			table: "w-full border-collapse",
-			weekdays: cn("flex", defaultClassNames.weekdays),
-			weekday: cn("text-muted-foreground flex-1 select-none rounded-md text-[0.8rem] font-normal", defaultClassNames.weekday),
-			week: cn("mt-2 flex w-full", defaultClassNames.week),
-			week_number_header: cn("w-[--cell-size] select-none", defaultClassNames.week_number_header),
-			week_number: cn("text-muted-foreground select-none text-[0.8rem]", defaultClassNames.week_number),
-			day: cn("group/day relative aspect-square h-full w-full select-none p-0 text-center [&:first-child[data-selected=true]_button]:rounded-l-md [&:last-child[data-selected=true]_button]:rounded-r-md", defaultClassNames.day),
-			range_start: cn("bg-accent rounded-l-md", defaultClassNames.range_start),
-			range_middle: cn("rounded-none", defaultClassNames.range_middle),
-			range_end: cn("bg-accent rounded-r-md", defaultClassNames.range_end),
-			today: cn("bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none", defaultClassNames.today),
-			outside: cn("text-muted-foreground aria-selected:text-muted-foreground", defaultClassNames.outside),
-			disabled: cn("text-muted-foreground opacity-50", defaultClassNames.disabled),
-			hidden: cn("invisible", defaultClassNames.hidden),
+			weekdays: cn$1("flex", defaultClassNames.weekdays),
+			weekday: cn$1("text-muted-foreground flex-1 select-none rounded-md text-[0.8rem] font-normal", defaultClassNames.weekday),
+			week: cn$1("mt-2 flex w-full", defaultClassNames.week),
+			week_number_header: cn$1("w-[--cell-size] select-none", defaultClassNames.week_number_header),
+			week_number: cn$1("text-muted-foreground select-none text-[0.8rem]", defaultClassNames.week_number),
+			day: cn$1("group/day relative aspect-square h-full w-full select-none p-0 text-center [&:first-child[data-selected=true]_button]:rounded-l-md [&:last-child[data-selected=true]_button]:rounded-r-md", defaultClassNames.day),
+			range_start: cn$1("bg-accent rounded-l-md", defaultClassNames.range_start),
+			range_middle: cn$1("rounded-none", defaultClassNames.range_middle),
+			range_end: cn$1("bg-accent rounded-r-md", defaultClassNames.range_end),
+			today: cn$1("bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none", defaultClassNames.today),
+			outside: cn$1("text-muted-foreground aria-selected:text-muted-foreground", defaultClassNames.outside),
+			disabled: cn$1("text-muted-foreground opacity-50", defaultClassNames.disabled),
+			hidden: cn$1("invisible", defaultClassNames.hidden),
 			...classNames
 		},
 		components: {
@@ -60755,21 +68471,21 @@ function Calendar$1({ className, classNames, showOutsideDays = true, captionLayo
 				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					"data-slot": "calendar",
 					ref: rootRef,
-					className: cn(className$1),
+					className: cn$1(className$1),
 					...props$1
 				});
 			},
 			Chevron: ({ className: className$1, orientation, ...props$1 }) => {
 				if (orientation === "left") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronLeft, {
-					className: cn("size-4", className$1),
+					className: cn$1("size-4", className$1),
 					...props$1
 				});
 				if (orientation === "right") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronRight, {
-					className: cn("size-4", className$1),
+					className: cn$1("size-4", className$1),
 					...props$1
 				});
 				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, {
-					className: cn("size-4", className$1),
+					className: cn$1("size-4", className$1),
 					...props$1
 				});
 			},
@@ -60803,7 +68519,7 @@ function CalendarDayButton({ className, day, modifiers, ...props }) {
 		"data-range-start": modifiers.range_start,
 		"data-range-end": modifiers.range_end,
 		"data-range-middle": modifiers.range_middle,
-		className: cn("data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 flex aspect-square h-auto w-full min-w-[--cell-size] flex-col gap-1 font-normal leading-none data-[range-end=true]:rounded-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] [&>span]:text-xs [&>span]:opacity-70", defaultClassNames.day, className),
+		className: cn$1("data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 flex aspect-square h-auto w-full min-w-[--cell-size] flex-col gap-1 font-normal leading-none data-[range-end=true]:rounded-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] [&>span]:text-xs [&>span]:opacity-70", defaultClassNames.day, className),
 		...props
 	});
 }
@@ -61274,13 +68990,13 @@ var DialogTrigger = Trigger$3;
 var DialogPortal = Portal$4;
 var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
 	ref,
-	className: cn("fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
+	className: cn$1("fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
 	...props
 }));
 DialogOverlay.displayName = Overlay.displayName;
 var DialogContent = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content, {
 	ref,
-	className: cn("fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg overflow-y-auto max-h-screen", className),
+	className: cn$1("fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg overflow-y-auto max-h-screen", className),
 	...props,
 	children: [children, /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Close, {
 		className: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
@@ -61292,30 +69008,30 @@ var DialogContent = import_react.forwardRef(({ className, children, ...props }, 
 })] }));
 DialogContent.displayName = Content.displayName;
 var DialogHeader = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-	className: cn("flex flex-col space-y-1.5 text-center sm:text-left", className),
+	className: cn$1("flex flex-col space-y-1.5 text-center sm:text-left", className),
 	...props
 });
 DialogHeader.displayName = "DialogHeader";
 var DialogFooter = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-	className: cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className),
+	className: cn$1("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className),
 	...props
 });
 DialogFooter.displayName = "DialogFooter";
 var DialogTitle = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Title, {
 	ref,
-	className: cn("text-lg font-semibold leading-none tracking-tight", className),
+	className: cn$1("text-lg font-semibold leading-none tracking-tight", className),
 	...props
 }));
 DialogTitle.displayName = Title.displayName;
 var DialogDescription = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Description, {
 	ref,
-	className: cn("text-sm text-muted-foreground", className),
+	className: cn$1("text-sm text-muted-foreground", className),
 	...props
 }));
 DialogDescription.displayName = Description.displayName;
 var Command = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(_e, {
 	ref,
-	className: cn("flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground", className),
+	className: cn$1("flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground", className),
 	...props
 }));
 Command.displayName = _e.displayName;
@@ -61324,14 +69040,14 @@ var CommandInput = import_react.forwardRef(({ className, ...props }, ref) => /* 
 	"cmdk-input-wrapper": "",
 	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "mr-2 h-4 w-4 shrink-0 opacity-50" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(_e.Input, {
 		ref,
-		className: cn("flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50", className),
+		className: cn$1("flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50", className),
 		...props
 	})]
 }));
 CommandInput.displayName = _e.Input.displayName;
 var CommandList = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(_e.List, {
 	ref,
-	className: cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className),
+	className: cn$1("max-h-[300px] overflow-y-auto overflow-x-hidden", className),
 	...props
 }));
 CommandList.displayName = _e.List.displayName;
@@ -61343,25 +69059,25 @@ var CommandEmpty = import_react.forwardRef((props, ref) => /* @__PURE__ */ (0, i
 CommandEmpty.displayName = _e.Empty.displayName;
 var CommandGroup = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(_e.Group, {
 	ref,
-	className: cn("overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground", className),
+	className: cn$1("overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground", className),
 	...props
 }));
 CommandGroup.displayName = _e.Group.displayName;
 var CommandSeparator = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(_e.Separator, {
 	ref,
-	className: cn("-mx-1 h-px bg-border", className),
+	className: cn$1("-mx-1 h-px bg-border", className),
 	...props
 }));
 CommandSeparator.displayName = _e.Separator.displayName;
 var CommandItem = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(_e.Item, {
 	ref,
-	className: cn("relative flex cursor-default gap-2 select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", className),
+	className: cn$1("relative flex cursor-default gap-2 select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", className),
 	...props
 }));
 CommandItem.displayName = _e.Item.displayName;
 var CommandShortcut = ({ className, ...props }) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-		className: cn("ml-auto text-xs tracking-widest text-muted-foreground", className),
+		className: cn$1("ml-auto text-xs tracking-widest text-muted-foreground", className),
 		...props
 	});
 };
@@ -61380,7 +69096,7 @@ function MultiSelect({ options: options$1, selected, onChange, placeholder = "Se
 				variant: "outline",
 				role: "combobox",
 				"aria-expanded": open,
-				className: cn("w-full justify-between hover:bg-background h-auto min-h-10 py-2", className),
+				className: cn$1("w-full justify-between hover:bg-background h-auto min-h-10 py-2", className),
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex flex-wrap gap-1",
 					children: [selected.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
@@ -61424,13 +69140,130 @@ function MultiSelect({ options: options$1, selected, onChange, placeholder = "Se
 							onChange(selected.includes(option.value) ? selected.filter((item) => item !== option.value) : [...selected, option.value]);
 							setOpen(true);
 						},
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: cn("mr-2 h-4 w-4", selected.includes(option.value) ? "opacity-100" : "opacity-0") }), option.label]
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: cn$1("mr-2 h-4 w-4", selected.includes(option.value) ? "opacity-100" : "opacity-0") }), option.label]
 					}, option.value))
 				})] })]
 			})
 		})]
 	});
 }
+const contactsService = {
+	async getContacts({ page = 1, pageSize = 10, search = "", tags = [], sortBy: sortBy$4 = "created_at", sortDirection = "desc" }) {
+		const from = (page - 1) * pageSize;
+		const to = from + pageSize - 1;
+		let query = supabase.from("contacts").select(`
+        *,
+        contact_tags!left (
+          tags (
+            id,
+            name,
+            color
+          )
+        ),
+        purchases (
+          value,
+          date
+        )
+      `, { count: "exact" });
+		if (search) query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%`);
+		if (sortBy$4 === "lastContact") query = query.order("updated_at", { ascending: sortDirection === "asc" });
+		else if (sortBy$4 === "totalInvested") query = query.order("name", { ascending: sortDirection === "asc" });
+		else query = query.order(sortBy$4, { ascending: sortDirection === "asc" });
+		if (tags && tags.length > 0) {
+			const { data: taggedContactIds, error: tagError } = await supabase.from("contact_tags").select("contact_id, tags!inner(name)").in("tags.name", tags);
+			if (tagError) throw tagError;
+			const ids = taggedContactIds?.map((tc) => tc.contact_id) || [];
+			if (ids.length > 0) query = query.in("id", ids);
+			else return {
+				data: [],
+				count: 0,
+				error: null
+			};
+		}
+		query = query.range(from, to);
+		const { data, error, count: count$3 } = await query;
+		return {
+			data: data?.map((contact) => ({
+				...contact,
+				tags: contact.contact_tags?.map((ct) => ct.tags) || [],
+				purchases: contact.purchases || [],
+				totalInvested: contact.purchases?.reduce((acc, curr) => acc + Number(curr.value), 0) || 0,
+				lastContact: contact.updated_at
+			})),
+			error,
+			count: count$3
+		};
+	},
+	async getContactById(id) {
+		const { data, error } = await supabase.from("contacts").select(`
+        *,
+        contact_tags (
+          tags (
+            id,
+            name,
+            color
+          )
+        ),
+        purchases (
+          id,
+          value,
+          date,
+          lot_number,
+          auction_id
+        ),
+        contact_interactions (
+           id,
+           type,
+           description,
+           date
+        )
+      `).eq("id", id).single();
+		if (error) throw error;
+		return {
+			...data,
+			tags: data.contact_tags?.map((ct) => ct.tags) || [],
+			purchases: data.purchases || [],
+			interactions: data.contact_interactions || []
+		};
+	},
+	async createContact(contactData) {
+		const { tags: tagNames, ...data } = contactData;
+		const dbData = {
+			name: data.name,
+			email: data.email,
+			phone: data.phone,
+			whatsapp: data.whatsapp,
+			birth_date: data.birthDate,
+			cpf: data.cpf,
+			address: data.address,
+			preferences: {
+				breeds: data.favoriteBreeds,
+				valueRange: data.preferredValueRange,
+				modalities: data.modalities
+			},
+			origin: data.origin,
+			notes: data.notes
+		};
+		const { data: newContact, error } = await supabase.from("contacts").insert(dbData).select().single();
+		if (error) throw error;
+		if (tagNames && tagNames.length > 0) {
+			const { data: existingTags } = await supabase.from("tags").select("id, name").in("name", tagNames);
+			if (existingTags) {
+				const contactTags = existingTags.map((tag) => ({
+					contact_id: newContact.id,
+					tag_id: tag.id
+				}));
+				await supabase.from("contact_tags").insert(contactTags);
+			}
+		}
+		return newContact;
+	},
+	async getTags() {
+		const { data, error } = await supabase.from("tags").select("*");
+		if (error) throw error;
+		return data;
+	}
+};
 var formSchema = object({
 	name: string().min(2, "Nome deve ter pelo menos 2 caracteres."),
 	email: string().email("E-mail inválido."),
@@ -61443,54 +69276,55 @@ var formSchema = object({
 	preferredValueRange: string().optional(),
 	modalities: array(string()).default([]),
 	origin: string({ required_error: "Selecione a origem do lead." }),
-	notes: string().optional()
+	notes: string().optional(),
+	tags: array(string()).default([])
 });
 var BREEDS = [
 	{
 		label: "Lusitano",
-		value: "lusitano"
+		value: "Lusitano"
 	},
 	{
 		label: "Brasileiro de Hipismo",
-		value: "bh"
+		value: "BH"
 	},
 	{
 		label: "Quarto de Milha",
-		value: "qm"
+		value: "Quarto de Milha"
 	},
 	{
 		label: "Árabe",
-		value: "arabe"
+		value: "Árabe"
 	},
 	{
 		label: "Manga Larga",
-		value: "mangalarga"
+		value: "Manga Larga"
 	},
 	{
 		label: "Puro Sangue Inglês",
-		value: "psi"
+		value: "PSI"
 	}
 ];
 var MODALITIES = [
 	{
 		label: "Salto",
-		value: "salto"
+		value: "Salto"
 	},
 	{
 		label: "Adestramento",
-		value: "adestramento"
+		value: "Adestramento"
 	},
 	{
 		label: "Enduro",
-		value: "enduro"
+		value: "Enduro"
 	},
 	{
 		label: "Lazer",
-		value: "lazer"
+		value: "Lazer"
 	},
 	{
 		label: "Trabalho",
-		value: "trabalho"
+		value: "Trabalho"
 	}
 ];
 var ORIGINS = [
@@ -61499,6 +69333,28 @@ var ORIGINS = [
 	"Site",
 	"Evento",
 	"Outros"
+];
+var TAGS = [
+	{
+		label: "VIP",
+		value: "VIP"
+	},
+	{
+		label: "Frequente",
+		value: "Frequente"
+	},
+	{
+		label: "Ativo",
+		value: "Ativo"
+	},
+	{
+		label: "Novo Lead",
+		value: "Novo Lead"
+	},
+	{
+		label: "Inativo",
+		value: "Inativo"
+	}
 ];
 function ContactForm({ onSuccess }) {
 	const { toast: toast$2 } = useToast();
@@ -61514,7 +69370,8 @@ function ContactForm({ onSuccess }) {
 			address: "",
 			favoriteBreeds: [],
 			modalities: [],
-			notes: ""
+			notes: "",
+			tags: []
 		}
 	});
 	const maskPhone = (value) => {
@@ -61525,16 +69382,24 @@ function ContactForm({ onSuccess }) {
 	};
 	async function onSubmit(values) {
 		setLoading(true);
-		setTimeout(() => {
-			console.log("Form Submitted:", values);
+		try {
+			await contactsService.createContact(values);
 			toast$2({
 				title: "Contato cadastrado!",
 				description: `${values.name} foi adicionado com sucesso.`
 			});
-			setLoading(false);
 			form.reset();
 			onSuccess?.();
-		}, 1500);
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				variant: "destructive",
+				title: "Erro ao cadastrar",
+				description: error.message || "Não foi possível salvar o contato."
+			});
+		} finally {
+			setLoading(false);
+		}
 	}
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Form, {
 		...form,
@@ -61629,7 +69494,7 @@ function ContactForm({ onSuccess }) {
 											asChild: true,
 											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 												variant: "outline",
-												className: cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground"),
+												className: cn$1("pl-3 text-left font-normal", !field.value && "text-muted-foreground"),
 												children: [field.value ? format(field.value, "dd/MM/yyyy") : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Selecione uma data" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "ml-auto h-4 w-4 opacity-50" })]
 											}) })
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
@@ -61695,19 +69560,19 @@ function ContactForm({ onSuccess }) {
 										defaultValue: field.value,
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione..." }) }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-												value: "low",
+												value: "Até R$ 50k",
 												children: "Até R$ 50k"
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-												value: "mid",
+												value: "R$ 50k - R$ 100k",
 												children: "R$ 50k - R$ 100k"
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-												value: "high",
+												value: "R$ 100k - R$ 300k",
 												children: "R$ 100k - R$ 300k"
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-												value: "premium",
+												value: "Acima de R$ 300k",
 												children: "Acima de R$ 300k"
 											})
 										] })]
@@ -61756,6 +69621,20 @@ function ContactForm({ onSuccess }) {
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
 							control: form.control,
+							name: "tags",
+							render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Tags Iniciais" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MultiSelect, {
+									options: TAGS,
+									selected: field.value,
+									onChange: field.onChange,
+									placeholder: "Selecione tags..."
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+							] })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+							control: form.control,
 							name: "notes",
 							render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Notas Internas" }),
@@ -61782,268 +69661,78 @@ function ContactForm({ onSuccess }) {
 		})
 	});
 }
-var MOCK_CONTACTS = [
-	{
-		id: 1,
-		name: "Roberto Almeida",
-		email: "roberto@fazendaalmeida.com",
-		phone: "(11) 99876-5432",
-		tags: ["VIP", "Ativo"],
-		totalInvested: 15e4,
-		lastContact: "2023-10-25"
-	},
-	{
-		id: 2,
-		name: "Fernanda Lima",
-		email: "fernanda.lima@email.com",
-		phone: "(21) 98765-4321",
-		tags: ["Frequente", "Ativo"],
-		totalInvested: 85e3,
-		lastContact: "2023-10-24"
-	},
-	{
-		id: 3,
-		name: "Carlos Venturini",
-		email: "carlos.v@vet.com",
-		phone: "(31) 91234-5678",
-		tags: ["Novo Lead"],
-		totalInvested: 0,
-		lastContact: "2023-10-23"
-	},
-	{
-		id: 4,
-		name: "Haras Pôr do Sol",
-		email: "contato@haraspordosol.com.br",
-		phone: "(19) 3456-7890",
-		tags: ["VIP", "Frequente"],
-		totalInvested: 54e4,
-		lastContact: "2023-10-22"
-	},
-	{
-		id: 5,
-		name: "Juliana Paes",
-		email: "ju.paes@invest.com",
-		phone: "(11) 95555-4444",
-		tags: ["Ativo"],
-		totalInvested: 45e3,
-		lastContact: "2023-10-21"
-	},
-	{
-		id: 6,
-		name: "Ricardo Souza",
-		email: "ricardo@equestre.com",
-		phone: "(41) 98888-7777",
-		tags: ["Inativo"],
-		totalInvested: 12e3,
-		lastContact: "2023-09-15"
-	},
-	{
-		id: 7,
-		name: "Mariana Costa",
-		email: "mari.costa@email.com",
-		phone: "(51) 99999-1111",
-		tags: ["Novo Lead"],
-		totalInvested: 0,
-		lastContact: "2023-10-19"
-	},
-	{
-		id: 8,
-		name: "Fazenda Santa Fé",
-		email: "adm@santafe.com",
-		phone: "(62) 3333-2222",
-		tags: ["VIP"],
-		totalInvested: 23e4,
-		lastContact: "2023-10-18"
-	},
-	{
-		id: 9,
-		name: "Pedro Martins",
-		email: "pedro.m@outlook.com",
-		phone: "(11) 97777-6666",
-		tags: ["Frequente"],
-		totalInvested: 67e3,
-		lastContact: "2023-10-15"
-	},
-	{
-		id: 10,
-		name: "Ana Beatriz",
-		email: "ana.bea@gmail.com",
-		phone: "(31) 96666-5555",
-		tags: ["Ativo"],
-		totalInvested: 25e3,
-		lastContact: "2023-10-14"
-	},
-	{
-		id: 11,
-		name: "João Silva",
-		email: "joao.silva@uol.com.br",
-		phone: "(11) 91111-2222",
-		tags: ["Inativo"],
-		totalInvested: 5e3,
-		lastContact: "2023-08-20"
-	},
-	{
-		id: 12,
-		name: "Clube Hípico SP",
-		email: "contato@chsp.com.br",
-		phone: "(11) 3333-4444",
-		tags: [
-			"VIP",
-			"Frequente",
-			"Ativo"
-		],
-		totalInvested: 89e4,
-		lastContact: "2023-10-25"
-	},
-	{
-		id: 13,
-		name: "Dr. Marcelo Ramos",
-		email: "m.ramos@vetcenter.com",
-		phone: "(19) 98888-1111",
-		tags: ["Novo Lead"],
-		totalInvested: 0,
-		lastContact: "2023-10-20"
-	},
-	{
-		id: 14,
-		name: "Sofia Oliveira",
-		email: "sofia.o@yahoo.com",
-		phone: "(21) 97777-3333",
-		tags: ["Ativo"],
-		totalInvested: 15e3,
-		lastContact: "2023-10-12"
-	},
-	{
-		id: 15,
-		name: "Miguel Santos",
-		email: "miguel.santos@gmail.com",
-		phone: "(31) 99988-7766",
-		tags: ["Novo Lead"],
-		totalInvested: 0,
-		lastContact: "2023-10-24"
-	},
-	{
-		id: 16,
-		name: "Haras Imperial",
-		email: "contato@harasimperial.com",
-		phone: "(15) 3232-4545",
-		tags: ["VIP"],
-		totalInvested: 345e3,
-		lastContact: "2023-10-23"
-	},
-	{
-		id: 17,
-		name: "Lucas Ferreira",
-		email: "lucas.ferreira@hotmail.com",
-		phone: "(41) 95555-8888",
-		tags: ["Inativo"],
-		totalInvested: 8e3,
-		lastContact: "2023-07-10"
-	},
-	{
-		id: 18,
-		name: "Beatriz Costa",
-		email: "bia.costa@gmail.com",
-		phone: "(51) 94444-3333",
-		tags: ["Frequente", "Ativo"],
-		totalInvested: 56e3,
-		lastContact: "2023-10-05"
-	},
-	{
-		id: 19,
-		name: "Rancho fundo",
-		email: "vendas@ranchofundo.com",
-		phone: "(62) 3456-7890",
-		tags: ["Ativo"],
-		totalInvested: 32e3,
-		lastContact: "2023-10-01"
-	},
-	{
-		id: 20,
-		name: "Gabriel Souza",
-		email: "gabriel.s@outlook.com",
-		phone: "(11) 92222-1111",
-		tags: ["Novo Lead"],
-		totalInvested: 0,
-		lastContact: "2023-10-25"
-	},
-	{
-		id: 21,
-		name: "Amanda Nunes",
-		email: "amanda.n@gmail.com",
-		phone: "(21) 93333-4444",
-		tags: ["Ativo"],
-		totalInvested: 18e3,
-		lastContact: "2023-09-28"
-	},
-	{
-		id: 22,
-		name: "Paulo Cesar",
-		email: "pc.invest@gmail.com",
-		phone: "(31) 96666-7777",
-		tags: ["VIP", "Inativo"],
-		totalInvested: 125e3,
-		lastContact: "2023-06-15"
-	}
-];
-var ALL_TAGS = [
-	"VIP",
-	"Frequente",
-	"Ativo",
-	"Inativo",
-	"Novo Lead"
-];
 function Contatos() {
 	const [searchTerm, setSearchTerm] = (0, import_react.useState)("");
 	const [selectedTags, setSelectedTags] = (0, import_react.useState)([]);
 	const [sortConfig, setSortConfig] = (0, import_react.useState)({
-		key: "lastContact",
+		key: "created_at",
 		direction: "desc"
 	});
 	const [currentPage, setCurrentPage] = (0, import_react.useState)(1);
 	const [isSheetOpen, setSheetOpen] = (0, import_react.useState)(false);
+	const [contacts, setContacts] = (0, import_react.useState)([]);
+	const [totalCount, setTotalCount] = (0, import_react.useState)(0);
+	const [availableTags, setAvailableTags] = (0, import_react.useState)([]);
+	const [loading, setLoading] = (0, import_react.useState)(true);
 	const itemsPerPage = 10;
-	const filteredAndSortedContacts = (0, import_react.useMemo)(() => {
-		let result = [...MOCK_CONTACTS];
-		if (searchTerm) {
-			const lowerSearch = searchTerm.toLowerCase();
-			result = result.filter((contact) => contact.name.toLowerCase().includes(lowerSearch) || contact.email.toLowerCase().includes(lowerSearch));
+	const { toast: toast$2 } = useToast();
+	(0, import_react.useEffect)(() => {
+		contactsService.getTags().then((tags) => setAvailableTags(tags || [])).catch(console.error);
+	}, []);
+	const fetchContacts = async () => {
+		setLoading(true);
+		try {
+			const { data, count: count$3, error } = await contactsService.getContacts({
+				page: currentPage,
+				pageSize: itemsPerPage,
+				search: searchTerm,
+				tags: selectedTags,
+				sortBy: sortConfig.key,
+				sortDirection: sortConfig.direction
+			});
+			if (error) throw error;
+			setContacts(data || []);
+			setTotalCount(count$3 || 0);
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Falha ao carregar contatos.",
+				variant: "destructive"
+			});
+		} finally {
+			setLoading(false);
 		}
-		if (selectedTags.length > 0) result = result.filter((contact) => contact.tags.some((tag) => selectedTags.includes(tag)));
-		result.sort((a$2, b$1) => {
-			const aValue = a$2[sortConfig.key];
-			const bValue = b$1[sortConfig.key];
-			if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
-			if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
-			return 0;
-		});
-		return result;
+	};
+	(0, import_react.useEffect)(() => {
+		const timer = setTimeout(() => {
+			fetchContacts();
+		}, 500);
+		return () => clearTimeout(timer);
 	}, [
+		currentPage,
 		searchTerm,
 		selectedTags,
 		sortConfig
 	]);
-	const totalPages = Math.ceil(filteredAndSortedContacts.length / itemsPerPage);
-	const startIndex = (currentPage - 1) * itemsPerPage;
-	const paginatedContacts = filteredAndSortedContacts.slice(startIndex, startIndex + itemsPerPage);
+	const totalPages = Math.ceil(totalCount / itemsPerPage);
 	const handleSort = (key) => {
 		setSortConfig((current) => ({
 			key,
 			direction: current.key === key && current.direction === "asc" ? "desc" : "asc"
 		}));
 	};
-	const toggleTag = (tag) => {
-		setSelectedTags((current) => current.includes(tag) ? current.filter((t$1) => t$1 !== tag) : [...current, tag]);
+	const toggleTag = (tagName) => {
+		setSelectedTags((current) => current.includes(tagName) ? current.filter((t$1) => t$1 !== tagName) : [...current, tagName]);
 		setCurrentPage(1);
 	};
 	const getBadgeStyle = (tag) => {
+		const found = availableTags.find((t$1) => t$1.name === tag);
+		if (found) return found.color;
 		switch (tag) {
-			case "VIP": return "bg-secondary text-secondary-foreground hover:bg-secondary/80";
-			case "Novo Lead": return "bg-primary text-primary-foreground hover:bg-primary/90";
-			case "Frequente": return "bg-blue-500 text-white hover:bg-blue-600";
-			case "Ativo": return "bg-green-600 text-white hover:bg-green-700";
-			case "Inativo": return "bg-gray-500 text-white hover:bg-gray-600";
-			default: return "bg-primary text-primary-foreground";
+			case "VIP": return "bg-secondary text-secondary-foreground";
+			case "Novo Lead": return "bg-primary text-primary-foreground";
+			default: return "bg-gray-500 text-white";
 		}
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -62067,7 +69756,10 @@ function Contatos() {
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetContent, {
 					className: "w-[400px] sm:w-[540px] overflow-y-auto",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetTitle, { children: "Novo Contato" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetDescription, { children: "Preencha as informações abaixo para adicionar um novo cliente ou lead." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactForm, { onSuccess: () => setSheetOpen(false) })]
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetTitle, { children: "Novo Contato" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetDescription, { children: "Preencha as informações abaixo para adicionar um novo cliente ou lead." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactForm, { onSuccess: () => {
+						setSheetOpen(false);
+						fetchContacts();
+					} })]
 				})]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
@@ -62112,11 +69804,11 @@ function Contatos() {
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuLabel, { children: "Filtrar por Status" }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
-									ALL_TAGS.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuCheckboxItem, {
-										checked: selectedTags.includes(tag),
-										onCheckedChange: () => toggleTag(tag),
-										children: tag
-									}, tag)),
+									availableTags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuCheckboxItem, {
+										checked: selectedTags.includes(tag.name),
+										onCheckedChange: () => toggleTag(tag.name),
+										children: tag.name
+									}, tag.id)),
 									selectedTags.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, {
 										className: "justify-center text-center font-medium text-destructive cursor-pointer",
 										onClick: () => setSelectedTags([]),
@@ -62159,7 +69851,7 @@ function Contatos() {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 							variant: "ghost",
 							className: "p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1",
-							onClick: () => handleSort("lastContact"),
+							onClick: () => handleSort("updated_at"),
 							children: ["Último Contato", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowUpDown, { className: "h-3 w-3" })]
 						}) }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
@@ -62167,7 +69859,11 @@ function Contatos() {
 							children: "Ações"
 						})
 					]
-				}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: paginatedContacts.length > 0 ? paginatedContacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+				}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: loading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					colSpan: 7,
+					className: "h-32 text-center",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin mx-auto text-primary" })
+				}) }) : contacts.length > 0 ? contacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
 					className: "group hover:bg-muted/30 transition-colors",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
@@ -62200,10 +69896,10 @@ function Contatos() {
 						}) }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "flex flex-wrap gap-1",
-							children: contact.tags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-								className: cn("font-normal border-0", getBadgeStyle(tag)),
-								children: tag
-							}, tag))
+							children: contact.tags?.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+								className: cn$1("font-normal border-0", tag.color || getBadgeStyle(tag.name)),
+								children: tag.name
+							}, tag.id))
 						}) }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 							className: "font-medium text-foreground",
@@ -62214,56 +69910,45 @@ function Contatos() {
 						}) }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 							className: "text-muted-foreground text-sm",
-							children: new Date(contact.lastContact).toLocaleDateString("pt-BR")
+							children: new Date(contact.updated_at).toLocaleDateString("pt-BR")
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 							className: "text-right",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "flex items-center justify-end gap-1",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+									variant: "ghost",
+									size: "icon",
+									asChild: true,
+									className: "h-8 w-8 text-muted-foreground hover:text-primary",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+										to: `/contatos/${contact.id}`,
+										title: "Ver detalhes",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Eye, { className: "h-4 w-4" })
+									})
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
+									asChild: true,
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 										variant: "ghost",
 										size: "icon",
-										asChild: true,
-										className: "h-8 w-8 text-muted-foreground hover:text-primary",
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
-											to: `/contatos/${contact.id}`,
-											title: "Ver detalhes",
-											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Eye, { className: "h-4 w-4" })
+										className: "h-8 w-8 text-muted-foreground",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "sr-only",
+											children: "Abrir menu"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ellipsis, { className: "h-4 w-4" })]
+									})
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
+									align: "end",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuLabel, { children: "Ações" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, { children: "Enviar E-mail" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, {
+											className: "text-destructive",
+											children: "Excluir Contato"
 										})
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-										variant: "ghost",
-										size: "icon",
-										className: "h-8 w-8 text-muted-foreground hover:text-secondary",
-										title: "Editar",
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pencil, { className: "h-4 w-4" })
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
-										asChild: true,
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-											variant: "ghost",
-											size: "icon",
-											className: "h-8 w-8 text-muted-foreground",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "sr-only",
-												children: "Abrir menu"
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ellipsis, { className: "h-4 w-4" })]
-										})
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
-										align: "end",
-										children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuLabel, { children: "Ações" }),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, { children: "Enviar E-mail" }),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, { children: "Agendar Reunião" }),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, {
-												className: "text-destructive",
-												children: "Excluir Contato"
-											})
-										]
-									})] })
-								]
+									]
+								})] })]
 							})
 						})
 					]
@@ -62298,21 +69983,14 @@ function Contatos() {
 						},
 						className: currentPage === 1 ? "pointer-events-none opacity-50" : ""
 					}) }),
-					[...Array(totalPages)].map((_$1, i$2) => {
-						const page = i$2 + 1;
-						if (totalPages > 7 && page > 2 && page < totalPages - 1 && Math.abs(page - currentPage) > 1) {
-							if (page === currentPage + 2 || page === currentPage - 2) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationEllipsis, {}) }, page);
-							return null;
-						}
-						return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationLink, {
-							href: "#",
-							onClick: (e) => {
-								e.preventDefault();
-								setCurrentPage(page);
-							},
-							isActive: currentPage === page,
-							children: page
-						}) }, page);
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "text-sm text-muted-foreground mx-4",
+						children: [
+							"Página ",
+							currentPage,
+							" de ",
+							totalPages
+						]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaginationNext, {
 						href: "#",
@@ -62327,65 +70005,6 @@ function Contatos() {
 		})]
 	});
 }
-var getContactDetails = (id) => {
-	const numericId = parseInt(id) || 1;
-	const basicInfo = {
-		1: {
-			name: "Roberto Almeida",
-			role: "Criador"
-		},
-		2: {
-			name: "Fernanda Lima",
-			role: "Comprador"
-		},
-		3: {
-			name: "Carlos Venturini",
-			role: "Veterinário"
-		},
-		4: {
-			name: "Haras Pôr do Sol",
-			role: "Parceiro"
-		},
-		5: {
-			name: "Juliana Paes",
-			role: "Investidora"
-		}
-	}[numericId] || {
-		name: `Contato #${numericId}`,
-		role: "Cliente"
-	};
-	return {
-		id: numericId,
-		...basicInfo,
-		email: `${basicInfo.name.toLowerCase().replace(/\s/g, ".")}@email.com`,
-		phone: "(11) 99876-5432",
-		whatsapp: "(11) 99876-5432",
-		birthDate: "15/05/1980",
-		cpf: "123.456.789-00",
-		address: "Av. Brasil, 1500 - Jardins, São Paulo - SP",
-		tags: ["VIP", "Ativo"],
-		financial: {
-			totalInvested: 15e4 + numericId * 1e4,
-			horsesBought: 3 + Math.floor(numericId / 2),
-			averageTicket: 45e3,
-			lastBidDate: "25/10/2023"
-		},
-		preferences: {
-			breeds: ["Lusitano", "Quarto de Milha"],
-			valueRange: "R$ 50k - R$ 100k",
-			modalities: ["Adestramento", "Lazer"]
-		},
-		origin: {
-			source: numericId % 2 === 0 ? "Indicação Profissional" : "Redes Sociais",
-			referrer: numericId % 2 === 0 ? "Dr. Marcelo Ramos" : null
-		},
-		notes: [{
-			id: 1,
-			date: "20/10/2023",
-			text: "Cliente demonstrou interesse no lote 45 do próximo leilão."
-		}]
-	};
-};
 function ContatoDetalhes() {
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -62395,36 +70014,32 @@ function ContatoDetalhes() {
 	const [newNote, setNewNote] = (0, import_react.useState)("");
 	const [isNoteDialogOpen, setIsNoteDialogOpen] = (0, import_react.useState)(false);
 	(0, import_react.useEffect)(() => {
-		const timer = setTimeout(() => {
-			if (id) setContact(getContactDetails(id));
-			setIsLoading(false);
-		}, 500);
-		return () => clearTimeout(timer);
-	}, [id]);
+		if (id) contactsService.getContactById(id).then((data) => setContact(data)).catch((err) => {
+			console.error(err);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível carregar o contato.",
+				variant: "destructive"
+			});
+		}).finally(() => setIsLoading(false));
+	}, [id, toast$2]);
 	const handleAddNote = () => {
-		if (!newNote.trim()) return;
-		const note = {
-			id: Date.now(),
-			date: (/* @__PURE__ */ new Date()).toLocaleDateString("pt-BR"),
-			text: newNote
-		};
-		setContact((prev) => ({
-			...prev,
-			notes: [note, ...prev.notes]
-		}));
-		setNewNote("");
-		setIsNoteDialogOpen(false);
 		toast$2({
-			title: "Nota adicionada",
-			description: "A nota foi salva com sucesso no histórico do contato."
+			title: "Nota",
+			description: "Funcionalidade de atualizar nota em desenvolvimento (campo único)."
 		});
+		setIsNoteDialogOpen(false);
 	};
 	const handleWhatsApp = () => {
-		window.open(`https://wa.me/55${contact.whatsapp.replace(/\D/g, "")}`, "_blank");
+		if (contact?.whatsapp) window.open(`https://wa.me/55${contact.whatsapp.replace(/\D/g, "")}`, "_blank");
 	};
 	const handleEmail = () => {
-		window.location.href = `mailto:${contact.email}`;
+		if (contact?.email) window.location.href = `mailto:${contact.email}`;
 	};
+	const totalInvested = contact?.purchases?.reduce((acc, curr) => acc + Number(curr.value), 0) || 0;
+	const horsesBought = contact?.purchases?.length || 0;
+	const averageTicket = horsesBought > 0 ? totalInvested / horsesBought : 0;
+	const lastBidDate = contact?.purchases && contact.purchases.length > 0 ? new Date(Math.max(...contact.purchases.map((p$1) => new Date(p$1.date).getTime()))).toLocaleDateString("pt-BR") : "-";
 	if (isLoading) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "flex items-center justify-center h-[calc(100vh-200px)]",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "animate-spin rounded-full h-12 w-12 border-b-2 border-primary" })
@@ -62453,14 +70068,13 @@ function ContatoDetalhes() {
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowLeft, { className: "h-5 w-5" })
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
 					className: "text-2xl font-bold font-display text-primary flex items-center gap-3",
-					children: [contact.name, contact.tags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-						variant: "secondary",
-						className: "text-xs font-normal",
-						children: tag
-					}, tag))]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					children: [contact.name, contact.tags?.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+						className: cn("text-xs font-normal border-0", tag.color),
+						children: tag.name
+					}, tag.id))]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 					className: "text-muted-foreground text-sm",
-					children: contact.role
+					children: ["Cliente desde ", new Date(contact.created_at).getFullYear()]
 				})] })]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex flex-wrap items-center gap-2",
@@ -62469,6 +70083,7 @@ function ContatoDetalhes() {
 						variant: "outline",
 						className: "text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200",
 						onClick: handleWhatsApp,
+						disabled: !contact.whatsapp,
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "mr-2 h-4 w-4" }), " WhatsApp"]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
@@ -62580,7 +70195,7 @@ function ContatoDetalhes() {
 										children: "WhatsApp"
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 										className: "text-sm font-medium",
-										children: contact.whatsapp
+										children: contact.whatsapp || "-"
 									})] })]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {}),
@@ -62591,7 +70206,7 @@ function ContatoDetalhes() {
 										children: "Data de Nascimento"
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 										className: "text-sm font-medium",
-										children: contact.birthDate
+										children: contact.birth_date ? new Date(contact.birth_date).toLocaleDateString("pt-BR") : "-"
 									})] })]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -62601,7 +70216,7 @@ function ContatoDetalhes() {
 										children: "CPF"
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 										className: "text-sm font-medium",
-										children: contact.cpf
+										children: contact.cpf || "-"
 									})] })]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -62611,7 +70226,7 @@ function ContatoDetalhes() {
 										children: "Endereço"
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 										className: "text-sm font-medium leading-tight",
-										children: contact.address
+										children: contact.address || "-"
 									})] })]
 								})
 							]
@@ -62639,7 +70254,7 @@ function ContatoDetalhes() {
 										style: "currency",
 										currency: "BRL",
 										maximumFractionDigits: 0
-									}).format(contact.financial.totalInvested)
+									}).format(totalInvested)
 								})]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -62650,7 +70265,7 @@ function ContatoDetalhes() {
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 									className: "text-xl font-bold text-primary font-display flex items-center gap-2",
 									children: [
-										contact.financial.horsesBought,
+										horsesBought,
 										" ",
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, { className: "h-4 w-4 text-secondary opacity-80" })
 									]
@@ -62667,7 +70282,7 @@ function ContatoDetalhes() {
 										style: "currency",
 										currency: "BRL",
 										maximumFractionDigits: 0
-									}).format(contact.financial.averageTicket)
+									}).format(averageTicket)
 								})]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -62678,7 +70293,7 @@ function ContatoDetalhes() {
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 									className: "text-xl font-bold text-primary font-display flex items-center gap-2",
 									children: [
-										contact.financial.lastBidDate,
+										lastBidDate,
 										" ",
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-4 w-4 text-green-600 opacity-80" })
 									]
@@ -62701,7 +70316,7 @@ function ContatoDetalhes() {
 									children: "Raças de Interesse"
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 									className: "flex flex-wrap gap-2",
-									children: contact.preferences.breeds.map((breed) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+									children: contact.preferences?.breeds?.map((breed) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 										variant: "outline",
 										className: "bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200",
 										children: breed
@@ -62713,7 +70328,7 @@ function ContatoDetalhes() {
 									children: "Modalidades"
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 									className: "flex flex-wrap gap-2",
-									children: contact.preferences.modalities.map((mod) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+									children: contact.preferences?.modalities?.map((mod) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 										variant: "outline",
 										className: "bg-purple-50 text-purple-700 hover:bg-purple-100 border-purple-200",
 										children: mod
@@ -62725,7 +70340,7 @@ function ContatoDetalhes() {
 									children: "Faixa de Valor"
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 									className: "font-medium text-foreground",
-									children: contact.preferences.valueRange
+									children: contact.preferences?.valueRange || "-"
 								})] })
 							]
 						})]
@@ -62744,10 +70359,10 @@ function ContatoDetalhes() {
 										children: "Canal de Aquisição"
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 										className: "text-lg font-semibold text-primary",
-										children: contact.origin.source
+										children: contact.origin
 									})]
 								}),
-								contact.origin.source === "Indicação Profissional" && contact.origin.referrer && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								contact.origin === "Indicação Profissional" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "bg-secondary/10 p-4 rounded-md border border-secondary/20",
 									children: [
 										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
@@ -62756,7 +70371,7 @@ function ContatoDetalhes() {
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 											className: "text-lg font-semibold text-secondary-foreground",
-											children: contact.origin.referrer
+											children: "Dr. Marcelo Ramos (Simulado)"
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 											variant: "link",
@@ -62773,19 +70388,19 @@ function ContatoDetalhes() {
 									className: "mt-4",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 										className: "text-sm font-medium text-muted-foreground mb-2 flex items-center justify-between",
-										children: "Últimas Notas"
+										children: "Notas"
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 										className: "space-y-3",
-										children: contact.notes.map((note) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 											className: "text-sm bg-muted/40 p-3 rounded-md border border-muted/60",
 											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 												className: "text-xs text-muted-foreground mb-1",
-												children: note.date
+												children: "Nota Geral"
 											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 												className: "text-foreground",
-												children: note.text
+												children: contact.notes || "Nenhuma nota."
 											})]
-										}, note.id))
+										})
 									})]
 								})
 							]
@@ -63453,7 +71068,7 @@ var Viewport = ScrollAreaViewport;
 var Corner = ScrollAreaCorner;
 var ScrollArea = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Root$2, {
 	ref,
-	className: cn("relative overflow-hidden", className),
+	className: cn$1("relative overflow-hidden", className),
 	...props,
 	children: [
 		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Viewport, {
@@ -63468,7 +71083,7 @@ ScrollArea.displayName = Root$2.displayName;
 var ScrollBar = import_react.forwardRef(({ className, orientation = "vertical", ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollAreaScrollbar, {
 	ref,
 	orientation,
-	className: cn("flex touch-none select-none transition-colors", orientation === "vertical" && "h-full w-2.5 border-l border-l-transparent p-[1px]", orientation === "horizontal" && "h-2.5 flex-col border-t border-t-transparent p-[1px]", className),
+	className: cn$1("flex touch-none select-none transition-colors", orientation === "vertical" && "h-full w-2.5 border-l border-l-transparent p-[1px]", orientation === "horizontal" && "h-2.5 flex-col border-t border-t-transparent p-[1px]", className),
 	...props,
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollAreaThumb, { className: "relative flex-1 rounded-full bg-border" })
 }));
@@ -63756,7 +71371,7 @@ var Root$1 = Progress$1;
 var Indicator = ProgressIndicator;
 var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$1, {
 	ref,
-	className: cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className),
+	className: cn$1("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className),
 	...props,
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Indicator, {
 		className: "h-full w-full flex-1 bg-primary transition-all",
@@ -64036,10 +71651,10 @@ function getState$1(checked) {
 var Root = Switch$1;
 var Thumb = SwitchThumb;
 var Switch = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root, {
-	className: cn("peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input", className),
+	className: cn$1("peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input", className),
 	...props,
 	ref,
-	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Thumb, { className: cn("pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0") })
+	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Thumb, { className: cn$1("pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0") })
 }));
 Switch.displayName = Root.displayName;
 var AUTOMATIONS = [
@@ -64315,10 +71930,10 @@ function getState(checked) {
 }
 var Checkbox = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Checkbox$1, {
 	ref,
-	className: cn("peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground", className),
+	className: cn$1("peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground", className),
 	...props,
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckboxIndicator, {
-		className: cn("flex items-center justify-center text-current"),
+		className: cn$1("flex items-center justify-center text-current"),
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-4 w-4" })
 	})
 }));
@@ -64650,7 +72265,136 @@ var NotFound = () => {
 	});
 };
 var NotFound_default = NotFound;
-var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
+function Login() {
+	const [email$1, setEmail] = (0, import_react.useState)("");
+	const [password, setPassword] = (0, import_react.useState)("");
+	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
+	const [isSignUp, setIsSignUp] = (0, import_react.useState)(false);
+	const { signIn, signUp } = useAuth();
+	const navigate = useNavigate();
+	const { toast: toast$2 } = useToast();
+	const handleAuth = async (e) => {
+		e.preventDefault();
+		setIsLoading(true);
+		try {
+			if (isSignUp) {
+				const { error } = await signUp(email$1, password);
+				if (error) throw error;
+				toast$2({
+					title: "Conta criada!",
+					description: "Verifique seu email para confirmar o cadastro."
+				});
+			} else {
+				const { error } = await signIn(email$1, password);
+				if (error) throw error;
+				navigate("/");
+				toast$2({
+					title: "Login realizado com sucesso",
+					description: "Bem-vindo ao CRM Milan Horses."
+				});
+			}
+		} catch (error) {
+			toast$2({
+				variant: "destructive",
+				title: "Erro na autenticação",
+				description: error.message || "Ocorreu um erro ao tentar entrar."
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "min-h-screen flex items-center justify-center bg-gray-50/50 px-4",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "w-full max-w-md space-y-8",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col items-center justify-center text-center",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+						src: editedimage_1769630541473_88067_default,
+						alt: "Milan Horses",
+						className: "h-24 w-auto object-contain mb-4"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+						className: "text-3xl font-bold tracking-tight text-primary font-display",
+						children: "CRM Milan Horses"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-muted-foreground mt-2",
+						children: "Entre para gerenciar seus contatos e negócios"
+					})
+				]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "shadow-lg border-t-4 border-t-primary",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: isSignUp ? "Criar Conta" : "Login" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: isSignUp ? "Preencha os dados abaixo para criar sua conta." : "Digite seu email e senha para acessar." })] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+						onSubmit: handleAuth,
+						className: "space-y-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "email",
+									children: "Email"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									id: "email",
+									type: "email",
+									placeholder: "admin@milanhorses.com",
+									value: email$1,
+									onChange: (e) => setEmail(e.target.value),
+									required: true
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "password",
+									children: "Senha"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									id: "password",
+									type: "password",
+									value: password,
+									onChange: (e) => setPassword(e.target.value),
+									required: true,
+									minLength: 6
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								type: "submit",
+								className: "w-full",
+								disabled: isLoading,
+								children: isLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }), isSignUp ? "Criando..." : "Entrando..."] }) : isSignUp ? "Criar Conta" : "Entrar"
+							})
+						]
+					}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardFooter, {
+						className: "flex justify-center",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "link",
+							onClick: () => setIsSignUp(!isSignUp),
+							className: "text-sm text-muted-foreground",
+							children: isSignUp ? "Já tem uma conta? Faça login" : "Não tem uma conta? Cadastre-se"
+						})
+					})
+				]
+			})]
+		})
+	});
+}
+var ProtectedRoute = ({ children }) => {
+	const { session, loading } = useAuth();
+	if (loading) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "h-screen w-full flex items-center justify-center",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "animate-spin rounded-full h-12 w-12 border-b-2 border-primary" })
+	});
+	if (!session) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Navigate, {
+		to: "/login",
+		replace: true
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_jsx_runtime.Fragment, { children });
+};
+var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 	future: {
 		v7_startTransition: false,
 		v7_relativeSplatPath: false
@@ -64658,49 +72402,56 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TooltipProvider, { children: [
 		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Toaster, {}),
 		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Toaster$1, {}),
-		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Routes, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Route, {
-			element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Layout, {}),
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-					path: "/",
-					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Index, {})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-					path: "/contatos",
-					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Contatos, {})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-					path: "/contatos/:id",
-					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContatoDetalhes, {})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-					path: "/negocios",
-					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Negocios, {})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-					path: "/campanhas",
-					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Campanhas, {})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-					path: "/automacoes",
-					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Automacoes, {})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-					path: "/tarefas",
-					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tarefas, {})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-					path: "/relatorios",
-					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Relatorios, {})
-				})
-			]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-			path: "*",
-			element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotFound_default, {})
-		})] })
+		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Routes, { children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+				path: "/login",
+				element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Login, {})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Route, {
+				element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ProtectedRoute, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Layout, {}) }),
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+						path: "/",
+						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Index, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+						path: "/contatos",
+						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Contatos, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+						path: "/contatos/:id",
+						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContatoDetalhes, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+						path: "/negocios",
+						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Negocios, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+						path: "/campanhas",
+						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Campanhas, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+						path: "/automacoes",
+						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Automacoes, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+						path: "/tarefas",
+						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tarefas, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+						path: "/relatorios",
+						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Relatorios, {})
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+				path: "*",
+				element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotFound_default, {})
+			})
+		] })
 	] })
-});
+}) });
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-n_viZgmR.js.map
+//# sourceMappingURL=index-BUOMPMns.js.map

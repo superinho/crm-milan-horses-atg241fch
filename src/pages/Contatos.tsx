@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -29,7 +29,6 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-  PaginationEllipsis,
 } from '@/components/ui/pagination'
 import {
   Sheet,
@@ -50,279 +49,75 @@ import {
   Eye,
   Pencil,
   FileDown,
+  Loader2,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ContactForm } from '@/components/contacts/ContactForm'
-
-// Mock Data
-type Tag = 'VIP' | 'Frequente' | 'Ativo' | 'Inativo' | 'Novo Lead'
-
-interface Contact {
-  id: number
-  name: string
-  email: string
-  phone: string
-  tags: Tag[]
-  totalInvested: number
-  lastContact: string
-}
-
-const MOCK_CONTACTS: Contact[] = [
-  {
-    id: 1,
-    name: 'Roberto Almeida',
-    email: 'roberto@fazendaalmeida.com',
-    phone: '(11) 99876-5432',
-    tags: ['VIP', 'Ativo'],
-    totalInvested: 150000,
-    lastContact: '2023-10-25',
-  },
-  {
-    id: 2,
-    name: 'Fernanda Lima',
-    email: 'fernanda.lima@email.com',
-    phone: '(21) 98765-4321',
-    tags: ['Frequente', 'Ativo'],
-    totalInvested: 85000,
-    lastContact: '2023-10-24',
-  },
-  {
-    id: 3,
-    name: 'Carlos Venturini',
-    email: 'carlos.v@vet.com',
-    phone: '(31) 91234-5678',
-    tags: ['Novo Lead'],
-    totalInvested: 0,
-    lastContact: '2023-10-23',
-  },
-  {
-    id: 4,
-    name: 'Haras Pôr do Sol',
-    email: 'contato@haraspordosol.com.br',
-    phone: '(19) 3456-7890',
-    tags: ['VIP', 'Frequente'],
-    totalInvested: 540000,
-    lastContact: '2023-10-22',
-  },
-  {
-    id: 5,
-    name: 'Juliana Paes',
-    email: 'ju.paes@invest.com',
-    phone: '(11) 95555-4444',
-    tags: ['Ativo'],
-    totalInvested: 45000,
-    lastContact: '2023-10-21',
-  },
-  {
-    id: 6,
-    name: 'Ricardo Souza',
-    email: 'ricardo@equestre.com',
-    phone: '(41) 98888-7777',
-    tags: ['Inativo'],
-    totalInvested: 12000,
-    lastContact: '2023-09-15',
-  },
-  {
-    id: 7,
-    name: 'Mariana Costa',
-    email: 'mari.costa@email.com',
-    phone: '(51) 99999-1111',
-    tags: ['Novo Lead'],
-    totalInvested: 0,
-    lastContact: '2023-10-19',
-  },
-  {
-    id: 8,
-    name: 'Fazenda Santa Fé',
-    email: 'adm@santafe.com',
-    phone: '(62) 3333-2222',
-    tags: ['VIP'],
-    totalInvested: 230000,
-    lastContact: '2023-10-18',
-  },
-  {
-    id: 9,
-    name: 'Pedro Martins',
-    email: 'pedro.m@outlook.com',
-    phone: '(11) 97777-6666',
-    tags: ['Frequente'],
-    totalInvested: 67000,
-    lastContact: '2023-10-15',
-  },
-  {
-    id: 10,
-    name: 'Ana Beatriz',
-    email: 'ana.bea@gmail.com',
-    phone: '(31) 96666-5555',
-    tags: ['Ativo'],
-    totalInvested: 25000,
-    lastContact: '2023-10-14',
-  },
-  {
-    id: 11,
-    name: 'João Silva',
-    email: 'joao.silva@uol.com.br',
-    phone: '(11) 91111-2222',
-    tags: ['Inativo'],
-    totalInvested: 5000,
-    lastContact: '2023-08-20',
-  },
-  {
-    id: 12,
-    name: 'Clube Hípico SP',
-    email: 'contato@chsp.com.br',
-    phone: '(11) 3333-4444',
-    tags: ['VIP', 'Frequente', 'Ativo'],
-    totalInvested: 890000,
-    lastContact: '2023-10-25',
-  },
-  {
-    id: 13,
-    name: 'Dr. Marcelo Ramos',
-    email: 'm.ramos@vetcenter.com',
-    phone: '(19) 98888-1111',
-    tags: ['Novo Lead'],
-    totalInvested: 0,
-    lastContact: '2023-10-20',
-  },
-  {
-    id: 14,
-    name: 'Sofia Oliveira',
-    email: 'sofia.o@yahoo.com',
-    phone: '(21) 97777-3333',
-    tags: ['Ativo'],
-    totalInvested: 15000,
-    lastContact: '2023-10-12',
-  },
-  {
-    id: 15,
-    name: 'Miguel Santos',
-    email: 'miguel.santos@gmail.com',
-    phone: '(31) 99988-7766',
-    tags: ['Novo Lead'],
-    totalInvested: 0,
-    lastContact: '2023-10-24',
-  },
-  {
-    id: 16,
-    name: 'Haras Imperial',
-    email: 'contato@harasimperial.com',
-    phone: '(15) 3232-4545',
-    tags: ['VIP'],
-    totalInvested: 345000,
-    lastContact: '2023-10-23',
-  },
-  {
-    id: 17,
-    name: 'Lucas Ferreira',
-    email: 'lucas.ferreira@hotmail.com',
-    phone: '(41) 95555-8888',
-    tags: ['Inativo'],
-    totalInvested: 8000,
-    lastContact: '2023-07-10',
-  },
-  {
-    id: 18,
-    name: 'Beatriz Costa',
-    email: 'bia.costa@gmail.com',
-    phone: '(51) 94444-3333',
-    tags: ['Frequente', 'Ativo'],
-    totalInvested: 56000,
-    lastContact: '2023-10-05',
-  },
-  {
-    id: 19,
-    name: 'Rancho fundo',
-    email: 'vendas@ranchofundo.com',
-    phone: '(62) 3456-7890',
-    tags: ['Ativo'],
-    totalInvested: 32000,
-    lastContact: '2023-10-01',
-  },
-  {
-    id: 20,
-    name: 'Gabriel Souza',
-    email: 'gabriel.s@outlook.com',
-    phone: '(11) 92222-1111',
-    tags: ['Novo Lead'],
-    totalInvested: 0,
-    lastContact: '2023-10-25',
-  },
-  {
-    id: 21,
-    name: 'Amanda Nunes',
-    email: 'amanda.n@gmail.com',
-    phone: '(21) 93333-4444',
-    tags: ['Ativo'],
-    totalInvested: 18000,
-    lastContact: '2023-09-28',
-  },
-  {
-    id: 22,
-    name: 'Paulo Cesar',
-    email: 'pc.invest@gmail.com',
-    phone: '(31) 96666-7777',
-    tags: ['VIP', 'Inativo'],
-    totalInvested: 125000,
-    lastContact: '2023-06-15',
-  },
-]
-
-const ALL_TAGS: Tag[] = ['VIP', 'Frequente', 'Ativo', 'Inativo', 'Novo Lead']
+import { contactsService, type Contact, type Tag } from '@/services/contacts'
+import { useToast } from '@/hooks/use-toast'
 
 export default function Contatos() {
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([])
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [sortConfig, setSortConfig] = useState<{
-    key: keyof Contact
+    key: string
     direction: 'asc' | 'desc'
-  }>({ key: 'lastContact', direction: 'desc' })
+  }>({ key: 'created_at', direction: 'desc' })
   const [currentPage, setCurrentPage] = useState(1)
   const [isSheetOpen, setSheetOpen] = useState(false)
+  const [contacts, setContacts] = useState<Contact[]>([])
+  const [totalCount, setTotalCount] = useState(0)
+  const [availableTags, setAvailableTags] = useState<Tag[]>([])
+  const [loading, setLoading] = useState(true)
   const itemsPerPage = 10
+  const { toast } = useToast()
 
-  // Filter and Sort Logic
-  const filteredAndSortedContacts = useMemo(() => {
-    let result = [...MOCK_CONTACTS]
+  // Fetch Tags
+  useEffect(() => {
+    contactsService
+      .getTags()
+      .then((tags) => setAvailableTags(tags || []))
+      .catch(console.error)
+  }, [])
 
-    // Filtering
-    if (searchTerm) {
-      const lowerSearch = searchTerm.toLowerCase()
-      result = result.filter(
-        (contact) =>
-          contact.name.toLowerCase().includes(lowerSearch) ||
-          contact.email.toLowerCase().includes(lowerSearch),
-      )
+  // Fetch Contacts
+  const fetchContacts = async () => {
+    setLoading(true)
+    try {
+      const { data, count, error } = await contactsService.getContacts({
+        page: currentPage,
+        pageSize: itemsPerPage,
+        search: searchTerm,
+        tags: selectedTags,
+        sortBy: sortConfig.key,
+        sortDirection: sortConfig.direction,
+      })
+      if (error) throw error
+      setContacts(data || [])
+      setTotalCount(count || 0)
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: 'Erro',
+        description: 'Falha ao carregar contatos.',
+        variant: 'destructive',
+      })
+    } finally {
+      setLoading(false)
     }
+  }
 
-    if (selectedTags.length > 0) {
-      result = result.filter((contact) =>
-        contact.tags.some((tag) => selectedTags.includes(tag)),
-      )
-    }
+  useEffect(() => {
+    // Debounce search
+    const timer = setTimeout(() => {
+      fetchContacts()
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [currentPage, searchTerm, selectedTags, sortConfig])
 
-    // Sorting
-    result.sort((a, b) => {
-      const aValue = a[sortConfig.key]
-      const bValue = b[sortConfig.key]
+  const totalPages = Math.ceil(totalCount / itemsPerPage)
 
-      if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1
-      if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1
-      return 0
-    })
-
-    return result
-  }, [searchTerm, selectedTags, sortConfig])
-
-  // Pagination Logic
-  const totalPages = Math.ceil(filteredAndSortedContacts.length / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const paginatedContacts = filteredAndSortedContacts.slice(
-    startIndex,
-    startIndex + itemsPerPage,
-  )
-
-  const handleSort = (key: keyof Contact) => {
+  const handleSort = (key: string) => {
     setSortConfig((current) => ({
       key,
       direction:
@@ -330,29 +125,28 @@ export default function Contatos() {
     }))
   }
 
-  const toggleTag = (tag: Tag) => {
+  const toggleTag = (tagName: string) => {
     setSelectedTags((current) =>
-      current.includes(tag)
-        ? current.filter((t) => t !== tag)
-        : [...current, tag],
+      current.includes(tagName)
+        ? current.filter((t) => t !== tagName)
+        : [...current, tagName],
     )
-    setCurrentPage(1) // Reset to first page on filter change
+    setCurrentPage(1)
   }
 
-  const getBadgeStyle = (tag: Tag) => {
+  const getBadgeStyle = (tag: string) => {
+    // We will use the color from DB or fallback
+    const found = availableTags.find((t) => t.name === tag)
+    if (found) return found.color
+
+    // Fallback classes if DB color string is not a valid class (though seed uses classes)
     switch (tag) {
       case 'VIP':
-        return 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+        return 'bg-secondary text-secondary-foreground'
       case 'Novo Lead':
-        return 'bg-primary text-primary-foreground hover:bg-primary/90'
-      case 'Frequente':
-        return 'bg-blue-500 text-white hover:bg-blue-600'
-      case 'Ativo':
-        return 'bg-green-600 text-white hover:bg-green-700'
-      case 'Inativo':
-        return 'bg-gray-500 text-white hover:bg-gray-600'
-      default:
         return 'bg-primary text-primary-foreground'
+      default:
+        return 'bg-gray-500 text-white'
     }
   }
 
@@ -383,7 +177,12 @@ export default function Contatos() {
                 lead.
               </SheetDescription>
             </SheetHeader>
-            <ContactForm onSuccess={() => setSheetOpen(false)} />
+            <ContactForm
+              onSuccess={() => {
+                setSheetOpen(false)
+                fetchContacts()
+              }}
+            />
           </SheetContent>
         </Sheet>
       </div>
@@ -427,13 +226,13 @@ export default function Contatos() {
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel>Filtrar por Status</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {ALL_TAGS.map((tag) => (
+                  {availableTags.map((tag) => (
                     <DropdownMenuCheckboxItem
-                      key={tag}
-                      checked={selectedTags.includes(tag)}
-                      onCheckedChange={() => toggleTag(tag)}
+                      key={tag.id}
+                      checked={selectedTags.includes(tag.name)}
+                      onCheckedChange={() => toggleTag(tag.name)}
                     >
-                      {tag}
+                      {tag.name}
                     </DropdownMenuCheckboxItem>
                   ))}
                   {selectedTags.length > 0 && (
@@ -489,7 +288,7 @@ export default function Contatos() {
                     <Button
                       variant="ghost"
                       className="p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1"
-                      onClick={() => handleSort('lastContact')}
+                      onClick={() => handleSort('updated_at')}
                     >
                       Último Contato
                       <ArrowUpDown className="h-3 w-3" />
@@ -499,8 +298,14 @@ export default function Contatos() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {paginatedContacts.length > 0 ? (
-                  paginatedContacts.map((contact) => (
+                {loading ? (
+                  <TableRow>
+                    <TableCell colSpan={7} className="h-32 text-center">
+                      <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+                    </TableCell>
+                  </TableRow>
+                ) : contacts.length > 0 ? (
+                  contacts.map((contact) => (
                     <TableRow
                       key={contact.id}
                       className="group hover:bg-muted/30 transition-colors"
@@ -539,15 +344,15 @@ export default function Contatos() {
                       </TableCell>
                       <TableCell>
                         <div className="flex flex-wrap gap-1">
-                          {contact.tags.map((tag) => (
+                          {contact.tags?.map((tag) => (
                             <Badge
-                              key={tag}
+                              key={tag.id}
                               className={cn(
                                 'font-normal border-0',
-                                getBadgeStyle(tag),
+                                tag.color || getBadgeStyle(tag.name),
                               )}
                             >
-                              {tag}
+                              {tag.name}
                             </Badge>
                           ))}
                         </div>
@@ -557,11 +362,11 @@ export default function Contatos() {
                           {new Intl.NumberFormat('pt-BR', {
                             style: 'currency',
                             currency: 'BRL',
-                          }).format(contact.totalInvested)}
+                          }).format((contact as any).totalInvested)}
                         </span>
                       </TableCell>
                       <TableCell className="text-muted-foreground text-sm">
-                        {new Date(contact.lastContact).toLocaleDateString(
+                        {new Date(contact.updated_at).toLocaleDateString(
                           'pt-BR',
                         )}
                       </TableCell>
@@ -580,14 +385,6 @@ export default function Contatos() {
                               <Eye className="h-4 w-4" />
                             </Link>
                           </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-muted-foreground hover:text-secondary"
-                            title="Editar"
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button
@@ -602,9 +399,6 @@ export default function Contatos() {
                             <DropdownMenuContent align="end">
                               <DropdownMenuLabel>Ações</DropdownMenuLabel>
                               <DropdownMenuItem>Enviar E-mail</DropdownMenuItem>
-                              <DropdownMenuItem>
-                                Agendar Reunião
-                              </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem className="text-destructive">
                                 Excluir Contato
@@ -659,42 +453,9 @@ export default function Contatos() {
                     />
                   </PaginationItem>
 
-                  {[...Array(totalPages)].map((_, i) => {
-                    const page = i + 1
-                    if (
-                      totalPages > 7 &&
-                      page > 2 &&
-                      page < totalPages - 1 &&
-                      Math.abs(page - currentPage) > 1
-                    ) {
-                      if (
-                        page === currentPage + 2 ||
-                        page === currentPage - 2
-                      ) {
-                        return (
-                          <PaginationItem key={page}>
-                            <PaginationEllipsis />
-                          </PaginationItem>
-                        )
-                      }
-                      return null
-                    }
-
-                    return (
-                      <PaginationItem key={page}>
-                        <PaginationLink
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            setCurrentPage(page)
-                          }}
-                          isActive={currentPage === page}
-                        >
-                          {page}
-                        </PaginationLink>
-                      </PaginationItem>
-                    )
-                  })}
+                  <span className="text-sm text-muted-foreground mx-4">
+                    Página {currentPage} de {totalPages}
+                  </span>
 
                   <PaginationItem>
                     <PaginationNext

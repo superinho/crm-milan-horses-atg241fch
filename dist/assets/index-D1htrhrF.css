@@ -701,6 +701,10 @@ h1,
   margin-left: 0.875rem;
   margin-right: 0.875rem;
 }
+.mx-4{
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
 .mx-auto{
   margin-left: auto;
   margin-right: auto;
@@ -893,6 +897,9 @@ h1,
 .h-px{
   height: 1px;
 }
+.h-screen{
+  height: 100vh;
+}
 .h-svh{
   height: 100svh;
 }
@@ -1084,6 +1091,9 @@ h1,
 .max-w-max{
   max-width: -moz-max-content;
   max-width: max-content;
+}
+.max-w-md{
+  max-width: 28rem;
 }
 .flex-1{
   flex: 1 1 0%;
@@ -1560,10 +1570,6 @@ h1,
 .bg-green-500{
   --tw-bg-opacity: 1;
   background-color: rgb(34 197 94 / var(--tw-bg-opacity, 1));
-}
-.bg-green-600{
-  --tw-bg-opacity: 1;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
 }
 .bg-muted{
   background-color: hsl(var(--muted));
@@ -2300,10 +2306,6 @@ h1,
   --tw-bg-opacity: 1;
   background-color: rgb(107 114 128 / var(--tw-bg-opacity, 1));
 }
-.hover\:bg-gray-600:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(75 85 99 / var(--tw-bg-opacity, 1));
-}
 .hover\:bg-green-50:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(240 253 244 / var(--tw-bg-opacity, 1));
@@ -2311,10 +2313,6 @@ h1,
 .hover\:bg-green-600:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
-}
-.hover\:bg-green-700:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(21 128 61 / var(--tw-bg-opacity, 1));
 }
 .hover\:bg-muted:hover{
   background-color: hsl(var(--muted));
@@ -2376,9 +2374,6 @@ h1,
 }
 .hover\:text-primary\/80:hover{
   color: hsl(var(--primary) / 0.8);
-}
-.hover\:text-secondary:hover{
-  color: hsl(var(--secondary));
 }
 .hover\:text-secondary-foreground\/80:hover{
   color: hsl(var(--secondary-foreground) / 0.8);
