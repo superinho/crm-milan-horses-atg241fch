@@ -16001,6 +16001,11 @@ function useOutlet(context) {
 	let outlet = import_react.useContext(RouteContext).outlet;
 	return import_react.useMemo(() => outlet && /* @__PURE__ */ import_react.createElement(OutletContext.Provider, { value: context }, outlet), [outlet, context]);
 }
+function useParams() {
+	let { matches } = import_react.useContext(RouteContext);
+	let routeMatch = matches[matches.length - 1];
+	return routeMatch ? routeMatch.params : {};
+}
 function useResolvedPath(to, { relative } = {}) {
 	let { matches } = import_react.useContext(RouteContext);
 	let { pathname: locationPathname } = useLocation();
@@ -18880,12 +18885,23 @@ var createLucideIcon = (iconName, iconNode) => {
 	Component$2.displayName = toPascalCase(iconName);
 	return Component$2;
 };
+var Activity = createLucideIcon("activity", [["path", {
+	d: "M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2",
+	key: "169zse"
+}]]);
 var ArrowDown = createLucideIcon("arrow-down", [["path", {
 	d: "M12 5v14",
 	key: "s699le"
 }], ["path", {
 	d: "m19 12-7 7-7-7",
 	key: "1idqje"
+}]]);
+var ArrowLeft = createLucideIcon("arrow-left", [["path", {
+	d: "m12 19-7-7 7-7",
+	key: "1l729n"
+}], ["path", {
+	d: "M19 12H5",
+	key: "x3x0zl"
 }]]);
 var ArrowRight = createLucideIcon("arrow-right", [["path", {
 	d: "M5 12h14",
@@ -19064,6 +19080,20 @@ var Clock = createLucideIcon("clock", [["path", {
 	r: "10",
 	key: "1mglay"
 }]]);
+var CreditCard = createLucideIcon("credit-card", [["rect", {
+	width: "20",
+	height: "14",
+	x: "2",
+	y: "5",
+	rx: "2",
+	key: "ynyp8z"
+}], ["line", {
+	x1: "2",
+	x2: "22",
+	y1: "10",
+	y2: "10",
+	key: "1b3vmo"
+}]]);
 var DollarSign = createLucideIcon("dollar-sign", [["line", {
 	x1: "12",
 	x2: "12",
@@ -19114,6 +19144,20 @@ var Ellipsis = createLucideIcon("ellipsis", [
 		key: "1pcz8c"
 	}]
 ]);
+var ExternalLink = createLucideIcon("external-link", [
+	["path", {
+		d: "M15 3h6v6",
+		key: "1q9fwt"
+	}],
+	["path", {
+		d: "M10 14 21 3",
+		key: "gplh6r"
+	}],
+	["path", {
+		d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6",
+		key: "a6xqqp"
+	}]
+]);
 var Eye = createLucideIcon("eye", [["path", {
 	d: "M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0",
 	key: "1nclc0"
@@ -19139,6 +19183,28 @@ var FileDown = createLucideIcon("file-down", [
 	["path", {
 		d: "m9 15 3 3 3-3",
 		key: "1npd3o"
+	}]
+]);
+var FileText = createLucideIcon("file-text", [
+	["path", {
+		d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
+		key: "1oefj6"
+	}],
+	["path", {
+		d: "M14 2v5a1 1 0 0 0 1 1h5",
+		key: "wfsgrz"
+	}],
+	["path", {
+		d: "M10 9H8",
+		key: "b1mrlr"
+	}],
+	["path", {
+		d: "M16 13H8",
+		key: "t4e002"
+	}],
+	["path", {
+		d: "M16 17H8",
+		key: "z1uh3a"
 	}]
 ]);
 var Funnel = createLucideIcon("funnel", [["path", {
@@ -19208,6 +19274,15 @@ var Mail = createLucideIcon("mail", [["path", {
 	rx: "2",
 	key: "izxlao"
 }]]);
+var MapPin = createLucideIcon("map-pin", [["path", {
+	d: "M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0",
+	key: "1r0f0z"
+}], ["circle", {
+	cx: "12",
+	cy: "10",
+	r: "3",
+	key: "ilqhr7"
+}]]);
 var Megaphone = createLucideIcon("megaphone", [
 	["path", {
 		d: "M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z",
@@ -19222,6 +19297,10 @@ var Megaphone = createLucideIcon("megaphone", [
 		key: "15ugcq"
 	}]
 ]);
+var MessageCircle = createLucideIcon("message-circle", [["path", {
+	d: "M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719",
+	key: "1sd12s"
+}]]);
 var MessageSquare = createLucideIcon("message-square", [["path", {
 	d: "M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z",
 	key: "18887p"
@@ -19264,12 +19343,31 @@ var Search = createLucideIcon("search", [["path", {
 	r: "8",
 	key: "4ej97u"
 }]]);
+var Smartphone = createLucideIcon("smartphone", [["rect", {
+	width: "14",
+	height: "20",
+	x: "5",
+	y: "2",
+	rx: "2",
+	ry: "2",
+	key: "1yt0o3"
+}], ["path", {
+	d: "M12 18h.01",
+	key: "mhygvu"
+}]]);
 var SquareCheckBig = createLucideIcon("square-check-big", [["path", {
 	d: "M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344",
 	key: "2acyp4"
 }], ["path", {
 	d: "m9 11 3 3L22 4",
 	key: "1pflzl"
+}]]);
+var SquarePen = createLucideIcon("square-pen", [["path", {
+	d: "M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7",
+	key: "1m0v6g"
+}], ["path", {
+	d: "M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z",
+	key: "ohrbg2"
 }]]);
 var TrendingUp = createLucideIcon("trending-up", [["path", {
 	d: "M16 7h6v6",
@@ -24270,14 +24368,14 @@ function isValidOrientation(orientation) {
 	return ORIENTATIONS.includes(orientation);
 }
 var Root$8 = Separator$3;
-var Separator$2 = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
+var Separator = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
 	ref,
 	decorative,
 	orientation,
 	className: cn("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className),
 	...props
 }));
-Separator$2.displayName = Root$8.displayName;
+Separator.displayName = Root$8.displayName;
 var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
 var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
 var EVENT_OPTIONS$1 = {
@@ -25708,7 +25806,7 @@ var SidebarFooter = import_react.forwardRef(({ className, ...props }, ref) => {
 });
 SidebarFooter.displayName = "SidebarFooter";
 var SidebarSeparator = import_react.forwardRef(({ className, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {
 		ref,
 		"data-sidebar": "separator",
 		className: cn("mx-2 w-auto bg-sidebar-border", className),
@@ -25960,7 +26058,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$10({ inst: {
+			cachedValue = useState$11({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -25974,7 +26072,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$5(function() {
+			useEffect$6(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -25997,7 +26095,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$10 = React$64.useState, useEffect$5 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$11 = React$64.useState, useEffect$6 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$64.useSyncExternalStore ? React$64.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -27064,7 +27162,7 @@ var CheckboxItem = MenuCheckboxItem;
 var RadioGroup = MenuRadioGroup;
 var RadioItem = MenuRadioItem;
 var ItemIndicator$1 = MenuItemIndicator;
-var Separator$1 = MenuSeparator;
+var Separator$2 = MenuSeparator;
 var Arrow2 = MenuArrow;
 var SubTrigger = MenuSubTrigger;
 var SubContent = MenuSubContent;
@@ -27266,7 +27364,7 @@ var SEPARATOR_NAME$1 = "DropdownMenuSeparator";
 var DropdownMenuSeparator$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...separatorProps } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$1, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$2, {
 		...menuScope,
 		...separatorProps,
 		ref: forwardedRef
@@ -58130,7 +58228,7 @@ var ItemText = SelectItemText;
 var ItemIndicator = SelectItemIndicator;
 var ScrollUpButton = SelectScrollUpButton$1;
 var ScrollDownButton = SelectScrollDownButton$1;
-var Separator = SelectSeparator$1;
+var Separator$1 = SelectSeparator$1;
 var Select = Root2$1;
 var SelectValue = Value;
 var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Trigger$1, {
@@ -58188,12 +58286,12 @@ var SelectItem = import_react.forwardRef(({ className, children, ...props }, ref
 	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemText, { children })]
 }));
 SelectItem.displayName = Item.displayName;
-var SelectSeparator = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {
+var SelectSeparator = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$1, {
 	ref,
 	className: cn("-mx-1 my-1 h-px bg-muted", className),
 	...props
 }));
-SelectSeparator.displayName = Separator.displayName;
+SelectSeparator.displayName = Separator$1.displayName;
 var POPOVER_NAME = "Popover";
 var [createPopoverContext, createPopoverScope] = createContextScope(POPOVER_NAME, [createPopperScope]);
 var usePopperScope = createPopperScope();
@@ -61171,6 +61269,8 @@ var Te = {
 	whiteSpace: "nowrap",
 	borderWidth: "0"
 };
+var Dialog = Root$7;
+var DialogTrigger = Trigger$3;
 var DialogPortal = Portal$4;
 var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
 	ref,
@@ -62082,8 +62182,9 @@ function Contatos() {
 									})]
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 									className: "flex flex-col",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-semibold text-foreground",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+										to: `/contatos/${contact.id}`,
+										className: "font-semibold text-foreground hover:text-primary transition-colors",
 										children: contact.name
 									})
 								})]
@@ -62123,9 +62224,13 @@ function Contatos() {
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 										variant: "ghost",
 										size: "icon",
+										asChild: true,
 										className: "h-8 w-8 text-muted-foreground hover:text-primary",
-										title: "Ver detalhes",
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Eye, { className: "h-4 w-4" })
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+											to: `/contatos/${contact.id}`,
+											title: "Ver detalhes",
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Eye, { className: "h-4 w-4" })
+										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 										variant: "ghost",
@@ -62219,6 +62324,475 @@ function Contatos() {
 					}) })
 				] }) })
 			})] })]
+		})]
+	});
+}
+var getContactDetails = (id) => {
+	const numericId = parseInt(id) || 1;
+	const basicInfo = {
+		1: {
+			name: "Roberto Almeida",
+			role: "Criador"
+		},
+		2: {
+			name: "Fernanda Lima",
+			role: "Comprador"
+		},
+		3: {
+			name: "Carlos Venturini",
+			role: "Veterinário"
+		},
+		4: {
+			name: "Haras Pôr do Sol",
+			role: "Parceiro"
+		},
+		5: {
+			name: "Juliana Paes",
+			role: "Investidora"
+		}
+	}[numericId] || {
+		name: `Contato #${numericId}`,
+		role: "Cliente"
+	};
+	return {
+		id: numericId,
+		...basicInfo,
+		email: `${basicInfo.name.toLowerCase().replace(/\s/g, ".")}@email.com`,
+		phone: "(11) 99876-5432",
+		whatsapp: "(11) 99876-5432",
+		birthDate: "15/05/1980",
+		cpf: "123.456.789-00",
+		address: "Av. Brasil, 1500 - Jardins, São Paulo - SP",
+		tags: ["VIP", "Ativo"],
+		financial: {
+			totalInvested: 15e4 + numericId * 1e4,
+			horsesBought: 3 + Math.floor(numericId / 2),
+			averageTicket: 45e3,
+			lastBidDate: "25/10/2023"
+		},
+		preferences: {
+			breeds: ["Lusitano", "Quarto de Milha"],
+			valueRange: "R$ 50k - R$ 100k",
+			modalities: ["Adestramento", "Lazer"]
+		},
+		origin: {
+			source: numericId % 2 === 0 ? "Indicação Profissional" : "Redes Sociais",
+			referrer: numericId % 2 === 0 ? "Dr. Marcelo Ramos" : null
+		},
+		notes: [{
+			id: 1,
+			date: "20/10/2023",
+			text: "Cliente demonstrou interesse no lote 45 do próximo leilão."
+		}]
+	};
+};
+function ContatoDetalhes() {
+	const { id } = useParams();
+	const navigate = useNavigate();
+	const { toast: toast$2 } = useToast();
+	const [contact, setContact] = (0, import_react.useState)(null);
+	const [isLoading, setIsLoading] = (0, import_react.useState)(true);
+	const [newNote, setNewNote] = (0, import_react.useState)("");
+	const [isNoteDialogOpen, setIsNoteDialogOpen] = (0, import_react.useState)(false);
+	(0, import_react.useEffect)(() => {
+		const timer = setTimeout(() => {
+			if (id) setContact(getContactDetails(id));
+			setIsLoading(false);
+		}, 500);
+		return () => clearTimeout(timer);
+	}, [id]);
+	const handleAddNote = () => {
+		if (!newNote.trim()) return;
+		const note = {
+			id: Date.now(),
+			date: (/* @__PURE__ */ new Date()).toLocaleDateString("pt-BR"),
+			text: newNote
+		};
+		setContact((prev) => ({
+			...prev,
+			notes: [note, ...prev.notes]
+		}));
+		setNewNote("");
+		setIsNoteDialogOpen(false);
+		toast$2({
+			title: "Nota adicionada",
+			description: "A nota foi salva com sucesso no histórico do contato."
+		});
+	};
+	const handleWhatsApp = () => {
+		window.open(`https://wa.me/55${contact.whatsapp.replace(/\D/g, "")}`, "_blank");
+	};
+	const handleEmail = () => {
+		window.location.href = `mailto:${contact.email}`;
+	};
+	if (isLoading) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "flex items-center justify-center h-[calc(100vh-200px)]",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "animate-spin rounded-full h-12 w-12 border-b-2 border-primary" })
+	});
+	if (!contact) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex flex-col items-center justify-center h-[calc(100vh-200px)] gap-4",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+			className: "text-2xl font-bold text-muted-foreground",
+			children: "Contato não encontrado"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+			onClick: () => navigate("/contatos"),
+			children: "Voltar para lista"
+		})]
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in max-w-7xl mx-auto pb-10",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-col md:flex-row md:items-center justify-between gap-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+					variant: "ghost",
+					size: "icon",
+					onClick: () => navigate("/contatos"),
+					className: "shrink-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowLeft, { className: "h-5 w-5" })
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
+					className: "text-2xl font-bold font-display text-primary flex items-center gap-3",
+					children: [contact.name, contact.tags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+						variant: "secondary",
+						className: "text-xs font-normal",
+						children: tag
+					}, tag))]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground text-sm",
+					children: contact.role
+				})] })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-wrap items-center gap-2",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						variant: "outline",
+						className: "text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200",
+						onClick: handleWhatsApp,
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "mr-2 h-4 w-4" }), " WhatsApp"]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						variant: "outline",
+						onClick: handleEmail,
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "mr-2 h-4 w-4" }), " E-mail"]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						variant: "outline",
+						onClick: () => toast$2({
+							title: "Editar",
+							description: "Funcionalidade de edição em breve."
+						}),
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquarePen, { className: "mr-2 h-4 w-4" }), " Editar"]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+						open: isNoteDialogOpen,
+						onOpenChange: setIsNoteDialogOpen,
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+							asChild: true,
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								className: "bg-primary text-primary-foreground hover:bg-primary/90",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "mr-2 h-4 w-4" }), " Adicionar Nota"]
+							})
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Adicionar Nota Interna" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Esta nota ficará visível apenas para a equipe." })] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "py-4",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+									placeholder: "Digite sua observação...",
+									value: newNote,
+									onChange: (e) => setNewNote(e.target.value),
+									className: "min-h-[100px]"
+								})
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogFooter, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								variant: "outline",
+								onClick: () => setIsNoteDialogOpen(false),
+								children: "Cancelar"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								onClick: handleAddNote,
+								children: "Salvar Nota"
+							})] })
+						] })]
+					})
+				]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "lg:col-span-1 space-y-6",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "border-t-4 border-t-primary shadow-sm h-full",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+						className: "pb-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex justify-center mb-4",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
+									className: "h-24 w-24 border-4 border-background shadow-lg",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: `https://img.usecurling.com/ppl/medium?gender=male&seed=${contact.id}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, {
+										className: "text-2xl bg-primary/10 text-primary",
+										children: contact.name.substring(0, 2).toUpperCase()
+									})]
+								})
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+								className: "text-center text-xl",
+								children: "Informações Pessoais"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
+								className: "text-center",
+								children: "Dados cadastrais do cliente"
+							})
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						className: "space-y-4",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-3",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-start gap-3 p-2 hover:bg-muted/50 rounded-md transition-colors",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-4 w-4 text-muted-foreground mt-1" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex-1 overflow-hidden",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-xs font-medium text-muted-foreground",
+											children: "E-mail"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-sm font-medium truncate",
+											title: contact.email,
+											children: contact.email
+										})]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-start gap-3 p-2 hover:bg-muted/50 rounded-md transition-colors",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Phone, { className: "h-4 w-4 text-muted-foreground mt-1" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs font-medium text-muted-foreground",
+										children: "Telefone"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-sm font-medium",
+										children: contact.phone
+									})] })]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-start gap-3 p-2 hover:bg-muted/50 rounded-md transition-colors",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Smartphone, { className: "h-4 w-4 text-muted-foreground mt-1" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs font-medium text-muted-foreground",
+										children: "WhatsApp"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-sm font-medium",
+										children: contact.whatsapp
+									})] })]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-start gap-3 p-2 hover:bg-muted/50 rounded-md transition-colors",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-4 w-4 text-muted-foreground mt-1" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs font-medium text-muted-foreground",
+										children: "Data de Nascimento"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-sm font-medium",
+										children: contact.birthDate
+									})] })]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-start gap-3 p-2 hover:bg-muted/50 rounded-md transition-colors",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CreditCard, { className: "h-4 w-4 text-muted-foreground mt-1" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs font-medium text-muted-foreground",
+										children: "CPF"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-sm font-medium",
+										children: contact.cpf
+									})] })]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-start gap-3 p-2 hover:bg-muted/50 rounded-md transition-colors",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { className: "h-4 w-4 text-muted-foreground mt-1" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs font-medium text-muted-foreground",
+										children: "Endereço"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-sm font-medium leading-tight",
+										children: contact.address
+									})] })]
+								})
+							]
+						})
+					})]
+				})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "lg:col-span-2 space-y-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "border-t-4 border-t-secondary shadow-sm",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+						className: "text-lg flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-5 w-5 text-secondary" }), "Resumo Financeiro"]
+					}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "bg-muted/30 p-4 rounded-lg border border-muted",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1",
+									children: "Total Investido"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-xl font-bold text-primary font-display",
+									children: new Intl.NumberFormat("pt-BR", {
+										style: "currency",
+										currency: "BRL",
+										maximumFractionDigits: 0
+									}).format(contact.financial.totalInvested)
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "bg-muted/30 p-4 rounded-lg border border-muted",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1",
+									children: "Cavalos Arrematados"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "text-xl font-bold text-primary font-display flex items-center gap-2",
+									children: [
+										contact.financial.horsesBought,
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, { className: "h-4 w-4 text-secondary opacity-80" })
+									]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "bg-muted/30 p-4 rounded-lg border border-muted",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1",
+									children: "Ticket Médio"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-xl font-bold text-primary font-display",
+									children: new Intl.NumberFormat("pt-BR", {
+										style: "currency",
+										currency: "BRL",
+										maximumFractionDigits: 0
+									}).format(contact.financial.averageTicket)
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "bg-muted/30 p-4 rounded-lg border border-muted",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1",
+									children: "Último Lance"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "text-xl font-bold text-primary font-display flex items-center gap-2",
+									children: [
+										contact.financial.lastBidDate,
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-4 w-4 text-green-600 opacity-80" })
+									]
+								})]
+							})
+						]
+					}) })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-1 md:grid-cols-2 gap-6",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "text-lg flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-5 w-5 text-primary" }), "Preferências"]
+						}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+							className: "space-y-4",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-sm font-medium text-muted-foreground mb-2",
+									children: "Raças de Interesse"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "flex flex-wrap gap-2",
+									children: contact.preferences.breeds.map((breed) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+										variant: "outline",
+										className: "bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200",
+										children: breed
+									}, breed))
+								})] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-sm font-medium text-muted-foreground mb-2",
+									children: "Modalidades"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "flex flex-wrap gap-2",
+									children: contact.preferences.modalities.map((mod) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+										variant: "outline",
+										className: "bg-purple-50 text-purple-700 hover:bg-purple-100 border-purple-200",
+										children: mod
+									}, mod))
+								})] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-sm font-medium text-muted-foreground mb-1",
+									children: "Faixa de Valor"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "font-medium text-foreground",
+									children: contact.preferences.valueRange
+								})] })
+							]
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "shadow-sm flex flex-col",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "text-lg flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Briefcase, { className: "h-5 w-5 text-primary" }), "Origem do Lead"]
+						}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+							className: "space-y-4 flex-1",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "bg-gray-50 p-4 rounded-md border border-gray-100",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs text-muted-foreground uppercase tracking-wide mb-1",
+										children: "Canal de Aquisição"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-lg font-semibold text-primary",
+										children: contact.origin.source
+									})]
+								}),
+								contact.origin.source === "Indicação Profissional" && contact.origin.referrer && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "bg-secondary/10 p-4 rounded-md border border-secondary/20",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+											className: "text-xs text-secondary-foreground uppercase tracking-wide mb-1 font-semibold flex items-center gap-1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(User, { className: "h-3 w-3" }), " Profissional Indicador"]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-lg font-semibold text-secondary-foreground",
+											children: contact.origin.referrer
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+											variant: "link",
+											className: "p-0 h-auto text-secondary-foreground text-xs hover:text-secondary-foreground/80 mt-1",
+											children: [
+												"Ver perfil do profissional",
+												" ",
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { className: "h-3 w-3 ml-1" })
+											]
+										})
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "mt-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-sm font-medium text-muted-foreground mb-2 flex items-center justify-between",
+										children: "Últimas Notas"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "space-y-3",
+										children: contact.notes.map((note) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "text-sm bg-muted/40 p-3 rounded-md border border-muted/60",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+												className: "text-xs text-muted-foreground mb-1",
+												children: note.date
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+												className: "text-foreground",
+												children: note.text
+											})]
+										}, note.id))
+									})]
+								})
+							]
+						})]
+					})]
+				})]
+			})]
 		})]
 	});
 }
@@ -64096,6 +64670,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Contatos, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/contatos/:id",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContatoDetalhes, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/negocios",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Negocios, {})
 				}),
@@ -64125,4 +64703,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Ctm30XVy.js.map
+//# sourceMappingURL=index-n_viZgmR.js.map

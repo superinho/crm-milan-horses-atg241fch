@@ -6,6 +6,7 @@ import Layout from './components/Layout'
 
 import Index from './pages/Index'
 import Contatos from './pages/Contatos'
+import ContatoDetalhes from './pages/ContatoDetalhes'
 import Negocios from './pages/Negocios'
 import Campanhas from './pages/Campanhas'
 import Automacoes from './pages/Automacoes'
@@ -24,6 +25,7 @@ const App = () => (
         <Route element={<Layout />}>
           <Route path="/" element={<Index />} />
           <Route path="/contatos" element={<Contatos />} />
+          <Route path="/contatos/:id" element={<ContatoDetalhes />} />
           <Route path="/negocios" element={<Negocios />} />
           <Route path="/campanhas" element={<Campanhas />} />
           <Route path="/automacoes" element={<Automacoes />} />

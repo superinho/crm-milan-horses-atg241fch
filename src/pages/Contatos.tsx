@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -515,9 +516,12 @@ export default function Contatos() {
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex flex-col">
-                            <span className="font-semibold text-foreground">
+                            <Link
+                              to={`/contatos/${contact.id}`}
+                              className="font-semibold text-foreground hover:text-primary transition-colors"
+                            >
                               {contact.name}
-                            </span>
+                            </Link>
                           </div>
                         </div>
                       </TableCell>
@@ -566,10 +570,15 @@ export default function Contatos() {
                           <Button
                             variant="ghost"
                             size="icon"
+                            asChild
                             className="h-8 w-8 text-muted-foreground hover:text-primary"
-                            title="Ver detalhes"
                           >
-                            <Eye className="h-4 w-4" />
+                            <Link
+                              to={`/contatos/${contact.id}`}
+                              title="Ver detalhes"
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Link>
                           </Button>
                           <Button
                             variant="ghost"
