@@ -508,8 +508,9 @@ export default function Contatos() {
                           {contact.email}
                         </div>
                       </TableCell>
+                      {/* Added whitespace-nowrap to prevent phone number wrapping as per user request */}
                       <TableCell>
-                        <div className="flex items-center text-muted-foreground text-sm">
+                        <div className="flex items-center text-muted-foreground text-sm whitespace-nowrap">
                           <Phone className="mr-2 h-3 w-3 opacity-70" />
                           {contact.phone}
                         </div>

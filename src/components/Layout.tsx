@@ -54,11 +54,11 @@ function AppSidebar() {
     <Sidebar variant="sidebar" side="left" collapsible="icon">
       <SidebarHeader className="h-24 flex items-center justify-center border-b border-sidebar-border px-4 py-2">
         <div className="flex items-center gap-2 w-full overflow-hidden transition-all duration-300 justify-start group-data-[collapsible=icon]:justify-center">
-          {/* Optimized Logo Size */}
+          {/* Optimized Logo Size with max-w-full to fit narrower sidebar */}
           <img
             src={logoImg}
             alt="Milan Horses"
-            className="h-20 w-auto object-contain transition-all duration-300 group-data-[collapsible=icon]:h-8"
+            className="h-20 w-auto object-contain transition-all duration-300 group-data-[collapsible=icon]:h-8 max-w-full"
           />
         </div>
       </SidebarHeader>

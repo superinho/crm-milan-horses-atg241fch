@@ -1051,6 +1051,9 @@ h1,
 .max-w-\[100px\]{
   max-width: 100px;
 }
+.max-w-full{
+  max-width: 100%;
+}
 .max-w-lg{
   max-width: 32rem;
 }

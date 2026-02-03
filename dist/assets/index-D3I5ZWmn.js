@@ -25496,7 +25496,7 @@ function Skeleton({ className, ...props }) {
 }
 var SIDEBAR_COOKIE_NAME = "sidebar_state";
 var SIDEBAR_COOKIE_MAX_AGE = 3600 * 24 * 7;
-var SIDEBAR_WIDTH = "16rem";
+var SIDEBAR_WIDTH = "13rem";
 var SIDEBAR_WIDTH_MOBILE = "18rem";
 var SIDEBAR_WIDTH_ICON = "3rem";
 var SIDEBAR_KEYBOARD_SHORTCUT = "b";
@@ -27425,7 +27425,7 @@ function AppSidebar() {
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
 						src: editedimage_1769630541473_88067_default,
 						alt: "Milan Horses",
-						className: "h-20 w-auto object-contain transition-all duration-300 group-data-[collapsible=icon]:h-8"
+						className: "h-20 w-auto object-contain transition-all duration-300 group-data-[collapsible=icon]:h-8 max-w-full"
 					})
 				})
 			}),
@@ -50755,7 +50755,7 @@ function Contatos() {
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "mr-2 h-3 w-3 opacity-70" }), contact.email]
 						}) }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex items-center text-muted-foreground text-sm",
+							className: "flex items-center text-muted-foreground text-sm whitespace-nowrap",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Phone, { className: "mr-2 h-3 w-3 opacity-70" }), contact.phone]
 						}) }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
@@ -52802,4 +52802,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Dh4XUG6R.js.map
+//# sourceMappingURL=index-D3I5ZWmn.js.map
