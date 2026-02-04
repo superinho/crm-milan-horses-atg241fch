@@ -26,7 +26,6 @@ import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
@@ -47,14 +46,15 @@ import {
   Mail,
   ArrowUpDown,
   Eye,
-  Pencil,
   FileDown,
   Loader2,
+  X,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, getContrastColor } from '@/lib/utils'
 import { ContactForm } from '@/components/contacts/ContactForm'
 import { contactsService, type Contact, type Tag } from '@/services/contacts'
 import { useToast } from '@/hooks/use-toast'
+import { TagSelector } from '@/components/tags/TagSelector'
 
 export default function Contatos() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -134,20 +134,30 @@ export default function Contatos() {
     setCurrentPage(1)
   }
 
-  const getBadgeStyle = (tag: string) => {
-    // We will use the color from DB or fallback
-    const found = availableTags.find((t) => t.name === tag)
-    if (found) return found.color
-
-    // Fallback classes if DB color string is not a valid class (though seed uses classes)
-    switch (tag) {
-      case 'VIP':
-        return 'bg-secondary text-secondary-foreground'
-      case 'Novo Lead':
-        return 'bg-primary text-primary-foreground'
-      default:
-        return 'bg-gray-500 text-white'
+  const handleRemoveTag = async (contactId: string, tagId: string) => {
+    try {
+      await contactsService.removeTagFromContact(contactId, tagId)
+      fetchContacts()
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: 'Erro',
+        description: 'Não foi possível remover a tag.',
+        variant: 'destructive',
+      })
     }
+  }
+
+  const getBadgeStyle = (tag: Tag) => {
+    if (tag.color && tag.color.startsWith('#')) {
+      return {
+        backgroundColor: tag.color,
+        color: getContrastColor(tag.color),
+        border: 'none',
+      }
+    }
+    // Fallback for old class-based tags (if any)
+    return {}
   }
 
   return (
@@ -343,18 +353,35 @@ export default function Contatos() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap items-center gap-1">
                           {contact.tags?.map((tag) => (
                             <Badge
                               key={tag.id}
                               className={cn(
-                                'font-normal border-0',
-                                tag.color || getBadgeStyle(tag.name),
+                                'font-normal group/tag pr-1',
+                                !tag.color?.startsWith('#') && tag.color,
                               )}
+                              style={getBadgeStyle(tag)}
                             >
                               {tag.name}
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  e.preventDefault()
+                                  handleRemoveTag(contact.id, tag.id)
+                                }}
+                                className="ml-1 rounded-full p-0.5 hover:bg-black/10 focus:outline-none"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
                             </Badge>
                           ))}
+                          <TagSelector
+                            contactId={contact.id}
+                            currentTags={contact.tags || []}
+                            onTagChange={fetchContacts}
+                            variant="icon"
+                          />
                         </div>
                       </TableCell>
                       <TableCell>

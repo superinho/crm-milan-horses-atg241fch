@@ -285,4 +285,22 @@ export const contactsService = {
     if (error) throw error
     return data
   },
+
+  async addTagToContact(contactId: string, tagId: string) {
+    const { error } = await supabase
+      .from('contact_tags')
+      .insert({ contact_id: contactId, tag_id: tagId })
+
+    if (error) throw error
+  },
+
+  async removeTagFromContact(contactId: string, tagId: string) {
+    const { error } = await supabase
+      .from('contact_tags')
+      .delete()
+      .eq('contact_id', contactId)
+      .eq('tag_id', tagId)
+
+    if (error) throw error
+  },
 }

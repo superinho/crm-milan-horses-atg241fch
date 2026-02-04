@@ -16,6 +16,8 @@ import {
   ExternalLink,
   Smartphone,
   Briefcase,
+  X,
+  Tag as TagIcon,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -29,11 +31,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { useToast } from '@/hooks/use-toast'
-import { contactsService, type Contact } from '@/services/contacts'
-import { cn } from '@/lib/utils'
+import { contactsService, type Contact, type Tag } from '@/services/contacts'
+import { cn, getContrastColor } from '@/lib/utils'
 import { ContactPurchases } from '@/components/ContactPurchases'
 import { ContactBids } from '@/components/ContactBids'
 import { ContactTimeline } from '@/components/ContactTimeline'
+import { TagSelector } from '@/components/tags/TagSelector'
 
 export default function ContatoDetalhes() {
   const { id } = useParams<{ id: string }>()
@@ -42,7 +45,7 @@ export default function ContatoDetalhes() {
   const [contact, setContact] = useState<Contact | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
+  const fetchContact = () => {
     if (id) {
       contactsService
         .getContactById(id)
@@ -57,6 +60,10 @@ export default function ContatoDetalhes() {
         })
         .finally(() => setIsLoading(false))
     }
+  }
+
+  useEffect(() => {
+    fetchContact()
   }, [id, toast])
 
   const handleWhatsApp = () => {
@@ -72,6 +79,32 @@ export default function ContatoDetalhes() {
     if (contact?.email) {
       window.location.href = `mailto:${contact.email}`
     }
+  }
+
+  const handleRemoveTag = async (tagId: string) => {
+    if (!contact) return
+    try {
+      await contactsService.removeTagFromContact(contact.id, tagId)
+      fetchContact()
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: 'Erro',
+        description: 'Não foi possível remover a tag.',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const getBadgeStyle = (tag: Tag) => {
+    if (tag.color && tag.color.startsWith('#')) {
+      return {
+        backgroundColor: tag.color,
+        color: getContrastColor(tag.color),
+        border: 'none',
+      }
+    }
+    return {}
   }
 
   // Calculate financials for the summary card
@@ -121,14 +154,6 @@ export default function ContatoDetalhes() {
           <div>
             <h1 className="text-2xl font-bold font-display text-primary flex items-center gap-3">
               {contact.name}
-              {contact.tags?.map((tag: any) => (
-                <Badge
-                  key={tag.id}
-                  className={cn('text-xs font-normal border-0', tag.color)}
-                >
-                  {tag.name}
-                </Badge>
-              ))}
             </h1>
             <p className="text-muted-foreground text-sm">
               Cliente desde {new Date(contact.created_at).getFullYear()}
@@ -262,6 +287,52 @@ export default function ContatoDetalhes() {
                     </p>
                   </div>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Tags Section */}
+          <Card className="shadow-sm">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <TagIcon className="h-4 w-4 text-primary" />
+                  Tags
+                </div>
+                <TagSelector
+                  contactId={contact.id}
+                  currentTags={contact.tags || []}
+                  onTagChange={fetchContact}
+                  variant="icon"
+                />
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {contact.tags && contact.tags.length > 0 ? (
+                  contact.tags.map((tag) => (
+                    <Badge
+                      key={tag.id}
+                      className={cn(
+                        'font-normal py-1 pr-1 gap-1',
+                        !tag.color?.startsWith('#') && tag.color,
+                      )}
+                      style={getBadgeStyle(tag)}
+                    >
+                      {tag.name}
+                      <button
+                        onClick={() => handleRemoveTag(tag.id)}
+                        className="rounded-full p-0.5 hover:bg-black/10 focus:outline-none"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground italic">
+                    Nenhuma tag atribuída.
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>
