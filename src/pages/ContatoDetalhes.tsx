@@ -43,6 +43,7 @@ import { useToast } from '@/hooks/use-toast'
 import { contactsService, type Contact } from '@/services/contacts'
 import { cn } from '@/lib/utils'
 import { ContactPurchases } from '@/components/ContactPurchases'
+import { ContactBids } from '@/components/ContactBids'
 
 export default function ContatoDetalhes() {
   const { id } = useParams<{ id: string }>()
@@ -494,6 +495,10 @@ export default function ContatoDetalhes() {
       {/* New Purchase History Section */}
       <Separator className="my-8" />
       <ContactPurchases contactId={contact.id} />
+
+      {/* New Bids Section */}
+      <Separator className="my-8" />
+      <ContactBids contactId={contact.id} />
     </div>
   )
 }

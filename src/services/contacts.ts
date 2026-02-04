@@ -34,6 +34,17 @@ export type Purchase = {
   description?: string | null
 }
 
+export type Bid = {
+  id: string
+  contact_id: string
+  auction_id?: string | null
+  lot_number?: string | null
+  value: number
+  date: string
+  reason?: string | null
+  created_at: string
+}
+
 type GetContactsParams = {
   page?: number
   pageSize?: number
@@ -173,6 +184,18 @@ export const contactsService = {
     if (error) throw error
 
     return data as Purchase[]
+  },
+
+  async getBidsByContactId(contactId: string) {
+    const { data, error } = await supabase
+      .from('bids')
+      .select('*')
+      .eq('contact_id', contactId)
+      .order('date', { ascending: false })
+
+    if (error) throw error
+
+    return data as Bid[]
   },
 
   async createContact(contactData: any) {

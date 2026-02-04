@@ -19132,6 +19132,15 @@ var CircleAlert = createLucideIcon("circle-alert", [
 		key: "4dfq90"
 	}]
 ]);
+var CircleCheck = createLucideIcon("circle-check", [["circle", {
+	cx: "12",
+	cy: "12",
+	r: "10",
+	key: "1mglay"
+}], ["path", {
+	d: "m9 12 2 2 4-4",
+	key: "dzmm74"
+}]]);
 var CirclePause = createLucideIcon("circle-pause", [
 	["circle", {
 		cx: "12",
@@ -19323,6 +19332,28 @@ var Funnel = createLucideIcon("funnel", [["path", {
 	d: "M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z",
 	key: "sc7q7i"
 }]]);
+var Gavel = createLucideIcon("gavel", [
+	["path", {
+		d: "m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381",
+		key: "pgg06f"
+	}],
+	["path", {
+		d: "m16 16 6-6",
+		key: "vzrcl6"
+	}],
+	["path", {
+		d: "m21.5 10.5-8-8",
+		key: "a17d9x"
+	}],
+	["path", {
+		d: "m8 8 6-6",
+		key: "18bi4p"
+	}],
+	["path", {
+		d: "m8.5 7.5 8 8",
+		key: "1oyaui"
+	}]
+]);
 var LayoutDashboard = createLucideIcon("layout-dashboard", [
 	["rect", {
 		width: "7",
@@ -19447,6 +19478,13 @@ var Search = createLucideIcon("search", [["path", {
 	cy: "11",
 	r: "8",
 	key: "4ej97u"
+}]]);
+var Send = createLucideIcon("send", [["path", {
+	d: "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z",
+	key: "1ffxy3"
+}], ["path", {
+	d: "m21.854 2.147-10.94 10.939",
+	key: "12cjpa"
 }]]);
 var Smartphone = createLucideIcon("smartphone", [["rect", {
 	width: "14",
@@ -26190,7 +26228,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$14({ inst: {
+			cachedValue = useState$15({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26204,7 +26242,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$9(function() {
+			useEffect$10(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26227,7 +26265,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$14 = React$64.useState, useEffect$9 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$15 = React$64.useState, useEffect$10 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$64.useSyncExternalStore ? React$64.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -69320,6 +69358,11 @@ const contactsService = {
 		if (error) throw error;
 		return data;
 	},
+	async getBidsByContactId(contactId) {
+		const { data, error } = await supabase.from("bids").select("*").eq("contact_id", contactId).order("date", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
 	async createContact(contactData) {
 		const { tags: tagNames, ...data } = contactData;
 		const dbData = {
@@ -70284,6 +70327,154 @@ function ContactPurchases({ contactId }) {
 		]
 	});
 }
+function ContactBids({ contactId }) {
+	const [bids, setBids] = (0, import_react.useState)([]);
+	const [isLoading, setIsLoading] = (0, import_react.useState)(true);
+	const { toast: toast$2 } = useToast();
+	(0, import_react.useEffect)(() => {
+		if (contactId) contactsService.getBidsByContactId(contactId).then((data) => setBids(data)).catch((err) => {
+			console.error(err);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível carregar o histórico de lances.",
+				variant: "destructive"
+			});
+		}).finally(() => setIsLoading(false));
+	}, [contactId, toast$2]);
+	const handleSendSimilarLot = (bid) => {
+		toast$2({
+			title: "Ação Iniciada",
+			description: `Iniciando envio de lote similar ao ${bid.lot_number} para o cliente.`,
+			action: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "h-8 w-8 bg-green-500 rounded-full flex items-center justify-center",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-5 w-5 text-white" })
+			})
+		});
+	};
+	const isRecent = (dateString) => {
+		const date$4 = new Date(dateString);
+		const now$2 = /* @__PURE__ */ new Date();
+		const diffTime = Math.abs(now$2.getTime() - date$4.getTime());
+		return Math.ceil(diffTime / (1e3 * 60 * 60 * 24)) <= 30;
+	};
+	if (isLoading) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "flex items-center justify-center p-8",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-primary" })
+	});
+	if (bids.length === 0) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+		className: "shadow-sm border-dashed",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+			className: "flex flex-col items-center justify-center p-10 text-center",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "bg-muted p-4 rounded-full mb-4",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Gavel, { className: "h-8 w-8 text-muted-foreground" })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+					className: "text-lg font-medium text-foreground",
+					children: "Sem lances perdidos"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-sm text-muted-foreground mt-1 max-w-sm",
+					children: "Este contato não possui histórico de lances malsucedidos registrados."
+				})
+			]
+		})
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-4",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+					className: "text-xl font-bold text-primary flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Gavel, { className: "h-5 w-5" }), "Lances Não Arrematados"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+					variant: "outline",
+					className: "ml-2",
+					children: bids.length
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "shadow-sm border border-border",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+					className: "bg-muted/10 pb-4",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+						className: "text-base font-medium flex items-center gap-2",
+						children: "Histórico de Oportunidades"
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					className: "p-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+						className: "bg-muted/30 hover:bg-muted/30",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+								className: "w-[120px]",
+								children: "Data"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Leilão" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+								className: "w-[100px]",
+								children: "Lote"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Valor do Lance" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Motivo" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+								className: "text-right",
+								children: "Ações"
+							})
+						]
+					}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: bids.map((bid) => {
+						const recent = isRecent(bid.date);
+						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+							className: cn(recent ? "bg-amber-50/40 hover:bg-amber-50/60 dark:bg-amber-950/10 dark:hover:bg-amber-950/20" : ""),
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+									className: "font-medium relative",
+									children: [new Date(bid.date).toLocaleDateString("pt-BR"), recent && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "absolute left-0 top-0 bottom-0 w-1 bg-amber-400 rounded-l-md",
+										title: "Lance Recente"
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "block truncate max-w-[180px]",
+									title: bid.auction_id || "",
+									children: bid.auction_id || "-"
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: bid.lot_number || "-" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "font-semibold",
+									children: new Intl.NumberFormat("pt-BR", {
+										style: "currency",
+										currency: "BRL"
+									}).format(bid.value)
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-sm text-muted-foreground",
+									children: bid.reason || "-"
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "text-right",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+										size: "sm",
+										variant: recent ? "default" : "outline",
+										className: cn("gap-2 h-8", recent ? "bg-amber-600 hover:bg-amber-700 text-white border-amber-600" : ""),
+										onClick: () => handleSendSimilarLot(bid),
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Send, { className: "h-3 w-3" }), "Enviar lote similar"]
+									})
+								})
+							]
+						}, bid.id);
+					}) })] })
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-2 text-xs text-muted-foreground bg-amber-50/50 dark:bg-amber-950/20 p-2 rounded border border-amber-100 dark:border-amber-900 w-fit",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleAlert, { className: "h-3 w-3 text-amber-500" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Lances nos últimos 30 dias são destacados como oportunidades de reengajamento." })]
+			})
+		]
+	});
+}
 function ContatoDetalhes() {
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -70691,7 +70882,9 @@ function ContatoDetalhes() {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, { className: "my-8" }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactPurchases, { contactId: contact.id })
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactPurchases, { contactId: contact.id }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, { className: "my-8" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactBids, { contactId: contact.id })
 		]
 	});
 }
@@ -72783,4 +72976,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-B1mUznTO.js.map
+//# sourceMappingURL=index-BFx2uer-.js.map

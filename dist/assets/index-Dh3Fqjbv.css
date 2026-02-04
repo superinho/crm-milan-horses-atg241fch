@@ -1092,6 +1092,9 @@ h1,
 .max-w-\[100px\]{
   max-width: 100px;
 }
+.max-w-\[180px\]{
+  max-width: 180px;
+}
 .max-w-full{
   max-width: 100%;
 }
@@ -1104,6 +1107,9 @@ h1,
 }
 .max-w-md{
   max-width: 28rem;
+}
+.max-w-sm{
+  max-width: 24rem;
 }
 .flex-1{
   flex: 1 1 0%;
@@ -1433,6 +1439,14 @@ h1,
 .border-\[--color-border\]{
   border-color: var(--color-border);
 }
+.border-amber-100{
+  --tw-border-opacity: 1;
+  border-color: rgb(254 243 199 / var(--tw-border-opacity, 1));
+}
+.border-amber-600{
+  --tw-border-opacity: 1;
+  border-color: rgb(217 119 6 / var(--tw-border-opacity, 1));
+}
 .border-background{
   border-color: hsl(var(--background));
 }
@@ -1527,6 +1541,20 @@ h1,
 .bg-accent{
   background-color: hsl(var(--accent));
 }
+.bg-amber-400{
+  --tw-bg-opacity: 1;
+  background-color: rgb(251 191 36 / var(--tw-bg-opacity, 1));
+}
+.bg-amber-50\/40{
+  background-color: rgb(255 251 235 / 0.4);
+}
+.bg-amber-50\/50{
+  background-color: rgb(255 251 235 / 0.5);
+}
+.bg-amber-600{
+  --tw-bg-opacity: 1;
+  background-color: rgb(217 119 6 / var(--tw-bg-opacity, 1));
+}
 .bg-background{
   background-color: hsl(var(--background));
 }
@@ -1586,6 +1614,9 @@ h1,
 }
 .bg-muted{
   background-color: hsl(var(--muted));
+}
+.bg-muted\/10{
+  background-color: hsl(var(--muted) / 0.1);
 }
 .bg-muted\/20{
   background-color: hsl(var(--muted) / 0.2);
@@ -1666,6 +1697,9 @@ h1,
 }
 .p-1{
   padding: 0.25rem;
+}
+.p-10{
+  padding: 2.5rem;
 }
 .p-2{
   padding: 0.5rem;
@@ -1905,6 +1939,10 @@ h1,
 }
 .text-accent-foreground{
   color: hsl(var(--accent-foreground));
+}
+.text-amber-500{
+  --tw-text-opacity: 1;
+  color: rgb(245 158 11 / var(--tw-text-opacity, 1));
 }
 .text-blue-500{
   --tw-text-opacity: 1;
@@ -2300,6 +2338,13 @@ h1,
 }
 .hover\:bg-accent:hover{
   background-color: hsl(var(--accent));
+}
+.hover\:bg-amber-50\/60:hover{
+  background-color: rgb(255 251 235 / 0.6);
+}
+.hover\:bg-amber-700:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(180 83 9 / var(--tw-bg-opacity, 1));
 }
 .hover\:bg-background:hover{
   background-color: hsl(var(--background));
@@ -3103,8 +3148,21 @@ h1,
 .peer\/menu-button[data-active="true"] ~ .peer-data-\[active\=true\]\/menu-button\:text-sidebar-accent-foreground{
   color: hsl(var(--sidebar-accent-foreground));
 }
+.dark\:border-amber-900:is(.dark *){
+  --tw-border-opacity: 1;
+  border-color: rgb(120 53 15 / var(--tw-border-opacity, 1));
+}
 .dark\:border-destructive:is(.dark *){
   border-color: hsl(var(--destructive));
+}
+.dark\:bg-amber-950\/10:is(.dark *){
+  background-color: rgb(69 26 3 / 0.1);
+}
+.dark\:bg-amber-950\/20:is(.dark *){
+  background-color: rgb(69 26 3 / 0.2);
+}
+.dark\:hover\:bg-amber-950\/20:hover:is(.dark *){
+  background-color: rgb(69 26 3 / 0.2);
 }
 @media (min-width: 640px){
   .sm\:bottom-0{

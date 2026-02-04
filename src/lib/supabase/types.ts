@@ -167,6 +167,7 @@ export type Database = {
           contact_id: string | null
           created_at: string | null
           date: string | null
+          description: string | null
           id: string
           lot_number: string | null
           value: number
@@ -176,6 +177,7 @@ export type Database = {
           contact_id?: string | null
           created_at?: string | null
           date?: string | null
+          description?: string | null
           id?: string
           lot_number?: string | null
           value?: number
@@ -185,6 +187,7 @@ export type Database = {
           contact_id?: string | null
           created_at?: string | null
           date?: string | null
+          description?: string | null
           id?: string
           lot_number?: string | null
           value?: number
