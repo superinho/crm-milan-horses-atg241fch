@@ -490,8 +490,8 @@ var require_react_development = /* @__PURE__ */ __commonJSMin(((exports, module)
 				"=": "=0",
 				":": "=2"
 			};
-			return "$" + key.replace(/[=:]/g, function(match$1) {
-				return escaperLookup[match$1];
+			return "$" + key.replace(/[=:]/g, function(match$2) {
+				return escaperLookup[match$2];
 			});
 		}
 		function getElementKey(element, index$1) {
@@ -1645,8 +1645,8 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			if (void 0 === prefix$2) try {
 				throw Error();
 			} catch (x$2) {
-				var match$1 = x$2.stack.trim().match(/\n( *(at )?)/);
-				prefix$2 = match$1 && match$1[1] || "";
+				var match$2 = x$2.stack.trim().match(/\n( *(at )?)/);
+				prefix$2 = match$2 && match$2[1] || "";
 				suffix = -1 < x$2.stack.indexOf("\n    at") ? " (<anonymous>)" : -1 < x$2.stack.indexOf("@") ? "@unknown:0:0" : "";
 			}
 			return "\n" + prefix$2 + name + suffix;
@@ -15614,8 +15614,8 @@ function matchRoutesImpl(routes, locationArg, basename, allowPartial) {
 	}
 	return matches;
 }
-function convertRouteMatchToUiMatch(match$1, loaderData) {
-	let { route, pathname, params } = match$1;
+function convertRouteMatchToUiMatch(match$2, loaderData) {
+	let { route, pathname, params } = match$2;
 	return {
 		id: route.id,
 		pathname,
@@ -15699,26 +15699,26 @@ function matchRouteBranch(branch, pathname, allowPartial = false) {
 		let meta$2 = routesMeta[i$2];
 		let end = i$2 === routesMeta.length - 1;
 		let remainingPathname = matchedPathname === "/" ? pathname : pathname.slice(matchedPathname.length) || "/";
-		let match$1 = matchPath({
+		let match$2 = matchPath({
 			path: meta$2.relativePath,
 			caseSensitive: meta$2.caseSensitive,
 			end
 		}, remainingPathname);
 		let route = meta$2.route;
-		if (!match$1 && end && allowPartial && !routesMeta[routesMeta.length - 1].route.index) match$1 = matchPath({
+		if (!match$2 && end && allowPartial && !routesMeta[routesMeta.length - 1].route.index) match$2 = matchPath({
 			path: meta$2.relativePath,
 			caseSensitive: meta$2.caseSensitive,
 			end: false
 		}, remainingPathname);
-		if (!match$1) return null;
-		Object.assign(matchedParams, match$1.params);
+		if (!match$2) return null;
+		Object.assign(matchedParams, match$2.params);
 		matches.push({
 			params: matchedParams,
-			pathname: joinPaths([matchedPathname, match$1.pathname]),
-			pathnameBase: normalizePathname(joinPaths([matchedPathname, match$1.pathnameBase])),
+			pathname: joinPaths([matchedPathname, match$2.pathname]),
+			pathnameBase: normalizePathname(joinPaths([matchedPathname, match$2.pathnameBase])),
 			route
 		});
-		if (match$1.pathnameBase !== "/") matchedPathname = joinPaths([matchedPathname, match$1.pathnameBase]);
+		if (match$2.pathnameBase !== "/") matchedPathname = joinPaths([matchedPathname, match$2.pathnameBase]);
 	}
 	return matches;
 }
@@ -15729,11 +15729,11 @@ function matchPath(pattern, pathname) {
 		end: true
 	};
 	let [matcher, compiledParams] = compilePath(pattern.path, pattern.caseSensitive, pattern.end);
-	let match$1 = pathname.match(matcher);
-	if (!match$1) return null;
-	let matchedPathname = match$1[0];
+	let match$2 = pathname.match(matcher);
+	if (!match$2) return null;
+	let matchedPathname = match$2[0];
 	let pathnameBase = matchedPathname.replace(/(.)\/+$/, "$1");
-	let captureGroups = match$1.slice(1);
+	let captureGroups = match$2.slice(1);
 	return {
 		params: compiledParams.reduce((memo2, { paramName, isOptional }, index$1) => {
 			if (paramName === "*") {
@@ -15818,11 +15818,11 @@ function getInvalidPathError(char, field, dest, path$1) {
 	return `Cannot include a '${char}' character in a manually specified \`to.${field}\` field [${JSON.stringify(path$1)}].  Please separate it out to the \`to.${dest}\` field. Alternatively you may provide the full path as a string in <Link to="..."> and the router will parse it for you.`;
 }
 function getPathContributingMatches(matches) {
-	return matches.filter((match$1, index$1) => index$1 === 0 || match$1.route.path && match$1.route.path.length > 0);
+	return matches.filter((match$2, index$1) => index$1 === 0 || match$2.route.path && match$2.route.path.length > 0);
 }
 function getResolveToMatches(matches) {
 	let pathMatches = getPathContributingMatches(matches);
-	return pathMatches.map((match$1, idx) => idx === pathMatches.length - 1 ? match$1.pathname : match$1.pathnameBase);
+	return pathMatches.map((match$2, idx) => idx === pathMatches.length - 1 ? match$2.pathname : match$2.pathnameBase);
 }
 function resolveTo(toArg, routePathnames, locationPathname, isPathRelative = false) {
 	let to;
@@ -16051,10 +16051,10 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
 	let matches = matchRoutes(routes, { pathname: remainingPathname });
 	warning(parentRoute || matches != null, `No routes matched location "${location.pathname}${location.search}${location.hash}" `);
 	warning(matches == null || matches[matches.length - 1].route.element !== void 0 || matches[matches.length - 1].route.Component !== void 0 || matches[matches.length - 1].route.lazy !== void 0, `Matched leaf route at location "${location.pathname}${location.search}${location.hash}" does not have an element or Component. This means it will render an <Outlet /> with a null value by default resulting in an "empty" page.`);
-	let renderedMatches = _renderMatches(matches && matches.map((match$1) => Object.assign({}, match$1, {
-		params: Object.assign({}, parentParams, match$1.params),
-		pathname: joinPaths([parentPathnameBase, navigator$1.encodeLocation ? navigator$1.encodeLocation(match$1.pathname.replace(/\?/g, "%3F").replace(/#/g, "%23")).pathname : match$1.pathname]),
-		pathnameBase: match$1.pathnameBase === "/" ? parentPathnameBase : joinPaths([parentPathnameBase, navigator$1.encodeLocation ? navigator$1.encodeLocation(match$1.pathnameBase.replace(/\?/g, "%3F").replace(/#/g, "%23")).pathname : match$1.pathnameBase])
+	let renderedMatches = _renderMatches(matches && matches.map((match$2) => Object.assign({}, match$2, {
+		params: Object.assign({}, parentParams, match$2.params),
+		pathname: joinPaths([parentPathnameBase, navigator$1.encodeLocation ? navigator$1.encodeLocation(match$2.pathname.replace(/\?/g, "%3F").replace(/#/g, "%23")).pathname : match$2.pathname]),
+		pathnameBase: match$2.pathnameBase === "/" ? parentPathnameBase : joinPaths([parentPathnameBase, navigator$1.encodeLocation ? navigator$1.encodeLocation(match$2.pathnameBase.replace(/\?/g, "%3F").replace(/#/g, "%23")).pathname : match$2.pathnameBase])
 	})), parentMatches, dataRouterState, onError, future);
 	if (locationArg && renderedMatches) return /* @__PURE__ */ import_react.createElement(LocationContext.Provider, { value: {
 		location: {
@@ -16154,9 +16154,9 @@ function RSCErrorHandler({ children, error }) {
 	}
 	return children;
 }
-function RenderedRoute({ routeContext, match: match$1, children }) {
+function RenderedRoute({ routeContext, match: match$2, children }) {
 	let dataRouterContext = import_react.useContext(DataRouterContext);
-	if (dataRouterContext && dataRouterContext.static && dataRouterContext.staticContext && (match$1.route.errorElement || match$1.route.ErrorBoundary)) dataRouterContext.staticContext._deepestRenderedBoundaryId = match$1.route.id;
+	if (dataRouterContext && dataRouterContext.static && dataRouterContext.staticContext && (match$2.route.errorElement || match$2.route.ErrorBoundary)) dataRouterContext.staticContext._deepestRenderedBoundaryId = match$2.route.id;
 	return /* @__PURE__ */ import_react.createElement(RouteContext.Provider, { value: routeContext }, children);
 }
 function _renderMatches(matches, parentMatches = [], dataRouterState = null, onErrorHandler = null, future = null) {
@@ -16176,12 +16176,12 @@ function _renderMatches(matches, parentMatches = [], dataRouterState = null, onE
 	let renderFallback = false;
 	let fallbackIndex = -1;
 	if (dataRouterState) for (let i$2 = 0; i$2 < renderedMatches.length; i$2++) {
-		let match$1 = renderedMatches[i$2];
-		if (match$1.route.HydrateFallback || match$1.route.hydrateFallbackElement) fallbackIndex = i$2;
-		if (match$1.route.id) {
+		let match$2 = renderedMatches[i$2];
+		if (match$2.route.HydrateFallback || match$2.route.hydrateFallbackElement) fallbackIndex = i$2;
+		if (match$2.route.id) {
 			let { loaderData, errors: errors2 } = dataRouterState;
-			let needsToRunLoader = match$1.route.loader && !loaderData.hasOwnProperty(match$1.route.id) && (!errors2 || errors2[match$1.route.id] === void 0);
-			if (match$1.route.lazy || needsToRunLoader) {
+			let needsToRunLoader = match$2.route.loader && !loaderData.hasOwnProperty(match$2.route.id) && (!errors2 || errors2[match$2.route.id] === void 0);
+			if (match$2.route.lazy || needsToRunLoader) {
 				renderFallback = true;
 				if (fallbackIndex >= 0) renderedMatches = renderedMatches.slice(0, fallbackIndex + 1);
 				else renderedMatches = [renderedMatches[0]];
@@ -16197,14 +16197,14 @@ function _renderMatches(matches, parentMatches = [], dataRouterState = null, onE
 			errorInfo
 		});
 	} : void 0;
-	return renderedMatches.reduceRight((outlet, match$1, index$1) => {
+	return renderedMatches.reduceRight((outlet, match$2, index$1) => {
 		let error;
 		let shouldRenderHydrateFallback = false;
 		let errorElement = null;
 		let hydrateFallbackElement = null;
 		if (dataRouterState) {
-			error = errors && match$1.route.id ? errors[match$1.route.id] : void 0;
-			errorElement = match$1.route.errorElement || defaultErrorElement;
+			error = errors && match$2.route.id ? errors[match$2.route.id] : void 0;
+			errorElement = match$2.route.errorElement || defaultErrorElement;
 			if (renderFallback) {
 				if (fallbackIndex < 0 && index$1 === 0) {
 					warningOnce("route-fallback", false, "No `HydrateFallback` element provided to render during initial hydration");
@@ -16212,7 +16212,7 @@ function _renderMatches(matches, parentMatches = [], dataRouterState = null, onE
 					hydrateFallbackElement = null;
 				} else if (fallbackIndex === index$1) {
 					shouldRenderHydrateFallback = true;
-					hydrateFallbackElement = match$1.route.hydrateFallbackElement || null;
+					hydrateFallbackElement = match$2.route.hydrateFallbackElement || null;
 				}
 			}
 		}
@@ -16221,11 +16221,11 @@ function _renderMatches(matches, parentMatches = [], dataRouterState = null, onE
 			let children;
 			if (error) children = errorElement;
 			else if (shouldRenderHydrateFallback) children = hydrateFallbackElement;
-			else if (match$1.route.Component) children = /* @__PURE__ */ import_react.createElement(match$1.route.Component, null);
-			else if (match$1.route.element) children = match$1.route.element;
+			else if (match$2.route.Component) children = /* @__PURE__ */ import_react.createElement(match$2.route.Component, null);
+			else if (match$2.route.element) children = match$2.route.element;
 			else children = outlet;
 			return /* @__PURE__ */ import_react.createElement(RenderedRoute, {
-				match: match$1,
+				match: match$2,
 				routeContext: {
 					outlet,
 					matches: matches2,
@@ -16234,7 +16234,7 @@ function _renderMatches(matches, parentMatches = [], dataRouterState = null, onE
 				children
 			});
 		};
-		return dataRouterState && (match$1.route.ErrorBoundary || match$1.route.errorElement || index$1 === 0) ? /* @__PURE__ */ import_react.createElement(RenderErrorBoundary, {
+		return dataRouterState && (match$2.route.ErrorBoundary || match$2.route.errorElement || index$1 === 0) ? /* @__PURE__ */ import_react.createElement(RenderErrorBoundary, {
 			location: dataRouterState.location,
 			revalidation: dataRouterState.revalidation,
 			component: errorElement,
@@ -16532,7 +16532,7 @@ var ESCAPE_LOOKUP = {
 };
 var ESCAPE_REGEX = /[&><\u2028\u2029]/g;
 function escapeHtml(html) {
-	return html.replace(ESCAPE_REGEX, (match$1) => ESCAPE_LOOKUP[match$1]);
+	return html.replace(ESCAPE_REGEX, (match$2) => ESCAPE_LOOKUP[match$2]);
 }
 function invariant2(value, message$1) {
 	if (value === false || value === null || typeof value === "undefined") throw new Error(message$1);
@@ -16573,8 +16573,8 @@ function isHtmlLinkDescriptor(object$1) {
 	return typeof object$1.rel === "string" && typeof object$1.href === "string";
 }
 async function getKeyedPrefetchLinks(matches, manifest, routeModules) {
-	return dedupeLinkDescriptors((await Promise.all(matches.map(async (match$1) => {
-		let route = manifest.routes[match$1.route.id];
+	return dedupeLinkDescriptors((await Promise.all(matches.map(async (match$2) => {
+		let route = manifest.routes[match$2.route.id];
 		if (route) {
 			let mod = await loadRouteModule(route, routeModules);
 			return mod.links ? mod.links() : [];
@@ -16590,24 +16590,24 @@ async function getKeyedPrefetchLinks(matches, manifest, routeModules) {
 	}));
 }
 function getNewMatchesForLinks(page, nextMatches, currentMatches, manifest, location, mode) {
-	let isNew = (match$1, index$1) => {
+	let isNew = (match$2, index$1) => {
 		if (!currentMatches[index$1]) return true;
-		return match$1.route.id !== currentMatches[index$1].route.id;
+		return match$2.route.id !== currentMatches[index$1].route.id;
 	};
-	let matchPathChanged = (match$1, index$1) => {
-		return currentMatches[index$1].pathname !== match$1.pathname || currentMatches[index$1].route.path?.endsWith("*") && currentMatches[index$1].params["*"] !== match$1.params["*"];
+	let matchPathChanged = (match$2, index$1) => {
+		return currentMatches[index$1].pathname !== match$2.pathname || currentMatches[index$1].route.path?.endsWith("*") && currentMatches[index$1].params["*"] !== match$2.params["*"];
 	};
-	if (mode === "assets") return nextMatches.filter((match$1, index$1) => isNew(match$1, index$1) || matchPathChanged(match$1, index$1));
-	if (mode === "data") return nextMatches.filter((match$1, index$1) => {
-		let manifestRoute = manifest.routes[match$1.route.id];
+	if (mode === "assets") return nextMatches.filter((match$2, index$1) => isNew(match$2, index$1) || matchPathChanged(match$2, index$1));
+	if (mode === "data") return nextMatches.filter((match$2, index$1) => {
+		let manifestRoute = manifest.routes[match$2.route.id];
 		if (!manifestRoute || !manifestRoute.hasLoader) return false;
-		if (isNew(match$1, index$1) || matchPathChanged(match$1, index$1)) return true;
-		if (match$1.route.shouldRevalidate) {
-			let routeChoice = match$1.route.shouldRevalidate({
+		if (isNew(match$2, index$1) || matchPathChanged(match$2, index$1)) return true;
+		if (match$2.route.shouldRevalidate) {
+			let routeChoice = match$2.route.shouldRevalidate({
 				currentUrl: new URL(location.pathname + location.search + location.hash, window.origin),
 				currentParams: currentMatches[0]?.params || {},
 				nextUrl: new URL(page, window.origin),
-				nextParams: match$1.params,
+				nextParams: match$2.params,
 				defaultShouldRevalidate: true
 			});
 			if (typeof routeChoice === "boolean") return routeChoice;
@@ -16617,8 +16617,8 @@ function getNewMatchesForLinks(page, nextMatches, currentMatches, manifest, loca
 	return [];
 }
 function getModuleLinkHrefs(matches, manifest, { includeHydrateFallback } = {}) {
-	return dedupeHrefs(matches.map((match$1) => {
-		let route = manifest.routes[match$1.route.id];
+	return dedupeHrefs(matches.map((match$2) => {
+		let route = manifest.routes[match$2.route.id];
 		if (!route) return [];
 		let hrefs = [route.module];
 		if (route.clientActionModule) hrefs = hrefs.concat(route.clientActionModule);
@@ -17128,7 +17128,7 @@ function useFormAction(action, { relative } = {}) {
 	let { basename } = import_react.useContext(NavigationContext);
 	let routeContext = import_react.useContext(RouteContext);
 	invariant$1(routeContext, "useFormAction must be used inside a RouteContext");
-	let [match$1] = routeContext.matches.slice(-1);
+	let [match$2] = routeContext.matches.slice(-1);
 	let path$1 = { ...useResolvedPath(action ? action : ".", { relative }) };
 	let location = useLocation();
 	if (action == null) {
@@ -17142,7 +17142,7 @@ function useFormAction(action, { relative } = {}) {
 			path$1.search = qs ? `?${qs}` : "";
 		}
 	}
-	if ((!action || action === ".") && match$1.route.index) path$1.search = path$1.search ? path$1.search.replace(/^\?/, "?index&") : "?index";
+	if ((!action || action === ".") && match$2.route.index) path$1.search = path$1.search ? path$1.search.replace(/^\?/, "?index&") : "?index";
 	if (basename !== "/") path$1.pathname = path$1.pathname === "/" ? basename : joinPaths([basename, path$1.pathname]);
 	return createPath(path$1);
 }
@@ -18848,7 +18848,7 @@ const cva = (base, config$1) => (props) => {
 * See the LICENSE file in the root directory of this source tree.
 */
 var toKebabCase = (string$2) => string$2.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
-var toCamelCase = (string$2) => string$2.replace(/^([A-Z])|[\s-_]+(\w)/g, (match$1, p1, p2) => p2 ? p2.toUpperCase() : p1.toLowerCase());
+var toCamelCase = (string$2) => string$2.replace(/^([A-Z])|[\s-_]+(\w)/g, (match$2, p1, p2) => p2 ? p2.toUpperCase() : p1.toLowerCase());
 var toPascalCase = (string$2) => {
 	const camelCase = toCamelCase(string$2);
 	return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
@@ -19486,6 +19486,20 @@ var Send = createLucideIcon("send", [["path", {
 	d: "m21.854 2.147-10.94 10.939",
 	key: "12cjpa"
 }]]);
+var ShoppingBag = createLucideIcon("shopping-bag", [
+	["path", {
+		d: "M16 10a4 4 0 0 1-8 0",
+		key: "1ltviw"
+	}],
+	["path", {
+		d: "M3.103 6.034h17.794",
+		key: "awc11p"
+	}],
+	["path", {
+		d: "M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z",
+		key: "o988cm"
+	}]
+]);
 var Smartphone = createLucideIcon("smartphone", [["rect", {
 	width: "14",
 	height: "20",
@@ -26228,7 +26242,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$15({ inst: {
+			cachedValue = useState$16({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26242,7 +26256,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$10(function() {
+			useEffect$11(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26265,7 +26279,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$15 = React$64.useState, useEffect$10 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$16 = React$64.useState, useEffect$11 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$64.useSyncExternalStore ? React$64.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -35952,8 +35966,8 @@ var require__stringToPath = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	module.exports = memoizeCapped(function(string$2) {
 		var result = [];
 		if (string$2.charCodeAt(0) === 46) result.push("");
-		string$2.replace(rePropName, function(match$1, number$3, quote, subString) {
-			result.push(quote ? subString.replace(reEscapeChar, "$1") : number$3 || match$1);
+		string$2.replace(rePropName, function(match$2, number$3, quote, subString) {
+			result.push(quote ? subString.replace(reEscapeChar, "$1") : number$3 || match$2);
 		});
 		return result;
 	});
@@ -42392,19 +42406,19 @@ function formatNumerals_default(numerals) {
 }
 var re$1 = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
 function formatSpecifier(specifier) {
-	if (!(match$1 = re$1.exec(specifier))) throw new Error("invalid format: " + specifier);
-	var match$1;
+	if (!(match$2 = re$1.exec(specifier))) throw new Error("invalid format: " + specifier);
+	var match$2;
 	return new FormatSpecifier({
-		fill: match$1[1],
-		align: match$1[2],
-		sign: match$1[3],
-		symbol: match$1[4],
-		zero: match$1[5],
-		width: match$1[6],
-		comma: match$1[7],
-		precision: match$1[8] && match$1[8].slice(1),
-		trim: match$1[9],
-		type: match$1[10]
+		fill: match$2[1],
+		align: match$2[2],
+		sign: match$2[3],
+		symbol: match$2[4],
+		zero: match$2[5],
+		width: match$2[6],
+		comma: match$2[7],
+		precision: match$2[8] && match$2[8].slice(1),
+		trim: match$2[9],
+		type: match$2[10]
 	});
 }
 formatSpecifier.prototype = FormatSpecifier.prototype;
@@ -63799,7 +63813,7 @@ function endOfISOWeek(date$4, options$1) {
 		weekStartsOn: 1
 	});
 }
-var formatDistanceLocale = {
+var formatDistanceLocale$1 = {
 	lessThanXSeconds: {
 		one: "less than a second",
 		other: "less than {{count}} seconds"
@@ -63862,9 +63876,9 @@ var formatDistanceLocale = {
 		other: "almost {{count}} years"
 	}
 };
-const formatDistance = (token, count$3, options$1) => {
+const formatDistance$1 = (token, count$3, options$1) => {
 	let result;
-	const tokenValue = formatDistanceLocale[token];
+	const tokenValue = formatDistanceLocale$1[token];
 	if (typeof tokenValue === "string") result = tokenValue;
 	else if (count$3 === 1) result = tokenValue.one;
 	else result = tokenValue.other.replace("{{count}}", count$3.toString());
@@ -63878,7 +63892,7 @@ function buildFormatLongFn(args) {
 		return args.formats[width] || args.formats[args.defaultWidth];
 	};
 }
-const formatLong = {
+const formatLong$1 = {
 	date: buildFormatLongFn({
 		formats: {
 			full: "EEEE, MMMM do, y",
@@ -63907,7 +63921,7 @@ const formatLong = {
 		defaultWidth: "full"
 	})
 };
-var formatRelativeLocale = {
+var formatRelativeLocale$1 = {
 	lastWeek: "'last' eeee 'at' p",
 	yesterday: "'yesterday at' p",
 	today: "'today at' p",
@@ -63915,7 +63929,7 @@ var formatRelativeLocale = {
 	nextWeek: "eeee 'at' p",
 	other: "P"
 };
-const formatRelative = (token, _date$1, _baseDate, _options) => formatRelativeLocale[token];
+const formatRelative$1 = (token, _date$1, _baseDate, _options) => formatRelativeLocale$1[token];
 function buildLocalizeFn(args) {
 	return (value, options$1) => {
 		const context = options$1?.context ? String(options$1.context) : "standalone";
@@ -63933,12 +63947,12 @@ function buildLocalizeFn(args) {
 		return valuesArray[index$1];
 	};
 }
-var eraValues = {
+var eraValues$1 = {
 	narrow: ["B", "A"],
 	abbreviated: ["BC", "AD"],
 	wide: ["Before Christ", "Anno Domini"]
 };
-var quarterValues = {
+var quarterValues$1 = {
 	narrow: [
 		"1",
 		"2",
@@ -63958,7 +63972,7 @@ var quarterValues = {
 		"4th quarter"
 	]
 };
-var monthValues = {
+var monthValues$1 = {
 	narrow: [
 		"J",
 		"F",
@@ -64002,7 +64016,7 @@ var monthValues = {
 		"December"
 	]
 };
-var dayValues = {
+var dayValues$1 = {
 	narrow: [
 		"S",
 		"M",
@@ -64040,7 +64054,7 @@ var dayValues = {
 		"Saturday"
 	]
 };
-var dayPeriodValues = {
+var dayPeriodValues$1 = {
 	narrow: {
 		am: "a",
 		pm: "p",
@@ -64072,7 +64086,7 @@ var dayPeriodValues = {
 		night: "night"
 	}
 };
-var formattingDayPeriodValues = {
+var formattingDayPeriodValues$1 = {
 	narrow: {
 		am: "a",
 		pm: "p",
@@ -64104,7 +64118,7 @@ var formattingDayPeriodValues = {
 		night: "at night"
 	}
 };
-var ordinalNumber = (dirtyNumber, _options) => {
+var ordinalNumber$1 = (dirtyNumber, _options) => {
 	const number$3 = Number(dirtyNumber);
 	const rem100 = number$3 % 100;
 	if (rem100 > 20 || rem100 < 10) switch (rem100 % 10) {
@@ -64114,29 +64128,29 @@ var ordinalNumber = (dirtyNumber, _options) => {
 	}
 	return number$3 + "th";
 };
-const localize = {
-	ordinalNumber,
+const localize$1 = {
+	ordinalNumber: ordinalNumber$1,
 	era: buildLocalizeFn({
-		values: eraValues,
+		values: eraValues$1,
 		defaultWidth: "wide"
 	}),
 	quarter: buildLocalizeFn({
-		values: quarterValues,
+		values: quarterValues$1,
 		defaultWidth: "wide",
 		argumentCallback: (quarter) => quarter - 1
 	}),
 	month: buildLocalizeFn({
-		values: monthValues,
+		values: monthValues$1,
 		defaultWidth: "wide"
 	}),
 	day: buildLocalizeFn({
-		values: dayValues,
+		values: dayValues$1,
 		defaultWidth: "wide"
 	}),
 	dayPeriod: buildLocalizeFn({
-		values: dayPeriodValues,
+		values: dayPeriodValues$1,
 		defaultWidth: "wide",
-		formattingValues: formattingDayPeriodValues,
+		formattingValues: formattingDayPeriodValues$1,
 		defaultFormattingWidth: "wide"
 	})
 };
@@ -64183,10 +64197,10 @@ function buildMatchPatternFn(args) {
 }
 const enUS$1 = {
 	code: "en-US",
-	formatDistance,
-	formatLong,
-	formatRelative,
-	localize,
+	formatDistance: formatDistance$1,
+	formatLong: formatLong$1,
+	formatRelative: formatRelative$1,
+	localize: localize$1,
 	match: {
 		ordinalNumber: buildMatchPatternFn({
 			matchPattern: /^(\d+)(th|st|nd|rd)?/i,
@@ -64408,30 +64422,30 @@ var dayPeriodEnum = {
 	night: "night"
 };
 const formatters = {
-	G: function(date$4, token, localize$1) {
+	G: function(date$4, token, localize$2) {
 		const era = date$4.getFullYear() > 0 ? 1 : 0;
 		switch (token) {
 			case "G":
 			case "GG":
-			case "GGG": return localize$1.era(era, { width: "abbreviated" });
-			case "GGGGG": return localize$1.era(era, { width: "narrow" });
+			case "GGG": return localize$2.era(era, { width: "abbreviated" });
+			case "GGGGG": return localize$2.era(era, { width: "narrow" });
 			case "GGGG":
-			default: return localize$1.era(era, { width: "wide" });
+			default: return localize$2.era(era, { width: "wide" });
 		}
 	},
-	y: function(date$4, token, localize$1) {
+	y: function(date$4, token, localize$2) {
 		if (token === "yo") {
 			const signedYear = date$4.getFullYear();
 			const year = signedYear > 0 ? signedYear : 1 - signedYear;
-			return localize$1.ordinalNumber(year, { unit: "year" });
+			return localize$2.ordinalNumber(year, { unit: "year" });
 		}
 		return lightFormatters.y(date$4, token);
 	},
-	Y: function(date$4, token, localize$1, options$1) {
+	Y: function(date$4, token, localize$2, options$1) {
 		const signedWeekYear = getWeekYear(date$4, options$1);
 		const weekYear = signedWeekYear > 0 ? signedWeekYear : 1 - signedWeekYear;
 		if (token === "YY") return addLeadingZeros(weekYear % 100, 2);
-		if (token === "Yo") return localize$1.ordinalNumber(weekYear, { unit: "year" });
+		if (token === "Yo") return localize$2.ordinalNumber(weekYear, { unit: "year" });
 		return addLeadingZeros(weekYear, token.length);
 	},
 	R: function(date$4, token) {
@@ -64440,235 +64454,235 @@ const formatters = {
 	u: function(date$4, token) {
 		return addLeadingZeros(date$4.getFullYear(), token.length);
 	},
-	Q: function(date$4, token, localize$1) {
+	Q: function(date$4, token, localize$2) {
 		const quarter = Math.ceil((date$4.getMonth() + 1) / 3);
 		switch (token) {
 			case "Q": return String(quarter);
 			case "QQ": return addLeadingZeros(quarter, 2);
-			case "Qo": return localize$1.ordinalNumber(quarter, { unit: "quarter" });
-			case "QQQ": return localize$1.quarter(quarter, {
+			case "Qo": return localize$2.ordinalNumber(quarter, { unit: "quarter" });
+			case "QQQ": return localize$2.quarter(quarter, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "QQQQQ": return localize$1.quarter(quarter, {
+			case "QQQQQ": return localize$2.quarter(quarter, {
 				width: "narrow",
 				context: "formatting"
 			});
 			case "QQQQ":
-			default: return localize$1.quarter(quarter, {
+			default: return localize$2.quarter(quarter, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	q: function(date$4, token, localize$1) {
+	q: function(date$4, token, localize$2) {
 		const quarter = Math.ceil((date$4.getMonth() + 1) / 3);
 		switch (token) {
 			case "q": return String(quarter);
 			case "qq": return addLeadingZeros(quarter, 2);
-			case "qo": return localize$1.ordinalNumber(quarter, { unit: "quarter" });
-			case "qqq": return localize$1.quarter(quarter, {
+			case "qo": return localize$2.ordinalNumber(quarter, { unit: "quarter" });
+			case "qqq": return localize$2.quarter(quarter, {
 				width: "abbreviated",
 				context: "standalone"
 			});
-			case "qqqqq": return localize$1.quarter(quarter, {
+			case "qqqqq": return localize$2.quarter(quarter, {
 				width: "narrow",
 				context: "standalone"
 			});
 			case "qqqq":
-			default: return localize$1.quarter(quarter, {
+			default: return localize$2.quarter(quarter, {
 				width: "wide",
 				context: "standalone"
 			});
 		}
 	},
-	M: function(date$4, token, localize$1) {
+	M: function(date$4, token, localize$2) {
 		const month = date$4.getMonth();
 		switch (token) {
 			case "M":
 			case "MM": return lightFormatters.M(date$4, token);
-			case "Mo": return localize$1.ordinalNumber(month + 1, { unit: "month" });
-			case "MMM": return localize$1.month(month, {
+			case "Mo": return localize$2.ordinalNumber(month + 1, { unit: "month" });
+			case "MMM": return localize$2.month(month, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "MMMMM": return localize$1.month(month, {
+			case "MMMMM": return localize$2.month(month, {
 				width: "narrow",
 				context: "formatting"
 			});
 			case "MMMM":
-			default: return localize$1.month(month, {
+			default: return localize$2.month(month, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	L: function(date$4, token, localize$1) {
+	L: function(date$4, token, localize$2) {
 		const month = date$4.getMonth();
 		switch (token) {
 			case "L": return String(month + 1);
 			case "LL": return addLeadingZeros(month + 1, 2);
-			case "Lo": return localize$1.ordinalNumber(month + 1, { unit: "month" });
-			case "LLL": return localize$1.month(month, {
+			case "Lo": return localize$2.ordinalNumber(month + 1, { unit: "month" });
+			case "LLL": return localize$2.month(month, {
 				width: "abbreviated",
 				context: "standalone"
 			});
-			case "LLLLL": return localize$1.month(month, {
+			case "LLLLL": return localize$2.month(month, {
 				width: "narrow",
 				context: "standalone"
 			});
 			case "LLLL":
-			default: return localize$1.month(month, {
+			default: return localize$2.month(month, {
 				width: "wide",
 				context: "standalone"
 			});
 		}
 	},
-	w: function(date$4, token, localize$1, options$1) {
+	w: function(date$4, token, localize$2, options$1) {
 		const week = getWeek(date$4, options$1);
-		if (token === "wo") return localize$1.ordinalNumber(week, { unit: "week" });
+		if (token === "wo") return localize$2.ordinalNumber(week, { unit: "week" });
 		return addLeadingZeros(week, token.length);
 	},
-	I: function(date$4, token, localize$1) {
+	I: function(date$4, token, localize$2) {
 		const isoWeek = getISOWeek(date$4);
-		if (token === "Io") return localize$1.ordinalNumber(isoWeek, { unit: "week" });
+		if (token === "Io") return localize$2.ordinalNumber(isoWeek, { unit: "week" });
 		return addLeadingZeros(isoWeek, token.length);
 	},
-	d: function(date$4, token, localize$1) {
-		if (token === "do") return localize$1.ordinalNumber(date$4.getDate(), { unit: "date" });
+	d: function(date$4, token, localize$2) {
+		if (token === "do") return localize$2.ordinalNumber(date$4.getDate(), { unit: "date" });
 		return lightFormatters.d(date$4, token);
 	},
-	D: function(date$4, token, localize$1) {
+	D: function(date$4, token, localize$2) {
 		const dayOfYear = getDayOfYear(date$4);
-		if (token === "Do") return localize$1.ordinalNumber(dayOfYear, { unit: "dayOfYear" });
+		if (token === "Do") return localize$2.ordinalNumber(dayOfYear, { unit: "dayOfYear" });
 		return addLeadingZeros(dayOfYear, token.length);
 	},
-	E: function(date$4, token, localize$1) {
+	E: function(date$4, token, localize$2) {
 		const dayOfWeek = date$4.getDay();
 		switch (token) {
 			case "E":
 			case "EE":
-			case "EEE": return localize$1.day(dayOfWeek, {
+			case "EEE": return localize$2.day(dayOfWeek, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "EEEEE": return localize$1.day(dayOfWeek, {
+			case "EEEEE": return localize$2.day(dayOfWeek, {
 				width: "narrow",
 				context: "formatting"
 			});
-			case "EEEEEE": return localize$1.day(dayOfWeek, {
+			case "EEEEEE": return localize$2.day(dayOfWeek, {
 				width: "short",
 				context: "formatting"
 			});
 			case "EEEE":
-			default: return localize$1.day(dayOfWeek, {
+			default: return localize$2.day(dayOfWeek, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	e: function(date$4, token, localize$1, options$1) {
+	e: function(date$4, token, localize$2, options$1) {
 		const dayOfWeek = date$4.getDay();
 		const localDayOfWeek = (dayOfWeek - options$1.weekStartsOn + 8) % 7 || 7;
 		switch (token) {
 			case "e": return String(localDayOfWeek);
 			case "ee": return addLeadingZeros(localDayOfWeek, 2);
-			case "eo": return localize$1.ordinalNumber(localDayOfWeek, { unit: "day" });
-			case "eee": return localize$1.day(dayOfWeek, {
+			case "eo": return localize$2.ordinalNumber(localDayOfWeek, { unit: "day" });
+			case "eee": return localize$2.day(dayOfWeek, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "eeeee": return localize$1.day(dayOfWeek, {
+			case "eeeee": return localize$2.day(dayOfWeek, {
 				width: "narrow",
 				context: "formatting"
 			});
-			case "eeeeee": return localize$1.day(dayOfWeek, {
+			case "eeeeee": return localize$2.day(dayOfWeek, {
 				width: "short",
 				context: "formatting"
 			});
 			case "eeee":
-			default: return localize$1.day(dayOfWeek, {
+			default: return localize$2.day(dayOfWeek, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	c: function(date$4, token, localize$1, options$1) {
+	c: function(date$4, token, localize$2, options$1) {
 		const dayOfWeek = date$4.getDay();
 		const localDayOfWeek = (dayOfWeek - options$1.weekStartsOn + 8) % 7 || 7;
 		switch (token) {
 			case "c": return String(localDayOfWeek);
 			case "cc": return addLeadingZeros(localDayOfWeek, token.length);
-			case "co": return localize$1.ordinalNumber(localDayOfWeek, { unit: "day" });
-			case "ccc": return localize$1.day(dayOfWeek, {
+			case "co": return localize$2.ordinalNumber(localDayOfWeek, { unit: "day" });
+			case "ccc": return localize$2.day(dayOfWeek, {
 				width: "abbreviated",
 				context: "standalone"
 			});
-			case "ccccc": return localize$1.day(dayOfWeek, {
+			case "ccccc": return localize$2.day(dayOfWeek, {
 				width: "narrow",
 				context: "standalone"
 			});
-			case "cccccc": return localize$1.day(dayOfWeek, {
+			case "cccccc": return localize$2.day(dayOfWeek, {
 				width: "short",
 				context: "standalone"
 			});
 			case "cccc":
-			default: return localize$1.day(dayOfWeek, {
+			default: return localize$2.day(dayOfWeek, {
 				width: "wide",
 				context: "standalone"
 			});
 		}
 	},
-	i: function(date$4, token, localize$1) {
+	i: function(date$4, token, localize$2) {
 		const dayOfWeek = date$4.getDay();
 		const isoDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
 		switch (token) {
 			case "i": return String(isoDayOfWeek);
 			case "ii": return addLeadingZeros(isoDayOfWeek, token.length);
-			case "io": return localize$1.ordinalNumber(isoDayOfWeek, { unit: "day" });
-			case "iii": return localize$1.day(dayOfWeek, {
+			case "io": return localize$2.ordinalNumber(isoDayOfWeek, { unit: "day" });
+			case "iii": return localize$2.day(dayOfWeek, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "iiiii": return localize$1.day(dayOfWeek, {
+			case "iiiii": return localize$2.day(dayOfWeek, {
 				width: "narrow",
 				context: "formatting"
 			});
-			case "iiiiii": return localize$1.day(dayOfWeek, {
+			case "iiiiii": return localize$2.day(dayOfWeek, {
 				width: "short",
 				context: "formatting"
 			});
 			case "iiii":
-			default: return localize$1.day(dayOfWeek, {
+			default: return localize$2.day(dayOfWeek, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	a: function(date$4, token, localize$1) {
+	a: function(date$4, token, localize$2) {
 		const dayPeriodEnumValue = date$4.getHours() / 12 >= 1 ? "pm" : "am";
 		switch (token) {
 			case "a":
-			case "aa": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "aa": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "aaa": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "aaa": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "abbreviated",
 				context: "formatting"
 			}).toLowerCase();
-			case "aaaaa": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "aaaaa": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "narrow",
 				context: "formatting"
 			});
 			case "aaaa":
-			default: return localize$1.dayPeriod(dayPeriodEnumValue, {
+			default: return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	b: function(date$4, token, localize$1) {
+	b: function(date$4, token, localize$2) {
 		const hours = date$4.getHours();
 		let dayPeriodEnumValue;
 		if (hours === 12) dayPeriodEnumValue = dayPeriodEnum.noon;
@@ -64676,26 +64690,26 @@ const formatters = {
 		else dayPeriodEnumValue = hours / 12 >= 1 ? "pm" : "am";
 		switch (token) {
 			case "b":
-			case "bb": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "bb": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "bbb": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "bbb": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "abbreviated",
 				context: "formatting"
 			}).toLowerCase();
-			case "bbbbb": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "bbbbb": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "narrow",
 				context: "formatting"
 			});
 			case "bbbb":
-			default: return localize$1.dayPeriod(dayPeriodEnumValue, {
+			default: return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	B: function(date$4, token, localize$1) {
+	B: function(date$4, token, localize$2) {
 		const hours = date$4.getHours();
 		let dayPeriodEnumValue;
 		if (hours >= 17) dayPeriodEnumValue = dayPeriodEnum.evening;
@@ -64705,50 +64719,50 @@ const formatters = {
 		switch (token) {
 			case "B":
 			case "BB":
-			case "BBB": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "BBB": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "BBBBB": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "BBBBB": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "narrow",
 				context: "formatting"
 			});
 			case "BBBB":
-			default: return localize$1.dayPeriod(dayPeriodEnumValue, {
+			default: return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	h: function(date$4, token, localize$1) {
+	h: function(date$4, token, localize$2) {
 		if (token === "ho") {
 			let hours = date$4.getHours() % 12;
 			if (hours === 0) hours = 12;
-			return localize$1.ordinalNumber(hours, { unit: "hour" });
+			return localize$2.ordinalNumber(hours, { unit: "hour" });
 		}
 		return lightFormatters.h(date$4, token);
 	},
-	H: function(date$4, token, localize$1) {
-		if (token === "Ho") return localize$1.ordinalNumber(date$4.getHours(), { unit: "hour" });
+	H: function(date$4, token, localize$2) {
+		if (token === "Ho") return localize$2.ordinalNumber(date$4.getHours(), { unit: "hour" });
 		return lightFormatters.H(date$4, token);
 	},
-	K: function(date$4, token, localize$1) {
+	K: function(date$4, token, localize$2) {
 		const hours = date$4.getHours() % 12;
-		if (token === "Ko") return localize$1.ordinalNumber(hours, { unit: "hour" });
+		if (token === "Ko") return localize$2.ordinalNumber(hours, { unit: "hour" });
 		return addLeadingZeros(hours, token.length);
 	},
-	k: function(date$4, token, localize$1) {
+	k: function(date$4, token, localize$2) {
 		let hours = date$4.getHours();
 		if (hours === 0) hours = 24;
-		if (token === "ko") return localize$1.ordinalNumber(hours, { unit: "hour" });
+		if (token === "ko") return localize$2.ordinalNumber(hours, { unit: "hour" });
 		return addLeadingZeros(hours, token.length);
 	},
-	m: function(date$4, token, localize$1) {
-		if (token === "mo") return localize$1.ordinalNumber(date$4.getMinutes(), { unit: "minute" });
+	m: function(date$4, token, localize$2) {
+		if (token === "mo") return localize$2.ordinalNumber(date$4.getMinutes(), { unit: "minute" });
 		return lightFormatters.m(date$4, token);
 	},
-	s: function(date$4, token, localize$1) {
-		if (token === "so") return localize$1.ordinalNumber(date$4.getSeconds(), { unit: "second" });
+	s: function(date$4, token, localize$2) {
+		if (token === "so") return localize$2.ordinalNumber(date$4.getSeconds(), { unit: "second" });
 		return lightFormatters.s(date$4, token);
 	},
 	S: function(date$4, token) {
@@ -64823,46 +64837,46 @@ function formatTimezone(offset$3, delimiter = "") {
 	const minutes = addLeadingZeros(absOffset % 60, 2);
 	return sign$1 + hours + delimiter + minutes;
 }
-var dateLongFormatter = (pattern, formatLong$1) => {
+var dateLongFormatter = (pattern, formatLong$2) => {
 	switch (pattern) {
-		case "P": return formatLong$1.date({ width: "short" });
-		case "PP": return formatLong$1.date({ width: "medium" });
-		case "PPP": return formatLong$1.date({ width: "long" });
+		case "P": return formatLong$2.date({ width: "short" });
+		case "PP": return formatLong$2.date({ width: "medium" });
+		case "PPP": return formatLong$2.date({ width: "long" });
 		case "PPPP":
-		default: return formatLong$1.date({ width: "full" });
+		default: return formatLong$2.date({ width: "full" });
 	}
 };
-var timeLongFormatter = (pattern, formatLong$1) => {
+var timeLongFormatter = (pattern, formatLong$2) => {
 	switch (pattern) {
-		case "p": return formatLong$1.time({ width: "short" });
-		case "pp": return formatLong$1.time({ width: "medium" });
-		case "ppp": return formatLong$1.time({ width: "long" });
+		case "p": return formatLong$2.time({ width: "short" });
+		case "pp": return formatLong$2.time({ width: "medium" });
+		case "ppp": return formatLong$2.time({ width: "long" });
 		case "pppp":
-		default: return formatLong$1.time({ width: "full" });
+		default: return formatLong$2.time({ width: "full" });
 	}
 };
-var dateTimeLongFormatter = (pattern, formatLong$1) => {
+var dateTimeLongFormatter = (pattern, formatLong$2) => {
 	const matchResult = pattern.match(/(P+)(p+)?/) || [];
 	const datePattern = matchResult[1];
 	const timePattern = matchResult[2];
-	if (!timePattern) return dateLongFormatter(pattern, formatLong$1);
+	if (!timePattern) return dateLongFormatter(pattern, formatLong$2);
 	let dateTimeFormat;
 	switch (datePattern) {
 		case "P":
-			dateTimeFormat = formatLong$1.dateTime({ width: "short" });
+			dateTimeFormat = formatLong$2.dateTime({ width: "short" });
 			break;
 		case "PP":
-			dateTimeFormat = formatLong$1.dateTime({ width: "medium" });
+			dateTimeFormat = formatLong$2.dateTime({ width: "medium" });
 			break;
 		case "PPP":
-			dateTimeFormat = formatLong$1.dateTime({ width: "long" });
+			dateTimeFormat = formatLong$2.dateTime({ width: "long" });
 			break;
 		case "PPPP":
 		default:
-			dateTimeFormat = formatLong$1.dateTime({ width: "full" });
+			dateTimeFormat = formatLong$2.dateTime({ width: "full" });
 			break;
 	}
-	return dateTimeFormat.replace("{{date}}", dateLongFormatter(datePattern, formatLong$1)).replace("{{time}}", timeLongFormatter(timePattern, formatLong$1));
+	return dateTimeFormat.replace("{{date}}", dateLongFormatter(datePattern, formatLong$2)).replace("{{time}}", timeLongFormatter(timePattern, formatLong$2));
 };
 const longFormatters = {
 	p: timeLongFormatter,
@@ -66587,6 +66601,468 @@ function endOfBroadcastWeek(date$4, dateLib) {
 	const numberOfWeeks = getBroadcastWeeksInMonth(date$4, dateLib);
 	return dateLib.addDays(startDate, numberOfWeeks * 7 - 1);
 }
+var formatDistanceLocale = {
+	lessThanXSeconds: {
+		one: "menos de um segundo",
+		other: "menos de {{count}} segundos"
+	},
+	xSeconds: {
+		one: "1 segundo",
+		other: "{{count}} segundos"
+	},
+	halfAMinute: "meio minuto",
+	lessThanXMinutes: {
+		one: "menos de um minuto",
+		other: "menos de {{count}} minutos"
+	},
+	xMinutes: {
+		one: "1 minuto",
+		other: "{{count}} minutos"
+	},
+	aboutXHours: {
+		one: "cerca de 1 hora",
+		other: "cerca de {{count}} horas"
+	},
+	xHours: {
+		one: "1 hora",
+		other: "{{count}} horas"
+	},
+	xDays: {
+		one: "1 dia",
+		other: "{{count}} dias"
+	},
+	aboutXWeeks: {
+		one: "cerca de 1 semana",
+		other: "cerca de {{count}} semanas"
+	},
+	xWeeks: {
+		one: "1 semana",
+		other: "{{count}} semanas"
+	},
+	aboutXMonths: {
+		one: "cerca de 1 mês",
+		other: "cerca de {{count}} meses"
+	},
+	xMonths: {
+		one: "1 mês",
+		other: "{{count}} meses"
+	},
+	aboutXYears: {
+		one: "cerca de 1 ano",
+		other: "cerca de {{count}} anos"
+	},
+	xYears: {
+		one: "1 ano",
+		other: "{{count}} anos"
+	},
+	overXYears: {
+		one: "mais de 1 ano",
+		other: "mais de {{count}} anos"
+	},
+	almostXYears: {
+		one: "quase 1 ano",
+		other: "quase {{count}} anos"
+	}
+};
+const formatDistance = (token, count$3, options$1) => {
+	let result;
+	const tokenValue = formatDistanceLocale[token];
+	if (typeof tokenValue === "string") result = tokenValue;
+	else if (count$3 === 1) result = tokenValue.one;
+	else result = tokenValue.other.replace("{{count}}", String(count$3));
+	if (options$1?.addSuffix) if (options$1.comparison && options$1.comparison > 0) return "em " + result;
+	else return "há " + result;
+	return result;
+};
+const formatLong = {
+	date: buildFormatLongFn({
+		formats: {
+			full: "EEEE, d 'de' MMMM 'de' y",
+			long: "d 'de' MMMM 'de' y",
+			medium: "d MMM y",
+			short: "dd/MM/yyyy"
+		},
+		defaultWidth: "full"
+	}),
+	time: buildFormatLongFn({
+		formats: {
+			full: "HH:mm:ss zzzz",
+			long: "HH:mm:ss z",
+			medium: "HH:mm:ss",
+			short: "HH:mm"
+		},
+		defaultWidth: "full"
+	}),
+	dateTime: buildFormatLongFn({
+		formats: {
+			full: "{{date}} 'às' {{time}}",
+			long: "{{date}} 'às' {{time}}",
+			medium: "{{date}}, {{time}}",
+			short: "{{date}}, {{time}}"
+		},
+		defaultWidth: "full"
+	})
+};
+var formatRelativeLocale = {
+	lastWeek: (date$4) => {
+		const weekday = date$4.getDay();
+		return "'" + (weekday === 0 || weekday === 6 ? "último" : "última") + "' eeee 'às' p";
+	},
+	yesterday: "'ontem às' p",
+	today: "'hoje às' p",
+	tomorrow: "'amanhã às' p",
+	nextWeek: "eeee 'às' p",
+	other: "P"
+};
+const formatRelative = (token, date$4, _baseDate, _options) => {
+	const format$2 = formatRelativeLocale[token];
+	if (typeof format$2 === "function") return format$2(date$4);
+	return format$2;
+};
+var eraValues = {
+	narrow: ["AC", "DC"],
+	abbreviated: ["AC", "DC"],
+	wide: ["antes de cristo", "depois de cristo"]
+};
+var quarterValues = {
+	narrow: [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	abbreviated: [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
+	wide: [
+		"1º trimestre",
+		"2º trimestre",
+		"3º trimestre",
+		"4º trimestre"
+	]
+};
+var monthValues = {
+	narrow: [
+		"j",
+		"f",
+		"m",
+		"a",
+		"m",
+		"j",
+		"j",
+		"a",
+		"s",
+		"o",
+		"n",
+		"d"
+	],
+	abbreviated: [
+		"jan",
+		"fev",
+		"mar",
+		"abr",
+		"mai",
+		"jun",
+		"jul",
+		"ago",
+		"set",
+		"out",
+		"nov",
+		"dez"
+	],
+	wide: [
+		"janeiro",
+		"fevereiro",
+		"março",
+		"abril",
+		"maio",
+		"junho",
+		"julho",
+		"agosto",
+		"setembro",
+		"outubro",
+		"novembro",
+		"dezembro"
+	]
+};
+var dayValues = {
+	narrow: [
+		"D",
+		"S",
+		"T",
+		"Q",
+		"Q",
+		"S",
+		"S"
+	],
+	short: [
+		"dom",
+		"seg",
+		"ter",
+		"qua",
+		"qui",
+		"sex",
+		"sab"
+	],
+	abbreviated: [
+		"domingo",
+		"segunda",
+		"terça",
+		"quarta",
+		"quinta",
+		"sexta",
+		"sábado"
+	],
+	wide: [
+		"domingo",
+		"segunda-feira",
+		"terça-feira",
+		"quarta-feira",
+		"quinta-feira",
+		"sexta-feira",
+		"sábado"
+	]
+};
+var dayPeriodValues = {
+	narrow: {
+		am: "a",
+		pm: "p",
+		midnight: "mn",
+		noon: "md",
+		morning: "manhã",
+		afternoon: "tarde",
+		evening: "tarde",
+		night: "noite"
+	},
+	abbreviated: {
+		am: "AM",
+		pm: "PM",
+		midnight: "meia-noite",
+		noon: "meio-dia",
+		morning: "manhã",
+		afternoon: "tarde",
+		evening: "tarde",
+		night: "noite"
+	},
+	wide: {
+		am: "a.m.",
+		pm: "p.m.",
+		midnight: "meia-noite",
+		noon: "meio-dia",
+		morning: "manhã",
+		afternoon: "tarde",
+		evening: "tarde",
+		night: "noite"
+	}
+};
+var formattingDayPeriodValues = {
+	narrow: {
+		am: "a",
+		pm: "p",
+		midnight: "mn",
+		noon: "md",
+		morning: "da manhã",
+		afternoon: "da tarde",
+		evening: "da tarde",
+		night: "da noite"
+	},
+	abbreviated: {
+		am: "AM",
+		pm: "PM",
+		midnight: "meia-noite",
+		noon: "meio-dia",
+		morning: "da manhã",
+		afternoon: "da tarde",
+		evening: "da tarde",
+		night: "da noite"
+	},
+	wide: {
+		am: "a.m.",
+		pm: "p.m.",
+		midnight: "meia-noite",
+		noon: "meio-dia",
+		morning: "da manhã",
+		afternoon: "da tarde",
+		evening: "da tarde",
+		night: "da noite"
+	}
+};
+var ordinalNumber = (dirtyNumber, options$1) => {
+	const number$3 = Number(dirtyNumber);
+	if (options$1?.unit === "week") return number$3 + "ª";
+	return number$3 + "º";
+};
+const ptBR = {
+	code: "pt-BR",
+	formatDistance,
+	formatLong,
+	formatRelative,
+	localize: {
+		ordinalNumber,
+		era: buildLocalizeFn({
+			values: eraValues,
+			defaultWidth: "wide"
+		}),
+		quarter: buildLocalizeFn({
+			values: quarterValues,
+			defaultWidth: "wide",
+			argumentCallback: (quarter) => quarter - 1
+		}),
+		month: buildLocalizeFn({
+			values: monthValues,
+			defaultWidth: "wide"
+		}),
+		day: buildLocalizeFn({
+			values: dayValues,
+			defaultWidth: "wide"
+		}),
+		dayPeriod: buildLocalizeFn({
+			values: dayPeriodValues,
+			defaultWidth: "wide",
+			formattingValues: formattingDayPeriodValues,
+			defaultFormattingWidth: "wide"
+		})
+	},
+	match: {
+		ordinalNumber: buildMatchPatternFn({
+			matchPattern: /^(\d+)[ºªo]?/i,
+			parsePattern: /\d+/i,
+			valueCallback: (value) => parseInt(value, 10)
+		}),
+		era: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(ac|dc|a|d)/i,
+				abbreviated: /^(a\.?\s?c\.?|d\.?\s?c\.?)/i,
+				wide: /^(antes de cristo|depois de cristo)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				any: [/^ac/i, /^dc/i],
+				wide: [/^antes de cristo/i, /^depois de cristo/i]
+			},
+			defaultParseWidth: "any"
+		}),
+		quarter: buildMatchFn({
+			matchPatterns: {
+				narrow: /^[1234]/i,
+				abbreviated: /^T[1234]/i,
+				wide: /^[1234](º)? trimestre/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: { any: [
+				/1/i,
+				/2/i,
+				/3/i,
+				/4/i
+			] },
+			defaultParseWidth: "any",
+			valueCallback: (index$1) => index$1 + 1
+		}),
+		month: buildMatchFn({
+			matchPatterns: {
+				narrow: /^[jfmajsond]/i,
+				abbreviated: /^(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/i,
+				wide: /^(janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				narrow: [
+					/^j/i,
+					/^f/i,
+					/^m/i,
+					/^a/i,
+					/^m/i,
+					/^j/i,
+					/^j/i,
+					/^a/i,
+					/^s/i,
+					/^o/i,
+					/^n/i,
+					/^d/i
+				],
+				any: [
+					/^ja/i,
+					/^fev/i,
+					/^mar/i,
+					/^abr/i,
+					/^mai/i,
+					/^jun/i,
+					/^jul/i,
+					/^ago/i,
+					/^set/i,
+					/^out/i,
+					/^nov/i,
+					/^dez/i
+				]
+			},
+			defaultParseWidth: "any"
+		}),
+		day: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(dom|[23456]ª?|s[aá]b)/i,
+				short: /^(dom|[23456]ª?|s[aá]b)/i,
+				abbreviated: /^(dom|seg|ter|qua|qui|sex|s[aá]b)/i,
+				wide: /^(domingo|(segunda|ter[cç]a|quarta|quinta|sexta)([- ]feira)?|s[aá]bado)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				short: [
+					/^d/i,
+					/^2/i,
+					/^3/i,
+					/^4/i,
+					/^5/i,
+					/^6/i,
+					/^s[aá]/i
+				],
+				narrow: [
+					/^d/i,
+					/^2/i,
+					/^3/i,
+					/^4/i,
+					/^5/i,
+					/^6/i,
+					/^s[aá]/i
+				],
+				any: [
+					/^d/i,
+					/^seg/i,
+					/^t/i,
+					/^qua/i,
+					/^qui/i,
+					/^sex/i,
+					/^s[aá]b/i
+				]
+			},
+			defaultParseWidth: "any"
+		}),
+		dayPeriod: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(a|p|mn|md|(da) (manhã|tarde|noite))/i,
+				any: /^([ap]\.?\s?m\.?|meia[-\s]noite|meio[-\s]dia|(da) (manhã|tarde|noite))/i
+			},
+			defaultMatchWidth: "any",
+			parsePatterns: { any: {
+				am: /^a/i,
+				pm: /^p/i,
+				midnight: /^mn|^meia[-\s]noite/i,
+				noon: /^md|^meio[-\s]dia/i,
+				morning: /manhã/i,
+				afternoon: /tarde/i,
+				evening: /tarde/i,
+				night: /noite/i
+			} },
+			defaultParseWidth: "any"
+		})
+	},
+	options: {
+		weekStartsOn: 0,
+		firstWeekContainsDate: 1
+	}
+};
 const enUS = {
 	...enUS$1,
 	labels: {
@@ -69342,7 +69818,8 @@ const contactsService = {
            id,
            type,
            description,
-           date
+           date,
+           created_at
         )
       `).eq("id", id).single();
 		if (error) throw error;
@@ -69360,6 +69837,16 @@ const contactsService = {
 	},
 	async getBidsByContactId(contactId) {
 		const { data, error } = await supabase.from("bids").select("*").eq("contact_id", contactId).order("date", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async getContactInteractions(contactId) {
+		const { data, error } = await supabase.from("contact_interactions").select("*").eq("contact_id", contactId).order("date", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async addInteraction(interaction) {
+		const { data, error } = await supabase.from("contact_interactions").insert(interaction).select().single();
 		if (error) throw error;
 		return data;
 	},
@@ -70475,14 +70962,293 @@ function ContactBids({ contactId }) {
 		]
 	});
 }
+function ContactTimeline({ contactId }) {
+	const [items, setItems] = (0, import_react.useState)([]);
+	const [isLoading, setIsLoading] = (0, import_react.useState)(true);
+	const [isDialogOpen, setIsDialogOpen] = (0, import_react.useState)(false);
+	const [newInteraction, setNewInteraction] = (0, import_react.useState)({
+		type: "nota adicionada",
+		description: "",
+		date: (/* @__PURE__ */ new Date()).toISOString().slice(0, 16)
+	});
+	const { toast: toast$2 } = useToast();
+	const fetchTimelineData = async () => {
+		setIsLoading(true);
+		try {
+			const [interactions, bids, purchases] = await Promise.all([
+				contactsService.getContactInteractions(contactId),
+				contactsService.getBidsByContactId(contactId),
+				contactsService.getPurchasesByContactId(contactId)
+			]);
+			const timelineItems = [];
+			interactions.forEach((i$2) => {
+				let type = "interaction";
+				if (i$2.type.toLowerCase().includes("email") || i$2.type.toLowerCase().includes("e-mail")) type = "email";
+				else if (i$2.type.toLowerCase().includes("whatsapp")) type = "whatsapp";
+				else if (i$2.type.toLowerCase().includes("ligação") || i$2.type.toLowerCase().includes("call")) type = "call";
+				else if (i$2.type.toLowerCase().includes("nota")) type = "note";
+				timelineItems.push({
+					id: `int-${i$2.id}`,
+					type,
+					subType: i$2.type,
+					date: new Date(i$2.date),
+					title: i$2.type.charAt(0).toUpperCase() + i$2.type.slice(1),
+					description: i$2.description
+				});
+			});
+			bids.forEach((b$1) => {
+				timelineItems.push({
+					id: `bid-${b$1.id}`,
+					type: "bid",
+					date: new Date(b$1.date),
+					title: "Lance dado",
+					description: `${b$1.auction_id || "Leilão desconhecido"} - Lote ${b$1.lot_number || "?"}`,
+					value: b$1.value
+				});
+			});
+			purchases.forEach((p$1) => {
+				timelineItems.push({
+					id: `pur-${p$1.id}`,
+					type: "purchase",
+					date: new Date(p$1.date),
+					title: "Compra realizada",
+					description: `${p$1.auction_id || "Venda direta"} - ${p$1.description || "Cavalo"}`,
+					value: p$1.value
+				});
+			});
+			timelineItems.sort((a$2, b$1) => b$1.date.getTime() - a$2.date.getTime());
+			setItems(timelineItems);
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível carregar o histórico de interações.",
+				variant: "destructive"
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	};
+	(0, import_react.useEffect)(() => {
+		if (contactId) fetchTimelineData();
+	}, [contactId]);
+	const handleAddInteraction = async () => {
+		if (!newInteraction.description) {
+			toast$2({
+				title: "Campo obrigatório",
+				description: "Por favor, insira uma descrição para a interação.",
+				variant: "destructive"
+			});
+			return;
+		}
+		try {
+			await contactsService.addInteraction({
+				contact_id: contactId,
+				type: newInteraction.type,
+				description: newInteraction.description,
+				date: new Date(newInteraction.date).toISOString()
+			});
+			toast$2({
+				title: "Sucesso",
+				description: "Interação registrada com sucesso."
+			});
+			setIsDialogOpen(false);
+			setNewInteraction({
+				type: "nota adicionada",
+				description: "",
+				date: (/* @__PURE__ */ new Date()).toISOString().slice(0, 16)
+			});
+			fetchTimelineData();
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Falha ao registrar interação.",
+				variant: "destructive"
+			});
+		}
+	};
+	const getIcon = (type) => {
+		switch (type) {
+			case "email": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-4 w-4" });
+			case "whatsapp": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-4 w-4" });
+			case "call": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Phone, { className: "h-4 w-4" });
+			case "note": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "h-4 w-4" });
+			case "bid": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Gavel, { className: "h-4 w-4" });
+			case "purchase": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShoppingBag, { className: "h-4 w-4" });
+			default: return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-4 w-4" });
+		}
+	};
+	const getColorClass = (type) => {
+		switch (type) {
+			case "email": return "bg-blue-100 text-blue-600 border-blue-200";
+			case "whatsapp": return "bg-green-100 text-green-600 border-green-200";
+			case "call": return "bg-purple-100 text-purple-600 border-purple-200";
+			case "note": return "bg-gray-100 text-gray-600 border-gray-200";
+			case "bid": return "bg-amber-100 text-amber-600 border-amber-200";
+			case "purchase": return "bg-rose-100 text-rose-600 border-rose-200";
+			default: return "bg-gray-100 text-gray-600 border-gray-200";
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "shadow-sm h-full flex flex-col",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+			className: "flex flex-row items-center justify-between pb-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+				className: "text-lg flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-5 w-5 text-primary" }), "Linha do Tempo"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+				open: isDialogOpen,
+				onOpenChange: setIsDialogOpen,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+					asChild: true,
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						size: "sm",
+						className: "gap-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-3.5 w-3.5" }), "Adicionar Interação"]
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Nova Interação" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Registre um novo ponto de contato com este cliente." })] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid gap-4 py-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "type",
+									children: "Tipo"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									value: newInteraction.type,
+									onValueChange: (val) => setNewInteraction({
+										...newInteraction,
+										type: val
+									}),
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o tipo" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "nota adicionada",
+											children: "Nota"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "ligação realizada",
+											children: "Ligação"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "whatsapp enviado",
+											children: "WhatsApp"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "e-mail enviado",
+											children: "E-mail Enviado"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "e-mail aberto",
+											children: "E-mail Aberto"
+										})
+									] })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "date",
+									children: "Data e Hora"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "relative",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+										id: "date",
+										type: "datetime-local",
+										value: newInteraction.date,
+										onChange: (e) => setNewInteraction({
+											...newInteraction,
+											date: e.target.value
+										}),
+										className: "pl-10"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "description",
+									children: "Descrição"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+									id: "description",
+									placeholder: "Detalhes sobre a interação...",
+									value: newInteraction.description,
+									onChange: (e) => setNewInteraction({
+										...newInteraction,
+										description: e.target.value
+									})
+								})]
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogFooter, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						variant: "outline",
+						onClick: () => setIsDialogOpen(false),
+						children: "Cancelar"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						onClick: handleAddInteraction,
+						children: "Salvar"
+					})] })
+				] })]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+			className: "relative pl-6 pr-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute left-[37px] top-6 bottom-6 w-[2px] bg-muted/60" }), isLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex justify-center py-8",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-primary" })
+			}) : items.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "text-center py-8 text-muted-foreground text-sm",
+				children: "Nenhuma interação registrada."
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "space-y-6",
+				children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "relative pl-8 group",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: cn("absolute left-[-13px] top-0 flex h-8 w-8 items-center justify-center rounded-full border shadow-sm z-10", getColorClass(item.type)),
+						children: getIcon(item.type)
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col gap-1",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-between",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-semibold text-sm text-foreground",
+									children: item.title
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-xs text-muted-foreground tabular-nums",
+									children: format(item.date, "dd MMM yyyy 'às' HH:mm", { locale: ptBR })
+								})]
+							}),
+							item.description && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-sm text-muted-foreground bg-muted/30 p-2 rounded-md border border-muted/50 mt-1",
+								children: item.description
+							}),
+							item.value !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+								className: "text-sm font-medium text-primary mt-1",
+								children: [
+									"Valor:",
+									" ",
+									new Intl.NumberFormat("pt-BR", {
+										style: "currency",
+										currency: "BRL"
+									}).format(item.value)
+								]
+							})
+						]
+					})]
+				}, item.id))
+			})]
+		})]
+	});
+}
 function ContatoDetalhes() {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const { toast: toast$2 } = useToast();
 	const [contact, setContact] = (0, import_react.useState)(null);
 	const [isLoading, setIsLoading] = (0, import_react.useState)(true);
-	const [newNote, setNewNote] = (0, import_react.useState)("");
-	const [isNoteDialogOpen, setIsNoteDialogOpen] = (0, import_react.useState)(false);
 	(0, import_react.useEffect)(() => {
 		if (id) contactsService.getContactById(id).then((data) => setContact(data)).catch((err) => {
 			console.error(err);
@@ -70493,13 +71259,6 @@ function ContatoDetalhes() {
 			});
 		}).finally(() => setIsLoading(false));
 	}, [id, toast$2]);
-	const handleAddNote = () => {
-		toast$2({
-			title: "Nota",
-			description: "Funcionalidade de atualizar nota em desenvolvimento (campo único)."
-		});
-		setIsNoteDialogOpen(false);
-	};
 	const handleWhatsApp = () => {
 		if (contact?.whatsapp) window.open(`https://wa.me/55${contact.whatsapp.replace(/\D/g, "")}`, "_blank");
 	};
@@ -70569,36 +71328,6 @@ function ContatoDetalhes() {
 								description: "Funcionalidade de edição em breve."
 							}),
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquarePen, { className: "mr-2 h-4 w-4" }), " Editar"]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
-							open: isNoteDialogOpen,
-							onOpenChange: setIsNoteDialogOpen,
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
-								asChild: true,
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-									className: "bg-primary text-primary-foreground hover:bg-primary/90",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "mr-2 h-4 w-4" }), " Adicionar Nota"]
-								})
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Adicionar Nota Interna" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Esta nota ficará visível apenas para a equipe." })] }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "py-4",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
-										placeholder: "Digite sua observação...",
-										value: newNote,
-										onChange: (e) => setNewNote(e.target.value),
-										className: "min-h-[100px]"
-									})
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogFooter, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-									variant: "outline",
-									onClick: () => setIsNoteDialogOpen(false),
-									children: "Cancelar"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-									onClick: handleAddNote,
-									children: "Salvar Nota"
-								})] })
-							] })]
 						})
 					]
 				})]
@@ -70608,7 +71337,7 @@ function ContatoDetalhes() {
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "lg:col-span-1 space-y-6",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "border-t-4 border-t-primary shadow-sm h-full",
+						className: "border-t-4 border-t-primary shadow-sm",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
 							className: "pb-4",
 							children: [
@@ -70707,178 +71436,176 @@ function ContatoDetalhes() {
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "lg:col-span-2 space-y-6",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "border-t-4 border-t-secondary shadow-sm",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-							className: "text-lg flex items-center gap-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-5 w-5 text-secondary" }), "Resumo Financeiro"]
-						}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "bg-muted/30 p-4 rounded-lg border border-muted",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1",
-										children: "Total Investido"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-xl font-bold text-primary font-display",
-										children: new Intl.NumberFormat("pt-BR", {
-											style: "currency",
-											currency: "BRL",
-											maximumFractionDigits: 0
-										}).format(totalInvested)
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "bg-muted/30 p-4 rounded-lg border border-muted",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1",
-										children: "Cavalos Arrematados"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-										className: "text-xl font-bold text-primary font-display flex items-center gap-2",
-										children: [
-											horsesBought,
-											" ",
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, { className: "h-4 w-4 text-secondary opacity-80" })
-										]
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "bg-muted/30 p-4 rounded-lg border border-muted",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1",
-										children: "Ticket Médio"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-xl font-bold text-primary font-display",
-										children: new Intl.NumberFormat("pt-BR", {
-											style: "currency",
-											currency: "BRL",
-											maximumFractionDigits: 0
-										}).format(averageTicket)
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "bg-muted/30 p-4 rounded-lg border border-muted",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1",
-										children: "Último Lance"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-										className: "text-xl font-bold text-primary font-display flex items-center gap-2",
-										children: [
-											lastBidDate,
-											" ",
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-4 w-4 text-green-600 opacity-80" })
-										]
-									})]
-								})
-							]
-						}) })]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "grid grid-cols-1 md:grid-cols-2 gap-6",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-							className: "shadow-sm",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+							className: "border-t-4 border-t-secondary shadow-sm",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
 								className: "text-lg flex items-center gap-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-5 w-5 text-primary" }), "Preferências"]
-							}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-								className: "space-y-4",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-sm font-medium text-muted-foreground mb-2",
-										children: "Raças de Interesse"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-										className: "flex flex-wrap gap-2",
-										children: contact.preferences?.breeds?.map((breed) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-											variant: "outline",
-											className: "bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200",
-											children: breed
-										}, breed))
-									})] }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-sm font-medium text-muted-foreground mb-2",
-										children: "Modalidades"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-										className: "flex flex-wrap gap-2",
-										children: contact.preferences?.modalities?.map((mod) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-											variant: "outline",
-											className: "bg-purple-50 text-purple-700 hover:bg-purple-100 border-purple-200",
-											children: mod
-										}, mod))
-									})] }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-sm font-medium text-muted-foreground mb-1",
-										children: "Faixa de Valor"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "font-medium text-foreground",
-										children: contact.preferences?.valueRange || "-"
-									})] })
-								]
-							})]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-							className: "shadow-sm flex flex-col",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-								className: "text-lg flex items-center gap-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Briefcase, { className: "h-5 w-5 text-primary" }), "Origem do Lead"]
-							}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-								className: "space-y-4 flex-1",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-5 w-5 text-secondary" }), "Resumo Financeiro"]
+							}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4",
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "bg-gray-50 p-4 rounded-md border border-gray-100",
+										className: "bg-muted/30 p-4 rounded-lg border border-muted",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-xs text-muted-foreground uppercase tracking-wide mb-1",
-											children: "Canal de Aquisição"
+											className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1",
+											children: "Total Investido"
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-lg font-semibold text-primary",
-											children: contact.origin
+											className: "text-xl font-bold text-primary font-display",
+											children: new Intl.NumberFormat("pt-BR", {
+												style: "currency",
+												currency: "BRL",
+												maximumFractionDigits: 0
+											}).format(totalInvested)
 										})]
 									}),
-									contact.origin === "Indicação Profissional" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "bg-secondary/10 p-4 rounded-md border border-secondary/20",
-										children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-												className: "text-xs text-secondary-foreground uppercase tracking-wide mb-1 font-semibold flex items-center gap-1",
-												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(User, { className: "h-3 w-3" }), " Profissional Indicador"]
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-												className: "text-lg font-semibold text-secondary-foreground",
-												children: "Dr. Marcelo Ramos (Simulado)"
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-												variant: "link",
-												className: "p-0 h-auto text-secondary-foreground text-xs hover:text-secondary-foreground/80 mt-1",
-												children: [
-													"Ver perfil do profissional",
-													" ",
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { className: "h-3 w-3 ml-1" })
-												]
-											})
-										]
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "bg-muted/30 p-4 rounded-lg border border-muted",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1",
+											children: "Cavalos Arrematados"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+											className: "text-xl font-bold text-primary font-display flex items-center gap-2",
+											children: [
+												horsesBought,
+												" ",
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, { className: "h-4 w-4 text-secondary opacity-80" })
+											]
+										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "mt-4",
+										className: "bg-muted/30 p-4 rounded-lg border border-muted",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-sm font-medium text-muted-foreground mb-2 flex items-center justify-between",
-											children: "Notas"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-											className: "space-y-3",
-											children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-												className: "text-sm bg-muted/40 p-3 rounded-md border border-muted/60",
-												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-													className: "text-xs text-muted-foreground mb-1",
-													children: "Nota Geral"
-												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-													className: "text-foreground",
-													children: contact.notes || "Nenhuma nota."
-												})]
-											})
+											className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1",
+											children: "Ticket Médio"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-xl font-bold text-primary font-display",
+											children: new Intl.NumberFormat("pt-BR", {
+												style: "currency",
+												currency: "BRL",
+												maximumFractionDigits: 0
+											}).format(averageTicket)
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "bg-muted/30 p-4 rounded-lg border border-muted",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold mb-1",
+											children: "Último Lance"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+											className: "text-xl font-bold text-primary font-display flex items-center gap-2",
+											children: [
+												lastBidDate,
+												" ",
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-4 w-4 text-green-600 opacity-80" })
+											]
 										})]
 									})
 								]
+							}) })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-1 md:grid-cols-2 gap-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+								className: "shadow-sm",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+									className: "text-lg flex items-center gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-5 w-5 text-primary" }), "Preferências"]
+								}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+									className: "space-y-4",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-sm font-medium text-muted-foreground mb-2",
+											children: "Raças de Interesse"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+											className: "flex flex-wrap gap-2",
+											children: contact.preferences?.breeds?.map((breed) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+												variant: "outline",
+												className: "bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200",
+												children: breed
+											}, breed))
+										})] }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-sm font-medium text-muted-foreground mb-2",
+											children: "Modalidades"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+											className: "flex flex-wrap gap-2",
+											children: contact.preferences?.modalities?.map((mod) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+												variant: "outline",
+												className: "bg-purple-50 text-purple-700 hover:bg-purple-100 border-purple-200",
+												children: mod
+											}, mod))
+										})] }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-sm font-medium text-muted-foreground mb-1",
+											children: "Faixa de Valor"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "font-medium text-foreground",
+											children: contact.preferences?.valueRange || "-"
+										})] })
+									]
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+								className: "shadow-sm flex flex-col",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+									className: "text-lg flex items-center gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Briefcase, { className: "h-5 w-5 text-primary" }), "Origem do Lead"]
+								}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+									className: "space-y-4 flex-1",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "bg-gray-50 p-4 rounded-md border border-gray-100",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+												className: "text-xs text-muted-foreground uppercase tracking-wide mb-1",
+												children: "Canal de Aquisição"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+												className: "text-lg font-semibold text-primary",
+												children: contact.origin
+											})]
+										}),
+										contact.origin === "Indicação Profissional" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "bg-secondary/10 p-4 rounded-md border border-secondary/20",
+											children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+													className: "text-xs text-secondary-foreground uppercase tracking-wide mb-1 font-semibold flex items-center gap-1",
+													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(User, { className: "h-3 w-3" }), " Profissional Indicador"]
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+													className: "text-lg font-semibold text-secondary-foreground",
+													children: "Dr. Marcelo Ramos (Simulado)"
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+													variant: "link",
+													className: "p-0 h-auto text-secondary-foreground text-xs hover:text-secondary-foreground/80 mt-1",
+													children: [
+														"Ver perfil do profissional",
+														" ",
+														/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { className: "h-3 w-3 ml-1" })
+													]
+												})
+											]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "mt-4",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+												className: "text-sm font-medium text-muted-foreground mb-2 flex items-center justify-between",
+												children: "Notas Gerais"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+												className: "text-sm bg-muted/40 p-3 rounded-md border border-muted/60",
+												children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+													className: "text-foreground",
+													children: contact.notes || "Nenhuma nota."
+												})
+											})]
+										})
+									]
+								})]
 							})]
-						})]
-					})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactTimeline, { contactId: contact.id })
+					]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, { className: "my-8" }),
@@ -72976,4 +73703,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BFx2uer-.js.map
+//# sourceMappingURL=index-B2iw9oRh.js.map

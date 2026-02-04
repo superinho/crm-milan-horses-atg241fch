@@ -16,6 +16,7 @@ export type Contact = {
   updated_at: string
   tags?: Tag[]
   purchases?: Purchase[]
+  interactions?: Interaction[]
 }
 
 export type Tag = {
@@ -42,6 +43,16 @@ export type Bid = {
   value: number
   date: string
   reason?: string | null
+  created_at: string
+}
+
+export type Interaction = {
+  id: string
+  contact_id: string
+  type: string
+  description: string | null
+  date: string
+  created_by?: string | null
   created_at: string
 }
 
@@ -157,7 +168,8 @@ export const contactsService = {
            id,
            type,
            description,
-           date
+           date,
+           created_at
         )
       `,
       )
@@ -196,6 +208,29 @@ export const contactsService = {
     if (error) throw error
 
     return data as Bid[]
+  },
+
+  async getContactInteractions(contactId: string) {
+    const { data, error } = await supabase
+      .from('contact_interactions')
+      .select('*')
+      .eq('contact_id', contactId)
+      .order('date', { ascending: false })
+
+    if (error) throw error
+
+    return data as Interaction[]
+  },
+
+  async addInteraction(interaction: Omit<Interaction, 'id' | 'created_at'>) {
+    const { data, error } = await supabase
+      .from('contact_interactions')
+      .insert(interaction)
+      .select()
+      .single()
+
+    if (error) throw error
+    return data
   },
 
   async createContact(contactData: any) {

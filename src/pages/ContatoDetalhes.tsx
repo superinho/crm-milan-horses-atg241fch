@@ -13,7 +13,6 @@ import {
   User,
   MessageCircle,
   Edit,
-  FileText,
   ExternalLink,
   Smartphone,
   Briefcase,
@@ -29,21 +28,12 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from '@/components/ui/dialog'
-import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
 import { contactsService, type Contact } from '@/services/contacts'
 import { cn } from '@/lib/utils'
 import { ContactPurchases } from '@/components/ContactPurchases'
 import { ContactBids } from '@/components/ContactBids'
+import { ContactTimeline } from '@/components/ContactTimeline'
 
 export default function ContatoDetalhes() {
   const { id } = useParams<{ id: string }>()
@@ -51,8 +41,6 @@ export default function ContatoDetalhes() {
   const { toast } = useToast()
   const [contact, setContact] = useState<Contact | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [newNote, setNewNote] = useState('')
-  const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false)
 
   useEffect(() => {
     if (id) {
@@ -70,15 +58,6 @@ export default function ContatoDetalhes() {
         .finally(() => setIsLoading(false))
     }
   }, [id, toast])
-
-  const handleAddNote = () => {
-    toast({
-      title: 'Nota',
-      description:
-        'Funcionalidade de atualizar nota em desenvolvimento (campo único).',
-    })
-    setIsNoteDialogOpen(false)
-  }
 
   const handleWhatsApp = () => {
     if (contact?.whatsapp) {
@@ -180,46 +159,13 @@ export default function ContatoDetalhes() {
           >
             <Edit className="mr-2 h-4 w-4" /> Editar
           </Button>
-
-          <Dialog open={isNoteDialogOpen} onOpenChange={setIsNoteDialogOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                <FileText className="mr-2 h-4 w-4" /> Adicionar Nota
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Adicionar Nota Interna</DialogTitle>
-                <DialogDescription>
-                  Esta nota ficará visível apenas para a equipe.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="py-4">
-                <Textarea
-                  placeholder="Digite sua observação..."
-                  value={newNote}
-                  onChange={(e) => setNewNote(e.target.value)}
-                  className="min-h-[100px]"
-                />
-              </div>
-              <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setIsNoteDialogOpen(false)}
-                >
-                  Cancelar
-                </Button>
-                <Button onClick={handleAddNote}>Salvar Nota</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column - Personal Info */}
         <div className="lg:col-span-1 space-y-6">
-          <Card className="border-t-4 border-t-primary shadow-sm h-full">
+          <Card className="border-t-4 border-t-primary shadow-sm">
             <CardHeader className="pb-4">
               <div className="flex justify-center mb-4">
                 <Avatar className="h-24 w-24 border-4 border-background shadow-lg">
@@ -321,7 +267,7 @@ export default function ContatoDetalhes() {
           </Card>
         </div>
 
-        {/* Right Columns - Financial, Preferences, Origin */}
+        {/* Right Columns - Financial, Preferences, Origin, Timeline */}
         <div className="lg:col-span-2 space-y-6">
           {/* Financial Summary */}
           <Card className="border-t-4 border-t-secondary shadow-sm">
@@ -473,22 +419,20 @@ export default function ContatoDetalhes() {
 
                 <div className="mt-4">
                   <p className="text-sm font-medium text-muted-foreground mb-2 flex items-center justify-between">
-                    Notas
+                    Notas Gerais
                   </p>
-                  <div className="space-y-3">
-                    <div className="text-sm bg-muted/40 p-3 rounded-md border border-muted/60">
-                      <p className="text-xs text-muted-foreground mb-1">
-                        Nota Geral
-                      </p>
-                      <p className="text-foreground">
-                        {contact.notes || 'Nenhuma nota.'}
-                      </p>
-                    </div>
+                  <div className="text-sm bg-muted/40 p-3 rounded-md border border-muted/60">
+                    <p className="text-foreground">
+                      {contact.notes || 'Nenhuma nota.'}
+                    </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
+
+          {/* Timeline Section */}
+          <ContactTimeline contactId={contact.id} />
         </div>
       </div>
 

@@ -15,6 +15,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      bids: {
+        Row: {
+          auction_id: string | null
+          contact_id: string | null
+          created_at: string | null
+          date: string | null
+          id: string
+          lot_number: string | null
+          reason: string | null
+          value: number
+        }
+        Insert: {
+          auction_id?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          date?: string | null
+          id?: string
+          lot_number?: string | null
+          reason?: string | null
+          value?: number
+        }
+        Update: {
+          auction_id?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          date?: string | null
+          id?: string
+          lot_number?: string | null
+          reason?: string | null
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'bids_contact_id_fkey'
+            columns: ['contact_id']
+            isOneToOne: false
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       companies: {
         Row: {
           address: string | null
