@@ -72500,9 +72500,9 @@ function DealCard({ deal, isDragging, onDragStart }) {
 						children: deal.title
 					})
 				}),
-				deal.contact && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "flex items-center gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
+					children: deal.contact ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
 						className: "h-5 w-5 border border-muted",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${deal.contact.id}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, {
 							className: "text-[9px]",
@@ -72511,13 +72511,19 @@ function DealCard({ deal, isDragging, onDragStart }) {
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "text-xs text-muted-foreground truncate max-w-[150px]",
 						children: deal.contact.name
-					})]
+					})] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "h-5 w-5 rounded-full bg-muted flex items-center justify-center",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(User, { className: "h-3 w-3 text-muted-foreground" })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "text-xs text-muted-foreground italic",
+						children: "Sem contato"
+					})] })
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center justify-between pt-2 border-t border-dashed",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 						variant: "secondary",
-						className: "font-normal text-xs px-1.5 h-5 bg-secondary/10 text-secondary-foreground hover:bg-secondary/20 border-0",
+						className: "font-medium text-xs px-1.5 h-5 bg-secondary/10 text-secondary-foreground hover:bg-secondary/20 border-0",
 						children: new Intl.NumberFormat("pt-BR", {
 							style: "currency",
 							currency: "BRL",
@@ -72525,14 +72531,15 @@ function DealCard({ deal, isDragging, onDragStart }) {
 						}).format(deal.value)
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "flex items-center gap-1 text-[10px] text-muted-foreground",
-						title: "Dias no estágio atual",
+						title: `${daysInStage} dias neste estágio`,
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-3 w-3" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [daysInStage, "d"] })]
 					})]
 				}),
 				deal.probability > 0 && deal.stage !== "Fechado" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "w-full bg-gray-100 h-1 rounded-full overflow-hidden mt-1",
+					title: `Probabilidade: ${deal.probability}%`,
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: cn("h-full rounded-full", deal.probability >= 70 ? "bg-green-500" : deal.probability >= 40 ? "bg-yellow-500" : "bg-red-500"),
+						className: cn("h-full rounded-full transition-all duration-500", deal.probability >= 70 ? "bg-green-500" : deal.probability >= 40 ? "bg-yellow-500" : "bg-red-500"),
 						style: { width: `${deal.probability}%` }
 					})
 				})
@@ -73221,27 +73228,32 @@ var COLUMNS = [
 	{
 		id: "Lead",
 		title: "Lead",
-		color: "bg-gray-100 text-gray-800"
+		description: "Primeiro contato/interesse demonstrado",
+		color: "bg-gray-400"
 	},
 	{
 		id: "Qualificado",
 		title: "Qualificado",
-		color: "bg-blue-100 text-blue-800"
+		description: "Lead validado, tem perfil comprador",
+		color: "bg-blue-400"
 	},
 	{
 		id: "Interesse",
 		title: "Interesse",
-		color: "bg-yellow-100 text-yellow-800"
+		description: "Demonstrou interesse em lote específico",
+		color: "bg-yellow-400"
 	},
 	{
 		id: "Proposta",
 		title: "Proposta",
-		color: "bg-orange-100 text-orange-800"
+		description: "Proposta enviada/negociação em andamento",
+		color: "bg-orange-400"
 	},
 	{
 		id: "Fechado",
 		title: "Fechado",
-		color: "bg-green-100 text-green-800"
+		description: "Negócio concluído/venda realizada",
+		color: "bg-green-500"
 	}
 ];
 function KanbanBoard({ refreshTrigger = 0 }) {
@@ -73273,16 +73285,19 @@ function KanbanBoard({ refreshTrigger = 0 }) {
 			groups[col.id] = [];
 		});
 		deals.forEach((deal) => {
-			if (groups[deal.stage]) groups[deal.stage].push(deal);
+			const stage = COLUMNS.find((c$1) => c$1.id === deal.stage) ? deal.stage : "Lead";
+			if (groups[stage]) groups[stage].push(deal);
 		});
 		return groups;
 	}, [deals]);
 	const handleDragStart = (e, dealId) => {
 		e.dataTransfer.setData("dealId", dealId);
+		e.dataTransfer.effectAllowed = "move";
 		setDraggedDealId(dealId);
 	};
 	const handleDragOver = (e, columnId) => {
 		e.preventDefault();
+		e.dataTransfer.dropEffect = "move";
 		setDragOverColumn(columnId);
 	};
 	const handleDragLeave = () => {
@@ -73323,36 +73338,40 @@ function KanbanBoard({ refreshTrigger = 0 }) {
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin text-primary" })
 	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ScrollArea, {
-		className: "flex-1 w-full whitespace-nowrap rounded-md border bg-muted/20 p-4 h-full min-h-[500px]",
+		className: "flex-1 w-full whitespace-nowrap rounded-md border bg-gray-50/50 p-4 h-full min-h-[500px]",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "flex space-x-4 pb-4 h-full",
 			children: COLUMNS.map((column) => {
 				const columnDeals = groupedDeals[column.id] || [];
 				const totalValue = columnDeals.reduce((acc, curr) => acc + curr.value, 0);
 				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: cn("w-80 shrink-0 flex flex-col space-y-4 rounded-lg transition-colors p-2 h-full min-h-[400px]", dragOverColumn === column.id ? "bg-primary/5 ring-2 ring-primary/20" : ""),
+					className: cn("w-80 shrink-0 flex flex-col space-y-4 rounded-lg transition-colors p-2 h-full min-h-[400px] bg-gray-100/50 border border-transparent", dragOverColumn === column.id ? "bg-primary/5 ring-2 ring-primary/20 border-primary/20" : ""),
 					onDragOver: (e) => handleDragOver(e, column.id),
 					onDragLeave: handleDragLeave,
 					onDrop: (e) => handleDrop(e, column.id),
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-col space-y-2 sticky top-0 bg-muted/20 z-10 pb-2",
+						className: "flex flex-col space-y-2 sticky top-0 bg-gray-100/50 backdrop-blur-sm z-10 pb-2 rounded-t-lg",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex items-center justify-between px-2",
+								className: "flex items-center justify-between px-2 pt-2",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "font-semibold text-sm uppercase tracking-wider text-muted-foreground flex items-center gap-2",
+									className: "font-bold text-sm uppercase tracking-wider text-foreground flex items-center gap-2",
 									children: column.title
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 									variant: "outline",
-									className: "bg-background",
+									className: "bg-white text-xs shadow-sm",
 									children: columnDeals.length
 								})]
 							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `h-1 w-full rounded-full ${column.color.split(" ")[0]}` }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "px-2 text-xs text-muted-foreground leading-tight h-8 line-clamp-2 whitespace-normal",
+								children: column.description
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: cn("h-1 w-full rounded-full opacity-60", column.color) }),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "px-2 text-xs text-muted-foreground font-medium flex justify-between",
+								className: "px-2 text-xs text-muted-foreground font-medium flex justify-between items-center",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Total Estimado:" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "text-foreground",
+									className: "text-foreground font-bold text-sm",
 									children: new Intl.NumberFormat("pt-BR", {
 										style: "currency",
 										currency: "BRL",
@@ -73362,13 +73381,13 @@ function KanbanBoard({ refreshTrigger = 0 }) {
 							})
 						]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-col space-y-3 flex-1 overflow-y-auto min-h-[200px]",
+						className: "flex flex-col space-y-3 flex-1 overflow-y-auto min-h-[200px] px-1 pb-2",
 						children: [columnDeals.map((deal) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DealCard, {
 							deal,
 							isDragging: draggedDealId === deal.id,
 							onDragStart: (e) => handleDragStart(e, deal.id)
 						}, deal.id)), columnDeals.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "flex-1 border-2 border-dashed border-muted rounded-lg flex items-center justify-center text-muted-foreground text-xs p-4 min-h-[100px]",
+							className: "flex-1 border-2 border-dashed border-gray-200 rounded-lg flex items-center justify-center text-muted-foreground text-xs p-4 min-h-[100px] bg-white/50",
 							children: "Arraste cards aqui"
 						})]
 					})]
@@ -75279,4 +75298,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-rSnCqJ1a.js.map
+//# sourceMappingURL=index-i-ctZMNN.js.map

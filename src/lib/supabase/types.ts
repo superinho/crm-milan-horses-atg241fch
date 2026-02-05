@@ -223,6 +223,57 @@ export type Database = {
         }
         Relationships: []
       }
+      deals: {
+        Row: {
+          contact_id: string | null
+          created_at: string | null
+          expected_close_date: string | null
+          id: string
+          probability: number | null
+          stage: string
+          title: string
+          updated_at: string | null
+          value: number
+        }
+        Insert: {
+          contact_id?: string | null
+          created_at?: string | null
+          expected_close_date?: string | null
+          id?: string
+          probability?: number | null
+          stage: string
+          title: string
+          updated_at?: string | null
+          value?: number
+        }
+        Update: {
+          contact_id?: string | null
+          created_at?: string | null
+          expected_close_date?: string | null
+          id?: string
+          probability?: number | null
+          stage?: string
+          title?: string
+          updated_at?: string | null
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'deals_contact_id_fkey'
+            columns: ['contact_id']
+            isOneToOne: false
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'deals_contact_id_fkey'
+            columns: ['contact_id']
+            isOneToOne: false
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       purchases: {
         Row: {
           auction_id: string | null

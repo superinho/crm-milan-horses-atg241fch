@@ -1,10 +1,9 @@
-import { formatDistanceToNow, differenceInDays } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
+import { differenceInDays } from 'date-fns'
 import { Deal } from '@/services/deals'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Calendar, DollarSign, Clock } from 'lucide-react'
+import { Clock, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface DealCardProps {
@@ -33,26 +32,37 @@ export function DealCard({ deal, isDragging, onDragStart }: DealCardProps) {
           </h4>
         </div>
 
-        {deal.contact && (
-          <div className="flex items-center gap-2">
-            <Avatar className="h-5 w-5 border border-muted">
-              <AvatarImage
-                src={`https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${deal.contact.id}`}
-              />
-              <AvatarFallback className="text-[9px]">
-                {deal.contact.name.substring(0, 2).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <span className="text-xs text-muted-foreground truncate max-w-[150px]">
-              {deal.contact.name}
-            </span>
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          {deal.contact ? (
+            <>
+              <Avatar className="h-5 w-5 border border-muted">
+                <AvatarImage
+                  src={`https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${deal.contact.id}`}
+                />
+                <AvatarFallback className="text-[9px]">
+                  {deal.contact.name.substring(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <span className="text-xs text-muted-foreground truncate max-w-[150px]">
+                {deal.contact.name}
+              </span>
+            </>
+          ) : (
+            <>
+              <div className="h-5 w-5 rounded-full bg-muted flex items-center justify-center">
+                <User className="h-3 w-3 text-muted-foreground" />
+              </div>
+              <span className="text-xs text-muted-foreground italic">
+                Sem contato
+              </span>
+            </>
+          )}
+        </div>
 
         <div className="flex items-center justify-between pt-2 border-t border-dashed">
           <Badge
             variant="secondary"
-            className="font-normal text-xs px-1.5 h-5 bg-secondary/10 text-secondary-foreground hover:bg-secondary/20 border-0"
+            className="font-medium text-xs px-1.5 h-5 bg-secondary/10 text-secondary-foreground hover:bg-secondary/20 border-0"
           >
             {new Intl.NumberFormat('pt-BR', {
               style: 'currency',
@@ -63,7 +73,7 @@ export function DealCard({ deal, isDragging, onDragStart }: DealCardProps) {
 
           <div
             className="flex items-center gap-1 text-[10px] text-muted-foreground"
-            title="Dias no estágio atual"
+            title={`${daysInStage} dias neste estágio`}
           >
             <Clock className="h-3 w-3" />
             <span>{daysInStage}d</span>
@@ -71,10 +81,13 @@ export function DealCard({ deal, isDragging, onDragStart }: DealCardProps) {
         </div>
 
         {deal.probability > 0 && deal.stage !== 'Fechado' && (
-          <div className="w-full bg-gray-100 h-1 rounded-full overflow-hidden mt-1">
+          <div
+            className="w-full bg-gray-100 h-1 rounded-full overflow-hidden mt-1"
+            title={`Probabilidade: ${deal.probability}%`}
+          >
             <div
               className={cn(
-                'h-full rounded-full',
+                'h-full rounded-full transition-all duration-500',
                 deal.probability >= 70
                   ? 'bg-green-500'
                   : deal.probability >= 40
