@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import {
   Card,
   CardContent,
@@ -8,107 +9,201 @@ import {
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Zap, Clock, UserPlus, Mail, ArrowRight, Plus } from 'lucide-react'
-
-const AUTOMATIONS = [
-  {
-    id: 1,
-    name: 'Boas-vindas novos leads',
-    trigger: 'Novo contato adicionado',
-    action: 'Enviar email de apresentação',
-    active: true,
-    icon: UserPlus,
-  },
-  {
-    id: 2,
-    name: 'Follow-up pós venda',
-    trigger: 'Negócio Fechado',
-    action: 'Criar tarefa de contato após 7 dias',
-    active: true,
-    icon: Clock,
-  },
-  {
-    id: 3,
-    name: 'Lembrete de Aniversário',
-    trigger: 'Data de aniversário',
-    action: 'Enviar SMS promocional',
-    active: false,
-    icon: Zap,
-  },
-  {
-    id: 4,
-    name: 'Reengajamento Lead Frio',
-    trigger: 'Sem interação por 30 dias',
-    action: 'Enviar email com catálogo',
-    active: true,
-    icon: Mail,
-  },
-]
+import {
+  Zap,
+  Clock,
+  UserPlus,
+  Mail,
+  Play,
+  Loader2,
+  AlertTriangle,
+  AlertCircle,
+} from 'lucide-react'
+import { automationsService, AutomationSetting } from '@/services/automations'
+import { useToast } from '@/hooks/use-toast'
 
 export default function Automacoes() {
+  const [settings, setSettings] = useState<AutomationSetting[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isProcessing, setIsProcessing] = useState(false)
+  const { toast } = useToast()
+
+  const fetchSettings = async () => {
+    setIsLoading(true)
+    try {
+      const data = await automationsService.getSettings()
+      setSettings(data)
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: 'Erro',
+        description: 'Não foi possível carregar as configurações.',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchSettings()
+  }, [])
+
+  const handleToggle = async (id: string, currentState: boolean) => {
+    // Optimistic update
+    setSettings((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, is_active: !currentState } : s)),
+    )
+
+    try {
+      await automationsService.updateSetting(id, { is_active: !currentState })
+    } catch (error) {
+      console.error(error)
+      // Revert on error
+      setSettings((prev) =>
+        prev.map((s) => (s.id === id ? { ...s, is_active: currentState } : s)),
+      )
+      toast({
+        title: 'Erro',
+        description: 'Não foi possível atualizar a configuração.',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const handleRunManually = async () => {
+    setIsProcessing(true)
+    try {
+      const result = await automationsService.triggerAutomationProcess()
+
+      const details = [
+        result.birthday > 0 ? `${result.birthday} aniversários` : null,
+        result.post_sale > 0 ? `${result.post_sale} pós-vendas` : null,
+        result.inactivity > 0 ? `${result.inactivity} inativos` : null,
+        result.lost_bid > 0 ? `${result.lost_bid} lances perdidos` : null,
+      ]
+        .filter(Boolean)
+        .join(', ')
+
+      toast({
+        title: 'Automação Executada',
+        description: details
+          ? `Tarefas criadas: ${details}`
+          : 'Nenhuma nova tarefa foi necessária.',
+      })
+    } catch (error: any) {
+      console.error(error)
+      toast({
+        title: 'Erro na Execução',
+        description: error.message || 'Falha ao processar automações.',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
+  const getIcon = (key: string) => {
+    switch (key) {
+      case 'birthday':
+        return <UserPlus className="h-6 w-6" />
+      case 'post_sale':
+        return <Clock className="h-6 w-6" />
+      case 'inactivity':
+        return <AlertTriangle className="h-6 w-6" />
+      case 'lost_bid':
+        return <AlertCircle className="h-6 w-6" />
+      default:
+        return <Zap className="h-6 w-6" />
+    }
+  }
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold font-display text-primary">
-            Automações
+            Automações de Tarefas
           </h1>
           <p className="text-muted-foreground">
-            Automatize tarefas repetitivas e ganhe produtividade.
+            Configure regras para geração automática de tarefas e follow-ups.
           </p>
         </div>
-        <Button className="bg-primary hover:bg-primary/90 text-white">
-          <Plus className="mr-2 h-4 w-4" /> Nova Automação
+        <Button
+          onClick={handleRunManually}
+          disabled={isProcessing || isLoading}
+          className="bg-primary hover:bg-primary/90 text-white"
+        >
+          {isProcessing ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Play className="mr-2 h-4 w-4" />
+          )}
+          Executar Agora
         </Button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {AUTOMATIONS.map((automation) => (
-          <Card
-            key={automation.id}
-            className="relative overflow-hidden group hover:border-primary/50 transition-colors"
-          >
-            <div className="absolute top-0 left-0 w-1 h-full bg-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
-            <CardHeader className="flex flex-row items-start justify-between pb-2 space-y-0">
-              <div className="p-2 bg-primary/10 rounded-md text-primary">
-                <automation.icon className="h-6 w-6" />
-              </div>
-              <Switch checked={automation.active} />
-            </CardHeader>
-            <CardContent className="pt-4 space-y-4">
-              <div>
-                <CardTitle className="text-lg leading-tight mb-2">
-                  {automation.name}
-                </CardTitle>
-                <Badge
-                  variant={automation.active ? 'default' : 'secondary'}
-                  className="text-xs font-normal"
+      {isLoading ? (
+        <div className="flex justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+          {settings.map((setting) => (
+            <Card
+              key={setting.id}
+              className={`relative overflow-hidden transition-all duration-300 ${
+                setting.is_active
+                  ? 'border-l-4 border-l-primary shadow-md'
+                  : 'opacity-80 border-l-4 border-l-muted'
+              }`}
+            >
+              <CardHeader className="flex flex-row items-start justify-between pb-2 space-y-0">
+                <div
+                  className={`p-2 rounded-md ${setting.is_active ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}
                 >
-                  {automation.active ? 'Ativo' : 'Inativo'}
-                </Badge>
-              </div>
+                  {getIcon(setting.rule_key)}
+                </div>
+                <Switch
+                  checked={setting.is_active}
+                  onCheckedChange={() =>
+                    handleToggle(setting.id, setting.is_active)
+                  }
+                />
+              </CardHeader>
+              <CardContent className="pt-4 space-y-4">
+                <div>
+                  <CardTitle className="text-lg leading-tight mb-2">
+                    {setting.name}
+                  </CardTitle>
+                  <CardDescription className="text-sm min-h-[40px]">
+                    {setting.description}
+                  </CardDescription>
+                </div>
 
-              <div className="space-y-3 text-sm">
-                <div className="p-2 bg-muted rounded border text-muted-foreground">
-                  <span className="font-semibold text-foreground block text-xs uppercase mb-1">
-                    Gatilho
+                <div className="flex items-center justify-between pt-2">
+                  <Badge
+                    variant={setting.is_active ? 'default' : 'secondary'}
+                    className="text-xs font-normal"
+                  >
+                    {setting.is_active ? 'Ativo' : 'Inativo'}
+                  </Badge>
+                  <span className="text-[10px] text-muted-foreground">
+                    Regra: {setting.rule_key}
                   </span>
-                  {automation.trigger}
                 </div>
-                <div className="flex justify-center text-muted-foreground">
-                  <ArrowRight className="h-4 w-4" />
-                </div>
-                <div className="p-2 bg-muted rounded border text-muted-foreground">
-                  <span className="font-semibold text-foreground block text-xs uppercase mb-1">
-                    Ação
-                  </span>
-                  {automation.action}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              </CardContent>
+            </Card>
+          ))}
+
+          {settings.length === 0 && (
+            <div className="col-span-full text-center py-12 text-muted-foreground">
+              Nenhuma configuração encontrada. Verifique se as migrações foram
+              executadas.
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

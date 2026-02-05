@@ -18927,13 +18927,6 @@ var ArrowLeft = createLucideIcon("arrow-left", [["path", {
 	d: "M19 12H5",
 	key: "x3x0zl"
 }]]);
-var ArrowRight = createLucideIcon("arrow-right", [["path", {
-	d: "M5 12h14",
-	key: "1ays0h"
-}], ["path", {
-	d: "m12 5 7 7-7 7",
-	key: "xquz4c"
-}]]);
 var ArrowUpDown = createLucideIcon("arrow-up-down", [
 	["path", {
 		d: "m21 16-4 4-4-4",
@@ -19457,6 +19450,10 @@ var Phone = createLucideIcon("phone", [["path", {
 	d: "M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384",
 	key: "9njp5v"
 }]]);
+var Play = createLucideIcon("play", [["path", {
+	d: "M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z",
+	key: "10ikf1"
+}]]);
 var Plus = createLucideIcon("plus", [["path", {
 	d: "M5 12h14",
 	key: "1ays0h"
@@ -19566,6 +19563,20 @@ var TrendingUp = createLucideIcon("trending-up", [["path", {
 	d: "m22 7-8.5 8.5-5-5L2 17",
 	key: "1t1m79"
 }]]);
+var TriangleAlert = createLucideIcon("triangle-alert", [
+	["path", {
+		d: "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3",
+		key: "wmoenq"
+	}],
+	["path", {
+		d: "M12 9v4",
+		key: "juzpu7"
+	}],
+	["path", {
+		d: "M12 17h.01",
+		key: "p32p05"
+	}]
+]);
 var Trophy = createLucideIcon("trophy", [
 	["path", {
 		d: "M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978",
@@ -26282,7 +26293,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$27({ inst: {
+			cachedValue = useState$28({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26296,7 +26307,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$22(function() {
+			useEffect$23(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26319,7 +26330,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$65 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$27 = React$65.useState, useEffect$22 = React$65.useEffect, useLayoutEffect$2 = React$65.useLayoutEffect, useDebugValue = React$65.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$65 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$28 = React$65.useState, useEffect$23 = React$65.useEffect, useLayoutEffect$2 = React$65.useLayoutEffect, useDebugValue = React$65.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$65.useSyncExternalStore ? React$65.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -74672,103 +74683,156 @@ var Switch = import_react.forwardRef(({ className, ...props }, ref) => /* @__PUR
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Thumb, { className: cn("pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0") })
 }));
 Switch.displayName = Root.displayName;
-var AUTOMATIONS = [
-	{
-		id: 1,
-		name: "Boas-vindas novos leads",
-		trigger: "Novo contato adicionado",
-		action: "Enviar email de apresentação",
-		active: true,
-		icon: UserPlus
+const automationsService = {
+	async getSettings() {
+		const { data, error } = await supabase.from("automation_settings").select("*").order("name", { ascending: true });
+		if (error) throw error;
+		return data;
 	},
-	{
-		id: 2,
-		name: "Follow-up pós venda",
-		trigger: "Negócio Fechado",
-		action: "Criar tarefa de contato após 7 dias",
-		active: true,
-		icon: Clock
+	async updateSetting(id, updates) {
+		const { data, error } = await supabase.from("automation_settings").update(updates).eq("id", id).select().single();
+		if (error) throw error;
+		return data;
 	},
-	{
-		id: 3,
-		name: "Lembrete de Aniversário",
-		trigger: "Data de aniversário",
-		action: "Enviar SMS promocional",
-		active: false,
-		icon: Zap
-	},
-	{
-		id: 4,
-		name: "Reengajamento Lead Frio",
-		trigger: "Sem interação por 30 dias",
-		action: "Enviar email com catálogo",
-		active: true,
-		icon: Mail
+	async triggerAutomationProcess() {
+		const { data, error } = await supabase.functions.invoke("process-automation-tasks");
+		if (error) throw error;
+		return data;
 	}
-];
+};
 function Automacoes() {
+	const [settings, setSettings] = (0, import_react.useState)([]);
+	const [isLoading, setIsLoading] = (0, import_react.useState)(true);
+	const [isProcessing, setIsProcessing] = (0, import_react.useState)(false);
+	const { toast: toast$2 } = useToast();
+	const fetchSettings = async () => {
+		setIsLoading(true);
+		try {
+			setSettings(await automationsService.getSettings());
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível carregar as configurações.",
+				variant: "destructive"
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	};
+	(0, import_react.useEffect)(() => {
+		fetchSettings();
+	}, []);
+	const handleToggle = async (id, currentState) => {
+		setSettings((prev) => prev.map((s$3) => s$3.id === id ? {
+			...s$3,
+			is_active: !currentState
+		} : s$3));
+		try {
+			await automationsService.updateSetting(id, { is_active: !currentState });
+		} catch (error) {
+			console.error(error);
+			setSettings((prev) => prev.map((s$3) => s$3.id === id ? {
+				...s$3,
+				is_active: currentState
+			} : s$3));
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível atualizar a configuração.",
+				variant: "destructive"
+			});
+		}
+	};
+	const handleRunManually = async () => {
+		setIsProcessing(true);
+		try {
+			const result = await automationsService.triggerAutomationProcess();
+			const details = [
+				result.birthday > 0 ? `${result.birthday} aniversários` : null,
+				result.post_sale > 0 ? `${result.post_sale} pós-vendas` : null,
+				result.inactivity > 0 ? `${result.inactivity} inativos` : null,
+				result.lost_bid > 0 ? `${result.lost_bid} lances perdidos` : null
+			].filter(Boolean).join(", ");
+			toast$2({
+				title: "Automação Executada",
+				description: details ? `Tarefas criadas: ${details}` : "Nenhuma nova tarefa foi necessária."
+			});
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro na Execução",
+				description: error.message || "Falha ao processar automações.",
+				variant: "destructive"
+			});
+		} finally {
+			setIsProcessing(false);
+		}
+	};
+	const getIcon = (key) => {
+		switch (key) {
+			case "birthday": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserPlus, { className: "h-6 w-6" });
+			case "post_sale": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-6 w-6" });
+			case "inactivity": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TriangleAlert, { className: "h-6 w-6" });
+			case "lost_bid": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleAlert, { className: "h-6 w-6" });
+			default: return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "h-6 w-6" });
+		}
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6",
+		className: "space-y-6 animate-fade-in",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex items-center justify-between",
+			className: "flex flex-col md:flex-row md:items-center justify-between gap-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 				className: "text-3xl font-bold font-display text-primary",
-				children: "Automações"
+				children: "Automações de Tarefas"
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground",
-				children: "Automatize tarefas repetitivas e ganhe produtividade."
+				children: "Configure regras para geração automática de tarefas e follow-ups."
 			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				onClick: handleRunManually,
+				disabled: isProcessing || isLoading,
 				className: "bg-primary hover:bg-primary/90 text-white",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "mr-2 h-4 w-4" }), " Nova Automação"]
+				children: [isProcessing ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "mr-2 h-4 w-4" }), "Executar Agora"]
 			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: "grid gap-4 md:grid-cols-2 lg:grid-cols-3",
-			children: AUTOMATIONS.map((automation) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				className: "relative overflow-hidden group hover:border-primary/50 transition-colors",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute top-0 left-0 w-1 h-full bg-secondary opacity-0 group-hover:opacity-100 transition-opacity" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-						className: "flex flex-row items-start justify-between pb-2 space-y-0",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "p-2 bg-primary/10 rounded-md text-primary",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(automation.icon, { className: "h-6 w-6" })
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, { checked: automation.active })]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-						className: "pt-4 space-y-4",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-							className: "text-lg leading-tight mb-2",
-							children: automation.name
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-							variant: automation.active ? "default" : "secondary",
+		}), isLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "flex justify-center py-12",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin text-primary" })
+		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid gap-4 md:grid-cols-2 lg:grid-cols-2",
+			children: [settings.map((setting) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: `relative overflow-hidden transition-all duration-300 ${setting.is_active ? "border-l-4 border-l-primary shadow-md" : "opacity-80 border-l-4 border-l-muted"}`,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+					className: "flex flex-row items-start justify-between pb-2 space-y-0",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: `p-2 rounded-md ${setting.is_active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`,
+						children: getIcon(setting.rule_key)
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+						checked: setting.is_active,
+						onCheckedChange: () => handleToggle(setting.id, setting.is_active)
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+					className: "pt-4 space-y-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+						className: "text-lg leading-tight mb-2",
+						children: setting.name
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
+						className: "text-sm min-h-[40px]",
+						children: setting.description
+					})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-between pt-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+							variant: setting.is_active ? "default" : "secondary",
 							className: "text-xs font-normal",
-							children: automation.active ? "Ativo" : "Inativo"
-						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-3 text-sm",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "p-2 bg-muted rounded border text-muted-foreground",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-semibold text-foreground block text-xs uppercase mb-1",
-										children: "Gatilho"
-									}), automation.trigger]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "flex justify-center text-muted-foreground",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-4 w-4" })
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "p-2 bg-muted rounded border text-muted-foreground",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-semibold text-foreground block text-xs uppercase mb-1",
-										children: "Ação"
-									}), automation.action]
-								})
-							]
+							children: setting.is_active ? "Ativo" : "Inativo"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "text-[10px] text-muted-foreground",
+							children: ["Regra: ", setting.rule_key]
 						})]
-					})
-				]
-			}, automation.id))
+					})]
+				})]
+			}, setting.id)), settings.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "col-span-full text-center py-12 text-muted-foreground",
+				children: "Nenhuma configuração encontrada. Verifique se as migrações foram executadas."
+			})]
 		})]
 	});
 }
@@ -76241,4 +76305,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Bqncsz3g.js.map
+//# sourceMappingURL=index-Cv9rGz0h.js.map

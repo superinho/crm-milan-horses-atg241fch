@@ -385,6 +385,67 @@ export type Database = {
         }
         Relationships: []
       }
+      tasks: {
+        Row: {
+          contact_id: string | null
+          created_at: string | null
+          deal_id: string | null
+          description: string | null
+          due_date: string
+          has_reminder: boolean | null
+          id: string
+          is_completed: boolean | null
+          title: string
+          type: string | null
+        }
+        Insert: {
+          contact_id?: string | null
+          created_at?: string | null
+          deal_id?: string | null
+          description?: string | null
+          due_date: string
+          has_reminder?: boolean | null
+          id?: string
+          is_completed?: boolean | null
+          title: string
+          type?: string | null
+        }
+        Update: {
+          contact_id?: string | null
+          created_at?: string | null
+          deal_id?: string | null
+          description?: string | null
+          due_date?: string
+          has_reminder?: boolean | null
+          id?: string
+          is_completed?: boolean | null
+          title?: string
+          type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'tasks_contact_id_fkey'
+            columns: ['contact_id']
+            isOneToOne: false
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'tasks_contact_id_fkey'
+            columns: ['contact_id']
+            isOneToOne: false
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'tasks_deal_id_fkey'
+            columns: ['deal_id']
+            isOneToOne: false
+            referencedRelation: 'deals'
+            referencedColumns: ['id']
+          },
+        ]
+      }
     }
     Views: {
       contact_segmentation_view: {
