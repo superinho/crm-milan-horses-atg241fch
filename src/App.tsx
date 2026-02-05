@@ -9,6 +9,7 @@ import Index from './pages/Index'
 import Contatos from './pages/Contatos'
 import ContatoDetalhes from './pages/ContatoDetalhes'
 import Negocios from './pages/Negocios'
+import DealDetails from './pages/DealDetails'
 import Campanhas from './pages/Campanhas'
 import Automacoes from './pages/Automacoes'
 import Tarefas from './pages/Tarefas'
@@ -56,6 +57,7 @@ const App = () => (
             <Route path="/contatos" element={<Contatos />} />
             <Route path="/contatos/:id" element={<ContatoDetalhes />} />
             <Route path="/negocios" element={<Negocios />} />
+            <Route path="/negocios/:id" element={<DealDetails />} />
             <Route path="/campanhas" element={<Campanhas />} />
             <Route path="/automacoes" element={<Automacoes />} />
             <Route path="/tarefas" element={<Tarefas />} />

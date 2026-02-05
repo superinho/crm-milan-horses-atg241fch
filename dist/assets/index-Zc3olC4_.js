@@ -19520,6 +19520,13 @@ var SquarePen = createLucideIcon("square-pen", [["path", {
 	d: "M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z",
 	key: "ohrbg2"
 }]]);
+var StickyNote = createLucideIcon("sticky-note", [["path", {
+	d: "M21 9a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 15 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z",
+	key: "1dfntj"
+}], ["path", {
+	d: "M15 3v5a1 1 0 0 0 1 1h5",
+	key: "6s6qgf"
+}]]);
 var Tag = createLucideIcon("tag", [["path", {
 	d: "M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z",
 	key: "vktsd0"
@@ -26275,7 +26282,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$22({ inst: {
+			cachedValue = useState$25({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26289,7 +26296,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$17(function() {
+			useEffect$20(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26312,7 +26319,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$65 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$22 = React$65.useState, useEffect$17 = React$65.useEffect, useLayoutEffect$2 = React$65.useLayoutEffect, useDebugValue = React$65.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$65 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$25 = React$65.useState, useEffect$20 = React$65.useEffect, useLayoutEffect$2 = React$65.useLayoutEffect, useDebugValue = React$65.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$65.useSyncExternalStore ? React$65.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -58014,6 +58021,7 @@ const contactsService = {
         ),
         contact_interactions (
            id,
+           deal_id,
            type,
            description,
            date,
@@ -58040,6 +58048,11 @@ const contactsService = {
 	},
 	async getContactInteractions(contactId) {
 		const { data, error } = await supabase.from("contact_interactions").select("*").eq("contact_id", contactId).order("date", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async getDealInteractions(dealId) {
+		const { data, error } = await supabase.from("contact_interactions").select("*").eq("deal_id", dealId).order("date", { ascending: false });
 		if (error) throw error;
 		return data;
 	},
@@ -72464,6 +72477,14 @@ const dealsService = {
 		if (error) throw error;
 		return data;
 	},
+	async getDealById(id) {
+		const { data, error } = await supabase.from("deals").select(`
+        *,
+        contact:contacts(*)
+      `).eq("id", id).single();
+		if (error) throw error;
+		return data;
+	},
 	async createDeal(deal) {
 		const { data, error } = await supabase.from("deals").insert(deal).select().single();
 		if (error) throw error;
@@ -72482,21 +72503,45 @@ const dealsService = {
 	async deleteDeal(id) {
 		const { error } = await supabase.from("deals").delete().eq("id", id);
 		if (error) throw error;
+	},
+	async getDealTasks(dealId) {
+		const { data, error } = await supabase.from("deal_tasks").select("*").eq("deal_id", dealId).order("created_at", { ascending: true });
+		if (error) throw error;
+		return data;
+	},
+	async addDealTask(dealId, description) {
+		const { data, error } = await supabase.from("deal_tasks").insert({
+			deal_id: dealId,
+			description
+		}).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async updateDealTask(id, updates) {
+		const { data, error } = await supabase.from("deal_tasks").update(updates).eq("id", id).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async deleteDealTask(id) {
+		const { error } = await supabase.from("deal_tasks").delete().eq("id", id);
+		if (error) throw error;
 	}
 };
 function DealCard({ deal, isDragging, onDragStart }) {
+	const navigate = useNavigate();
 	const daysInStage = differenceInDays(/* @__PURE__ */ new Date(), new Date(deal.updated_at));
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
-		className: cn("cursor-grab active:cursor-grabbing hover:shadow-md transition-all duration-200 border-l-4", isDragging ? "opacity-50" : "opacity-100", deal.stage === "Fechado" ? "border-l-green-500" : "border-l-primary"),
+		className: cn("cursor-grab active:cursor-grabbing hover:shadow-md transition-all duration-200 border-l-4 group relative", isDragging ? "opacity-50" : "opacity-100", deal.stage === "Fechado" ? "border-l-green-500" : "border-l-primary"),
 		draggable: true,
 		onDragStart,
+		onClick: () => navigate(`/negocios/${deal.id}`),
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
 			className: "p-3 space-y-3",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "flex justify-between items-start gap-2",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-						className: "font-semibold text-sm line-clamp-2 text-primary leading-tight",
+						className: "font-semibold text-sm line-clamp-2 text-primary leading-tight group-hover:text-primary/80 transition-colors",
 						children: deal.title
 					})
 				}),
@@ -73641,6 +73686,580 @@ function Negocios() {
 				})]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(KanbanBoard, { refreshTrigger })]
+	});
+}
+function DealTimeline({ dealId, contactId }) {
+	const [items, setItems] = (0, import_react.useState)([]);
+	const [isLoading, setIsLoading] = (0, import_react.useState)(true);
+	const [isDialogOpen, setIsDialogOpen] = (0, import_react.useState)(false);
+	const [newInteraction, setNewInteraction] = (0, import_react.useState)({
+		type: "nota adicionada",
+		description: "",
+		date: (/* @__PURE__ */ new Date()).toISOString().slice(0, 16)
+	});
+	const { toast: toast$2 } = useToast();
+	const fetchTimelineData = async () => {
+		setIsLoading(true);
+		try {
+			setItems(await contactsService.getDealInteractions(dealId));
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível carregar o histórico.",
+				variant: "destructive"
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	};
+	(0, import_react.useEffect)(() => {
+		if (dealId) fetchTimelineData();
+	}, [dealId]);
+	const handleAddInteraction = async () => {
+		if (!newInteraction.description) {
+			toast$2({
+				title: "Campo obrigatório",
+				description: "Por favor, insira uma descrição.",
+				variant: "destructive"
+			});
+			return;
+		}
+		try {
+			await contactsService.addInteraction({
+				contact_id: contactId,
+				deal_id: dealId,
+				type: newInteraction.type,
+				description: newInteraction.description,
+				date: new Date(newInteraction.date).toISOString()
+			});
+			toast$2({
+				title: "Sucesso",
+				description: "Interação registrada."
+			});
+			setIsDialogOpen(false);
+			setNewInteraction({
+				type: "nota adicionada",
+				description: "",
+				date: (/* @__PURE__ */ new Date()).toISOString().slice(0, 16)
+			});
+			fetchTimelineData();
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Falha ao registrar interação.",
+				variant: "destructive"
+			});
+		}
+	};
+	const getIcon = (type) => {
+		const t$1 = type.toLowerCase();
+		if (t$1.includes("email") || t$1.includes("e-mail")) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-4 w-4" });
+		if (t$1.includes("whatsapp")) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-4 w-4" });
+		if (t$1.includes("ligação") || t$1.includes("call")) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Phone, { className: "h-4 w-4" });
+		if (t$1.includes("nota")) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "h-4 w-4" });
+		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-4 w-4" });
+	};
+	const getColorClass = (type) => {
+		const t$1 = type.toLowerCase();
+		if (t$1.includes("email") || t$1.includes("e-mail")) return "bg-blue-100 text-blue-600 border-blue-200";
+		if (t$1.includes("whatsapp")) return "bg-green-100 text-green-600 border-green-200";
+		if (t$1.includes("ligação") || t$1.includes("call")) return "bg-purple-100 text-purple-600 border-purple-200";
+		if (t$1.includes("nota")) return "bg-gray-100 text-gray-600 border-gray-200";
+		return "bg-gray-100 text-gray-600 border-gray-200";
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "shadow-sm h-full flex flex-col",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+			className: "flex flex-row items-center justify-between pb-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+				className: "text-lg flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-5 w-5 text-primary" }), "Timeline do Negócio"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+				open: isDialogOpen,
+				onOpenChange: setIsDialogOpen,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+					asChild: true,
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						size: "sm",
+						className: "gap-1",
+						variant: "outline",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-3.5 w-3.5" }), "Adicionar"]
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Nova Interação" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Registre uma interação específica para este negócio." })] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid gap-4 py-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "type",
+									children: "Tipo"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									value: newInteraction.type,
+									onValueChange: (val) => setNewInteraction({
+										...newInteraction,
+										type: val
+									}),
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o tipo" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "nota adicionada",
+											children: "Nota"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "ligação realizada",
+											children: "Ligação"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "whatsapp enviado",
+											children: "WhatsApp"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "e-mail enviado",
+											children: "E-mail"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "reunião agendada",
+											children: "Reunião"
+										})
+									] })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "date",
+									children: "Data e Hora"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									id: "date",
+									type: "datetime-local",
+									value: newInteraction.date,
+									onChange: (e) => setNewInteraction({
+										...newInteraction,
+										date: e.target.value
+									})
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "description",
+									children: "Descrição"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+									id: "description",
+									placeholder: "Detalhes...",
+									value: newInteraction.description,
+									onChange: (e) => setNewInteraction({
+										...newInteraction,
+										description: e.target.value
+									})
+								})]
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogFooter, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						variant: "outline",
+						onClick: () => setIsDialogOpen(false),
+						children: "Cancelar"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						onClick: handleAddInteraction,
+						children: "Salvar"
+					})] })
+				] })]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+			className: "relative pl-6 pr-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute left-[37px] top-6 bottom-6 w-[2px] bg-muted/60" }), isLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex justify-center py-8",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-primary" })
+			}) : items.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "text-center py-8 text-muted-foreground text-sm",
+				children: "Nenhuma interação registrada neste negócio."
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "space-y-6",
+				children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "relative pl-8 group",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: cn("absolute left-[-13px] top-0 flex h-8 w-8 items-center justify-center rounded-full border shadow-sm z-10", getColorClass(item.type)),
+						children: getIcon(item.type)
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col gap-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center justify-between",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-semibold text-sm text-foreground capitalize",
+								children: item.type
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs text-muted-foreground tabular-nums",
+								children: format(new Date(item.date), "dd MMM yyyy, HH:mm", { locale: ptBR })
+							})]
+						}), item.description && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-sm text-muted-foreground bg-muted/30 p-2 rounded-md border border-muted/50 mt-1",
+							children: item.description
+						})]
+					})]
+				}, item.id))
+			})]
+		})]
+	});
+}
+function DealTasks({ dealId }) {
+	const [tasks, setTasks] = (0, import_react.useState)([]);
+	const [newTask, setNewTask] = (0, import_react.useState)("");
+	const [isLoading, setIsLoading] = (0, import_react.useState)(true);
+	const [isAdding, setIsAdding] = (0, import_react.useState)(false);
+	const { toast: toast$2 } = useToast();
+	const fetchTasks = async () => {
+		try {
+			setTasks(await dealsService.getDealTasks(dealId));
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível carregar as tarefas.",
+				variant: "destructive"
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	};
+	(0, import_react.useEffect)(() => {
+		if (dealId) fetchTasks();
+	}, [dealId]);
+	const handleAddTask = async (e) => {
+		e?.preventDefault();
+		if (!newTask.trim()) return;
+		setIsAdding(true);
+		try {
+			const task = await dealsService.addDealTask(dealId, newTask.trim());
+			setTasks([...tasks, task]);
+			setNewTask("");
+			toast$2({
+				title: "Sucesso",
+				description: "Tarefa adicionada."
+			});
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível adicionar a tarefa.",
+				variant: "destructive"
+			});
+		} finally {
+			setIsAdding(false);
+		}
+	};
+	const handleToggleTask = async (task) => {
+		setTasks(tasks.map((t$1) => t$1.id === task.id ? {
+			...t$1,
+			is_completed: !t$1.is_completed
+		} : t$1));
+		try {
+			await dealsService.updateDealTask(task.id, { is_completed: !task.is_completed });
+		} catch (error) {
+			console.error(error);
+			fetchTasks();
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível atualizar a tarefa.",
+				variant: "destructive"
+			});
+		}
+	};
+	const handleDeleteTask = async (id) => {
+		try {
+			await dealsService.deleteDealTask(id);
+			setTasks(tasks.filter((t$1) => t$1.id !== id));
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível excluir a tarefa.",
+				variant: "destructive"
+			});
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "shadow-sm h-full",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+			className: "pb-3",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+				className: "text-base font-medium flex items-center justify-between",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Próximas Ações" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "text-xs font-normal text-muted-foreground bg-muted px-2 py-0.5 rounded-full",
+					children: [
+						tasks.filter((t$1) => t$1.is_completed).length,
+						"/",
+						tasks.length
+					]
+				})]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+			className: "space-y-4",
+			children: [isLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex justify-center py-4",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-6 w-6 animate-spin text-primary" })
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-2",
+				children: [tasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "group flex items-center justify-between p-2 rounded-md hover:bg-muted/50 transition-colors border border-transparent hover:border-muted",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-3 flex-1 overflow-hidden",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							onClick: () => handleToggleTask(task),
+							className: cn("shrink-0 transition-colors focus:outline-none", task.is_completed ? "text-green-600" : "text-muted-foreground hover:text-primary"),
+							children: task.is_completed ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-5 w-5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Circle, { className: "h-5 w-5" })
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: cn("text-sm truncate transition-all", task.is_completed && "text-muted-foreground line-through decoration-muted-foreground/50"),
+							children: task.description
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						onClick: () => handleDeleteTask(task.id),
+						className: "opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-all p-1",
+						title: "Excluir tarefa",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
+					})]
+				}, task.id)), tasks.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "text-sm text-muted-foreground text-center py-4 italic",
+					children: "Nenhuma tarefa pendente."
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+				onSubmit: handleAddTask,
+				className: "flex gap-2 pt-2 border-t",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+					placeholder: "Adicionar nova tarefa...",
+					value: newTask,
+					onChange: (e) => setNewTask(e.target.value),
+					className: "h-9 text-sm"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+					type: "submit",
+					size: "sm",
+					variant: "secondary",
+					className: "h-9 w-9 p-0 shrink-0",
+					disabled: isAdding || !newTask.trim(),
+					children: isAdding ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-4 w-4 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" })
+				})]
+			})]
+		})]
+	});
+}
+function DealDetails() {
+	const { id } = useParams();
+	const navigate = useNavigate();
+	const { toast: toast$2 } = useToast();
+	const [deal, setDeal] = (0, import_react.useState)(null);
+	const [loading, setLoading] = (0, import_react.useState)(true);
+	const [notes, setNotes] = (0, import_react.useState)("");
+	const [savingNotes, setSavingNotes] = (0, import_react.useState)(false);
+	(0, import_react.useEffect)(() => {
+		if (id) fetchDeal();
+	}, [id]);
+	const fetchDeal = async () => {
+		try {
+			if (!id) return;
+			const data = await dealsService.getDealById(id);
+			setDeal(data);
+			setNotes(data.notes || "");
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível carregar o negócio.",
+				variant: "destructive"
+			});
+			navigate("/negocios");
+		} finally {
+			setLoading(false);
+		}
+	};
+	const handleSaveNotes = async () => {
+		if (!deal) return;
+		setSavingNotes(true);
+		try {
+			await dealsService.updateDeal(deal.id, { notes });
+			toast$2({
+				title: "Sucesso",
+				description: "Notas atualizadas."
+			});
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Falha ao salvar notas.",
+				variant: "destructive"
+			});
+		} finally {
+			setSavingNotes(false);
+		}
+	};
+	if (loading) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "flex items-center justify-center h-[calc(100vh-200px)]",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "animate-spin rounded-full h-12 w-12 border-b-2 border-primary" })
+	});
+	if (!deal) return null;
+	const getStageColor = (stage) => {
+		switch (stage) {
+			case "Lead": return "bg-gray-400";
+			case "Qualificado": return "bg-blue-400";
+			case "Interesse": return "bg-yellow-400";
+			case "Proposta": return "bg-orange-400";
+			case "Fechado": return "bg-green-500";
+			default: return "bg-gray-400";
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in max-w-7xl mx-auto pb-10",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+					variant: "ghost",
+					size: "icon",
+					onClick: () => navigate("/negocios"),
+					className: "shrink-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowLeft, { className: "h-5 w-5" })
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+					className: "text-2xl font-bold font-display text-primary flex items-center gap-3",
+					children: "Detalhes do Negócio"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground text-sm",
+					children: "Gerencie todas as informações desta oportunidade."
+				})] })]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+				className: "shadow-sm border-t-4 border-t-primary",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					className: "p-6",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-1",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold",
+									children: "Cliente"
+								}), deal.contact ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+									to: `/contatos/${deal.contact.id}`,
+									className: "flex items-center gap-3 group",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
+										className: "h-10 w-10 border border-muted group-hover:scale-105 transition-transform",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${deal.contact.id}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: deal.contact.name.substring(0, 2).toUpperCase() })]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "font-semibold text-primary group-hover:underline",
+										children: deal.contact.name
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs text-muted-foreground",
+										children: deal.contact.phone
+									})] })]
+								}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-2 text-muted-foreground",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(User, { className: "h-4 w-4" }),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Sem contato vinculado" })
+									]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-1",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold",
+										children: "Negócio"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "font-bold text-lg leading-tight",
+										children: deal.title
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center gap-2 mt-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+											className: cn("text-white border-0", getStageColor(deal.stage)),
+											children: deal.stage
+										}), deal.probability > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "text-xs font-medium text-muted-foreground",
+											children: [deal.probability, "% Probabilidade"]
+										})]
+									})
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-1",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold",
+									children: "Valor Estimado"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-2 text-primary",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-5 w-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-2xl font-bold font-display",
+										children: new Intl.NumberFormat("pt-BR", {
+											style: "currency",
+											currency: "BRL",
+											maximumFractionDigits: 0
+										}).format(deal.value)
+									})]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-1",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-xs text-muted-foreground uppercase tracking-wide font-semibold",
+									children: "Previsão de Fechamento"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-2 mt-1",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-5 w-5 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-medium",
+										children: deal.expected_close_date ? format(new Date(deal.expected_close_date), "dd 'de' MMMM, yyyy", { locale: ptBR }) : "Data não definida"
+									})]
+								})]
+							})
+						]
+					})
+				})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "lg:col-span-2 h-[600px]",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DealTimeline, {
+						dealId: deal.id,
+						contactId: deal.contact_id
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-6 flex flex-col h-[600px]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "flex-1 min-h-0",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DealTasks, { dealId: deal.id })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "shrink-0",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+							className: "shadow-sm",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+								className: "pb-3",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+									className: "text-base font-medium flex items-center gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(StickyNote, { className: "h-4 w-4 text-primary" }), "Notas Internas"]
+								})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+								placeholder: "Escreva estratégias ou observações sobre este negócio...",
+								className: "min-h-[120px] resize-none text-sm",
+								value: notes,
+								onChange: (e) => setNotes(e.target.value),
+								onBlur: handleSaveNotes
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex justify-between items-center mt-2",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-[10px] text-muted-foreground",
+									children: savingNotes ? "Salvando..." : "Salvo automaticamente ao sair do campo."
+								})
+							})] })]
+						})
+					})]
+				})]
+			})
+		]
 	});
 }
 var PROGRESS_NAME = "Progress";
@@ -75267,6 +75886,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Negocios, {})
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+						path: "/negocios/:id",
+						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DealDetails, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 						path: "/campanhas",
 						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Campanhas, {})
 					}),
@@ -75298,4 +75921,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BjF43A2s.js.map
+//# sourceMappingURL=index-Zc3olC4_.js.map

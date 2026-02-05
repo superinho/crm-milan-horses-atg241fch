@@ -49,6 +49,7 @@ export type Bid = {
 export type Interaction = {
   id: string
   contact_id: string
+  deal_id?: string | null
   type: string
   description: string | null
   date: string
@@ -130,12 +131,6 @@ export const contactsService = {
     if (sortBy === 'lastContact') {
       query = query.order('updated_at', { ascending: sortDirection === 'asc' })
     } else if (sortBy === 'totalInvested') {
-      // Note: Sorting by computed fields in Supabase complex queries can be tricky.
-      // For simplicity/performance in this demo, we might sort by name if complex sort fails,
-      // but ideally we sort by aggregated purchase value.
-      // Since 'totalInvested' is computed on client for now, we sort by name as fallback
-      // or we would need a view for sorting too.
-      // Keeping existing logic:
       query = query.order('name', { ascending: sortDirection === 'asc' })
     } else {
       query = query.order(sortBy as any, { ascending: sortDirection === 'asc' })
@@ -190,7 +185,7 @@ export const contactsService = {
     }, {})
 
     const stats: SegmentStats[] = Object.keys(statsMap)
-      .filter((key) => key !== 'Sem Segmento') // Optionally filter out 'None'
+      .filter((key) => key !== 'Sem Segmento')
       .map((segment) => ({
         segment,
         count: statsMap[segment],
@@ -224,6 +219,7 @@ export const contactsService = {
         ),
         contact_interactions (
            id,
+           deal_id,
            type,
            description,
            date,
@@ -273,6 +269,18 @@ export const contactsService = {
       .from('contact_interactions')
       .select('*')
       .eq('contact_id', contactId)
+      .order('date', { ascending: false })
+
+    if (error) throw error
+
+    return data as Interaction[]
+  },
+
+  async getDealInteractions(dealId: string) {
+    const { data, error } = await supabase
+      .from('contact_interactions')
+      .select('*')
+      .eq('deal_id', dealId)
       .order('date', { ascending: false })
 
     if (error) throw error

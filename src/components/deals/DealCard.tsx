@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Clock, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useNavigate } from 'react-router-dom'
 
 interface DealCardProps {
   deal: Deal
@@ -13,21 +14,23 @@ interface DealCardProps {
 }
 
 export function DealCard({ deal, isDragging, onDragStart }: DealCardProps) {
+  const navigate = useNavigate()
   const daysInStage = differenceInDays(new Date(), new Date(deal.updated_at))
 
   return (
     <Card
       className={cn(
-        'cursor-grab active:cursor-grabbing hover:shadow-md transition-all duration-200 border-l-4',
+        'cursor-grab active:cursor-grabbing hover:shadow-md transition-all duration-200 border-l-4 group relative',
         isDragging ? 'opacity-50' : 'opacity-100',
         deal.stage === 'Fechado' ? 'border-l-green-500' : 'border-l-primary',
       )}
       draggable
       onDragStart={onDragStart}
+      onClick={() => navigate(`/negocios/${deal.id}`)}
     >
       <CardContent className="p-3 space-y-3">
         <div className="flex justify-between items-start gap-2">
-          <h4 className="font-semibold text-sm line-clamp-2 text-primary leading-tight">
+          <h4 className="font-semibold text-sm line-clamp-2 text-primary leading-tight group-hover:text-primary/80 transition-colors">
             {deal.title}
           </h4>
         </div>
