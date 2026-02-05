@@ -51,6 +51,13 @@ export type Database = {
             foreignKeyName: 'bids_contact_id_fkey'
             columns: ['contact_id']
             isOneToOne: false
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'bids_contact_id_fkey'
+            columns: ['contact_id']
+            isOneToOne: false
             referencedRelation: 'contacts'
             referencedColumns: ['id']
           },
@@ -119,6 +126,13 @@ export type Database = {
             foreignKeyName: 'contact_interactions_contact_id_fkey'
             columns: ['contact_id']
             isOneToOne: false
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'contact_interactions_contact_id_fkey'
+            columns: ['contact_id']
+            isOneToOne: false
             referencedRelation: 'contacts'
             referencedColumns: ['id']
           },
@@ -138,6 +152,13 @@ export type Database = {
           tag_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: 'contact_tags_contact_id_fkey'
+            columns: ['contact_id']
+            isOneToOne: false
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
+          },
           {
             foreignKeyName: 'contact_tags_contact_id_fkey'
             columns: ['contact_id']
@@ -238,6 +259,13 @@ export type Database = {
             foreignKeyName: 'purchases_contact_id_fkey'
             columns: ['contact_id']
             isOneToOne: false
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'purchases_contact_id_fkey'
+            columns: ['contact_id']
+            isOneToOne: false
             referencedRelation: 'contacts'
             referencedColumns: ['id']
           },
@@ -263,7 +291,21 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      contact_segmentation_view: {
+        Row: {
+          created_at: string | null
+          distinct_auctions_bid: number | null
+          email: string | null
+          id: string | null
+          last_bid_date: string | null
+          name: string | null
+          phone: string | null
+          purchase_count: number | null
+          segment: string | null
+          total_purchase_value: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never

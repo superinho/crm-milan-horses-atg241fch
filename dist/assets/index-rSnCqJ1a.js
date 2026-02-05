@@ -19232,26 +19232,6 @@ var Download = createLucideIcon("download", [
 		key: "brsn70"
 	}]
 ]);
-var EllipsisVertical = createLucideIcon("ellipsis-vertical", [
-	["circle", {
-		cx: "12",
-		cy: "12",
-		r: "1",
-		key: "41hilf"
-	}],
-	["circle", {
-		cx: "12",
-		cy: "5",
-		r: "1",
-		key: "gxeob9"
-	}],
-	["circle", {
-		cx: "12",
-		cy: "19",
-		r: "1",
-		key: "lyex9k"
-	}]
-]);
 var Ellipsis = createLucideIcon("ellipsis", [
 	["circle", {
 		cx: "12",
@@ -26295,7 +26275,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$20({ inst: {
+			cachedValue = useState$22({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26309,7 +26289,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$15(function() {
+			useEffect$17(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26332,7 +26312,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$65 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$20 = React$65.useState, useEffect$15 = React$65.useEffect, useLayoutEffect$2 = React$65.useLayoutEffect, useDebugValue = React$65.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$65 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$22 = React$65.useState, useEffect$17 = React$65.useEffect, useLayoutEffect$2 = React$65.useLayoutEffect, useDebugValue = React$65.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$65.useSyncExternalStore ? React$65.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -36024,8 +36004,8 @@ var require__stringToPath = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	module.exports = memoizeCapped(function(string$2) {
 		var result = [];
 		if (string$2.charCodeAt(0) === 46) result.push("");
-		string$2.replace(rePropName, function(match$2, number$3, quote, subString) {
-			result.push(quote ? subString.replace(reEscapeChar, "$1") : number$3 || match$2);
+		string$2.replace(rePropName, function(match$2, number$5, quote, subString) {
+			result.push(quote ? subString.replace(reEscapeChar, "$1") : number$5 || match$2);
 		});
 		return result;
 	});
@@ -41519,7 +41499,7 @@ function bisector(f) {
 function zero$1() {
 	return 0;
 }
-function number$2(x$2) {
+function number$4(x$2) {
 	return x$2 === null ? NaN : +x$2;
 }
 function* numbers(values, valueof) {
@@ -41533,7 +41513,7 @@ function* numbers(values, valueof) {
 var ascendingBisect = bisector(ascending);
 const bisectRight = ascendingBisect.right;
 ascendingBisect.left;
-bisector(number$2).center;
+bisector(number$4).center;
 var bisect_default = bisectRight;
 var InternMap = class extends Map {
 	constructor(entries, key = keyof) {
@@ -41704,7 +41684,7 @@ function quantile(values, p$1, valueof) {
 	var n$1, i$2 = (n$1 - 1) * p$1, i0 = Math.floor(i$2), value0 = max$4(quickselect(values, i0).subarray(0, i0 + 1));
 	return value0 + (min$3(values.subarray(i0 + 1)) - value0) * (i$2 - i0);
 }
-function quantileSorted(values, p$1, valueof = number$2) {
+function quantileSorted(values, p$1, valueof = number$4) {
 	if (!(n$1 = values.length) || isNaN(p$1 = +p$1)) return;
 	if (p$1 <= 0 || n$1 < 2) return +valueof(values[0], 0, values);
 	if (p$1 >= 1) return +valueof(values[n$1 - 1], n$1 - 1, values);
@@ -42346,7 +42326,7 @@ function constants(x$2) {
 		return x$2;
 	};
 }
-function number$1(x$2) {
+function number$3(x$2) {
 	return +x$2;
 }
 var unit = [0, 1];
@@ -42407,7 +42387,7 @@ function transformer$2() {
 		return clamp$2(untransform((input || (input = piecewise$1(range$5, domain.map(transform$1), number_default)))(y$1)));
 	};
 	scale.domain = function(_$1) {
-		return arguments.length ? (domain = Array.from(_$1, number$1), rescale()) : domain.slice();
+		return arguments.length ? (domain = Array.from(_$1, number$3), rescale()) : domain.slice();
 	};
 	scale.range = function(_$1) {
 		return arguments.length ? (range$5 = Array.from(_$1), rescale()) : range$5.slice();
@@ -42733,7 +42713,7 @@ function identity$5(domain) {
 	}
 	scale.invert = scale;
 	scale.domain = scale.range = function(_$1) {
-		return arguments.length ? (domain = Array.from(_$1, number$1), scale) : domain.slice();
+		return arguments.length ? (domain = Array.from(_$1, number$3), scale) : domain.slice();
 	};
 	scale.unknown = function(_$1) {
 		return arguments.length ? (unknown$1 = _$1, scale) : unknown$1;
@@ -42741,7 +42721,7 @@ function identity$5(domain) {
 	scale.copy = function() {
 		return identity$5(domain).unknown(unknown$1);
 	};
-	domain = arguments.length ? Array.from(domain, number$1) : [0, 1];
+	domain = arguments.length ? Array.from(domain, number$3) : [0, 1];
 	return linearish(scale);
 }
 function nice(domain, interval) {
@@ -42933,7 +42913,7 @@ function radial() {
 		return arguments.length ? (squared.domain(_$1), scale) : squared.domain();
 	};
 	scale.range = function(_$1) {
-		return arguments.length ? (squared.range((range$5 = Array.from(_$1, number$1)).map(square)), scale) : range$5.slice();
+		return arguments.length ? (squared.range((range$5 = Array.from(_$1, number$3)).map(square)), scale) : range$5.slice();
 	};
 	scale.rangeRound = function(_$1) {
 		return scale.range(_$1).round(true);
@@ -44023,7 +44003,7 @@ function defaultLocale(definition) {
 function date$3(t$1) {
 	return new Date(t$1);
 }
-function number(t$1) {
+function number$2(t$1) {
 	return t$1 instanceof Date ? +t$1 : +/* @__PURE__ */ new Date(+t$1);
 }
 function calendar(ticks$1, tickInterval, year, month, week, day, hour, minute, second$1, format$2) {
@@ -44036,7 +44016,7 @@ function calendar(ticks$1, tickInterval, year, month, week, day, hour, minute, s
 		return new Date(invert(y$1));
 	};
 	scale.domain = function(_$1) {
-		return arguments.length ? domain(Array.from(_$1, number)) : domain().map(date$3);
+		return arguments.length ? domain(Array.from(_$1, number$2)) : domain().map(date$3);
 	};
 	scale.ticks = function(interval) {
 		var d = domain();
@@ -60614,6 +60594,17 @@ function cleanRegex(source) {
 	const end = source.endsWith("$") ? source.length - 1 : source.length;
 	return source.slice(start, end);
 }
+function floatSafeRemainder(val, step) {
+	const valDecCount = (val.toString().split(".")[1] || "").length;
+	const stepString = step.toString();
+	let stepDecCount = (stepString.split(".")[1] || "").length;
+	if (stepDecCount === 0 && /\d?e-\d?/.test(stepString)) {
+		const match$2 = stepString.match(/\d?e-(\d?)/);
+		if (match$2?.[1]) stepDecCount = Number.parseInt(match$2[1]);
+	}
+	const decCount = valDecCount > stepDecCount ? valDecCount : stepDecCount;
+	return Number.parseInt(val.toFixed(decCount).replace(".", "")) % Number.parseInt(step.toFixed(decCount).replace(".", "")) / 10 ** decCount;
+}
 var EVALUATING = Symbol("evaluating");
 function defineLazy(object$1, key, getter) {
 	let value = void 0;
@@ -60715,7 +60706,13 @@ function optionalKeys(shape) {
 		return shape[k$3]._zod.optin === "optional" && shape[k$3]._zod.optout === "optional";
 	});
 }
-Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -Number.MAX_VALUE, Number.MAX_VALUE;
+const NUMBER_FORMAT_RANGES = {
+	safeint: [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER],
+	int32: [-2147483648, 2147483647],
+	uint32: [0, 4294967295],
+	float32: [-34028234663852886e22, 34028234663852886e22],
+	float64: [-Number.MAX_VALUE, Number.MAX_VALUE]
+};
 function pick(schema, mask) {
 	const currDef = schema._zod.def;
 	const checks = currDef.checks;
@@ -61075,6 +61072,8 @@ const string$1 = (params) => {
 	const regex = params ? `[\\s\\S]{${params?.minimum ?? 0},${params?.maximum ?? ""}}` : `[\\s\\S]*`;
 	return /* @__PURE__ */ new RegExp(`^${regex}$`);
 };
+const integer = /^-?\d+$/;
+const number$1 = /^-?\d+(?:\.\d+)?$/;
 const lowercase = /^[^A-Z]*$/;
 const uppercase = /^[^a-z]*$/;
 const $ZodCheck = /* @__PURE__ */ $constructor("$ZodCheck", (inst, def) => {
@@ -61127,6 +61126,96 @@ const $ZodCheckGreaterThan = /* @__PURE__ */ $constructor("$ZodCheckGreaterThan"
 			minimum: typeof def.value === "object" ? def.value.getTime() : def.value,
 			input: payload.value,
 			inclusive: def.inclusive,
+			inst,
+			continue: !def.abort
+		});
+	};
+});
+const $ZodCheckMultipleOf = /* @__PURE__ */ $constructor("$ZodCheckMultipleOf", (inst, def) => {
+	$ZodCheck.init(inst, def);
+	inst._zod.onattach.push((inst$1) => {
+		var _a$1;
+		(_a$1 = inst$1._zod.bag).multipleOf ?? (_a$1.multipleOf = def.value);
+	});
+	inst._zod.check = (payload) => {
+		if (typeof payload.value !== typeof def.value) throw new Error("Cannot mix number and bigint in multiple_of check.");
+		if (typeof payload.value === "bigint" ? payload.value % def.value === BigInt(0) : floatSafeRemainder(payload.value, def.value) === 0) return;
+		payload.issues.push({
+			origin: typeof payload.value,
+			code: "not_multiple_of",
+			divisor: def.value,
+			input: payload.value,
+			inst,
+			continue: !def.abort
+		});
+	};
+});
+const $ZodCheckNumberFormat = /* @__PURE__ */ $constructor("$ZodCheckNumberFormat", (inst, def) => {
+	$ZodCheck.init(inst, def);
+	def.format = def.format || "float64";
+	const isInt = def.format?.includes("int");
+	const origin = isInt ? "int" : "number";
+	const [minimum, maximum] = NUMBER_FORMAT_RANGES[def.format];
+	inst._zod.onattach.push((inst$1) => {
+		const bag = inst$1._zod.bag;
+		bag.format = def.format;
+		bag.minimum = minimum;
+		bag.maximum = maximum;
+		if (isInt) bag.pattern = integer;
+	});
+	inst._zod.check = (payload) => {
+		const input = payload.value;
+		if (isInt) {
+			if (!Number.isInteger(input)) {
+				payload.issues.push({
+					expected: origin,
+					format: def.format,
+					code: "invalid_type",
+					continue: false,
+					input,
+					inst
+				});
+				return;
+			}
+			if (!Number.isSafeInteger(input)) {
+				if (input > 0) payload.issues.push({
+					input,
+					code: "too_big",
+					maximum: Number.MAX_SAFE_INTEGER,
+					note: "Integers must be within the safe integer range.",
+					inst,
+					origin,
+					inclusive: true,
+					continue: !def.abort
+				});
+				else payload.issues.push({
+					input,
+					code: "too_small",
+					minimum: Number.MIN_SAFE_INTEGER,
+					note: "Integers must be within the safe integer range.",
+					inst,
+					origin,
+					inclusive: true,
+					continue: !def.abort
+				});
+				return;
+			}
+		}
+		if (input < minimum) payload.issues.push({
+			origin: "number",
+			input,
+			code: "too_small",
+			minimum,
+			inclusive: true,
+			inst,
+			continue: !def.abort
+		});
+		if (input > maximum) payload.issues.push({
+			origin: "number",
+			input,
+			code: "too_big",
+			maximum,
+			inclusive: true,
 			inst,
 			continue: !def.abort
 		});
@@ -61726,6 +61815,30 @@ const $ZodJWT = /* @__PURE__ */ $constructor("$ZodJWT", (inst, def) => {
 			continue: !def.abort
 		});
 	};
+});
+const $ZodNumber = /* @__PURE__ */ $constructor("$ZodNumber", (inst, def) => {
+	$ZodType.init(inst, def);
+	inst._zod.pattern = inst._zod.bag.pattern ?? number$1;
+	inst._zod.parse = (payload, _ctx) => {
+		if (def.coerce) try {
+			payload.value = Number(payload.value);
+		} catch (_$1) {}
+		const input = payload.value;
+		if (typeof input === "number" && !Number.isNaN(input) && Number.isFinite(input)) return payload;
+		const received = typeof input === "number" ? Number.isNaN(input) ? "NaN" : !Number.isFinite(input) ? "Infinity" : void 0 : void 0;
+		payload.issues.push({
+			expected: "number",
+			code: "invalid_type",
+			input,
+			inst,
+			...received ? { received } : {}
+		});
+		return payload;
+	};
+});
+const $ZodNumberFormat = /* @__PURE__ */ $constructor("$ZodNumberFormat", (inst, def) => {
+	$ZodCheckNumberFormat.init(inst, def);
+	$ZodNumber.init(inst, def);
 });
 const $ZodUnknown = /* @__PURE__ */ $constructor("$ZodUnknown", (inst, def) => {
 	$ZodType.init(inst, def);
@@ -62719,6 +62832,25 @@ function _isoDuration(Class, params) {
 	});
 }
 /* @__NO_SIDE_EFFECTS__ */
+function _coercedNumber(Class, params) {
+	return new Class({
+		type: "number",
+		coerce: true,
+		checks: [],
+		...normalizeParams(params)
+	});
+}
+/* @__NO_SIDE_EFFECTS__ */
+function _int(Class, params) {
+	return new Class({
+		type: "number",
+		check: "number_format",
+		abort: false,
+		format: "safeint",
+		...normalizeParams(params)
+	});
+}
+/* @__NO_SIDE_EFFECTS__ */
 function _unknown(Class) {
 	return new Class({ type: "unknown" });
 }
@@ -62737,6 +62869,15 @@ function _date(Class, params) {
 	});
 }
 /* @__NO_SIDE_EFFECTS__ */
+function _lt(value, params) {
+	return new $ZodCheckLessThan({
+		check: "less_than",
+		...normalizeParams(params),
+		value,
+		inclusive: false
+	});
+}
+/* @__NO_SIDE_EFFECTS__ */
 function _lte(value, params) {
 	return new $ZodCheckLessThan({
 		check: "less_than",
@@ -62746,12 +62887,29 @@ function _lte(value, params) {
 	});
 }
 /* @__NO_SIDE_EFFECTS__ */
+function _gt(value, params) {
+	return new $ZodCheckGreaterThan({
+		check: "greater_than",
+		...normalizeParams(params),
+		value,
+		inclusive: false
+	});
+}
+/* @__NO_SIDE_EFFECTS__ */
 function _gte(value, params) {
 	return new $ZodCheckGreaterThan({
 		check: "greater_than",
 		...normalizeParams(params),
 		value,
 		inclusive: true
+	});
+}
+/* @__NO_SIDE_EFFECTS__ */
+function _multipleOf(value, params) {
+	return new $ZodCheckMultipleOf({
+		check: "multiple_of",
+		...normalizeParams(params),
+		value
 	});
 }
 /* @__NO_SIDE_EFFECTS__ */
@@ -63208,6 +63366,31 @@ const stringProcessor = (schema, ctx, _json, _params) => {
 			pattern: regex.source
 		}))];
 	}
+};
+const numberProcessor = (schema, ctx, _json, _params) => {
+	const json = _json;
+	const { minimum, maximum, format: format$2, multipleOf, exclusiveMaximum, exclusiveMinimum } = schema._zod.bag;
+	if (typeof format$2 === "string" && format$2.includes("int")) json.type = "integer";
+	else json.type = "number";
+	if (typeof exclusiveMinimum === "number") if (ctx.target === "draft-04" || ctx.target === "openapi-3.0") {
+		json.minimum = exclusiveMinimum;
+		json.exclusiveMinimum = true;
+	} else json.exclusiveMinimum = exclusiveMinimum;
+	if (typeof minimum === "number") {
+		json.minimum = minimum;
+		if (typeof exclusiveMinimum === "number" && ctx.target !== "draft-04") if (exclusiveMinimum >= minimum) delete json.minimum;
+		else delete json.exclusiveMinimum;
+	}
+	if (typeof exclusiveMaximum === "number") if (ctx.target === "draft-04" || ctx.target === "openapi-3.0") {
+		json.maximum = exclusiveMaximum;
+		json.exclusiveMaximum = true;
+	} else json.exclusiveMaximum = exclusiveMaximum;
+	if (typeof maximum === "number") {
+		json.maximum = maximum;
+		if (typeof exclusiveMaximum === "number" && ctx.target !== "draft-04") if (exclusiveMaximum <= maximum) delete json.maximum;
+		else delete json.exclusiveMaximum;
+	}
+	if (typeof multipleOf === "number") json.multipleOf = multipleOf;
 };
 const neverProcessor = (_schema, _ctx, json, _params) => {
 	json.not = {};
@@ -63772,6 +63955,39 @@ const ZodJWT = /* @__PURE__ */ $constructor("ZodJWT", (inst, def) => {
 	$ZodJWT.init(inst, def);
 	ZodStringFormat.init(inst, def);
 });
+const ZodNumber = /* @__PURE__ */ $constructor("ZodNumber", (inst, def) => {
+	$ZodNumber.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => numberProcessor(inst, ctx, json, params);
+	inst.gt = (value, params) => inst.check(/* @__PURE__ */ _gt(value, params));
+	inst.gte = (value, params) => inst.check(/* @__PURE__ */ _gte(value, params));
+	inst.min = (value, params) => inst.check(/* @__PURE__ */ _gte(value, params));
+	inst.lt = (value, params) => inst.check(/* @__PURE__ */ _lt(value, params));
+	inst.lte = (value, params) => inst.check(/* @__PURE__ */ _lte(value, params));
+	inst.max = (value, params) => inst.check(/* @__PURE__ */ _lte(value, params));
+	inst.int = (params) => inst.check(int(params));
+	inst.safe = (params) => inst.check(int(params));
+	inst.positive = (params) => inst.check(/* @__PURE__ */ _gt(0, params));
+	inst.nonnegative = (params) => inst.check(/* @__PURE__ */ _gte(0, params));
+	inst.negative = (params) => inst.check(/* @__PURE__ */ _lt(0, params));
+	inst.nonpositive = (params) => inst.check(/* @__PURE__ */ _lte(0, params));
+	inst.multipleOf = (value, params) => inst.check(/* @__PURE__ */ _multipleOf(value, params));
+	inst.step = (value, params) => inst.check(/* @__PURE__ */ _multipleOf(value, params));
+	inst.finite = () => inst;
+	const bag = inst._zod.bag;
+	inst.minValue = Math.max(bag.minimum ?? Number.NEGATIVE_INFINITY, bag.exclusiveMinimum ?? Number.NEGATIVE_INFINITY) ?? null;
+	inst.maxValue = Math.min(bag.maximum ?? Number.POSITIVE_INFINITY, bag.exclusiveMaximum ?? Number.POSITIVE_INFINITY) ?? null;
+	inst.isInt = (bag.format ?? "").includes("int") || Number.isSafeInteger(bag.multipleOf ?? .5);
+	inst.isFinite = true;
+	inst.format = bag.format ?? null;
+});
+const ZodNumberFormat = /* @__PURE__ */ $constructor("ZodNumberFormat", (inst, def) => {
+	$ZodNumberFormat.init(inst, def);
+	ZodNumber.init(inst, def);
+});
+function int(params) {
+	return /* @__PURE__ */ _int(ZodNumberFormat, params);
+}
 const ZodUnknown = /* @__PURE__ */ $constructor("ZodUnknown", (inst, def) => {
 	$ZodUnknown.init(inst, def);
 	ZodType.init(inst, def);
@@ -64104,6 +64320,9 @@ function refine(fn, _params = {}) {
 function superRefine(fn) {
 	return /* @__PURE__ */ _superRefine(fn);
 }
+function number(params) {
+	return /* @__PURE__ */ _coercedNumber(ZodNumber, params);
+}
 const daysInYear = 365.2425;
 Math.pow(10, 8) * 24 * 60 * 60 * 1e3;
 const millisecondsInWeek = 6048e5;
@@ -64247,6 +64466,20 @@ function differenceInCalendarMonths(laterDate, earlierDate, options$1) {
 	const yearsDiff = laterDate_.getFullYear() - earlierDate_.getFullYear();
 	const monthsDiff = laterDate_.getMonth() - earlierDate_.getMonth();
 	return yearsDiff * 12 + monthsDiff;
+}
+function differenceInDays(laterDate, earlierDate, options$1) {
+	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
+	const sign$1 = compareLocalAsc(laterDate_, earlierDate_);
+	const difference = Math.abs(differenceInCalendarDays(laterDate_, earlierDate_));
+	laterDate_.setDate(laterDate_.getDate() - sign$1 * difference);
+	const result = sign$1 * (difference - Number(compareLocalAsc(laterDate_, earlierDate_) === -sign$1));
+	return result === 0 ? 0 : result;
+}
+function compareLocalAsc(laterDate, earlierDate) {
+	const diff = laterDate.getFullYear() - earlierDate.getFullYear() || laterDate.getMonth() - earlierDate.getMonth() || laterDate.getDate() - earlierDate.getDate() || laterDate.getHours() - earlierDate.getHours() || laterDate.getMinutes() - earlierDate.getMinutes() || laterDate.getSeconds() - earlierDate.getSeconds() || laterDate.getMilliseconds() - earlierDate.getMilliseconds();
+	if (diff < 0) return -1;
+	if (diff > 0) return 1;
+	return diff;
 }
 function endOfMonth(date$4, options$1) {
 	const _date$1 = toDate(date$4, options$1?.in);
@@ -64643,14 +64876,14 @@ var formattingDayPeriodValues$1 = {
 	}
 };
 var ordinalNumber$1 = (dirtyNumber, _options) => {
-	const number$3 = Number(dirtyNumber);
-	const rem100 = number$3 % 100;
+	const number$5 = Number(dirtyNumber);
+	const rem100 = number$5 % 100;
 	if (rem100 > 20 || rem100 < 10) switch (rem100 % 10) {
-		case 1: return number$3 + "st";
-		case 2: return number$3 + "nd";
-		case 3: return number$3 + "rd";
+		case 1: return number$5 + "st";
+		case 2: return number$5 + "nd";
+		case 3: return number$5 + "rd";
 	}
-	return number$3 + "th";
+	return number$5 + "th";
 };
 const localize$1 = {
 	ordinalNumber: ordinalNumber$1,
@@ -64890,8 +65123,8 @@ function getWeek(date$4, options$1) {
 	const diff = +startOfWeek(_date$1, options$1) - +startOfWeekYear(_date$1, options$1);
 	return Math.round(diff / millisecondsInWeek) + 1;
 }
-function addLeadingZeros(number$3, targetLength) {
-	return (number$3 < 0 ? "-" : "") + Math.abs(number$3).toString().padStart(targetLength, "0");
+function addLeadingZeros(number$5, targetLength) {
+	return (number$5 < 0 ? "-" : "") + Math.abs(number$5).toString().padStart(targetLength, "0");
 }
 const lightFormatters = {
 	y(date$4, token) {
@@ -67415,9 +67648,9 @@ var formattingDayPeriodValues = {
 	}
 };
 var ordinalNumber = (dirtyNumber, options$1) => {
-	const number$3 = Number(dirtyNumber);
-	if (options$1?.unit === "week") return number$3 + "ª";
-	return number$3 + "º";
+	const number$5 = Number(dirtyNumber);
+	if (options$1?.unit === "week") return number$5 + "ª";
+	return number$5 + "º";
 };
 const ptBR = {
 	code: "pt-BR",
@@ -70273,7 +70506,7 @@ function MultiSelect({ options: options$1, selected, onChange, placeholder = "Se
 		})]
 	});
 }
-var formSchema$1 = object({
+var formSchema$2 = object({
 	name: string().min(2, "Nome deve ter pelo menos 2 caracteres."),
 	email: string().email("E-mail inválido."),
 	phone: string().min(14, "Telefone incompleto (mínimo 10 dígitos)."),
@@ -70369,7 +70602,7 @@ function ContactForm({ onSuccess }) {
 	const { toast: toast$2 } = useToast();
 	const [loading, setLoading] = (0, import_react.useState)(false);
 	const form = useForm({
-		resolver: a(formSchema$1),
+		resolver: a(formSchema$2),
 		defaultValues: {
 			name: "",
 			email: "",
@@ -72222,6 +72455,91 @@ function ContatoDetalhes() {
 		]
 	});
 }
+const dealsService = {
+	async getDeals() {
+		const { data, error } = await supabase.from("deals").select(`
+        *,
+        contact:contacts(*)
+      `).order("created_at", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async createDeal(deal) {
+		const { data, error } = await supabase.from("deals").insert(deal).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async updateDeal(id, updates) {
+		const { data, error } = await supabase.from("deals").update(updates).eq("id", id).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async updateDealStage(id, stage) {
+		const { data, error } = await supabase.from("deals").update({ stage }).eq("id", id).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async deleteDeal(id) {
+		const { error } = await supabase.from("deals").delete().eq("id", id);
+		if (error) throw error;
+	}
+};
+function DealCard({ deal, isDragging, onDragStart }) {
+	const daysInStage = differenceInDays(/* @__PURE__ */ new Date(), new Date(deal.updated_at));
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+		className: cn("cursor-grab active:cursor-grabbing hover:shadow-md transition-all duration-200 border-l-4", isDragging ? "opacity-50" : "opacity-100", deal.stage === "Fechado" ? "border-l-green-500" : "border-l-primary"),
+		draggable: true,
+		onDragStart,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+			className: "p-3 space-y-3",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex justify-between items-start gap-2",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+						className: "font-semibold text-sm line-clamp-2 text-primary leading-tight",
+						children: deal.title
+					})
+				}),
+				deal.contact && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
+						className: "h-5 w-5 border border-muted",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${deal.contact.id}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, {
+							className: "text-[9px]",
+							children: deal.contact.name.substring(0, 2).toUpperCase()
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "text-xs text-muted-foreground truncate max-w-[150px]",
+						children: deal.contact.name
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center justify-between pt-2 border-t border-dashed",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+						variant: "secondary",
+						className: "font-normal text-xs px-1.5 h-5 bg-secondary/10 text-secondary-foreground hover:bg-secondary/20 border-0",
+						children: new Intl.NumberFormat("pt-BR", {
+							style: "currency",
+							currency: "BRL",
+							maximumFractionDigits: 0
+						}).format(deal.value)
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-1 text-[10px] text-muted-foreground",
+						title: "Dias no estágio atual",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-3 w-3" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [daysInStage, "d"] })]
+					})]
+				}),
+				deal.probability > 0 && deal.stage !== "Fechado" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "w-full bg-gray-100 h-1 rounded-full overflow-hidden mt-1",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: cn("h-full rounded-full", deal.probability >= 70 ? "bg-green-500" : deal.probability >= 40 ? "bg-yellow-500" : "bg-red-500"),
+						style: { width: `${deal.probability}%` }
+					})
+				})
+			]
+		})
+	});
+}
 function useStateMachine(initialState, machine) {
 	return import_react.useReducer((state, event) => {
 		return machine[state][event] ?? state;
@@ -72899,98 +73217,385 @@ var ScrollBar = import_react.forwardRef(({ className, orientation = "vertical", 
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollAreaThumb, { className: "relative flex-1 rounded-full bg-border" })
 }));
 ScrollBar.displayName = ScrollAreaScrollbar.displayName;
-var INITIAL_DEALS = [
-	{
-		id: 1,
-		title: "Cavalo Lusitano Puro",
-		client: "Roberto Almeida",
-		value: 15e4,
-		date: "12 Out",
-		columnId: "prospeccao"
-	},
-	{
-		id: 2,
-		title: "Potro Manga Larga",
-		client: "Haras Pôr do Sol",
-		value: 45e3,
-		date: "15 Out",
-		columnId: "qualificacao"
-	},
-	{
-		id: 3,
-		title: "Égua Crioula",
-		client: "Fernanda Lima",
-		value: 85e3,
-		date: "10 Out",
-		columnId: "proposta"
-	},
-	{
-		id: 4,
-		title: "Garanhão Árabe",
-		client: "Investidor Dubai",
-		value: 45e4,
-		date: "20 Out",
-		columnId: "negociacao"
-	},
-	{
-		id: 5,
-		title: "Venda Coletiva Leilão",
-		client: "Associação BR",
-		value: 12e5,
-		date: "01 Out",
-		columnId: "fechado"
-	},
-	{
-		id: 6,
-		title: "Ponei Shetland",
-		client: "Escola Infantil",
-		value: 12e3,
-		date: "22 Out",
-		columnId: "prospeccao"
-	}
-];
 var COLUMNS = [
 	{
-		id: "prospeccao",
-		title: "Prospecção",
+		id: "Lead",
+		title: "Lead",
+		color: "bg-gray-100 text-gray-800"
+	},
+	{
+		id: "Qualificado",
+		title: "Qualificado",
 		color: "bg-blue-100 text-blue-800"
 	},
 	{
-		id: "qualificacao",
-		title: "Qualificação",
+		id: "Interesse",
+		title: "Interesse",
 		color: "bg-yellow-100 text-yellow-800"
 	},
 	{
-		id: "proposta",
+		id: "Proposta",
 		title: "Proposta",
 		color: "bg-orange-100 text-orange-800"
 	},
 	{
-		id: "negociacao",
-		title: "Negociação",
-		color: "bg-purple-100 text-purple-800"
-	},
-	{
-		id: "fechado",
+		id: "Fechado",
 		title: "Fechado",
 		color: "bg-green-100 text-green-800"
 	}
 ];
-function Negocios() {
-	const [deals, setDeals] = (0, import_react.useState)(INITIAL_DEALS);
-	const getDealsByColumn = (columnId) => deals.filter((deal) => deal.columnId === columnId);
-	const moveDealNext = (dealId, currentColumnId) => {
-		const columnIndex = COLUMNS.findIndex((c$1) => c$1.id === currentColumnId);
-		if (columnIndex < COLUMNS.length - 1) {
-			const nextColumn = COLUMNS[columnIndex + 1].id;
-			setDeals(deals.map((d) => d.id === dealId ? {
-				...d,
-				columnId: nextColumn
-			} : d));
+function KanbanBoard({ refreshTrigger = 0 }) {
+	const [deals, setDeals] = (0, import_react.useState)([]);
+	const [loading, setLoading] = (0, import_react.useState)(true);
+	const [draggedDealId, setDraggedDealId] = (0, import_react.useState)(null);
+	const [dragOverColumn, setDragOverColumn] = (0, import_react.useState)(null);
+	const { toast: toast$2 } = useToast();
+	const fetchDeals = async () => {
+		try {
+			setDeals(await dealsService.getDeals());
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Falha ao carregar negócios.",
+				variant: "destructive"
+			});
+		} finally {
+			setLoading(false);
 		}
 	};
+	(0, import_react.useEffect)(() => {
+		fetchDeals();
+	}, [refreshTrigger]);
+	const groupedDeals = (0, import_react.useMemo)(() => {
+		const groups = {};
+		COLUMNS.forEach((col) => {
+			groups[col.id] = [];
+		});
+		deals.forEach((deal) => {
+			if (groups[deal.stage]) groups[deal.stage].push(deal);
+		});
+		return groups;
+	}, [deals]);
+	const handleDragStart = (e, dealId) => {
+		e.dataTransfer.setData("dealId", dealId);
+		setDraggedDealId(dealId);
+	};
+	const handleDragOver = (e, columnId) => {
+		e.preventDefault();
+		setDragOverColumn(columnId);
+	};
+	const handleDragLeave = () => {
+		setDragOverColumn(null);
+	};
+	const handleDrop = async (e, columnId) => {
+		e.preventDefault();
+		setDragOverColumn(null);
+		const dealId = e.dataTransfer.getData("dealId");
+		setDraggedDealId(null);
+		if (!dealId) return;
+		const deal = deals.find((d) => d.id === dealId);
+		if (deal && deal.stage !== columnId) {
+			setDeals((current) => current.map((d) => d.id === dealId ? {
+				...d,
+				stage: columnId,
+				updated_at: (/* @__PURE__ */ new Date()).toISOString()
+			} : d));
+			try {
+				await dealsService.updateDealStage(dealId, columnId);
+				toast$2({
+					description: `Negócio movido para ${columnId}`,
+					duration: 2e3
+				});
+			} catch (error) {
+				console.error(error);
+				toast$2({
+					title: "Erro",
+					description: "Falha ao atualizar o estágio do negócio.",
+					variant: "destructive"
+				});
+				fetchDeals();
+			}
+		}
+	};
+	if (loading) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "flex h-64 items-center justify-center",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin text-primary" })
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ScrollArea, {
+		className: "flex-1 w-full whitespace-nowrap rounded-md border bg-muted/20 p-4 h-full min-h-[500px]",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "flex space-x-4 pb-4 h-full",
+			children: COLUMNS.map((column) => {
+				const columnDeals = groupedDeals[column.id] || [];
+				const totalValue = columnDeals.reduce((acc, curr) => acc + curr.value, 0);
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: cn("w-80 shrink-0 flex flex-col space-y-4 rounded-lg transition-colors p-2 h-full min-h-[400px]", dragOverColumn === column.id ? "bg-primary/5 ring-2 ring-primary/20" : ""),
+					onDragOver: (e) => handleDragOver(e, column.id),
+					onDragLeave: handleDragLeave,
+					onDrop: (e) => handleDrop(e, column.id),
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col space-y-2 sticky top-0 bg-muted/20 z-10 pb-2",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-between px-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-semibold text-sm uppercase tracking-wider text-muted-foreground flex items-center gap-2",
+									children: column.title
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+									variant: "outline",
+									className: "bg-background",
+									children: columnDeals.length
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `h-1 w-full rounded-full ${column.color.split(" ")[0]}` }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "px-2 text-xs text-muted-foreground font-medium flex justify-between",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Total Estimado:" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-foreground",
+									children: new Intl.NumberFormat("pt-BR", {
+										style: "currency",
+										currency: "BRL",
+										notation: "compact"
+									}).format(totalValue)
+								})]
+							})
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col space-y-3 flex-1 overflow-y-auto min-h-[200px]",
+						children: [columnDeals.map((deal) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DealCard, {
+							deal,
+							isDragging: draggedDealId === deal.id,
+							onDragStart: (e) => handleDragStart(e, deal.id)
+						}, deal.id)), columnDeals.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex-1 border-2 border-dashed border-muted rounded-lg flex items-center justify-center text-muted-foreground text-xs p-4 min-h-[100px]",
+							children: "Arraste cards aqui"
+						})]
+					})]
+				}, column.id);
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollBar, { orientation: "horizontal" })]
+	});
+}
+var formSchema$1 = object({
+	contact_id: string({ required_error: "Selecione um contato." }),
+	title: string().min(3, "O título deve ter pelo menos 3 caracteres."),
+	stage: _enum([
+		"Lead",
+		"Qualificado",
+		"Interesse",
+		"Proposta",
+		"Fechado"
+	]),
+	value: number().min(0, "O valor não pode ser negativo."),
+	probability: number().min(0).max(100, "Probabilidade entre 0 e 100."),
+	expected_close_date: date().optional()
+});
+var STAGES = [
+	"Lead",
+	"Qualificado",
+	"Interesse",
+	"Proposta",
+	"Fechado"
+];
+function DealForm({ onSuccess, onCancel }) {
+	const { toast: toast$2 } = useToast();
+	const [loading, setLoading] = (0, import_react.useState)(false);
+	const [contacts, setContacts] = (0, import_react.useState)([]);
+	const [contactsLoading, setContactsLoading] = (0, import_react.useState)(false);
+	const [openCombobox, setOpenCombobox] = (0, import_react.useState)(false);
+	const form = useForm({
+		resolver: a(formSchema$1),
+		defaultValues: {
+			title: "",
+			stage: "Lead",
+			value: 0,
+			probability: 10
+		}
+	});
+	(0, import_react.useEffect)(() => {
+		setContactsLoading(true);
+		contactsService.getContacts({ pageSize: 100 }).then((res) => setContacts(res.data)).catch((err) => console.error(err)).finally(() => setContactsLoading(false));
+	}, []);
+	async function onSubmit(values) {
+		setLoading(true);
+		try {
+			const dealData = {
+				...values,
+				expected_close_date: values.expected_close_date ? values.expected_close_date.toISOString() : null
+			};
+			await dealsService.createDeal(dealData);
+			toast$2({
+				title: "Negócio criado!",
+				description: "Oportunidade adicionada ao pipeline com sucesso."
+			});
+			form.reset();
+			onSuccess?.();
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				variant: "destructive",
+				title: "Erro ao criar",
+				description: error.message || "Não foi possível salvar o negócio."
+			});
+		} finally {
+			setLoading(false);
+		}
+	}
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Form, {
+		...form,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+			onSubmit: form.handleSubmit(onSubmit),
+			className: "space-y-4",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+					control: form.control,
+					name: "contact_id",
+					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+						className: "flex flex-col",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Contato" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, {
+								open: openCombobox,
+								onOpenChange: setOpenCombobox,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+									asChild: true,
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+										variant: "outline",
+										role: "combobox",
+										"aria-expanded": openCombobox,
+										className: cn("w-full justify-between", !field.value && "text-muted-foreground"),
+										children: [field.value ? contacts.find((contact) => contact.id === field.value)?.name : "Selecione um contato...", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronsUpDown, { className: "ml-2 h-4 w-4 shrink-0 opacity-50" })]
+									}) })
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
+									className: "w-[300px] p-0",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Command, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandInput, { placeholder: "Buscar contato..." }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CommandList, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandEmpty, { children: "Nenhum contato encontrado." }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandGroup, { children: contacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CommandItem, {
+										value: contact.name,
+										onSelect: () => {
+											form.setValue("contact_id", contact.id);
+											setOpenCombobox(false);
+										},
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: cn("mr-2 h-4 w-4", contact.id === field.value ? "opacity-100" : "opacity-0") }), contact.name]
+									}, contact.id)) })] })] })
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						]
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+					control: form.control,
+					name: "title",
+					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Título / Lote" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							placeholder: "Ex: Lote 10 - Cavalo Lusitano",
+							...field
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+					] })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "value",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Valor Estimado (R$)" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								step: "0.01",
+								...field
+							}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						] })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "probability",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Probabilidade (%)" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								min: "0",
+								max: "100",
+								...field
+							}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						] })
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "stage",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Estágio Inicial" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+								onValueChange: field.onChange,
+								defaultValue: field.value,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione..." }) }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: STAGES.map((stage) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: stage,
+									children: stage
+								}, stage)) })]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						] })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "expected_close_date",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+							className: "flex flex-col",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Data Prevista" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+									asChild: true,
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+										variant: "outline",
+										className: cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground"),
+										children: [field.value ? format(field.value, "dd/MM/yyyy") : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Selecione uma data" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "ml-auto h-4 w-4 opacity-50" })]
+									}) })
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
+									className: "w-auto p-0",
+									align: "start",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar$1, {
+										mode: "single",
+										selected: field.value,
+										onSelect: field.onChange,
+										initialFocus: true
+									})
+								})] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+							]
+						})
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex justify-end gap-3 pt-4",
+					children: [onCancel && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						type: "button",
+						variant: "outline",
+						onClick: onCancel,
+						children: "Cancelar"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						type: "submit",
+						disabled: loading,
+						children: [loading && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }), "Criar Negócio"]
+					})]
+				})
+			]
+		})
+	});
+}
+function Negocios() {
+	const [isDialogOpen, setIsDialogOpen] = (0, import_react.useState)(false);
+	const [refreshTrigger, setRefreshTrigger] = (0, import_react.useState)(0);
+	const handleSuccess = () => {
+		setIsDialogOpen(false);
+		setRefreshTrigger((prev) => prev + 1);
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "h-[calc(100vh-8rem)] flex flex-col space-y-4",
+		className: "h-[calc(100vh-6rem)] flex flex-col space-y-4 animate-fade-in",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex items-center justify-between shrink-0",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
@@ -72998,115 +73603,25 @@ function Negocios() {
 				children: "Pipeline de Vendas"
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground",
-				children: "Acompanhe o progresso das suas negociações."
-			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-				className: "bg-secondary hover:bg-secondary/90 text-white",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "mr-2 h-4 w-4" }), " Novo Negócio"]
+				children: "Gerencie suas oportunidades de negócio e acompanhe o progresso."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+				open: isDialogOpen,
+				onOpenChange: setIsDialogOpen,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+					asChild: true,
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						className: "bg-primary hover:bg-primary/90 text-white shadow-md",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "mr-2 h-4 w-4" }), " Novo Negócio"]
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+					className: "sm:max-w-[500px]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Adicionar Novo Negócio" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Crie uma nova oportunidade de venda associada a um contato." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DealForm, {
+						onSuccess: handleSuccess,
+						onCancel: () => setIsDialogOpen(false)
+					})]
+				})]
 			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ScrollArea, {
-			className: "flex-1 w-full whitespace-nowrap rounded-md border bg-muted/20 p-4",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "flex space-x-4 pb-4",
-				children: COLUMNS.map((column) => {
-					const columnDeals = getDealsByColumn(column.id);
-					const totalValue = columnDeals.reduce((acc, curr) => acc + curr.value, 0);
-					return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "w-80 shrink-0 flex flex-col space-y-4",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex flex-col space-y-2",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center justify-between px-2",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-semibold text-sm uppercase tracking-wider text-muted-foreground",
-										children: column.title
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-										variant: "outline",
-										className: "bg-white",
-										children: columnDeals.length
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `h-1 w-full rounded-full ${column.color.split(" ")[0].replace("bg-", "bg-")}` }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "px-2 text-xs text-muted-foreground font-medium",
-									children: [
-										"Total:",
-										" ",
-										new Intl.NumberFormat("pt-BR", {
-											style: "currency",
-											currency: "BRL"
-										}).format(totalValue)
-									]
-								})
-							]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex flex-col space-y-3",
-							children: [columnDeals.map((deal) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
-								className: "cursor-pointer hover:shadow-md transition-all active:scale-95 border-l-4 border-l-transparent hover:border-l-primary",
-								onClick: () => moveDealNext(deal.id, deal.columnId),
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-									className: "p-4 space-y-3",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-											className: "flex justify-between items-start",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-sm font-semibold text-primary truncate pr-2",
-												children: deal.title
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-												variant: "ghost",
-												size: "icon",
-												className: "h-6 w-6 -mr-2 -mt-2",
-												children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(EllipsisVertical, { className: "h-3 w-3" })
-											})]
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-											className: "flex items-center justify-between text-sm text-muted-foreground",
-											children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-												className: "flex items-center",
-												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Avatar, {
-													className: "h-5 w-5 mr-2",
-													children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, {
-														className: "text-[10px] bg-secondary text-white",
-														children: deal.client.substring(0, 1)
-													})
-												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-													className: "truncate max-w-[100px]",
-													children: deal.client
-												})]
-											})
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-											className: "pt-2 border-t flex items-center justify-between",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
-												variant: "secondary",
-												className: "font-normal text-xs px-1.5 py-0 h-5",
-												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-3 w-3 mr-1" }), new Intl.NumberFormat("pt-BR", {
-													notation: "compact",
-													compactDisplay: "short",
-													currency: "BRL",
-													style: "currency"
-												}).format(deal.value)]
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-												className: "text-xs text-muted-foreground flex items-center",
-												children: [
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3 w-3 mr-1" }),
-													" ",
-													deal.date
-												]
-											})]
-										})
-									]
-								})
-							}, deal.id)), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-								variant: "ghost",
-								className: "w-full text-muted-foreground border border-dashed border-border hover:border-primary hover:text-primary",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4 mr-2" }), " Adicionar"]
-							})]
-						})]
-					}, column.id);
-				})
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollBar, { orientation: "horizontal" })]
-		})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(KanbanBoard, { refreshTrigger })]
 	});
 }
 var PROGRESS_NAME = "Progress";
@@ -74764,4 +75279,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-CyuJjbKP.js.map
+//# sourceMappingURL=index-rSnCqJ1a.js.map
