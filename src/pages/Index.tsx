@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import {
   Card,
   CardContent,
@@ -12,6 +13,7 @@ import {
   ArrowUp,
   ArrowDown,
   DollarSign,
+  PieChart as PieChartIcon,
 } from 'lucide-react'
 import {
   ChartContainer,
@@ -26,10 +28,12 @@ import {
   CartesianGrid,
   XAxis,
   YAxis,
-  ResponsiveContainer,
+  Pie,
+  PieChart,
+  Cell,
 } from 'recharts'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
+import { contactsService, type SegmentStats } from '@/services/contacts'
 
 const chartData = [
   { month: 'Janeiro', vendas: 120000, leads: 45 },
@@ -49,6 +53,15 @@ const chartConfig = {
     label: 'Novos Leads',
     color: 'hsl(var(--secondary))',
   },
+}
+
+const segmentColors: Record<string, string> = {
+  VIP: '#EAB308', // Yellow-500
+  Frequentes: '#2563EB', // Blue-600
+  Ativos: '#16A34A', // Green-600
+  Inativos: '#6B7280', // Gray-500
+  'Novos Leads': '#9333EA', // Purple-600
+  'Sem Segmento': '#E5E7EB', // Gray-200
 }
 
 const recentContacts = [
@@ -90,6 +103,8 @@ const recentContacts = [
 ]
 
 export default function Index() {
+  const [segmentStats, setSegmentStats] = useState<SegmentStats[]>([])
+
   const currentDate = new Date().toLocaleDateString('pt-BR', {
     weekday: 'long',
     year: 'numeric',
@@ -97,8 +112,15 @@ export default function Index() {
     day: 'numeric',
   })
 
+  useEffect(() => {
+    contactsService
+      .getSegmentationStats()
+      .then(setSegmentStats)
+      .catch((err) => console.error('Failed to load segmentation stats', err))
+  }, [])
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-fade-in">
       {/* Welcome Section */}
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold font-display text-primary">
@@ -182,10 +204,10 @@ export default function Index() {
         </Card>
       </div>
 
-      {/* Charts & Activity */}
+      {/* Charts & Segmentation */}
       <div className="grid gap-6 md:grid-cols-7">
         {/* Chart Area */}
-        <Card className="col-span-4 shadow-sm">
+        <Card className="col-span-7 lg:col-span-4 shadow-sm">
           <CardHeader>
             <CardTitle className="text-xl font-display text-primary">
               Desempenho de Vendas
@@ -259,8 +281,77 @@ export default function Index() {
           </CardContent>
         </Card>
 
+        {/* Segmentation Chart */}
+        <Card className="col-span-7 lg:col-span-3 shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-xl font-display text-primary flex items-center gap-2">
+              <PieChartIcon className="h-5 w-5" />
+              Distribuição por Segmento
+            </CardTitle>
+            <CardDescription>
+              Classificação automática da base de contatos.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {segmentStats.length > 0 ? (
+              <ChartContainer
+                config={Object.keys(segmentColors).reduce((acc, key) => {
+                  acc[key] = { label: key, color: segmentColors[key] }
+                  return acc
+                }, {} as any)}
+                className="h-[300px] w-full mx-auto"
+              >
+                <PieChart>
+                  <Pie
+                    data={segmentStats}
+                    dataKey="count"
+                    nameKey="segment"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={100}
+                    paddingAngle={2}
+                  >
+                    {segmentStats.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={
+                          segmentColors[entry.segment] ||
+                          segmentColors['Sem Segmento']
+                        }
+                        strokeWidth={0}
+                      />
+                    ))}
+                  </Pie>
+                  <ChartTooltip
+                    content={<ChartTooltipContent hideLabel />}
+                    formatter={(value, name, item) => (
+                      <div className="flex gap-2 min-w-[150px]">
+                        <span className="font-medium">
+                          {item.payload.segment}:
+                        </span>
+                        <span className="ml-auto">
+                          {value} ({item.payload.percentage.toFixed(1)}%)
+                        </span>
+                      </div>
+                    )}
+                  />
+                  <ChartLegend
+                    content={<ChartLegendContent />}
+                    className="flex-wrap gap-2 text-[10px]"
+                  />
+                </PieChart>
+              </ChartContainer>
+            ) : (
+              <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+                Carregando dados...
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Recent Contacts */}
-        <Card className="col-span-3 shadow-sm">
+        <Card className="col-span-7 shadow-sm">
           <CardHeader>
             <CardTitle className="text-xl font-display text-primary">
               Contatos Recentes

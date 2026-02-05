@@ -37,6 +37,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import {
   Search,
   Plus,
@@ -49,6 +50,7 @@ import {
   FileDown,
   Loader2,
   X,
+  Users,
 } from 'lucide-react'
 import { cn, getContrastColor } from '@/lib/utils'
 import { ContactForm } from '@/components/contacts/ContactForm'
@@ -56,9 +58,43 @@ import { contactsService, type Contact, type Tag } from '@/services/contacts'
 import { useToast } from '@/hooks/use-toast'
 import { TagSelector } from '@/components/tags/TagSelector'
 
+const SEGMENTS = [
+  {
+    value: 'VIP',
+    label: 'VIP',
+    class:
+      'data-[state=on]:bg-yellow-100 data-[state=on]:text-yellow-700 hover:bg-yellow-50 hover:text-yellow-600',
+  },
+  {
+    value: 'Frequentes',
+    label: 'Frequentes',
+    class:
+      'data-[state=on]:bg-blue-100 data-[state=on]:text-blue-700 hover:bg-blue-50 hover:text-blue-600',
+  },
+  {
+    value: 'Ativos',
+    label: 'Ativos',
+    class:
+      'data-[state=on]:bg-green-100 data-[state=on]:text-green-700 hover:bg-green-50 hover:text-green-600',
+  },
+  {
+    value: 'Novos Leads',
+    label: 'Novos Leads',
+    class:
+      'data-[state=on]:bg-purple-100 data-[state=on]:text-purple-700 hover:bg-purple-50 hover:text-purple-600',
+  },
+  {
+    value: 'Inativos',
+    label: 'Inativos',
+    class:
+      'data-[state=on]:bg-gray-100 data-[state=on]:text-gray-700 hover:bg-gray-50 hover:text-gray-600',
+  },
+]
+
 export default function Contatos() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
   const [sortConfig, setSortConfig] = useState<{
     key: string
     direction: 'asc' | 'desc'
@@ -89,6 +125,7 @@ export default function Contatos() {
         pageSize: itemsPerPage,
         search: searchTerm,
         tags: selectedTags,
+        segment: selectedSegment,
         sortBy: sortConfig.key,
         sortDirection: sortConfig.direction,
       })
@@ -113,7 +150,7 @@ export default function Contatos() {
       fetchContacts()
     }, 500)
     return () => clearTimeout(timer)
-  }, [currentPage, searchTerm, selectedTags, sortConfig])
+  }, [currentPage, searchTerm, selectedTags, selectedSegment, sortConfig])
 
   const totalPages = Math.ceil(totalCount / itemsPerPage)
 
@@ -198,7 +235,7 @@ export default function Contatos() {
       </div>
 
       <Card className="border-t-4 border-t-primary shadow-sm">
-        <CardHeader className="pb-3">
+        <CardHeader className="pb-3 space-y-4">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <CardTitle className="text-lg font-medium hidden md:block">
               Lista de Contatos
@@ -262,6 +299,48 @@ export default function Contatos() {
               <Button variant="outline" size="icon" className="hidden md:flex">
                 <FileDown className="h-4 w-4 text-muted-foreground" />
               </Button>
+            </div>
+          </div>
+
+          {/* Segment Filter Buttons */}
+          <div className="flex flex-col sm:flex-row gap-2 items-center justify-between border-t pt-4">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap">
+              <Users className="h-4 w-4" />
+              <span>Segmentos:</span>
+            </div>
+            <div className="w-full overflow-x-auto pb-1 sm:pb-0">
+              <ToggleGroup
+                type="single"
+                value={selectedSegment || ''}
+                onValueChange={(val) => {
+                  setSelectedSegment(val || null)
+                  setCurrentPage(1)
+                }}
+                className="justify-start sm:justify-end"
+              >
+                {SEGMENTS.map((segment) => (
+                  <ToggleGroupItem
+                    key={segment.value}
+                    value={segment.value}
+                    className={cn(
+                      'border border-transparent data-[state=on]:border-transparent rounded-full px-3 py-1 h-8 text-xs font-medium transition-all',
+                      segment.class,
+                    )}
+                  >
+                    {segment.label}
+                  </ToggleGroupItem>
+                ))}
+                {selectedSegment && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 rounded-full px-2 text-xs text-muted-foreground hover:text-foreground ml-1"
+                    onClick={() => setSelectedSegment(null)}
+                  >
+                    <X className="h-3 w-3 mr-1" /> Limpar
+                  </Button>
+                )}
+              </ToggleGroup>
             </div>
           </div>
         </CardHeader>
@@ -447,6 +526,7 @@ export default function Contatos() {
                           onClick={() => {
                             setSearchTerm('')
                             setSelectedTags([])
+                            setSelectedSegment(null)
                           }}
                           className="mt-2 text-primary"
                         >

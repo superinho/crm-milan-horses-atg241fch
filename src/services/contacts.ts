@@ -56,11 +56,18 @@ export type Interaction = {
   created_at: string
 }
 
+export type SegmentStats = {
+  segment: string
+  count: number
+  percentage: number
+}
+
 type GetContactsParams = {
   page?: number
   pageSize?: number
   search?: string
   tags?: string[]
+  segment?: string | null
   sortBy?: string
   sortDirection?: 'asc' | 'desc'
 }
@@ -71,6 +78,7 @@ export const contactsService = {
     pageSize = 10,
     search = '',
     tags = [],
+    segment = null,
     sortBy = 'created_at',
     sortDirection = 'desc',
   }: GetContactsParams) {
@@ -99,10 +107,35 @@ export const contactsService = {
       query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%`)
     }
 
+    // Filter by Segment (using the view)
+    if (segment) {
+      const { data: segmentedContacts, error: segmentError } = await supabase
+        .from('contact_segmentation_view')
+        .select('id')
+        .eq('segment', segment)
+
+      if (segmentError) throw segmentError
+
+      const ids = segmentedContacts?.map((c) => c.id) || []
+
+      // If no contacts match the segment, return empty immediately
+      if (ids.length === 0) {
+        return { data: [], count: 0, error: null }
+      }
+
+      query = query.in('id', ids)
+    }
+
     // Sorting
     if (sortBy === 'lastContact') {
       query = query.order('updated_at', { ascending: sortDirection === 'asc' })
     } else if (sortBy === 'totalInvested') {
+      // Note: Sorting by computed fields in Supabase complex queries can be tricky.
+      // For simplicity/performance in this demo, we might sort by name if complex sort fails,
+      // but ideally we sort by aggregated purchase value.
+      // Since 'totalInvested' is computed on client for now, we sort by name as fallback
+      // or we would need a view for sorting too.
+      // Keeping existing logic:
       query = query.order('name', { ascending: sortDirection === 'asc' })
     } else {
       query = query.order(sortBy as any, { ascending: sortDirection === 'asc' })
@@ -141,6 +174,31 @@ export const contactsService = {
     }))
 
     return { data: formattedData as Contact[], error, count }
+  },
+
+  async getSegmentationStats() {
+    const { data, error } = await supabase
+      .from('contact_segmentation_view')
+      .select('segment')
+
+    if (error) throw error
+
+    const total = data.length
+    const statsMap = data.reduce((acc: any, curr: any) => {
+      acc[curr.segment] = (acc[curr.segment] || 0) + 1
+      return acc
+    }, {})
+
+    const stats: SegmentStats[] = Object.keys(statsMap)
+      .filter((key) => key !== 'Sem Segmento') // Optionally filter out 'None'
+      .map((segment) => ({
+        segment,
+        count: statsMap[segment],
+        percentage: total > 0 ? (statsMap[segment] / total) * 100 : 0,
+      }))
+      .sort((a, b) => b.count - a.count)
+
+    return stats
   },
 
   async getContactById(id: string) {

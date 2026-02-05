@@ -1109,7 +1109,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			return dispatcher;
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$64 = require_react(), Internals = {
+		var React$65 = require_react(), Internals = {
 			d: {
 				f: noop$4,
 				r: function() {
@@ -1125,7 +1125,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			},
 			p: 0,
 			findDOMNode: null
-		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$64.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$65.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills");
 		exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
 		exports.createPortal = function(children, container) {
@@ -2365,7 +2365,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			"number" === type && getActiveElement(node.ownerDocument) === node || node.defaultValue === "" + value || (node.defaultValue = "" + value);
 		}
 		function validateOptionProps(element, props) {
-			props.value ?? ("object" === typeof props.children && null !== props.children ? React$64.Children.forEach(props.children, function(child) {
+			props.value ?? ("object" === typeof props.children && null !== props.children ? React$65.Children.forEach(props.children, function(child) {
 				null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = !0, console.error("Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."));
 			}) : null == props.dangerouslySetInnerHTML || didWarnInvalidInnerHTML || (didWarnInvalidInnerHTML = !0, console.error("Pass a `value` prop if you set dangerouslyInnerHTML so React knows which value should be selected.")));
 			null == props.selected || didWarnSelectedSetOnOption || (console.error("Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>."), didWarnSelectedSetOnOption = !0);
@@ -12656,10 +12656,10 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			container[internalContainerInstanceKey] && (container._reactRootContainer ? console.error("You are calling ReactDOMClient.createRoot() on a container that was previously passed to ReactDOM.render(). This is not supported.") : console.error("You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it."));
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var Scheduler = require_scheduler(), React$64 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
+		var Scheduler = require_scheduler(), React$65 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
 		var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
 		var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
-		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$64.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$65.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
 			pending: !1,
 			data: null,
 			method: null,
@@ -15281,7 +15281,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			}
 		};
 		(function() {
-			var isomorphicReactPackageVersion = React$64.version;
+			var isomorphicReactPackageVersion = React$65.version;
 			if ("19.2.3" !== isomorphicReactPackageVersion) throw Error("Incompatible React versions: The \"react\" and \"react-dom\" packages must have the exact same version. Instead got:\n  - react:      " + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.3\nLearn more: https://react.dev/warnings/version-mismatch"));
 		})();
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://react.dev/link/react-polyfills");
@@ -17572,15 +17572,15 @@ var require_react_jsx_runtime_development = /* @__PURE__ */ __commonJSMin(((expo
 		function isValidElement$7(object$1) {
 			return "object" === typeof object$1 && null !== object$1 && object$1.$$typeof === REACT_ELEMENT_TYPE;
 		}
-		var React$64 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$64.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+		var React$65 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$65.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
 			return null;
 		};
-		React$64 = { react_stack_bottom_frame: function(callStackForError) {
+		React$65 = { react_stack_bottom_frame: function(callStackForError) {
 			return callStackForError();
 		} };
 		var specialPropKeyWarningShown;
 		var didWarnAboutElementRef = {};
-		var unknownOwnerDebugStack = React$64.react_stack_bottom_frame.bind(React$64, UnknownOwner)();
+		var unknownOwnerDebugStack = React$65.react_stack_bottom_frame.bind(React$65, UnknownOwner)();
 		var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
 		var didWarnAboutKeySpread = {};
 		exports.Fragment = REACT_FRAGMENT_TYPE;
@@ -18065,7 +18065,7 @@ function handleAndDispatchCustomEvent$1(name, handler, detail, { discrete }) {
 	if (discrete) dispatchDiscreteCustomEvent(target, event);
 	else target.dispatchEvent(event);
 }
-var Root$11 = DismissableLayer;
+var Root$12 = DismissableLayer;
 var Branch = DismissableLayerBranch;
 var useLayoutEffect2 = globalThis?.document ? import_react.useLayoutEffect : () => {};
 var import_react_dom$5 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
@@ -18244,7 +18244,7 @@ var VISUALLY_HIDDEN_STYLES = Object.freeze({
 	whiteSpace: "nowrap",
 	wordWrap: "normal"
 });
-var NAME$3 = "VisuallyHidden";
+var NAME$4 = "VisuallyHidden";
 var VisuallyHidden = import_react.forwardRef((props, forwardedRef) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
 		...props,
@@ -18255,8 +18255,8 @@ var VisuallyHidden = import_react.forwardRef((props, forwardedRef) => {
 		}
 	});
 });
-VisuallyHidden.displayName = NAME$3;
-var Root$10 = VisuallyHidden;
+VisuallyHidden.displayName = NAME$4;
+var Root$11 = VisuallyHidden;
 var import_react_dom$4 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var PROVIDER_NAME$1 = "ToastProvider";
 var [Collection$3, useCollection$3, createCollectionScope$3] = createCollection("Toast");
@@ -18555,7 +18555,7 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 		onClose: handleClose,
 		children: import_react_dom$4.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$3.ItemSlot, {
 			scope: __scopeToast,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$11, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$12, {
 				asChild: true,
 				onEscapeKeyDown: composeEventHandlers(onEscapeKeyDown, () => {
 					if (!context.isFocusedToastEscapeKeyDownRef.current) handleClose();
@@ -18785,7 +18785,7 @@ function focusFirst$3(candidates) {
 }
 var Provider$1 = ToastProvider$1;
 var Viewport$2 = ToastViewport$1;
-var Root2$5 = Toast$2;
+var Root2$6 = Toast$2;
 var Title$1 = ToastTitle$1;
 var Description$1 = ToastDescription$1;
 var Action$1 = ToastAction$1;
@@ -19083,6 +19083,13 @@ var ChartNoAxesColumn = createLucideIcon("chart-no-axes-column", [
 		key: "unv183"
 	}]
 ]);
+var ChartPie = createLucideIcon("chart-pie", [["path", {
+	d: "M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z",
+	key: "pzmjnu"
+}], ["path", {
+	d: "M21.21 15.89A10 10 0 1 1 8 2.83",
+	key: "k2fpak"
+}]]);
 var Check = createLucideIcon("check", [["path", {
 	d: "M20 6 9 17l-5-5",
 	key: "1gmf2c"
@@ -21074,13 +21081,13 @@ var toastVariants = cva("group pointer-events-auto relative flex w-full items-ce
 	defaultVariants: { variant: "default" }
 });
 var Toast$1 = import_react.forwardRef(({ className, variant, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$5, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$6, {
 		ref,
 		className: cn(toastVariants({ variant }), className),
 		...props
 	});
 });
-Toast$1.displayName = Root2$5.displayName;
+Toast$1.displayName = Root2$6.displayName;
 var ToastAction = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Action$1, {
 	ref,
 	className: cn("inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive", className),
@@ -21460,10 +21467,10 @@ var Observer = class {
 			if (typeof id !== "string" && typeof id !== "number") return { unwrap };
 			else return Object.assign(id, { unwrap });
 		};
-		this.custom = (jsx$30, data) => {
+		this.custom = (jsx$32, data) => {
 			const id = (data == null ? void 0 : data.id) || toastsCounter++;
 			this.create({
-				jsx: jsx$30(id),
+				jsx: jsx$32(id),
 				id,
 				...data
 			});
@@ -23585,7 +23592,7 @@ var arrow = (options$1, deps) => ({
 	...arrow$1$1(options$1),
 	options: [options$1, deps]
 });
-var NAME$2 = "Arrow";
+var NAME$3 = "Arrow";
 var Arrow$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { children, width = 10, height = 5, ...arrowProps } = props;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.svg, {
@@ -23598,8 +23605,8 @@ var Arrow$1 = import_react.forwardRef((props, forwardedRef) => {
 		children: props.asChild ? children : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("polygon", { points: "0,0 30,0 15,10" })
 	});
 });
-Arrow$1.displayName = NAME$2;
-var Root$9 = Arrow$1;
+Arrow$1.displayName = NAME$3;
+var Root$10 = Arrow$1;
 function useSize(element) {
 	const [size$3, setSize] = import_react.useState(void 0);
 	useLayoutEffect2(() => {
@@ -23816,7 +23823,7 @@ var PopperArrow = import_react.forwardRef(function PopperArrow2(props, forwarded
 			}[contentContext.placedSide],
 			visibility: contentContext.shouldHideArrow ? "hidden" : void 0
 		},
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$10, {
 			...arrowProps,
 			ref: forwardedRef,
 			style: {
@@ -23871,7 +23878,7 @@ function getSideAndAlignFromPlacement(placement) {
 	const [side, align = "center"] = placement.split("-");
 	return [side, align];
 }
-var Root2$4 = Popper;
+var Root2$5 = Popper;
 var Anchor = PopperAnchor;
 var Content$1 = PopperContent;
 var Arrow = PopperArrow;
@@ -23965,7 +23972,7 @@ var Tooltip$2 = (props) => {
 			}
 		};
 	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$5, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContextProvider, {
 			scope: __scopeTooltip,
@@ -24198,7 +24205,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Slottable$1, { children }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(VisuallyHiddenContentContextProvider, {
 				scope: __scopeTooltip,
 				isInside: true,
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$10, {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$11, {
 					id: context.contentId,
 					role: "tooltip",
 					children: ariaLabel || children
@@ -24548,7 +24555,7 @@ var Primitive$1 = [
 		[node]: Node$1
 	};
 }, {});
-var NAME$1 = "Separator";
+var NAME$2 = "Separator";
 var DEFAULT_ORIENTATION = "horizontal";
 var ORIENTATIONS = ["horizontal", "vertical"];
 var Separator$3 = import_react.forwardRef((props, forwardedRef) => {
@@ -24566,19 +24573,19 @@ var Separator$3 = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	});
 });
-Separator$3.displayName = NAME$1;
+Separator$3.displayName = NAME$2;
 function isValidOrientation(orientation) {
 	return ORIENTATIONS.includes(orientation);
 }
-var Root$8 = Separator$3;
-var Separator = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
+var Root$9 = Separator$3;
+var Separator = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
 	ref,
 	decorative,
 	orientation,
 	className: cn("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className),
 	...props
 }));
-Separator.displayName = Root$8.displayName;
+Separator.displayName = Root$9.displayName;
 var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
 var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
 var EVENT_OPTIONS$1 = {
@@ -25776,7 +25783,7 @@ var DescriptionWarning$1 = ({ contentRef, descriptionId }) => {
 	]);
 	return null;
 };
-var Root$7 = Dialog$1;
+var Root$8 = Dialog$1;
 var Trigger$3 = DialogTrigger$1;
 var Portal$4 = DialogPortal$1;
 var Overlay = DialogOverlay$1;
@@ -25784,7 +25791,7 @@ var Content = DialogContent$1;
 var Title = DialogTitle$1;
 var Description = DialogDescription$1;
 var Close = DialogClose$1;
-var Sheet = Root$7;
+var Sheet = Root$8;
 var SheetTrigger = Trigger$3;
 var SheetPortal = Portal$4;
 var SheetOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
@@ -26282,13 +26289,13 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return x$2 === y$1 && (0 !== x$2 || 1 / x$2 === 1 / y$1) || x$2 !== x$2 && y$1 !== y$1;
 		}
 		function useSyncExternalStore$2(subscribe$1, getSnapshot) {
-			didWarnOld18Alpha || void 0 === React$64.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
+			didWarnOld18Alpha || void 0 === React$65.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
 			var value = getSnapshot();
 			if (!didWarnUncachedGetSnapshot) {
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$19({ inst: {
+			cachedValue = useState$20({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26302,7 +26309,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$14(function() {
+			useEffect$15(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26325,8 +26332,8 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$19 = React$64.useState, useEffect$14 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-		exports.useSyncExternalStore = void 0 !== React$64.useSyncExternalStore ? React$64.useSyncExternalStore : shim;
+		var React$65 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$20 = React$65.useState, useEffect$15 = React$65.useEffect, useLayoutEffect$2 = React$65.useLayoutEffect, useDebugValue = React$65.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		exports.useSyncExternalStore = void 0 !== React$65.useSyncExternalStore ? React$65.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
 }));
@@ -26432,15 +26439,15 @@ function useImageLoadingStatus(src, { referrerPolicy, crossOrigin }) {
 	]);
 	return loadingStatus;
 }
-var Root$6 = Avatar$1;
+var Root$7 = Avatar$1;
 var Image = AvatarImage$1;
 var Fallback = AvatarFallback$1;
-var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
+var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
 	ref,
 	className: cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className),
 	...props
 }));
-Avatar.displayName = Root$6.displayName;
+Avatar.displayName = Root$7.displayName;
 var AvatarImage = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Image, {
 	ref,
 	className: cn("aspect-square h-full w-full", className),
@@ -26545,12 +26552,12 @@ var RovingFocusGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-var ITEM_NAME$3 = "RovingFocusGroupItem";
+var ITEM_NAME$4 = "RovingFocusGroupItem";
 var RovingFocusGroupItem = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeRovingFocusGroup, focusable = true, active = false, tabStopId, children, ...itemProps } = props;
 	const autoId = useId();
 	const id = tabStopId || autoId;
-	const context = useRovingFocusContext(ITEM_NAME$3, __scopeRovingFocusGroup);
+	const context = useRovingFocusContext(ITEM_NAME$4, __scopeRovingFocusGroup);
 	const isCurrentTabStop = context.currentTabStopId === id;
 	const getItems = useCollection$2(__scopeRovingFocusGroup);
 	const { onFocusableItemAdd, onFocusableItemRemove, currentTabStopId } = context;
@@ -26606,7 +26613,7 @@ var RovingFocusGroupItem = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-RovingFocusGroupItem.displayName = ITEM_NAME$3;
+RovingFocusGroupItem.displayName = ITEM_NAME$4;
 var MAP_KEY_TO_FOCUS_INTENT = {
 	ArrowLeft: "prev",
 	ArrowUp: "prev",
@@ -26638,7 +26645,7 @@ function focusFirst$1(candidates, preventScroll = false) {
 function wrapArray$2(array$1, startIndex) {
 	return array$1.map((_$1, index$1) => array$1[(startIndex + index$1) % array$1.length]);
 }
-var Root$5 = RovingFocusGroup;
+var Root$6 = RovingFocusGroup;
 var Item$1 = RovingFocusGroupItem;
 var SELECTION_KEYS$1 = ["Enter", " "];
 var FIRST_KEYS = [
@@ -26668,7 +26675,7 @@ var [createMenuContext, createMenuScope] = createContextScope(MENU_NAME, [
 	createRovingFocusGroupScope
 ]);
 var usePopperScope$2 = createPopperScope();
-var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var useRovingFocusGroupScope$1 = createRovingFocusGroupScope();
 var [MenuProvider, useMenuContext] = createMenuContext(MENU_NAME);
 var [MenuRootProvider, useMenuRootContext] = createMenuContext(MENU_NAME);
 var Menu = (props) => {
@@ -26698,7 +26705,7 @@ var Menu = (props) => {
 			document.removeEventListener("pointermove", handlePointer, { capture: true });
 		};
 	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$5, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuProvider, {
 			scope: __scopeMenu,
@@ -26807,7 +26814,7 @@ var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const context = useMenuContext(CONTENT_NAME$4, __scopeMenu);
 	const rootContext = useMenuRootContext(CONTENT_NAME$4, __scopeMenu);
 	const popperScope = usePopperScope$2(__scopeMenu);
-	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeMenu);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeMenu);
 	const getItems = useCollection$1(__scopeMenu);
 	const [currentItemId, setCurrentItemId] = import_react.useState(null);
 	const contentRef = import_react.useRef(null);
@@ -26880,7 +26887,7 @@ var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
 					onFocusOutside,
 					onInteractOutside,
 					onDismiss,
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
 						asChild: true,
 						...rovingFocusGroupScope,
 						dir: rootContext.dir,
@@ -26962,13 +26969,13 @@ var MenuLabel = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 MenuLabel.displayName = LABEL_NAME$2;
-var ITEM_NAME$2 = "MenuItem";
+var ITEM_NAME$3 = "MenuItem";
 var ITEM_SELECT = "menu.itemSelect";
 var MenuItem = import_react.forwardRef((props, forwardedRef) => {
 	const { disabled = false, onSelect, ...itemProps } = props;
 	const ref = import_react.useRef(null);
-	const rootContext = useMenuRootContext(ITEM_NAME$2, props.__scopeMenu);
-	const contentContext = useMenuContentContext(ITEM_NAME$2, props.__scopeMenu);
+	const rootContext = useMenuRootContext(ITEM_NAME$3, props.__scopeMenu);
+	const contentContext = useMenuContentContext(ITEM_NAME$3, props.__scopeMenu);
 	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const isPointerDownRef = import_react.useRef(false);
 	const handleSelect = () => {
@@ -27006,11 +27013,11 @@ var MenuItem = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-MenuItem.displayName = ITEM_NAME$2;
+MenuItem.displayName = ITEM_NAME$3;
 var MenuItemImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeMenu, disabled = false, textValue, ...itemProps } = props;
-	const contentContext = useMenuContentContext(ITEM_NAME$2, __scopeMenu);
-	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeMenu);
+	const contentContext = useMenuContentContext(ITEM_NAME$3, __scopeMenu);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeMenu);
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const [isFocused, setIsFocused] = import_react.useState(false);
@@ -27153,7 +27160,7 @@ var MenuSub = (props) => {
 		if (parentMenuContext.open === false) handleOpenChange(false);
 		return () => handleOpenChange(false);
 	}, [parentMenuContext.open, handleOpenChange]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$5, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuProvider, {
 			scope: __scopeMenu,
@@ -27387,7 +27394,7 @@ var Portal$3 = MenuPortal;
 var Content2$4 = MenuContent;
 var Group$1 = MenuGroup;
 var Label$4 = MenuLabel;
-var Item2$1 = MenuItem;
+var Item2$2 = MenuItem;
 var CheckboxItem = MenuCheckboxItem;
 var RadioGroup = MenuRadioGroup;
 var RadioItem = MenuRadioItem;
@@ -27535,17 +27542,17 @@ var DropdownMenuLabel$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 DropdownMenuLabel$1.displayName = LABEL_NAME$1;
-var ITEM_NAME$1 = "DropdownMenuItem";
+var ITEM_NAME$2 = "DropdownMenuItem";
 var DropdownMenuItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...itemProps } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$1, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$2, {
 		...menuScope,
 		...itemProps,
 		ref: forwardedRef
 	});
 });
-DropdownMenuItem$1.displayName = ITEM_NAME$1;
+DropdownMenuItem$1.displayName = ITEM_NAME$2;
 var CHECKBOX_ITEM_NAME = "DropdownMenuCheckboxItem";
 var DropdownMenuCheckboxItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...checkboxItemProps } = props;
@@ -27642,19 +27649,19 @@ var DropdownMenuSubContent$1 = import_react.forwardRef((props, forwardedRef) => 
 	});
 });
 DropdownMenuSubContent$1.displayName = SUB_CONTENT_NAME;
-var Root2$3 = DropdownMenu$1;
+var Root2$4 = DropdownMenu$1;
 var Trigger$2 = DropdownMenuTrigger$1;
 var Portal2$1 = DropdownMenuPortal$1;
 var Content2$3 = DropdownMenuContent$1;
 var Label2 = DropdownMenuLabel$1;
-var Item2 = DropdownMenuItem$1;
+var Item2$1 = DropdownMenuItem$1;
 var CheckboxItem2 = DropdownMenuCheckboxItem$1;
 var RadioItem2 = DropdownMenuRadioItem$1;
 var ItemIndicator2 = DropdownMenuItemIndicator;
 var Separator2 = DropdownMenuSeparator$1;
 var SubTrigger2 = DropdownMenuSubTrigger$1;
 var SubContent2 = DropdownMenuSubContent$1;
-var DropdownMenu = Root2$3;
+var DropdownMenu = Root2$4;
 var DropdownMenuTrigger = Trigger$2;
 var DropdownMenuSubTrigger = import_react.forwardRef(({ className, inset, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SubTrigger2, {
 	ref,
@@ -27676,12 +27683,12 @@ var DropdownMenuContent = import_react.forwardRef(({ className, sideOffset = 4, 
 	...props
 }) }));
 DropdownMenuContent.displayName = Content2$3.displayName;
-var DropdownMenuItem = import_react.forwardRef(({ className, inset, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2, {
+var DropdownMenuItem = import_react.forwardRef(({ className, inset, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$1, {
 	ref,
 	className: cn("relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", inset && "pl-8", className),
 	...props
 }));
-DropdownMenuItem.displayName = Item2.displayName;
+DropdownMenuItem.displayName = Item2$1.displayName;
 var DropdownMenuCheckboxItem = import_react.forwardRef(({ className, children, checked, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CheckboxItem2, {
 	ref,
 	className: cn("relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className),
@@ -57935,6 +57942,181 @@ function getPayloadConfigFromPayload(config$1, payload, key) {
 	else if (payloadPayload && key in payloadPayload && typeof payloadPayload[key] === "string") configLabelKey = payloadPayload[key];
 	return configLabelKey in config$1 ? config$1[configLabelKey] : config$1[key];
 }
+const contactsService = {
+	async getContacts({ page = 1, pageSize = 10, search = "", tags = [], segment = null, sortBy: sortBy$4 = "created_at", sortDirection = "desc" }) {
+		const from = (page - 1) * pageSize;
+		const to = from + pageSize - 1;
+		let query = supabase.from("contacts").select(`
+        *,
+        contact_tags!left (
+          tags (
+            id,
+            name,
+            color
+          )
+        ),
+        purchases (
+          value,
+          date
+        )
+      `, { count: "exact" });
+		if (search) query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%`);
+		if (segment) {
+			const { data: segmentedContacts, error: segmentError } = await supabase.from("contact_segmentation_view").select("id").eq("segment", segment);
+			if (segmentError) throw segmentError;
+			const ids = segmentedContacts?.map((c$1) => c$1.id) || [];
+			if (ids.length === 0) return {
+				data: [],
+				count: 0,
+				error: null
+			};
+			query = query.in("id", ids);
+		}
+		if (sortBy$4 === "lastContact") query = query.order("updated_at", { ascending: sortDirection === "asc" });
+		else if (sortBy$4 === "totalInvested") query = query.order("name", { ascending: sortDirection === "asc" });
+		else query = query.order(sortBy$4, { ascending: sortDirection === "asc" });
+		if (tags && tags.length > 0) {
+			const { data: taggedContactIds, error: tagError } = await supabase.from("contact_tags").select("contact_id, tags!inner(name)").in("tags.name", tags);
+			if (tagError) throw tagError;
+			const ids = taggedContactIds?.map((tc) => tc.contact_id) || [];
+			if (ids.length > 0) query = query.in("id", ids);
+			else return {
+				data: [],
+				count: 0,
+				error: null
+			};
+		}
+		query = query.range(from, to);
+		const { data, error, count: count$3 } = await query;
+		return {
+			data: data?.map((contact) => ({
+				...contact,
+				tags: contact.contact_tags?.map((ct) => ct.tags) || [],
+				purchases: contact.purchases || [],
+				totalInvested: contact.purchases?.reduce((acc, curr) => acc + Number(curr.value), 0) || 0,
+				lastContact: contact.updated_at
+			})),
+			error,
+			count: count$3
+		};
+	},
+	async getSegmentationStats() {
+		const { data, error } = await supabase.from("contact_segmentation_view").select("segment");
+		if (error) throw error;
+		const total = data.length;
+		const statsMap = data.reduce((acc, curr) => {
+			acc[curr.segment] = (acc[curr.segment] || 0) + 1;
+			return acc;
+		}, {});
+		return Object.keys(statsMap).filter((key) => key !== "Sem Segmento").map((segment) => ({
+			segment,
+			count: statsMap[segment],
+			percentage: total > 0 ? statsMap[segment] / total * 100 : 0
+		})).sort((a$2, b$1) => b$1.count - a$2.count);
+	},
+	async getContactById(id) {
+		const { data, error } = await supabase.from("contacts").select(`
+        *,
+        contact_tags (
+          tags (
+            id,
+            name,
+            color
+          )
+        ),
+        purchases (
+          id,
+          value,
+          date,
+          lot_number,
+          auction_id,
+          description
+        ),
+        contact_interactions (
+           id,
+           type,
+           description,
+           date,
+           created_at
+        )
+      `).eq("id", id).single();
+		if (error) throw error;
+		return {
+			...data,
+			tags: data.contact_tags?.map((ct) => ct.tags) || [],
+			purchases: data.purchases || [],
+			interactions: data.contact_interactions || []
+		};
+	},
+	async getPurchasesByContactId(contactId) {
+		const { data, error } = await supabase.from("purchases").select("*").eq("contact_id", contactId).order("date", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async getBidsByContactId(contactId) {
+		const { data, error } = await supabase.from("bids").select("*").eq("contact_id", contactId).order("date", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async getContactInteractions(contactId) {
+		const { data, error } = await supabase.from("contact_interactions").select("*").eq("contact_id", contactId).order("date", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async addInteraction(interaction) {
+		const { data, error } = await supabase.from("contact_interactions").insert(interaction).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async createContact(contactData) {
+		const { tags: tagNames, ...data } = contactData;
+		const dbData = {
+			name: data.name,
+			email: data.email,
+			phone: data.phone,
+			whatsapp: data.whatsapp,
+			birth_date: data.birthDate,
+			cpf: data.cpf,
+			address: data.address,
+			preferences: {
+				breeds: data.favoriteBreeds,
+				valueRange: data.preferredValueRange,
+				modalities: data.modalities
+			},
+			origin: data.origin,
+			notes: data.notes
+		};
+		const { data: newContact, error } = await supabase.from("contacts").insert(dbData).select().single();
+		if (error) throw error;
+		if (tagNames && tagNames.length > 0) {
+			const { data: existingTags } = await supabase.from("tags").select("id, name").in("name", tagNames);
+			if (existingTags) {
+				const contactTags = existingTags.map((tag) => ({
+					contact_id: newContact.id,
+					tag_id: tag.id
+				}));
+				await supabase.from("contact_tags").insert(contactTags);
+			}
+		}
+		return newContact;
+	},
+	async getTags() {
+		const { data, error } = await supabase.from("tags").select("*");
+		if (error) throw error;
+		return data;
+	},
+	async addTagToContact(contactId, tagId) {
+		const { error } = await supabase.from("contact_tags").insert({
+			contact_id: contactId,
+			tag_id: tagId
+		});
+		if (error) throw error;
+	},
+	async removeTagFromContact(contactId, tagId) {
+		const { error } = await supabase.from("contact_tags").delete().eq("contact_id", contactId).eq("tag_id", tagId);
+		if (error) throw error;
+	}
+};
 var chartData = [
 	{
 		month: "Janeiro",
@@ -57977,6 +58159,14 @@ var chartConfig$1 = {
 		color: "hsl(var(--secondary))"
 	}
 };
+var segmentColors = {
+	VIP: "#EAB308",
+	Frequentes: "#2563EB",
+	Ativos: "#16A34A",
+	Inativos: "#6B7280",
+	"Novos Leads": "#9333EA",
+	"Sem Segmento": "#E5E7EB"
+};
 var recentContacts = [
 	{
 		id: 1,
@@ -58015,14 +58205,18 @@ var recentContacts = [
 	}
 ];
 function Index() {
+	const [segmentStats, setSegmentStats] = (0, import_react.useState)([]);
 	const currentDate = (/* @__PURE__ */ new Date()).toLocaleDateString("pt-BR", {
 		weekday: "long",
 		year: "numeric",
 		month: "long",
 		day: "numeric"
 	});
+	(0, import_react.useEffect)(() => {
+		contactsService.getSegmentationStats().then(setSegmentStats).catch((err) => console.error("Failed to load segmentation stats", err));
+	}, []);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-8",
+		className: "space-y-8 animate-fade-in",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex flex-col gap-2",
@@ -58133,129 +58327,189 @@ function Index() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "grid gap-6 md:grid-cols-7",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-					className: "col-span-4 shadow-sm",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						className: "text-xl font-display text-primary",
-						children: "Desempenho de Vendas"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Resumo de vendas e novos leads no primeiro semestre." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-						className: "pl-2",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-							config: chartConfig$1,
-							className: "h-[300px] w-full",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
-								data: chartData,
-								margin: {
-									top: 10,
-									right: 30,
-									left: 0,
-									bottom: 0
-								},
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("defs", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
-										id: "fillVendas",
-										x1: "0",
-										y1: "0",
-										x2: "0",
-										y2: "1",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-											offset: "5%",
-											stopColor: "var(--color-vendas)",
-											stopOpacity: .8
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-											offset: "95%",
-											stopColor: "var(--color-vendas)",
-											stopOpacity: .1
-										})]
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
-										id: "fillLeads",
-										x1: "0",
-										y1: "0",
-										x2: "0",
-										y2: "1",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-											offset: "5%",
-											stopColor: "var(--color-leads)",
-											stopOpacity: .8
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-											offset: "95%",
-											stopColor: "var(--color-leads)",
-											stopOpacity: .1
-										})]
-									})] }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
-										vertical: false,
-										strokeDasharray: "3 3",
-										className: "stroke-muted"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
-										dataKey: "month",
-										tickLine: false,
-										axisLine: false,
-										tickMargin: 8,
-										className: "text-xs text-muted-foreground"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
-										tickLine: false,
-										axisLine: false,
-										className: "text-xs text-muted-foreground",
-										tickFormatter: (value) => `R$${value / 1e3}k`
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
-										type: "monotone",
-										dataKey: "vendas",
-										stroke: "var(--color-vendas)",
-										fillOpacity: 1,
-										fill: "url(#fillVendas)",
-										strokeWidth: 2
-									})
-								]
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "col-span-7 lg:col-span-4 shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-xl font-display text-primary",
+							children: "Desempenho de Vendas"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Resumo de vendas e novos leads no primeiro semestre." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "pl-2",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+								config: chartConfig$1,
+								className: "h-[300px] w-full",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
+									data: chartData,
+									margin: {
+										top: 10,
+										right: 30,
+										left: 0,
+										bottom: 0
+									},
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("defs", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+											id: "fillVendas",
+											x1: "0",
+											y1: "0",
+											x2: "0",
+											y2: "1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+												offset: "5%",
+												stopColor: "var(--color-vendas)",
+												stopOpacity: .8
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+												offset: "95%",
+												stopColor: "var(--color-vendas)",
+												stopOpacity: .1
+											})]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+											id: "fillLeads",
+											x1: "0",
+											y1: "0",
+											x2: "0",
+											y2: "1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+												offset: "5%",
+												stopColor: "var(--color-leads)",
+												stopOpacity: .8
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+												offset: "95%",
+												stopColor: "var(--color-leads)",
+												stopOpacity: .1
+											})]
+										})] }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+											vertical: false,
+											strokeDasharray: "3 3",
+											className: "stroke-muted"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+											dataKey: "month",
+											tickLine: false,
+											axisLine: false,
+											tickMargin: 8,
+											className: "text-xs text-muted-foreground"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+											tickLine: false,
+											axisLine: false,
+											className: "text-xs text-muted-foreground",
+											tickFormatter: (value) => `R$${value / 1e3}k`
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
+											type: "monotone",
+											dataKey: "vendas",
+											stroke: "var(--color-vendas)",
+											fillOpacity: 1,
+											fill: "url(#fillVendas)",
+											strokeWidth: 2
+										})
+									]
+								})
 							})
-						})
-					})]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-					className: "col-span-3 shadow-sm",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						className: "text-xl font-display text-primary",
-						children: "Contatos Recentes"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Últimos contatos adicionados à plataforma." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "space-y-6",
-						children: recentContacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex items-center justify-between group cursor-pointer",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex items-center space-x-4",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
-									className: "h-10 w-10 border border-muted transition-transform group-hover:scale-105",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: contact.avatar || void 0 }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, {
-										className: "bg-primary/10 text-primary",
-										children: contact.name.substring(0, 2).toUpperCase()
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "col-span-7 lg:col-span-3 shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "text-xl font-display text-primary flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartPie, { className: "h-5 w-5" }), "Distribuição por Segmento"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Classificação automática da base de contatos." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: segmentStats.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+							config: Object.keys(segmentColors).reduce((acc, key) => {
+								acc[key] = {
+									label: key,
+									color: segmentColors[key]
+								};
+								return acc;
+							}, {}),
+							className: "h-[300px] w-full mx-auto",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PieChart, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pie, {
+									data: segmentStats,
+									dataKey: "count",
+									nameKey: "segment",
+									cx: "50%",
+									cy: "50%",
+									innerRadius: 60,
+									outerRadius: 100,
+									paddingAngle: 2,
+									children: segmentStats.map((entry, index$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
+										fill: segmentColors[entry.segment] || segmentColors["Sem Segmento"],
+										strokeWidth: 0
+									}, `cell-${index$1}`))
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
+									content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, { hideLabel: true }),
+									formatter: (value, name, item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex gap-2 min-w-[150px]",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "font-medium",
+											children: [item.payload.segment, ":"]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "ml-auto",
+											children: [
+												value,
+												" (",
+												item.payload.percentage.toFixed(1),
+												"%)"
+											]
+										})]
+									})
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, {
+									content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}),
+									className: "flex-wrap gap-2 text-[10px]"
+								})
+							] })
+						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "h-[300px] flex items-center justify-center text-muted-foreground",
+							children: "Carregando dados..."
+						}) })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "col-span-7 shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-xl font-display text-primary",
+							children: "Contatos Recentes"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Últimos contatos adicionados à plataforma." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "space-y-6",
+							children: recentContacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-between group cursor-pointer",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center space-x-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
+										className: "h-10 w-10 border border-muted transition-transform group-hover:scale-105",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: contact.avatar || void 0 }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, {
+											className: "bg-primary/10 text-primary",
+											children: contact.name.substring(0, 2).toUpperCase()
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-sm font-medium leading-none group-hover:text-primary transition-colors",
+											children: contact.name
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-xs text-muted-foreground",
+											children: contact.role
+										})]
 									})]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "space-y-1",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-sm font-medium leading-none group-hover:text-primary transition-colors",
-										children: contact.name
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-xs text-muted-foreground",
-										children: contact.role
-									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "text-xs text-muted-foreground text-right",
+									children: contact.date
 								})]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "text-xs text-muted-foreground text-right",
-								children: contact.date
-							})]
-						}, contact.id))
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "mt-6 pt-4 border-t text-center",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-							href: "/contatos",
-							className: "text-sm font-medium text-primary hover:underline hover:text-primary/80",
-							children: "Ver todos os contatos"
-						})
-					})] })]
-				})]
+							}, contact.id))
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "mt-6 pt-4 border-t text-center",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+								href: "/contatos",
+								className: "text-sm font-medium text-primary hover:underline hover:text-primary/80",
+								children: "Ver todos os contatos"
+							})
+						})] })]
+					})
+				]
 			})
 		]
 	});
@@ -58380,6 +58634,225 @@ var PaginationEllipsis = ({ className, ...props }) => /* @__PURE__ */ (0, import
 	})]
 });
 PaginationEllipsis.displayName = "PaginationEllipsis";
+var NAME$1 = "Toggle";
+var Toggle$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { pressed: pressedProp, defaultPressed, onPressedChange, ...buttonProps } = props;
+	const [pressed, setPressed] = useControllableState({
+		prop: pressedProp,
+		onChange: onPressedChange,
+		defaultProp: defaultPressed ?? false,
+		caller: NAME$1
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
+		type: "button",
+		"aria-pressed": pressed,
+		"data-state": pressed ? "on" : "off",
+		"data-disabled": props.disabled ? "" : void 0,
+		...buttonProps,
+		ref: forwardedRef,
+		onClick: composeEventHandlers(props.onClick, () => {
+			if (!props.disabled) setPressed(!pressed);
+		})
+	});
+});
+Toggle$1.displayName = NAME$1;
+var Root$5 = Toggle$1;
+var TOGGLE_GROUP_NAME = "ToggleGroup";
+var [createToggleGroupContext, createToggleGroupScope] = createContextScope(TOGGLE_GROUP_NAME, [createRovingFocusGroupScope]);
+var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var ToggleGroup$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { type, ...toggleGroupProps } = props;
+	if (type === "single") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImplSingle, {
+		...toggleGroupProps,
+		ref: forwardedRef
+	});
+	if (type === "multiple") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImplMultiple, {
+		...toggleGroupProps,
+		ref: forwardedRef
+	});
+	throw new Error(`Missing prop \`type\` expected on \`${TOGGLE_GROUP_NAME}\``);
+});
+ToggleGroup$1.displayName = TOGGLE_GROUP_NAME;
+var [ToggleGroupValueProvider, useToggleGroupValueContext] = createToggleGroupContext(TOGGLE_GROUP_NAME);
+var ToggleGroupImplSingle = import_react.forwardRef((props, forwardedRef) => {
+	const { value: valueProp, defaultValue, onValueChange = () => {}, ...toggleGroupSingleProps } = props;
+	const [value, setValue] = useControllableState({
+		prop: valueProp,
+		defaultProp: defaultValue ?? "",
+		onChange: onValueChange,
+		caller: TOGGLE_GROUP_NAME
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupValueProvider, {
+		scope: props.__scopeToggleGroup,
+		type: "single",
+		value: import_react.useMemo(() => value ? [value] : [], [value]),
+		onItemActivate: setValue,
+		onItemDeactivate: import_react.useCallback(() => setValue(""), [setValue]),
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImpl, {
+			...toggleGroupSingleProps,
+			ref: forwardedRef
+		})
+	});
+});
+var ToggleGroupImplMultiple = import_react.forwardRef((props, forwardedRef) => {
+	const { value: valueProp, defaultValue, onValueChange = () => {}, ...toggleGroupMultipleProps } = props;
+	const [value, setValue] = useControllableState({
+		prop: valueProp,
+		defaultProp: defaultValue ?? [],
+		onChange: onValueChange,
+		caller: TOGGLE_GROUP_NAME
+	});
+	const handleButtonActivate = import_react.useCallback((itemValue) => setValue((prevValue = []) => [...prevValue, itemValue]), [setValue]);
+	const handleButtonDeactivate = import_react.useCallback((itemValue) => setValue((prevValue = []) => prevValue.filter((value2) => value2 !== itemValue)), [setValue]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupValueProvider, {
+		scope: props.__scopeToggleGroup,
+		type: "multiple",
+		value,
+		onItemActivate: handleButtonActivate,
+		onItemDeactivate: handleButtonDeactivate,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImpl, {
+			...toggleGroupMultipleProps,
+			ref: forwardedRef
+		})
+	});
+});
+ToggleGroup$1.displayName = TOGGLE_GROUP_NAME;
+var [ToggleGroupContext$1, useToggleGroupContext] = createToggleGroupContext(TOGGLE_GROUP_NAME);
+var ToggleGroupImpl = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeToggleGroup, disabled = false, rovingFocus = true, orientation, dir, loop = true, ...toggleGroupProps } = props;
+	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeToggleGroup);
+	const direction = useDirection(dir);
+	const commonProps = {
+		role: "group",
+		dir: direction,
+		...toggleGroupProps
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupContext$1, {
+		scope: __scopeToggleGroup,
+		rovingFocus,
+		disabled,
+		children: rovingFocus ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
+			asChild: true,
+			...rovingFocusGroupScope,
+			orientation,
+			dir: direction,
+			loop,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
+				...commonProps,
+				ref: forwardedRef
+			})
+		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
+			...commonProps,
+			ref: forwardedRef
+		})
+	});
+});
+var ITEM_NAME$1 = "ToggleGroupItem";
+var ToggleGroupItem$1 = import_react.forwardRef((props, forwardedRef) => {
+	const valueContext = useToggleGroupValueContext(ITEM_NAME$1, props.__scopeToggleGroup);
+	const context = useToggleGroupContext(ITEM_NAME$1, props.__scopeToggleGroup);
+	const rovingFocusGroupScope = useRovingFocusGroupScope(props.__scopeToggleGroup);
+	const pressed = valueContext.value.includes(props.value);
+	const disabled = context.disabled || props.disabled;
+	const commonProps = {
+		...props,
+		pressed,
+		disabled
+	};
+	const ref = import_react.useRef(null);
+	return context.rovingFocus ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item$1, {
+		asChild: true,
+		...rovingFocusGroupScope,
+		focusable: !disabled,
+		active: pressed,
+		ref,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItemImpl, {
+			...commonProps,
+			ref: forwardedRef
+		})
+	}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItemImpl, {
+		...commonProps,
+		ref: forwardedRef
+	});
+});
+ToggleGroupItem$1.displayName = ITEM_NAME$1;
+var ToggleGroupItemImpl = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeToggleGroup, value, ...itemProps } = props;
+	const valueContext = useToggleGroupValueContext(ITEM_NAME$1, __scopeToggleGroup);
+	const singleProps = {
+		role: "radio",
+		"aria-checked": props.pressed,
+		"aria-pressed": void 0
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Toggle$1, {
+		...valueContext.type === "single" ? singleProps : void 0,
+		...itemProps,
+		ref: forwardedRef,
+		onPressedChange: (pressed) => {
+			if (pressed) valueContext.onItemActivate(value);
+			else valueContext.onItemDeactivate(value);
+		}
+	});
+});
+var Root2$3 = ToggleGroup$1;
+var Item2 = ToggleGroupItem$1;
+var toggleVariants = cva("inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 gap-2", {
+	variants: {
+		variant: {
+			default: "bg-transparent",
+			outline: "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground"
+		},
+		size: {
+			default: "h-10 px-3 min-w-10",
+			sm: "h-9 px-2.5 min-w-9",
+			lg: "h-11 px-5 min-w-11"
+		}
+	},
+	defaultVariants: {
+		variant: "default",
+		size: "default"
+	}
+});
+var Toggle = import_react.forwardRef(({ className, variant, size: size$3, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
+	ref,
+	className: cn(toggleVariants({
+		variant,
+		size: size$3,
+		className
+	})),
+	...props
+}));
+Toggle.displayName = Root$5.displayName;
+var ToggleGroupContext = import_react.createContext({
+	size: "default",
+	variant: "default"
+});
+var ToggleGroup = import_react.forwardRef(({ className, variant, size: size$3, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
+	ref,
+	className: cn("flex items-center justify-center gap-1", className),
+	...props,
+	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupContext.Provider, {
+		value: {
+			variant,
+			size: size$3
+		},
+		children
+	})
+}));
+ToggleGroup.displayName = Root2$3.displayName;
+var ToggleGroupItem = import_react.forwardRef(({ className, children, variant, size: size$3, ...props }, ref) => {
+	const context = import_react.useContext(ToggleGroupContext);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2, {
+		ref,
+		className: cn(toggleVariants({
+			variant: context.variant || variant,
+			size: context.size || size$3
+		}), className),
+		...props,
+		children
+	});
+});
+ToggleGroupItem.displayName = Item2.displayName;
 var isCheckBoxInput = (element) => element.type === "checkbox";
 var isDateObject = (value) => value instanceof Date;
 var isNullOrUndefined = (value) => value == null;
@@ -65223,7 +65696,7 @@ var Select$2 = (props) => {
 	const isFormControl = trigger ? form || !!trigger.closest("form") : true;
 	const [nativeOptionsSet, setNativeOptionsSet] = import_react.useState(/* @__PURE__ */ new Set());
 	const nativeSelectKey = Array.from(nativeOptionsSet).map((option) => option.props.value).join(";");
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$5, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectProvider, {
 			required: required$1,
@@ -66214,7 +66687,7 @@ var Popover$1 = (props) => {
 		onChange: onOpenChange,
 		caller: POPOVER_NAME
 	});
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$5, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverProvider, {
 			scope: __scopePopover,
@@ -69528,7 +70001,7 @@ var N = "[cmdk-group=\"\"]", Y = "[cmdk-group-items=\"\"]", be = "[cmdk-group-he
 	}, m$1)));
 }), xe = import_react.forwardRef((r$2, o$1) => {
 	let { open: n$1, onOpenChange: u$1, overlayClassName: c$1, contentClassName: d, container: f, ...p$1 } = r$2;
-	return import_react.createElement(Root$7, {
+	return import_react.createElement(Root$8, {
 		open: n$1,
 		onOpenChange: u$1
 	}, import_react.createElement(Portal$4, { container: f }, import_react.createElement(Overlay, {
@@ -69638,7 +70111,7 @@ var Te = {
 	whiteSpace: "nowrap",
 	borderWidth: "0"
 };
-var Dialog = Root$7;
+var Dialog = Root$8;
 var DialogTrigger = Trigger$3;
 var DialogPortal = Portal$4;
 var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
@@ -69800,156 +70273,6 @@ function MultiSelect({ options: options$1, selected, onChange, placeholder = "Se
 		})]
 	});
 }
-const contactsService = {
-	async getContacts({ page = 1, pageSize = 10, search = "", tags = [], sortBy: sortBy$4 = "created_at", sortDirection = "desc" }) {
-		const from = (page - 1) * pageSize;
-		const to = from + pageSize - 1;
-		let query = supabase.from("contacts").select(`
-        *,
-        contact_tags!left (
-          tags (
-            id,
-            name,
-            color
-          )
-        ),
-        purchases (
-          value,
-          date
-        )
-      `, { count: "exact" });
-		if (search) query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%`);
-		if (sortBy$4 === "lastContact") query = query.order("updated_at", { ascending: sortDirection === "asc" });
-		else if (sortBy$4 === "totalInvested") query = query.order("name", { ascending: sortDirection === "asc" });
-		else query = query.order(sortBy$4, { ascending: sortDirection === "asc" });
-		if (tags && tags.length > 0) {
-			const { data: taggedContactIds, error: tagError } = await supabase.from("contact_tags").select("contact_id, tags!inner(name)").in("tags.name", tags);
-			if (tagError) throw tagError;
-			const ids = taggedContactIds?.map((tc) => tc.contact_id) || [];
-			if (ids.length > 0) query = query.in("id", ids);
-			else return {
-				data: [],
-				count: 0,
-				error: null
-			};
-		}
-		query = query.range(from, to);
-		const { data, error, count: count$3 } = await query;
-		return {
-			data: data?.map((contact) => ({
-				...contact,
-				tags: contact.contact_tags?.map((ct) => ct.tags) || [],
-				purchases: contact.purchases || [],
-				totalInvested: contact.purchases?.reduce((acc, curr) => acc + Number(curr.value), 0) || 0,
-				lastContact: contact.updated_at
-			})),
-			error,
-			count: count$3
-		};
-	},
-	async getContactById(id) {
-		const { data, error } = await supabase.from("contacts").select(`
-        *,
-        contact_tags (
-          tags (
-            id,
-            name,
-            color
-          )
-        ),
-        purchases (
-          id,
-          value,
-          date,
-          lot_number,
-          auction_id,
-          description
-        ),
-        contact_interactions (
-           id,
-           type,
-           description,
-           date,
-           created_at
-        )
-      `).eq("id", id).single();
-		if (error) throw error;
-		return {
-			...data,
-			tags: data.contact_tags?.map((ct) => ct.tags) || [],
-			purchases: data.purchases || [],
-			interactions: data.contact_interactions || []
-		};
-	},
-	async getPurchasesByContactId(contactId) {
-		const { data, error } = await supabase.from("purchases").select("*").eq("contact_id", contactId).order("date", { ascending: false });
-		if (error) throw error;
-		return data;
-	},
-	async getBidsByContactId(contactId) {
-		const { data, error } = await supabase.from("bids").select("*").eq("contact_id", contactId).order("date", { ascending: false });
-		if (error) throw error;
-		return data;
-	},
-	async getContactInteractions(contactId) {
-		const { data, error } = await supabase.from("contact_interactions").select("*").eq("contact_id", contactId).order("date", { ascending: false });
-		if (error) throw error;
-		return data;
-	},
-	async addInteraction(interaction) {
-		const { data, error } = await supabase.from("contact_interactions").insert(interaction).select().single();
-		if (error) throw error;
-		return data;
-	},
-	async createContact(contactData) {
-		const { tags: tagNames, ...data } = contactData;
-		const dbData = {
-			name: data.name,
-			email: data.email,
-			phone: data.phone,
-			whatsapp: data.whatsapp,
-			birth_date: data.birthDate,
-			cpf: data.cpf,
-			address: data.address,
-			preferences: {
-				breeds: data.favoriteBreeds,
-				valueRange: data.preferredValueRange,
-				modalities: data.modalities
-			},
-			origin: data.origin,
-			notes: data.notes
-		};
-		const { data: newContact, error } = await supabase.from("contacts").insert(dbData).select().single();
-		if (error) throw error;
-		if (tagNames && tagNames.length > 0) {
-			const { data: existingTags } = await supabase.from("tags").select("id, name").in("name", tagNames);
-			if (existingTags) {
-				const contactTags = existingTags.map((tag) => ({
-					contact_id: newContact.id,
-					tag_id: tag.id
-				}));
-				await supabase.from("contact_tags").insert(contactTags);
-			}
-		}
-		return newContact;
-	},
-	async getTags() {
-		const { data, error } = await supabase.from("tags").select("*");
-		if (error) throw error;
-		return data;
-	},
-	async addTagToContact(contactId, tagId) {
-		const { error } = await supabase.from("contact_tags").insert({
-			contact_id: contactId,
-			tag_id: tagId
-		});
-		if (error) throw error;
-	},
-	async removeTagFromContact(contactId, tagId) {
-		const { error } = await supabase.from("contact_tags").delete().eq("contact_id", contactId).eq("tag_id", tagId);
-		if (error) throw error;
-	}
-};
 var formSchema$1 = object({
 	name: string().min(2, "Nome deve ter pelo menos 2 caracteres."),
 	email: string().email("E-mail inválido."),
@@ -70431,9 +70754,37 @@ function TagSelector({ contactId, currentTags, onTagChange, variant = "icon" }) 
 		})]
 	});
 }
+var SEGMENTS = [
+	{
+		value: "VIP",
+		label: "VIP",
+		class: "data-[state=on]:bg-yellow-100 data-[state=on]:text-yellow-700 hover:bg-yellow-50 hover:text-yellow-600"
+	},
+	{
+		value: "Frequentes",
+		label: "Frequentes",
+		class: "data-[state=on]:bg-blue-100 data-[state=on]:text-blue-700 hover:bg-blue-50 hover:text-blue-600"
+	},
+	{
+		value: "Ativos",
+		label: "Ativos",
+		class: "data-[state=on]:bg-green-100 data-[state=on]:text-green-700 hover:bg-green-50 hover:text-green-600"
+	},
+	{
+		value: "Novos Leads",
+		label: "Novos Leads",
+		class: "data-[state=on]:bg-purple-100 data-[state=on]:text-purple-700 hover:bg-purple-50 hover:text-purple-600"
+	},
+	{
+		value: "Inativos",
+		label: "Inativos",
+		class: "data-[state=on]:bg-gray-100 data-[state=on]:text-gray-700 hover:bg-gray-50 hover:text-gray-600"
+	}
+];
 function Contatos() {
 	const [searchTerm, setSearchTerm] = (0, import_react.useState)("");
 	const [selectedTags, setSelectedTags] = (0, import_react.useState)([]);
+	const [selectedSegment, setSelectedSegment] = (0, import_react.useState)(null);
 	const [sortConfig, setSortConfig] = (0, import_react.useState)({
 		key: "created_at",
 		direction: "desc"
@@ -70457,6 +70808,7 @@ function Contatos() {
 				pageSize: itemsPerPage,
 				search: searchTerm,
 				tags: selectedTags,
+				segment: selectedSegment,
 				sortBy: sortConfig.key,
 				sortDirection: sortConfig.direction
 			});
@@ -70483,6 +70835,7 @@ function Contatos() {
 		currentPage,
 		searchTerm,
 		selectedTags,
+		selectedSegment,
 		sortConfig
 	]);
 	const totalPages = Math.ceil(totalCount / itemsPerPage);
@@ -70546,9 +70899,9 @@ function Contatos() {
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 			className: "border-t-4 border-t-primary shadow-sm",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-				className: "pb-3",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "pb-3 space-y-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex flex-col md:flex-row items-start md:items-center justify-between gap-4",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
 						className: "text-lg font-medium hidden md:block",
@@ -70606,7 +70959,35 @@ function Contatos() {
 							})
 						]
 					})]
-				})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col sm:flex-row gap-2 items-center justify-between border-t pt-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Segmentos:" })]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "w-full overflow-x-auto pb-1 sm:pb-0",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ToggleGroup, {
+							type: "single",
+							value: selectedSegment || "",
+							onValueChange: (val) => {
+								setSelectedSegment(val || null);
+								setCurrentPage(1);
+							},
+							className: "justify-start sm:justify-end",
+							children: [SEGMENTS.map((segment) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItem, {
+								value: segment.value,
+								className: cn("border border-transparent data-[state=on]:border-transparent rounded-full px-3 py-1 h-8 text-xs font-medium transition-all", segment.class),
+								children: segment.label
+							}, segment.value)), selectedSegment && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								variant: "ghost",
+								size: "sm",
+								className: "h-8 rounded-full px-2 text-xs text-muted-foreground hover:text-foreground ml-1",
+								onClick: () => setSelectedSegment(null),
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-3 w-3 mr-1" }), " Limpar"]
+							})]
+						})
+					})]
+				})]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "rounded-md border",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
@@ -70761,6 +71142,7 @@ function Contatos() {
 								onClick: () => {
 									setSearchTerm("");
 									setSelectedTags([]);
+									setSelectedSegment(null);
 								},
 								className: "mt-2 text-primary",
 								children: "Limpar todos os filtros"
@@ -73672,7 +74054,7 @@ var useDialogScope = createDialogScope();
 var AlertDialog$1 = (props) => {
 	const { __scopeAlertDialog, ...alertDialogProps } = props;
 	const dialogScope = useDialogScope(__scopeAlertDialog);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
 		...dialogScope,
 		...alertDialogProps,
 		modal: true
@@ -74382,4 +74764,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-CsBHrloA.js.map
+//# sourceMappingURL=index-CyuJjbKP.js.map
