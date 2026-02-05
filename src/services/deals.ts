@@ -68,6 +68,17 @@ export const dealsService = {
     return data as Deal
   },
 
+  async getDealsByContactId(contactId: string) {
+    const { data, error } = await supabase
+      .from('deals')
+      .select('*')
+      .eq('contact_id', contactId)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return data as Deal[]
+  },
+
   async createDeal(deal: DealInsert) {
     const { data, error } = await supabase
       .from('deals')

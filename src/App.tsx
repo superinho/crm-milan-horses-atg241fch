@@ -15,6 +15,7 @@ import Automacoes from './pages/Automacoes'
 import Tarefas from './pages/Tarefas'
 import Relatorios from './pages/Relatorios'
 import Tags from './pages/Tags'
+import Modelos from './pages/Modelos'
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 
@@ -63,6 +64,7 @@ const App = () => (
             <Route path="/tarefas" element={<Tarefas />} />
             <Route path="/relatorios" element={<Relatorios />} />
             <Route path="/tags" element={<Tags />} />
+            <Route path="/modelos" element={<Modelos />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

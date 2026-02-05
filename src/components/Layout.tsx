@@ -24,6 +24,7 @@ import {
   User,
   LogOut,
   Tag as TagIcon,
+  FileText,
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
@@ -48,6 +49,7 @@ const NAV_ITEMS = [
   { label: 'Tarefas', icon: CheckSquare, path: '/tarefas' },
   { label: 'Relatórios', icon: BarChart3, path: '/relatorios' },
   { label: 'Tags', icon: TagIcon, path: '/tags' },
+  { label: 'Modelos', icon: FileText, path: '/modelos' },
 ]
 
 function AppSidebar() {

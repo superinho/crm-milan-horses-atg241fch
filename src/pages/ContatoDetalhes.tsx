@@ -18,6 +18,7 @@ import {
   Briefcase,
   X,
   Tag as TagIcon,
+  Send,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -37,6 +38,7 @@ import { ContactPurchases } from '@/components/ContactPurchases'
 import { ContactBids } from '@/components/ContactBids'
 import { ContactTimeline } from '@/components/ContactTimeline'
 import { TagSelector } from '@/components/tags/TagSelector'
+import { MessageDialog } from '@/components/templates/MessageDialog'
 
 export default function ContatoDetalhes() {
   const { id } = useParams<{ id: string }>()
@@ -44,6 +46,7 @@ export default function ContatoDetalhes() {
   const { toast } = useToast()
   const [contact, setContact] = useState<Contact | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isMessageDialogOpen, setIsMessageDialogOpen] = useState(false)
 
   const fetchContact = () => {
     if (id) {
@@ -162,6 +165,12 @@ export default function ContatoDetalhes() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <Button
+            className="bg-primary hover:bg-primary/90 text-white"
+            onClick={() => setIsMessageDialogOpen(true)}
+          >
+            <Send className="mr-2 h-4 w-4" /> Enviar Mensagem
+          </Button>
           <Button
             variant="outline"
             className="text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200"
@@ -475,7 +484,6 @@ export default function ContatoDetalhes() {
                       <User className="h-3 w-3" /> Profissional Indicador
                     </p>
                     <p className="text-lg font-semibold text-secondary-foreground">
-                      {/* We don't have the referrer name in simple text in DB for now, using placeholder */}
                       Dr. Marcelo Ramos (Simulado)
                     </p>
                     <Button
@@ -514,6 +522,15 @@ export default function ContatoDetalhes() {
       {/* New Bids Section */}
       <Separator className="my-8" />
       <ContactBids contactId={contact.id} />
+
+      {/* Message Dialog */}
+      {contact && (
+        <MessageDialog
+          contact={contact}
+          open={isMessageDialogOpen}
+          onOpenChange={setIsMessageDialogOpen}
+        />
+      )}
     </div>
   )
 }
