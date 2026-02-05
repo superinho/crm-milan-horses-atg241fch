@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -16,9 +16,10 @@ import {
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useToast } from '@/hooks/use-toast'
-import { Loader2, Send, MessageSquare, Mail } from 'lucide-react'
+import { Loader2, Send, MessageSquare, Mail, Paperclip, X } from 'lucide-react'
 import {
   templatesService,
   MessageTemplate,
@@ -26,29 +27,35 @@ import {
 } from '@/services/templates'
 import { contactsService, Contact, Bid, Purchase } from '@/services/contacts'
 import { dealsService, Deal } from '@/services/deals'
+import { RichTextEditor } from '@/components/ui/rich-text-editor'
 
 interface MessageDialogProps {
   contact: Contact
   open: boolean
   onOpenChange: (open: boolean) => void
+  onInteractionAdded?: () => void
 }
 
 export function MessageDialog({
   contact,
   open,
   onOpenChange,
+  onInteractionAdded,
 }: MessageDialogProps) {
   const [templates, setTemplates] = useState<MessageTemplate[]>([])
   const [loading, setLoading] = useState(false)
+  const [sending, setSending] = useState(false)
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>('')
   const [activeType, setActiveType] = useState<TemplateType>('WhatsApp')
   const [previewBody, setPreviewBody] = useState('')
   const [previewSubject, setPreviewSubject] = useState('')
+  const [attachments, setAttachments] = useState<File[]>([])
   const [contextData, setContextData] = useState<{
     deal?: Deal
     bid?: Bid
     purchase?: Purchase
   }>({})
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const { toast } = useToast()
 
   // Load Templates and Context Data
@@ -92,8 +99,8 @@ export function MessageDialog({
   useEffect(() => {
     const template = templates.find((t) => t.id === selectedTemplateId)
     if (!template) {
-      setPreviewBody('')
-      setPreviewSubject('')
+      // Don't reset if typing manually
+      if (selectedTemplateId === 'none') return
       return
     }
 
@@ -101,7 +108,6 @@ export function MessageDialog({
       let processed = text.replace(/{{nome}}/g, contact.name)
 
       // Find best context for other variables
-      // Priority: Purchase > Bid > Deal (or based on what's available)
       const purchase = contextData.purchase
       const bid = contextData.bid
       const deal = contextData.deal
@@ -136,13 +142,34 @@ export function MessageDialog({
     setPreviewBody(replaceVariables(template.body))
     if (template.subject) {
       setPreviewSubject(replaceVariables(template.subject))
-    } else {
-      setPreviewSubject('')
     }
-    setActiveType(template.type)
   }, [selectedTemplateId, templates, contact, contextData])
 
-  const handleSend = () => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setAttachments([...attachments, ...Array.from(e.target.files)])
+    }
+  }
+
+  const removeAttachment = (index: number) => {
+    setAttachments(attachments.filter((_, i) => i !== index))
+  }
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => {
+        // Remove data url prefix (e.g. "data:image/png;base64,")
+        const result = reader.result as string
+        const base64 = result.split(',')[1]
+        resolve(base64)
+      }
+      reader.onerror = (error) => reject(error)
+    })
+  }
+
+  const handleSend = async () => {
     if (!previewBody) return
 
     if (activeType === 'WhatsApp') {
@@ -157,7 +184,24 @@ export function MessageDialog({
       const phone = (contact.whatsapp || contact.phone).replace(/\D/g, '')
       const encoded = encodeURIComponent(previewBody)
       window.open(`https://wa.me/55${phone}?text=${encoded}`, '_blank')
+
+      // Log interaction locally since we can't track whatsapp status automatically
+      try {
+        await contactsService.addInteraction({
+          contact_id: contact.id,
+          type: 'whatsapp enviado',
+          description: previewBody,
+          date: new Date().toISOString(),
+          status: 'sent',
+        })
+        if (onInteractionAdded) onInteractionAdded()
+      } catch (err) {
+        console.error('Failed to log whatsapp', err)
+      }
+
+      onOpenChange(false)
     } else {
+      // Sending Email
       if (!contact.email) {
         toast({
           title: 'Erro',
@@ -166,29 +210,68 @@ export function MessageDialog({
         })
         return
       }
-      const subject = encodeURIComponent(previewSubject)
-      const body = encodeURIComponent(previewBody)
-      window.open(
-        `mailto:${contact.email}?subject=${subject}&body=${body}`,
-        '_blank',
-      )
+      if (!previewSubject) {
+        toast({
+          title: 'Erro',
+          description: 'O assunto do e-mail é obrigatório.',
+          variant: 'destructive',
+        })
+        return
+      }
+
+      setSending(true)
+      try {
+        // Convert attachments to base64
+        const processedAttachments = await Promise.all(
+          attachments.map(async (file) => ({
+            filename: file.name,
+            content: await fileToBase64(file),
+          })),
+        )
+
+        await contactsService.sendEmail(
+          contact.id,
+          contact.email,
+          previewSubject,
+          previewBody,
+          processedAttachments,
+        )
+
+        toast({
+          title: 'Sucesso',
+          description: 'E-mail enviado com sucesso!',
+        })
+
+        if (onInteractionAdded) onInteractionAdded()
+        onOpenChange(false)
+
+        // Reset state
+        setPreviewBody('')
+        setPreviewSubject('')
+        setAttachments([])
+        setSelectedTemplateId('')
+      } catch (error) {
+        console.error(error)
+        toast({
+          title: 'Erro',
+          description: 'Falha ao enviar e-mail. Tente novamente.',
+          variant: 'destructive',
+        })
+      } finally {
+        setSending(false)
+      }
     }
-    onOpenChange(false)
-    toast({
-      title: 'Redirecionado',
-      description: `Abrindo aplicativo de ${activeType}...`,
-    })
   }
 
   const filteredTemplates = templates.filter((t) => t.type === activeType)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[700px] h-[90vh] sm:h-auto flex flex-col">
         <DialogHeader>
           <DialogTitle>Enviar Mensagem</DialogTitle>
           <DialogDescription>
-            Selecione um modelo para enviar para {contact.name}.
+            Selecione um canal e redija sua mensagem para {contact.name}.
           </DialogDescription>
         </DialogHeader>
 
@@ -197,7 +280,7 @@ export function MessageDialog({
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="flex-1 overflow-y-auto space-y-4 px-1">
             <Tabs
               defaultValue="WhatsApp"
               value={activeType}
@@ -205,6 +288,7 @@ export function MessageDialog({
                 setActiveType(v as TemplateType)
                 setSelectedTemplateId('')
                 setPreviewBody('')
+                setPreviewSubject('')
               }}
             >
               <TabsList className="grid w-full grid-cols-2">
@@ -217,77 +301,156 @@ export function MessageDialog({
               </TabsList>
             </Tabs>
 
-            <div className="space-y-2">
-              <Label>Modelo</Label>
-              <Select
-                value={selectedTemplateId}
-                onValueChange={setSelectedTemplateId}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione um template..." />
-                </SelectTrigger>
-                <SelectContent>
-                  {filteredTemplates.length > 0 ? (
-                    filteredTemplates.map((t) => (
-                      <SelectItem key={t.id} value={t.id}>
-                        {t.title} ({t.category})
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Modelo</Label>
+                <Select
+                  value={selectedTemplateId}
+                  onValueChange={setSelectedTemplateId}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione um template..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {filteredTemplates.length > 0 ? (
+                      filteredTemplates.map((t) => (
+                        <SelectItem key={t.id} value={t.id}>
+                          {t.title} ({t.category})
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value="none" disabled>
+                        Nenhum template encontrado
                       </SelectItem>
-                    ))
-                  ) : (
-                    <SelectItem value="none" disabled>
-                      Nenhum template encontrado
-                    </SelectItem>
-                  )}
-                </SelectContent>
-              </Select>
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {activeType === 'E-mail' && (
+                <div className="space-y-2">
+                  <Label>Destinatário</Label>
+                  <Input value={contact.email} disabled className="bg-muted" />
+                </div>
+              )}
             </div>
 
             {activeType === 'E-mail' && (
               <div className="space-y-2">
                 <Label>Assunto</Label>
-                <div className="p-2 border rounded-md bg-muted/20 text-sm">
-                  {previewSubject || (
-                    <span className="text-muted-foreground italic">
-                      Selecione um template...
-                    </span>
-                  )}
-                </div>
+                <Input
+                  value={previewSubject}
+                  onChange={(e) => setPreviewSubject(e.target.value)}
+                  placeholder="Assunto do e-mail"
+                />
               </div>
             )}
 
             <div className="space-y-2">
-              <Label>Mensagem (Prévia editável)</Label>
-              <Textarea
-                value={previewBody}
-                onChange={(e) => setPreviewBody(e.target.value)}
-                className="h-40 font-mono text-sm"
-                placeholder="O conteúdo da mensagem aparecerá aqui..."
-              />
-              <p className="text-xs text-muted-foreground">
-                Variáveis como <code>{`{{nome}}`}</code> foram substituídas
-                automaticamente.
-              </p>
+              <Label>
+                Mensagem {activeType === 'WhatsApp' ? '(Texto)' : '(Rich Text)'}
+              </Label>
+              {activeType === 'WhatsApp' ? (
+                <Textarea
+                  value={previewBody}
+                  onChange={(e) => setPreviewBody(e.target.value)}
+                  className="h-40 font-mono text-sm"
+                  placeholder="Digite sua mensagem do WhatsApp..."
+                />
+              ) : (
+                <RichTextEditor
+                  value={previewBody}
+                  onChange={setPreviewBody}
+                  placeholder="Escreva o conteúdo do e-mail..."
+                  className="min-h-[200px]"
+                />
+              )}
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
-              <Button variant="outline" onClick={() => onOpenChange(false)}>
-                Cancelar
-              </Button>
-              <Button
-                onClick={handleSend}
-                disabled={!previewBody}
-                className={
-                  activeType === 'WhatsApp'
-                    ? 'bg-green-600 hover:bg-green-700'
-                    : 'bg-blue-600 hover:bg-blue-700'
-                }
-              >
-                <Send className="mr-2 h-4 w-4" />
-                Enviar {activeType}
-              </Button>
-            </div>
+            {activeType === 'E-mail' && (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <Paperclip className="h-4 w-4 mr-2" />
+                    Anexar Arquivos
+                  </Button>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    multiple
+                    onChange={handleFileChange}
+                  />
+                  <span className="text-xs text-muted-foreground">
+                    {attachments.length > 0
+                      ? `${attachments.length} arquivo(s) selecionado(s)`
+                      : 'Nenhum arquivo selecionado'}
+                  </span>
+                </div>
+
+                {attachments.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {attachments.map((file, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-1 bg-muted px-2 py-1 rounded text-xs"
+                      >
+                        <span className="truncate max-w-[150px]">
+                          {file.name}
+                        </span>
+                        <button
+                          onClick={() => removeAttachment(idx)}
+                          className="text-muted-foreground hover:text-destructive"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
+
+        <div className="flex justify-end gap-2 pt-4 mt-auto border-t">
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={sending}
+          >
+            Cancelar
+          </Button>
+          <Button
+            onClick={handleSend}
+            disabled={
+              !previewBody ||
+              sending ||
+              (activeType === 'E-mail' && !previewSubject)
+            }
+            className={
+              activeType === 'WhatsApp'
+                ? 'bg-green-600 hover:bg-green-700'
+                : 'bg-blue-600 hover:bg-blue-700'
+            }
+          >
+            {sending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Enviando...
+              </>
+            ) : (
+              <>
+                <Send className="mr-2 h-4 w-4" />
+                Enviar {activeType}
+              </>
+            )}
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   )

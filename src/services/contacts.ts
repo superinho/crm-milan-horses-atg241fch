@@ -55,6 +55,8 @@ export type Interaction = {
   date: string
   created_by?: string | null
   created_at: string
+  status?: string | null
+  metadata?: any
 }
 
 export type SegmentStats = {
@@ -223,7 +225,9 @@ export const contactsService = {
            type,
            description,
            date,
-           created_at
+           created_at,
+           status,
+           metadata
         )
       `,
       )
@@ -288,7 +292,7 @@ export const contactsService = {
     return data as Interaction[]
   },
 
-  async addInteraction(interaction: Omit<Interaction, 'id' | 'created_at'>) {
+  async addInteraction(interaction: Partial<Interaction>) {
     const { data, error } = await supabase
       .from('contact_interactions')
       .insert(interaction)
@@ -296,6 +300,40 @@ export const contactsService = {
       .single()
 
     if (error) throw error
+    return data
+  },
+
+  async sendEmail(
+    contactId: string,
+    to: string,
+    subject: string,
+    html: string,
+    attachments?: { filename: string; content: string }[],
+  ) {
+    // 1. Send via Edge Function
+    const { data, error } = await supabase.functions.invoke(
+      'send-contact-email',
+      {
+        body: { to: [to], subject, html, attachments },
+      },
+    )
+
+    if (error) throw error
+
+    // 2. Log Interaction
+    await this.addInteraction({
+      contact_id: contactId,
+      type: 'email',
+      description: subject,
+      date: new Date().toISOString(),
+      status: 'sent',
+      metadata: {
+        resend_id: data?.id,
+        subject,
+        body_snippet: html.substring(0, 100) + '...',
+      },
+    })
+
     return data
   },
 

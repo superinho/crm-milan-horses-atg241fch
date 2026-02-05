@@ -47,6 +47,7 @@ export default function ContatoDetalhes() {
   const [contact, setContact] = useState<Contact | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isMessageDialogOpen, setIsMessageDialogOpen] = useState(false)
+  const [timelineRefreshTrigger, setTimelineRefreshTrigger] = useState(0)
 
   const fetchContact = () => {
     if (id) {
@@ -80,7 +81,10 @@ export default function ContatoDetalhes() {
 
   const handleEmail = () => {
     if (contact?.email) {
-      window.location.href = `mailto:${contact.email}`
+      // Just open the dialog with Email tab selected could be an enhancement,
+      // but for now standard mailto or opening the dialog is fine.
+      // We will open the dialog for better experience.
+      setIsMessageDialogOpen(true)
     }
   }
 
@@ -511,7 +515,10 @@ export default function ContatoDetalhes() {
           </div>
 
           {/* Timeline Section */}
-          <ContactTimeline contactId={contact.id} />
+          <ContactTimeline
+            contactId={contact.id}
+            refreshTrigger={timelineRefreshTrigger}
+          />
         </div>
       </div>
 
@@ -529,6 +536,9 @@ export default function ContatoDetalhes() {
           contact={contact}
           open={isMessageDialogOpen}
           onOpenChange={setIsMessageDialogOpen}
+          onInteractionAdded={() =>
+            setTimelineRefreshTrigger((prev) => prev + 1)
+          }
         />
       )}
     </div>

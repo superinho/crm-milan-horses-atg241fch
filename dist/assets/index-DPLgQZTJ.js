@@ -1109,7 +1109,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			return dispatcher;
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$66 = require_react(), Internals = {
+		var React$67 = require_react(), Internals = {
 			d: {
 				f: noop$4,
 				r: function() {
@@ -1125,7 +1125,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			},
 			p: 0,
 			findDOMNode: null
-		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$66.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$67.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills");
 		exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
 		exports.createPortal = function(children, container) {
@@ -2365,7 +2365,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			"number" === type && getActiveElement(node.ownerDocument) === node || node.defaultValue === "" + value || (node.defaultValue = "" + value);
 		}
 		function validateOptionProps(element, props) {
-			props.value ?? ("object" === typeof props.children && null !== props.children ? React$66.Children.forEach(props.children, function(child) {
+			props.value ?? ("object" === typeof props.children && null !== props.children ? React$67.Children.forEach(props.children, function(child) {
 				null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = !0, console.error("Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."));
 			}) : null == props.dangerouslySetInnerHTML || didWarnInvalidInnerHTML || (didWarnInvalidInnerHTML = !0, console.error("Pass a `value` prop if you set dangerouslyInnerHTML so React knows which value should be selected.")));
 			null == props.selected || didWarnSelectedSetOnOption || (console.error("Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>."), didWarnSelectedSetOnOption = !0);
@@ -12656,10 +12656,10 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			container[internalContainerInstanceKey] && (container._reactRootContainer ? console.error("You are calling ReactDOMClient.createRoot() on a container that was previously passed to ReactDOM.render(). This is not supported.") : console.error("You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it."));
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var Scheduler = require_scheduler(), React$66 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
+		var Scheduler = require_scheduler(), React$67 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
 		var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
 		var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
-		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$66.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$67.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
 			pending: !1,
 			data: null,
 			method: null,
@@ -15281,7 +15281,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			}
 		};
 		(function() {
-			var isomorphicReactPackageVersion = React$66.version;
+			var isomorphicReactPackageVersion = React$67.version;
 			if ("19.2.3" !== isomorphicReactPackageVersion) throw Error("Incompatible React versions: The \"react\" and \"react-dom\" packages must have the exact same version. Instead got:\n  - react:      " + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.3\nLearn more: https://react.dev/warnings/version-mismatch"));
 		})();
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://react.dev/link/react-polyfills");
@@ -17572,15 +17572,15 @@ var require_react_jsx_runtime_development = /* @__PURE__ */ __commonJSMin(((expo
 		function isValidElement$7(object$1) {
 			return "object" === typeof object$1 && null !== object$1 && object$1.$$typeof === REACT_ELEMENT_TYPE;
 		}
-		var React$66 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$66.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+		var React$67 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$67.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
 			return null;
 		};
-		React$66 = { react_stack_bottom_frame: function(callStackForError) {
+		React$67 = { react_stack_bottom_frame: function(callStackForError) {
 			return callStackForError();
 		} };
 		var specialPropKeyWarningShown;
 		var didWarnAboutElementRef = {};
-		var unknownOwnerDebugStack = React$66.react_stack_bottom_frame.bind(React$66, UnknownOwner)();
+		var unknownOwnerDebugStack = React$67.react_stack_bottom_frame.bind(React$67, UnknownOwner)();
 		var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
 		var didWarnAboutKeySpread = {};
 		exports.Fragment = REACT_FRAGMENT_TYPE;
@@ -18959,6 +18959,10 @@ var Bell = createLucideIcon("bell", [["path", {
 	d: "M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326",
 	key: "11g9vi"
 }]]);
+var Bold = createLucideIcon("bold", [["path", {
+	d: "M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8",
+	key: "mg9rjx"
+}]]);
 var Briefcase = createLucideIcon("briefcase", [["path", {
 	d: "M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16",
 	key: "jecpp"
@@ -19334,6 +19338,29 @@ var Gavel = createLucideIcon("gavel", [
 		key: "1oyaui"
 	}]
 ]);
+var Italic = createLucideIcon("italic", [
+	["line", {
+		x1: "19",
+		x2: "10",
+		y1: "4",
+		y2: "4",
+		key: "15jd3p"
+	}],
+	["line", {
+		x1: "14",
+		x2: "5",
+		y1: "20",
+		y2: "20",
+		key: "bu0au3"
+	}],
+	["line", {
+		x1: "15",
+		x2: "9",
+		y1: "4",
+		y2: "20",
+		key: "uljnxc"
+	}]
+]);
 var LayoutDashboard = createLucideIcon("layout-dashboard", [
 	["rect", {
 		width: "7",
@@ -19366,6 +19393,65 @@ var LayoutDashboard = createLucideIcon("layout-dashboard", [
 		y: "16",
 		rx: "1",
 		key: "ldoo1y"
+	}]
+]);
+var Link$1 = createLucideIcon("link", [["path", {
+	d: "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71",
+	key: "1cjeqo"
+}], ["path", {
+	d: "M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71",
+	key: "19qd67"
+}]]);
+var ListOrdered = createLucideIcon("list-ordered", [
+	["path", {
+		d: "M11 5h10",
+		key: "1cz7ny"
+	}],
+	["path", {
+		d: "M11 12h10",
+		key: "1438ji"
+	}],
+	["path", {
+		d: "M11 19h10",
+		key: "11t30w"
+	}],
+	["path", {
+		d: "M4 4h1v5",
+		key: "10yrso"
+	}],
+	["path", {
+		d: "M4 9h2",
+		key: "r1h2o0"
+	}],
+	["path", {
+		d: "M6.5 20H3.4c0-1 2.6-1.925 2.6-3.5a1.5 1.5 0 0 0-2.6-1.02",
+		key: "xtkcd5"
+	}]
+]);
+var List = createLucideIcon("list", [
+	["path", {
+		d: "M3 5h.01",
+		key: "18ugdj"
+	}],
+	["path", {
+		d: "M3 12h.01",
+		key: "nlz23k"
+	}],
+	["path", {
+		d: "M3 19h.01",
+		key: "noohij"
+	}],
+	["path", {
+		d: "M8 5h13",
+		key: "1pao27"
+	}],
+	["path", {
+		d: "M8 12h13",
+		key: "1za7za"
+	}],
+	["path", {
+		d: "M8 19h13",
+		key: "m83p4d"
 	}]
 ]);
 var LoaderCircle = createLucideIcon("loader-circle", [["path", {
@@ -19439,6 +19525,10 @@ var PanelLeft = createLucideIcon("panel-left", [["rect", {
 	d: "M9 3v18",
 	key: "fh3hqa"
 }]]);
+var Paperclip = createLucideIcon("paperclip", [["path", {
+	d: "m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551",
+	key: "1miecu"
+}]]);
 var Pencil = createLucideIcon("pencil", [["path", {
 	d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
 	key: "1a8usu"
@@ -19461,6 +19551,28 @@ var Plus = createLucideIcon("plus", [["path", {
 	d: "M12 5v14",
 	key: "s699le"
 }]]);
+var RemoveFormatting = createLucideIcon("remove-formatting", [
+	["path", {
+		d: "M4 7V4h16v3",
+		key: "9msm58"
+	}],
+	["path", {
+		d: "M5 20h6",
+		key: "1h6pxn"
+	}],
+	["path", {
+		d: "M13 4 8 20",
+		key: "kqq6aj"
+	}],
+	["path", {
+		d: "m15 15 5 5",
+		key: "me55sn"
+	}],
+	["path", {
+		d: "m20 15-5 5",
+		key: "11p7ol"
+	}]
+]);
 var Search = createLucideIcon("search", [["path", {
 	d: "m21 21-4.34-4.34",
 	key: "14j7rj"
@@ -26287,7 +26399,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return x$2 === y$1 && (0 !== x$2 || 1 / x$2 === 1 / y$1) || x$2 !== x$2 && y$1 !== y$1;
 		}
 		function useSyncExternalStore$2(subscribe$1, getSnapshot) {
-			didWarnOld18Alpha || void 0 === React$66.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
+			didWarnOld18Alpha || void 0 === React$67.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
 			var value = getSnapshot();
 			if (!didWarnUncachedGetSnapshot) {
 				var cachedValue = getSnapshot();
@@ -26307,7 +26419,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$26(function() {
+			useEffect$27(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26330,8 +26442,8 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$66 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$31 = React$66.useState, useEffect$26 = React$66.useEffect, useLayoutEffect$2 = React$66.useLayoutEffect, useDebugValue = React$66.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-		exports.useSyncExternalStore = void 0 !== React$66.useSyncExternalStore ? React$66.useSyncExternalStore : shim;
+		var React$67 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$31 = React$67.useState, useEffect$27 = React$67.useEffect, useLayoutEffect$2 = React$67.useLayoutEffect, useDebugValue = React$67.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		exports.useSyncExternalStore = void 0 !== React$67.useSyncExternalStore ? React$67.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
 }));
@@ -58041,7 +58153,9 @@ const contactsService = {
            type,
            description,
            date,
-           created_at
+           created_at,
+           status,
+           metadata
         )
       `).eq("id", id).single();
 		if (error) throw error;
@@ -58075,6 +58189,28 @@ const contactsService = {
 	async addInteraction(interaction) {
 		const { data, error } = await supabase.from("contact_interactions").insert(interaction).select().single();
 		if (error) throw error;
+		return data;
+	},
+	async sendEmail(contactId, to, subject, html, attachments) {
+		const { data, error } = await supabase.functions.invoke("send-contact-email", { body: {
+			to: [to],
+			subject,
+			html,
+			attachments
+		} });
+		if (error) throw error;
+		await this.addInteraction({
+			contact_id: contactId,
+			type: "email",
+			description: subject,
+			date: (/* @__PURE__ */ new Date()).toISOString(),
+			status: "sent",
+			metadata: {
+				resend_id: data?.id,
+				subject,
+				body_snippet: html.substring(0, 100) + "..."
+			}
+		});
 		return data;
 	},
 	async createContact(contactData) {
@@ -71829,7 +71965,7 @@ function ContactBids({ contactId }) {
 		]
 	});
 }
-function ContactTimeline({ contactId }) {
+function ContactTimeline({ contactId, refreshTrigger = 0 }) {
 	const [items, setItems] = (0, import_react.useState)([]);
 	const [isLoading, setIsLoading] = (0, import_react.useState)(true);
 	const [isDialogOpen, setIsDialogOpen] = (0, import_react.useState)(false);
@@ -71850,7 +71986,7 @@ function ContactTimeline({ contactId }) {
 			const timelineItems = [];
 			interactions.forEach((i$2) => {
 				let type = "interaction";
-				if (i$2.type.toLowerCase().includes("email") || i$2.type.toLowerCase().includes("e-mail")) type = "email";
+				if (i$2.type.toLowerCase() === "email" || i$2.type.toLowerCase().includes("email") || i$2.type.toLowerCase().includes("e-mail")) type = "email";
 				else if (i$2.type.toLowerCase().includes("whatsapp")) type = "whatsapp";
 				else if (i$2.type.toLowerCase().includes("ligação") || i$2.type.toLowerCase().includes("call")) type = "call";
 				else if (i$2.type.toLowerCase().includes("nota")) type = "note";
@@ -71859,8 +71995,10 @@ function ContactTimeline({ contactId }) {
 					type,
 					subType: i$2.type,
 					date: new Date(i$2.date),
-					title: i$2.type.charAt(0).toUpperCase() + i$2.type.slice(1),
-					description: i$2.description
+					title: i$2.type === "email" ? i$2.description || "E-mail Enviado" : i$2.type.charAt(0).toUpperCase() + i$2.type.slice(1),
+					description: i$2.type === "email" && i$2.metadata?.body_snippet ? i$2.metadata.body_snippet : i$2.description,
+					status: i$2.status,
+					metadata: i$2.metadata
 				});
 			});
 			bids.forEach((b$1) => {
@@ -71898,7 +72036,7 @@ function ContactTimeline({ contactId }) {
 	};
 	(0, import_react.useEffect)(() => {
 		if (contactId) fetchTimelineData();
-	}, [contactId]);
+	}, [contactId, refreshTrigger]);
 	const handleAddInteraction = async () => {
 		if (!newInteraction.description) {
 			toast$2({
@@ -71957,6 +72095,31 @@ function ContactTimeline({ contactId }) {
 			default: return "bg-gray-100 text-gray-600 border-gray-200";
 		}
 	};
+	const getStatusBadge = (status) => {
+		switch (status) {
+			case "sent": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+				variant: "secondary",
+				className: "text-[10px] h-5 bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200",
+				children: "Enviado"
+			});
+			case "delivered": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+				variant: "secondary",
+				className: "text-[10px] h-5 bg-green-50 text-green-700 hover:bg-green-100 border-green-200",
+				children: "Entregue"
+			});
+			case "opened": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+				variant: "secondary",
+				className: "text-[10px] h-5 bg-green-100 text-green-800 hover:bg-green-200 border-green-300",
+				children: "Aberto"
+			});
+			case "clicked": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+				variant: "secondary",
+				className: "text-[10px] h-5 bg-purple-50 text-purple-700 hover:bg-purple-100 border-purple-200",
+				children: "Clicado"
+			});
+			default: return null;
+		}
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 		className: "shadow-sm h-full flex flex-col",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
@@ -72006,10 +72169,6 @@ function ContactTimeline({ contactId }) {
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
 											value: "e-mail enviado",
 											children: "E-mail Enviado"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-											value: "e-mail aberto",
-											children: "E-mail Aberto"
 										})
 									] })]
 								})]
@@ -72080,17 +72239,20 @@ function ContactTimeline({ contactId }) {
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "flex items-center justify-between",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "font-semibold text-sm text-foreground",
-									children: item.title
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-semibold text-sm text-foreground",
+										children: item.title
+									}), item.status && getStatusBadge(item.status)]
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 									className: "text-xs text-muted-foreground tabular-nums",
 									children: format(item.date, "dd MMM yyyy 'às' HH:mm", { locale: ptBR })
 								})]
 							}),
-							item.description && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							item.description && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "text-sm text-muted-foreground bg-muted/30 p-2 rounded-md border border-muted/50 mt-1",
-								children: item.description
+								children: item.type === "email" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { dangerouslySetInnerHTML: { __html: item.description } }) : item.description
 							}),
 							item.value !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 								className: "text-sm font-medium text-primary mt-1",
@@ -72239,16 +72401,16 @@ function makeContentId(baseId, value) {
 	return `${baseId}-content-${value}`;
 }
 var Root2$3 = Tabs$1;
-var List = TabsList$1;
+var List$1 = TabsList$1;
 var Trigger$1 = TabsTrigger$1;
 var Content$1 = TabsContent$1;
 var Tabs = Root2$3;
-var TabsList = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(List, {
+var TabsList = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(List$1, {
 	ref,
 	className: cn("inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground", className),
 	...props
 }));
-TabsList.displayName = List.displayName;
+TabsList.displayName = List$1.displayName;
 var TabsTrigger = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trigger$1, {
 	ref,
 	className: cn("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm", className),
@@ -72346,14 +72508,97 @@ const dealsService = {
 		if (error) throw error;
 	}
 };
-function MessageDialog({ contact, open, onOpenChange }) {
+function RichTextEditor({ value, onChange, placeholder, className, disabled = false }) {
+	const contentRef = (0, import_react.useRef)(null);
+	(0, import_react.useEffect)(() => {
+		if (contentRef.current && contentRef.current.innerHTML !== value) contentRef.current.innerHTML = value;
+	}, [value]);
+	const handleInput = () => {
+		if (contentRef.current) onChange(contentRef.current.innerHTML);
+	};
+	const execCommand = (command, value$1 = void 0) => {
+		document.execCommand(command, false, value$1);
+		if (contentRef.current) {
+			contentRef.current.focus();
+			handleInput();
+		}
+	};
+	const handleLink = () => {
+		const url = prompt("Digite a URL:");
+		if (url) execCommand("createLink", url);
+	};
+	const ToolbarButton = ({ icon: Icon$2, command, arg, title }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+		type: "button",
+		variant: "ghost",
+		size: "sm",
+		className: "h-8 w-8 p-0",
+		onClick: () => command === "createLink" ? handleLink() : execCommand(command, arg),
+		title,
+		disabled,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: "h-4 w-4" })
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: cn("flex flex-col border rounded-md bg-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2", className),
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-center gap-1 border-b p-1 bg-muted/20",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToolbarButton, {
+					icon: Bold,
+					command: "bold",
+					title: "Negrito"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToolbarButton, {
+					icon: Italic,
+					command: "italic",
+					title: "Itálico"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "w-px h-4 bg-border mx-1" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToolbarButton, {
+					icon: List,
+					command: "insertUnorderedList",
+					title: "Lista com marcadores"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToolbarButton, {
+					icon: ListOrdered,
+					command: "insertOrderedList",
+					title: "Lista numerada"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "w-px h-4 bg-border mx-1" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToolbarButton, {
+					icon: Link$1,
+					command: "createLink",
+					title: "Link"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToolbarButton, {
+					icon: RemoveFormatting,
+					command: "removeFormat",
+					title: "Remover formatação"
+				})
+			]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			ref: contentRef,
+			contentEditable: !disabled,
+			className: cn("min-h-[150px] p-3 outline-none prose prose-sm max-w-none overflow-auto", disabled && "opacity-50 cursor-not-allowed"),
+			onInput: handleInput,
+			"data-placeholder": placeholder,
+			style: {
+				whiteSpace: "pre-wrap",
+				wordBreak: "break-word"
+			}
+		})]
+	});
+}
+function MessageDialog({ contact, open, onOpenChange, onInteractionAdded }) {
 	const [templates, setTemplates] = (0, import_react.useState)([]);
 	const [loading, setLoading] = (0, import_react.useState)(false);
+	const [sending, setSending] = (0, import_react.useState)(false);
 	const [selectedTemplateId, setSelectedTemplateId] = (0, import_react.useState)("");
 	const [activeType, setActiveType] = (0, import_react.useState)("WhatsApp");
 	const [previewBody, setPreviewBody] = (0, import_react.useState)("");
 	const [previewSubject, setPreviewSubject] = (0, import_react.useState)("");
+	const [attachments, setAttachments] = (0, import_react.useState)([]);
 	const [contextData, setContextData] = (0, import_react.useState)({});
+	const fileInputRef = (0, import_react.useRef)(null);
 	const { toast: toast$2 } = useToast();
 	(0, import_react.useEffect)(() => {
 		if (open) {
@@ -72392,8 +72637,7 @@ function MessageDialog({ contact, open, onOpenChange }) {
 	(0, import_react.useEffect)(() => {
 		const template = templates.find((t$1) => t$1.id === selectedTemplateId);
 		if (!template) {
-			setPreviewBody("");
-			setPreviewSubject("");
+			if (selectedTemplateId === "none") return;
 			return;
 		}
 		const replaceVariables = (text) => {
@@ -72415,15 +72659,30 @@ function MessageDialog({ contact, open, onOpenChange }) {
 		};
 		setPreviewBody(replaceVariables(template.body));
 		if (template.subject) setPreviewSubject(replaceVariables(template.subject));
-		else setPreviewSubject("");
-		setActiveType(template.type);
 	}, [
 		selectedTemplateId,
 		templates,
 		contact,
 		contextData
 	]);
-	const handleSend = () => {
+	const handleFileChange = (e) => {
+		if (e.target.files) setAttachments([...attachments, ...Array.from(e.target.files)]);
+	};
+	const removeAttachment = (index$1) => {
+		setAttachments(attachments.filter((_$1, i$2) => i$2 !== index$1));
+	};
+	const fileToBase64 = (file) => {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = () => {
+				const base64$1 = reader.result.split(",")[1];
+				resolve(base64$1);
+			};
+			reader.onerror = (error) => reject(error);
+		});
+	};
+	const handleSend = async () => {
 		if (!previewBody) return;
 		if (activeType === "WhatsApp") {
 			if (!contact.phone && !contact.whatsapp) {
@@ -72437,6 +72696,19 @@ function MessageDialog({ contact, open, onOpenChange }) {
 			const phone = (contact.whatsapp || contact.phone).replace(/\D/g, "");
 			const encoded = encodeURIComponent(previewBody);
 			window.open(`https://wa.me/55${phone}?text=${encoded}`, "_blank");
+			try {
+				await contactsService.addInteraction({
+					contact_id: contact.id,
+					type: "whatsapp enviado",
+					description: previewBody,
+					date: (/* @__PURE__ */ new Date()).toISOString(),
+					status: "sent"
+				});
+				if (onInteractionAdded) onInteractionAdded();
+			} catch (err) {
+				console.error("Failed to log whatsapp", err);
+			}
+			onOpenChange(false);
 		} else {
 			if (!contact.email) {
 				toast$2({
@@ -72446,120 +72718,193 @@ function MessageDialog({ contact, open, onOpenChange }) {
 				});
 				return;
 			}
-			const subject = encodeURIComponent(previewSubject);
-			const body = encodeURIComponent(previewBody);
-			window.open(`mailto:${contact.email}?subject=${subject}&body=${body}`, "_blank");
+			if (!previewSubject) {
+				toast$2({
+					title: "Erro",
+					description: "O assunto do e-mail é obrigatório.",
+					variant: "destructive"
+				});
+				return;
+			}
+			setSending(true);
+			try {
+				const processedAttachments = await Promise.all(attachments.map(async (file) => ({
+					filename: file.name,
+					content: await fileToBase64(file)
+				})));
+				await contactsService.sendEmail(contact.id, contact.email, previewSubject, previewBody, processedAttachments);
+				toast$2({
+					title: "Sucesso",
+					description: "E-mail enviado com sucesso!"
+				});
+				if (onInteractionAdded) onInteractionAdded();
+				onOpenChange(false);
+				setPreviewBody("");
+				setPreviewSubject("");
+				setAttachments([]);
+				setSelectedTemplateId("");
+			} catch (error) {
+				console.error(error);
+				toast$2({
+					title: "Erro",
+					description: "Falha ao enviar e-mail. Tente novamente.",
+					variant: "destructive"
+				});
+			} finally {
+				setSending(false);
+			}
 		}
-		onOpenChange(false);
-		toast$2({
-			title: "Redirecionado",
-			description: `Abrindo aplicativo de ${activeType}...`
-		});
 	};
 	const filteredTemplates = templates.filter((t$1) => t$1.type === activeType);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Dialog, {
 		open,
 		onOpenChange,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
-			className: "sm:max-w-[600px]",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Enviar Mensagem" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogDescription, { children: [
-				"Selecione um modelo para enviar para ",
-				contact.name,
-				"."
-			] })] }), loading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "flex justify-center py-8",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin text-primary" })
-			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "space-y-4",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tabs, {
-						defaultValue: "WhatsApp",
-						value: activeType,
-						onValueChange: (v) => {
-							setActiveType(v);
-							setSelectedTemplateId("");
-							setPreviewBody("");
-						},
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-							className: "grid w-full grid-cols-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
-								value: "WhatsApp",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageSquare, { className: "mr-2 h-4 w-4" }), " WhatsApp"]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
-								value: "E-mail",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "mr-2 h-4 w-4" }), " E-mail"]
-							})]
-						})
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Modelo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-							value: selectedTemplateId,
-							onValueChange: setSelectedTemplateId,
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione um template..." }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: filteredTemplates.length > 0 ? filteredTemplates.map((t$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
-								value: t$1.id,
-								children: [
-									t$1.title,
-									" (",
-									t$1.category,
-									")"
-								]
-							}, t$1.id)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "none",
-								disabled: true,
-								children: "Nenhum template encontrado"
-							}) })]
-						})]
-					}),
-					activeType === "E-mail" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Assunto" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "p-2 border rounded-md bg-muted/20 text-sm",
-							children: previewSubject || /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-muted-foreground italic",
-								children: "Selecione um template..."
+			className: "sm:max-w-[700px] h-[90vh] sm:h-auto flex flex-col",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Enviar Mensagem" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogDescription, { children: [
+					"Selecione um canal e redija sua mensagem para ",
+					contact.name,
+					"."
+				] })] }),
+				loading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex justify-center py-8",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin text-primary" })
+				}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex-1 overflow-y-auto space-y-4 px-1",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tabs, {
+							defaultValue: "WhatsApp",
+							value: activeType,
+							onValueChange: (v) => {
+								setActiveType(v);
+								setSelectedTemplateId("");
+								setPreviewBody("");
+								setPreviewSubject("");
+							},
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+								className: "grid w-full grid-cols-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+									value: "WhatsApp",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageSquare, { className: "mr-2 h-4 w-4" }), " WhatsApp"]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+									value: "E-mail",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "mr-2 h-4 w-4" }), " E-mail"]
+								})]
 							})
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-2",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Mensagem (Prévia editável)" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Modelo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									value: selectedTemplateId,
+									onValueChange: setSelectedTemplateId,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione um template..." }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: filteredTemplates.length > 0 ? filteredTemplates.map((t$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+										value: t$1.id,
+										children: [
+											t$1.title,
+											" (",
+											t$1.category,
+											")"
+										]
+									}, t$1.id)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: "none",
+										disabled: true,
+										children: "Nenhum template encontrado"
+									}) })]
+								})]
+							}), activeType === "E-mail" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Destinatário" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									value: contact.email,
+									disabled: true,
+									className: "bg-muted"
+								})]
+							})]
+						}),
+						activeType === "E-mail" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Assunto" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								value: previewSubject,
+								onChange: (e) => setPreviewSubject(e.target.value),
+								placeholder: "Assunto do e-mail"
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, { children: ["Mensagem ", activeType === "WhatsApp" ? "(Texto)" : "(Rich Text)"] }), activeType === "WhatsApp" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
 								value: previewBody,
 								onChange: (e) => setPreviewBody(e.target.value),
 								className: "h-40 font-mono text-sm",
-								placeholder: "O conteúdo da mensagem aparecerá aqui..."
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-								className: "text-xs text-muted-foreground",
+								placeholder: "Digite sua mensagem do WhatsApp..."
+							}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RichTextEditor, {
+								value: previewBody,
+								onChange: setPreviewBody,
+								placeholder: "Escreva o conteúdo do e-mail...",
+								className: "min-h-[200px]"
+							})]
+						}),
+						activeType === "E-mail" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-3",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center gap-2",
 								children: [
-									"Variáveis como ",
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("code", { children: `{{nome}}` }),
-									" foram substituídas automaticamente."
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+										type: "button",
+										variant: "outline",
+										size: "sm",
+										onClick: () => fileInputRef.current?.click(),
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Paperclip, { className: "h-4 w-4 mr-2" }), "Anexar Arquivos"]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+										type: "file",
+										ref: fileInputRef,
+										className: "hidden",
+										multiple: true,
+										onChange: handleFileChange
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-xs text-muted-foreground",
+										children: attachments.length > 0 ? `${attachments.length} arquivo(s) selecionado(s)` : "Nenhum arquivo selecionado"
+									})
 								]
-							})
-						]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex justify-end gap-2 pt-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-							variant: "outline",
-							onClick: () => onOpenChange(false),
-							children: "Cancelar"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							onClick: handleSend,
-							disabled: !previewBody,
-							className: activeType === "WhatsApp" ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Send, { className: "mr-2 h-4 w-4" }),
-								"Enviar ",
-								activeType
-							]
-						})]
-					})
-				]
-			})]
+							}), attachments.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex flex-wrap gap-2",
+								children: attachments.map((file, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-1 bg-muted px-2 py-1 rounded text-xs",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "truncate max-w-[150px]",
+										children: file.name
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+										onClick: () => removeAttachment(idx),
+										className: "text-muted-foreground hover:text-destructive",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-3 w-3" })
+									})]
+								}, idx))
+							})]
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex justify-end gap-2 pt-4 mt-auto border-t",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						variant: "outline",
+						onClick: () => onOpenChange(false),
+						disabled: sending,
+						children: "Cancelar"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						onClick: handleSend,
+						disabled: !previewBody || sending || activeType === "E-mail" && !previewSubject,
+						className: activeType === "WhatsApp" ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700",
+						children: sending ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }), " Enviando..."] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Send, { className: "mr-2 h-4 w-4" }),
+							"Enviar ",
+							activeType
+						] })
+					})]
+				})
+			]
 		})
 	});
 }
@@ -72570,6 +72915,7 @@ function ContatoDetalhes() {
 	const [contact, setContact] = (0, import_react.useState)(null);
 	const [isLoading, setIsLoading] = (0, import_react.useState)(true);
 	const [isMessageDialogOpen, setIsMessageDialogOpen] = (0, import_react.useState)(false);
+	const [timelineRefreshTrigger, setTimelineRefreshTrigger] = (0, import_react.useState)(0);
 	const fetchContact = () => {
 		if (id) contactsService.getContactById(id).then((data) => setContact(data)).catch((err) => {
 			console.error(err);
@@ -72587,7 +72933,7 @@ function ContatoDetalhes() {
 		if (contact?.whatsapp) window.open(`https://wa.me/55${contact.whatsapp.replace(/\D/g, "")}`, "_blank");
 	};
 	const handleEmail = () => {
-		if (contact?.email) window.location.href = `mailto:${contact.email}`;
+		if (contact?.email) setIsMessageDialogOpen(true);
 	};
 	const handleRemoveTag = async (tagId) => {
 		if (!contact) return;
@@ -72983,7 +73329,10 @@ function ContatoDetalhes() {
 								})]
 							})]
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactTimeline, { contactId: contact.id })
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactTimeline, {
+							contactId: contact.id,
+							refreshTrigger: timelineRefreshTrigger
+						})
 					]
 				})]
 			}),
@@ -72994,7 +73343,8 @@ function ContatoDetalhes() {
 			contact && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageDialog, {
 				contact,
 				open: isMessageDialogOpen,
-				onOpenChange: setIsMessageDialogOpen
+				onOpenChange: setIsMessageDialogOpen,
+				onInteractionAdded: () => setTimelineRefreshTrigger((prev) => prev + 1)
 			})
 		]
 	});
@@ -77765,4 +78115,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BXIGOAds.js.map
+//# sourceMappingURL=index-DPLgQZTJ.js.map

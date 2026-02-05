@@ -10,6 +10,7 @@ import {
   Calendar as CalendarIcon,
   Clock,
   CheckCircle2,
+  ExternalLink,
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -35,6 +36,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
 import {
@@ -46,6 +48,7 @@ import {
 
 interface ContactTimelineProps {
   contactId: string
+  refreshTrigger?: number
 }
 
 type TimelineItem = {
@@ -63,9 +66,14 @@ type TimelineItem = {
   title: string
   description: string | null
   value?: number
+  status?: string | null
+  metadata?: any
 }
 
-export function ContactTimeline({ contactId }: ContactTimelineProps) {
+export function ContactTimeline({
+  contactId,
+  refreshTrigger = 0,
+}: ContactTimelineProps) {
   const [items, setItems] = useState<TimelineItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -91,6 +99,7 @@ export function ContactTimeline({ contactId }: ContactTimelineProps) {
       interactions.forEach((i: Interaction) => {
         let type: TimelineItem['type'] = 'interaction'
         if (
+          i.type.toLowerCase() === 'email' ||
           i.type.toLowerCase().includes('email') ||
           i.type.toLowerCase().includes('e-mail')
         )
@@ -108,8 +117,16 @@ export function ContactTimeline({ contactId }: ContactTimelineProps) {
           type,
           subType: i.type,
           date: new Date(i.date),
-          title: i.type.charAt(0).toUpperCase() + i.type.slice(1),
-          description: i.description,
+          title:
+            i.type === 'email'
+              ? i.description || 'E-mail Enviado'
+              : i.type.charAt(0).toUpperCase() + i.type.slice(1),
+          description:
+            i.type === 'email' && i.metadata?.body_snippet
+              ? i.metadata.body_snippet
+              : i.description,
+          status: i.status,
+          metadata: i.metadata,
         })
       })
 
@@ -118,7 +135,7 @@ export function ContactTimeline({ contactId }: ContactTimelineProps) {
         timelineItems.push({
           id: `bid-${b.id}`,
           type: 'bid',
-          date: new Date(b.date), // Bids often have only date, assume 12:00 or handle properly
+          date: new Date(b.date),
           title: 'Lance dado',
           description: `${b.auction_id || 'Leilão desconhecido'} - Lote ${b.lot_number || '?'}`,
           value: b.value,
@@ -157,7 +174,7 @@ export function ContactTimeline({ contactId }: ContactTimelineProps) {
     if (contactId) {
       fetchTimelineData()
     }
-  }, [contactId])
+  }, [contactId, refreshTrigger])
 
   const handleAddInteraction = async () => {
     if (!newInteraction.description) {
@@ -237,6 +254,49 @@ export function ContactTimeline({ contactId }: ContactTimelineProps) {
     }
   }
 
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'sent':
+        return (
+          <Badge
+            variant="secondary"
+            className="text-[10px] h-5 bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200"
+          >
+            Enviado
+          </Badge>
+        )
+      case 'delivered':
+        return (
+          <Badge
+            variant="secondary"
+            className="text-[10px] h-5 bg-green-50 text-green-700 hover:bg-green-100 border-green-200"
+          >
+            Entregue
+          </Badge>
+        )
+      case 'opened':
+        return (
+          <Badge
+            variant="secondary"
+            className="text-[10px] h-5 bg-green-100 text-green-800 hover:bg-green-200 border-green-300"
+          >
+            Aberto
+          </Badge>
+        )
+      case 'clicked':
+        return (
+          <Badge
+            variant="secondary"
+            className="text-[10px] h-5 bg-purple-50 text-purple-700 hover:bg-purple-100 border-purple-200"
+          >
+            Clicado
+          </Badge>
+        )
+      default:
+        return null
+    }
+  }
+
   return (
     <Card className="shadow-sm h-full flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between pb-4">
@@ -277,7 +337,6 @@ export function ContactTimeline({ contactId }: ContactTimelineProps) {
                     <SelectItem value="e-mail enviado">
                       E-mail Enviado
                     </SelectItem>
-                    <SelectItem value="e-mail aberto">E-mail Aberto</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -352,9 +411,12 @@ export function ContactTimeline({ contactId }: ContactTimelineProps) {
                 {/* Content */}
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-sm text-foreground">
-                      {item.title}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-sm text-foreground">
+                        {item.title}
+                      </span>
+                      {item.status && getStatusBadge(item.status)}
+                    </div>
                     <span className="text-xs text-muted-foreground tabular-nums">
                       {format(item.date, "dd MMM yyyy 'às' HH:mm", {
                         locale: ptBR,
@@ -362,9 +424,15 @@ export function ContactTimeline({ contactId }: ContactTimelineProps) {
                     </span>
                   </div>
                   {item.description && (
-                    <p className="text-sm text-muted-foreground bg-muted/30 p-2 rounded-md border border-muted/50 mt-1">
-                      {item.description}
-                    </p>
+                    <div className="text-sm text-muted-foreground bg-muted/30 p-2 rounded-md border border-muted/50 mt-1">
+                      {item.type === 'email' ? (
+                        <div
+                          dangerouslySetInnerHTML={{ __html: item.description }}
+                        />
+                      ) : (
+                        item.description
+                      )}
+                    </div>
                   )}
                   {item.value !== undefined && (
                     <p className="text-sm font-medium text-primary mt-1">

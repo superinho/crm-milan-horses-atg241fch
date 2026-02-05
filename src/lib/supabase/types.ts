@@ -352,6 +352,36 @@ export type Database = {
           },
         ]
       }
+      message_templates: {
+        Row: {
+          body: string
+          category: string
+          created_at: string | null
+          id: string
+          subject: string | null
+          title: string
+          type: string
+        }
+        Insert: {
+          body: string
+          category: string
+          created_at?: string | null
+          id?: string
+          subject?: string | null
+          title: string
+          type: string
+        }
+        Update: {
+          body?: string
+          category?: string
+          created_at?: string | null
+          id?: string
+          subject?: string | null
+          title?: string
+          type?: string
+        }
+        Relationships: []
+      }
       purchases: {
         Row: {
           auction_id: string | null
