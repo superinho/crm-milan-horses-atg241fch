@@ -135,6 +135,8 @@ export type Database = {
           deal_id: string | null
           description: string | null
           id: string
+          metadata: Json | null
+          status: string | null
           type: string
         }
         Insert: {
@@ -145,6 +147,8 @@ export type Database = {
           deal_id?: string | null
           description?: string | null
           id?: string
+          metadata?: Json | null
+          status?: string | null
           type: string
         }
         Update: {
@@ -155,6 +159,8 @@ export type Database = {
           deal_id?: string | null
           description?: string | null
           id?: string
+          metadata?: Json | null
+          status?: string | null
           type?: string
         }
         Relationships: [

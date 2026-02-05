@@ -34,6 +34,7 @@ interface MessageDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onInteractionAdded?: () => void
+  initialTab?: 'WhatsApp' | 'E-mail'
 }
 
 export function MessageDialog({
@@ -41,12 +42,13 @@ export function MessageDialog({
   open,
   onOpenChange,
   onInteractionAdded,
+  initialTab = 'WhatsApp',
 }: MessageDialogProps) {
   const [templates, setTemplates] = useState<MessageTemplate[]>([])
   const [loading, setLoading] = useState(false)
   const [sending, setSending] = useState(false)
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>('')
-  const [activeType, setActiveType] = useState<TemplateType>('WhatsApp')
+  const [activeType, setActiveType] = useState<TemplateType>(initialTab)
   const [previewBody, setPreviewBody] = useState('')
   const [previewSubject, setPreviewSubject] = useState('')
   const [attachments, setAttachments] = useState<File[]>([])
@@ -62,6 +64,8 @@ export function MessageDialog({
   useEffect(() => {
     if (open) {
       setLoading(true)
+      setActiveType(initialTab)
+
       const fetchData = async () => {
         try {
           // Fetch templates
@@ -93,7 +97,7 @@ export function MessageDialog({
       }
       fetchData()
     }
-  }, [open, contact.id, toast])
+  }, [open, contact.id, toast, initialTab])
 
   // Process Variables
   useEffect(() => {
@@ -183,13 +187,15 @@ export function MessageDialog({
       }
       const phone = (contact.whatsapp || contact.phone).replace(/\D/g, '')
       const encoded = encodeURIComponent(previewBody)
+
+      // Open WhatsApp
       window.open(`https://wa.me/55${phone}?text=${encoded}`, '_blank')
 
-      // Log interaction locally since we can't track whatsapp status automatically
+      // Log interaction
       try {
         await contactsService.addInteraction({
           contact_id: contact.id,
-          type: 'whatsapp enviado',
+          type: 'WhatsApp Enviado',
           description: previewBody,
           date: new Date().toISOString(),
           status: 'sent',
@@ -282,7 +288,7 @@ export function MessageDialog({
         ) : (
           <div className="flex-1 overflow-y-auto space-y-4 px-1">
             <Tabs
-              defaultValue="WhatsApp"
+              defaultValue={initialTab}
               value={activeType}
               onValueChange={(v) => {
                 setActiveType(v as TemplateType)

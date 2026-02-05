@@ -72588,12 +72588,12 @@ function RichTextEditor({ value, onChange, placeholder, className, disabled = fa
 		})]
 	});
 }
-function MessageDialog({ contact, open, onOpenChange, onInteractionAdded }) {
+function MessageDialog({ contact, open, onOpenChange, onInteractionAdded, initialTab = "WhatsApp" }) {
 	const [templates, setTemplates] = (0, import_react.useState)([]);
 	const [loading, setLoading] = (0, import_react.useState)(false);
 	const [sending, setSending] = (0, import_react.useState)(false);
 	const [selectedTemplateId, setSelectedTemplateId] = (0, import_react.useState)("");
-	const [activeType, setActiveType] = (0, import_react.useState)("WhatsApp");
+	const [activeType, setActiveType] = (0, import_react.useState)(initialTab);
 	const [previewBody, setPreviewBody] = (0, import_react.useState)("");
 	const [previewSubject, setPreviewSubject] = (0, import_react.useState)("");
 	const [attachments, setAttachments] = (0, import_react.useState)([]);
@@ -72603,6 +72603,7 @@ function MessageDialog({ contact, open, onOpenChange, onInteractionAdded }) {
 	(0, import_react.useEffect)(() => {
 		if (open) {
 			setLoading(true);
+			setActiveType(initialTab);
 			const fetchData = async () => {
 				try {
 					setTemplates(await templatesService.getTemplates());
@@ -72632,7 +72633,8 @@ function MessageDialog({ contact, open, onOpenChange, onInteractionAdded }) {
 	}, [
 		open,
 		contact.id,
-		toast$2
+		toast$2,
+		initialTab
 	]);
 	(0, import_react.useEffect)(() => {
 		const template = templates.find((t$1) => t$1.id === selectedTemplateId);
@@ -72699,7 +72701,7 @@ function MessageDialog({ contact, open, onOpenChange, onInteractionAdded }) {
 			try {
 				await contactsService.addInteraction({
 					contact_id: contact.id,
-					type: "whatsapp enviado",
+					type: "WhatsApp Enviado",
 					description: previewBody,
 					date: (/* @__PURE__ */ new Date()).toISOString(),
 					status: "sent"
@@ -72774,7 +72776,7 @@ function MessageDialog({ contact, open, onOpenChange, onInteractionAdded }) {
 					className: "flex-1 overflow-y-auto space-y-4 px-1",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tabs, {
-							defaultValue: "WhatsApp",
+							defaultValue: initialTab,
 							value: activeType,
 							onValueChange: (v) => {
 								setActiveType(v);
@@ -72915,6 +72917,7 @@ function ContatoDetalhes() {
 	const [contact, setContact] = (0, import_react.useState)(null);
 	const [isLoading, setIsLoading] = (0, import_react.useState)(true);
 	const [isMessageDialogOpen, setIsMessageDialogOpen] = (0, import_react.useState)(false);
+	const [messageDialogTab, setMessageDialogTab] = (0, import_react.useState)("WhatsApp");
 	const [timelineRefreshTrigger, setTimelineRefreshTrigger] = (0, import_react.useState)(0);
 	const fetchContact = () => {
 		if (id) contactsService.getContactById(id).then((data) => setContact(data)).catch((err) => {
@@ -72930,10 +72933,14 @@ function ContatoDetalhes() {
 		fetchContact();
 	}, [id, toast$2]);
 	const handleWhatsApp = () => {
-		if (contact?.whatsapp) window.open(`https://wa.me/55${contact.whatsapp.replace(/\D/g, "")}`, "_blank");
+		setMessageDialogTab("WhatsApp");
+		setIsMessageDialogOpen(true);
 	};
 	const handleEmail = () => {
-		if (contact?.email) setIsMessageDialogOpen(true);
+		if (contact?.email) {
+			setMessageDialogTab("E-mail");
+			setIsMessageDialogOpen(true);
+		}
 	};
 	const handleRemoveTag = async (tagId) => {
 		if (!contact) return;
@@ -73000,15 +73007,18 @@ function ContatoDetalhes() {
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 							className: "bg-primary hover:bg-primary/90 text-white",
-							onClick: () => setIsMessageDialogOpen(true),
+							onClick: () => {
+								setMessageDialogTab("WhatsApp");
+								setIsMessageDialogOpen(true);
+							},
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Send, { className: "mr-2 h-4 w-4" }), " Enviar Mensagem"]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 							variant: "outline",
 							className: "text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200",
 							onClick: handleWhatsApp,
-							disabled: !contact.whatsapp,
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "mr-2 h-4 w-4" }), " WhatsApp"]
+							disabled: !contact.whatsapp && !contact.phone,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "mr-2 h-4 w-4" }), " Enviar WhatsApp"]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 							variant: "outline",
@@ -73344,7 +73354,8 @@ function ContatoDetalhes() {
 				contact,
 				open: isMessageDialogOpen,
 				onOpenChange: setIsMessageDialogOpen,
-				onInteractionAdded: () => setTimelineRefreshTrigger((prev) => prev + 1)
+				onInteractionAdded: () => setTimelineRefreshTrigger((prev) => prev + 1),
+				initialTab: messageDialogTab
 			})
 		]
 	});
@@ -78115,4 +78126,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DPLgQZTJ.js.map
+//# sourceMappingURL=index-CfcX3m0W.js.map

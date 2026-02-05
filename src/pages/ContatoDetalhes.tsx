@@ -47,6 +47,9 @@ export default function ContatoDetalhes() {
   const [contact, setContact] = useState<Contact | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isMessageDialogOpen, setIsMessageDialogOpen] = useState(false)
+  const [messageDialogTab, setMessageDialogTab] = useState<
+    'WhatsApp' | 'E-mail'
+  >('WhatsApp')
   const [timelineRefreshTrigger, setTimelineRefreshTrigger] = useState(0)
 
   const fetchContact = () => {
@@ -71,19 +74,13 @@ export default function ContatoDetalhes() {
   }, [id, toast])
 
   const handleWhatsApp = () => {
-    if (contact?.whatsapp) {
-      window.open(
-        `https://wa.me/55${contact.whatsapp.replace(/\D/g, '')}`,
-        '_blank',
-      )
-    }
+    setMessageDialogTab('WhatsApp')
+    setIsMessageDialogOpen(true)
   }
 
   const handleEmail = () => {
     if (contact?.email) {
-      // Just open the dialog with Email tab selected could be an enhancement,
-      // but for now standard mailto or opening the dialog is fine.
-      // We will open the dialog for better experience.
+      setMessageDialogTab('E-mail')
       setIsMessageDialogOpen(true)
     }
   }
@@ -171,7 +168,10 @@ export default function ContatoDetalhes() {
         <div className="flex flex-wrap items-center gap-2">
           <Button
             className="bg-primary hover:bg-primary/90 text-white"
-            onClick={() => setIsMessageDialogOpen(true)}
+            onClick={() => {
+              setMessageDialogTab('WhatsApp')
+              setIsMessageDialogOpen(true)
+            }}
           >
             <Send className="mr-2 h-4 w-4" /> Enviar Mensagem
           </Button>
@@ -179,9 +179,9 @@ export default function ContatoDetalhes() {
             variant="outline"
             className="text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200"
             onClick={handleWhatsApp}
-            disabled={!contact.whatsapp}
+            disabled={!contact.whatsapp && !contact.phone}
           >
-            <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp
+            <MessageCircle className="mr-2 h-4 w-4" /> Enviar WhatsApp
           </Button>
           <Button variant="outline" onClick={handleEmail}>
             <Mail className="mr-2 h-4 w-4" /> E-mail
@@ -539,6 +539,7 @@ export default function ContatoDetalhes() {
           onInteractionAdded={() =>
             setTimelineRefreshTrigger((prev) => prev + 1)
           }
+          initialTab={messageDialogTab}
         />
       )}
     </div>
