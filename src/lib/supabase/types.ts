@@ -99,6 +99,7 @@ export type Database = {
           created_at: string | null
           created_by: string | null
           date: string | null
+          deal_id: string | null
           description: string | null
           id: string
           type: string
@@ -108,6 +109,7 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           date?: string | null
+          deal_id?: string | null
           description?: string | null
           id?: string
           type: string
@@ -117,6 +119,7 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           date?: string | null
+          deal_id?: string | null
           description?: string | null
           id?: string
           type?: string
@@ -134,6 +137,13 @@ export type Database = {
             columns: ['contact_id']
             isOneToOne: false
             referencedRelation: 'contacts'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'contact_interactions_deal_id_fkey'
+            columns: ['deal_id']
+            isOneToOne: false
+            referencedRelation: 'deals'
             referencedColumns: ['id']
           },
         ]
@@ -223,12 +233,45 @@ export type Database = {
         }
         Relationships: []
       }
+      deal_tasks: {
+        Row: {
+          created_at: string | null
+          deal_id: string
+          description: string
+          id: string
+          is_completed: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          deal_id: string
+          description: string
+          id?: string
+          is_completed?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          deal_id?: string
+          description?: string
+          id?: string
+          is_completed?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'deal_tasks_deal_id_fkey'
+            columns: ['deal_id']
+            isOneToOne: false
+            referencedRelation: 'deals'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       deals: {
         Row: {
           contact_id: string | null
           created_at: string | null
           expected_close_date: string | null
           id: string
+          notes: string | null
           probability: number | null
           stage: string
           title: string
@@ -240,6 +283,7 @@ export type Database = {
           created_at?: string | null
           expected_close_date?: string | null
           id?: string
+          notes?: string | null
           probability?: number | null
           stage: string
           title: string
@@ -251,6 +295,7 @@ export type Database = {
           created_at?: string | null
           expected_close_date?: string | null
           id?: string
+          notes?: string | null
           probability?: number | null
           stage?: string
           title?: string

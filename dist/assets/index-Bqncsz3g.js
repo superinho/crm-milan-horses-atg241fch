@@ -18200,7 +18200,7 @@ function useControllableState({ prop, defaultProp, onChange = () => {}, caller }
 	}
 	return [value, import_react.useCallback((nextValue) => {
 		if (isControlled) {
-			const value2 = isFunction$26(nextValue) ? nextValue(prop) : nextValue;
+			const value2 = isFunction$25(nextValue) ? nextValue(prop) : nextValue;
 			if (value2 !== prop) onChangeRef.current?.(value2);
 		} else setUncontrolledProp(nextValue);
 	}, [
@@ -18229,7 +18229,7 @@ function useUncontrolledState({ defaultProp, onChange }) {
 		onChangeRef
 	];
 }
-function isFunction$26(value) {
+function isFunction$25(value) {
 	return typeof value === "function";
 }
 var VISUALLY_HIDDEN_STYLES = Object.freeze({
@@ -21454,10 +21454,10 @@ var Observer = class {
 			if (typeof id !== "string" && typeof id !== "number") return { unwrap };
 			else return Object.assign(id, { unwrap });
 		};
-		this.custom = (jsx$32, data) => {
+		this.custom = (jsx$31, data) => {
 			const id = (data == null ? void 0 : data.id) || toastsCounter++;
 			this.create({
-				jsx: jsx$32(id),
+				jsx: jsx$31(id),
 				id,
 				...data
 			});
@@ -23991,11 +23991,11 @@ var Tooltip$2 = (props) => {
 	});
 };
 Tooltip$2.displayName = TOOLTIP_NAME;
-var TRIGGER_NAME$6 = "TooltipTrigger";
+var TRIGGER_NAME$5 = "TooltipTrigger";
 var TooltipTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTooltip, ...triggerProps } = props;
-	const context = useTooltipContext(TRIGGER_NAME$6, __scopeTooltip);
-	const providerContext = useTooltipProviderContext(TRIGGER_NAME$6, __scopeTooltip);
+	const context = useTooltipContext(TRIGGER_NAME$5, __scopeTooltip);
+	const providerContext = useTooltipProviderContext(TRIGGER_NAME$5, __scopeTooltip);
 	const popperScope = usePopperScope$3(__scopeTooltip);
 	const composedRefs = useComposedRefs(forwardedRef, import_react.useRef(null), context.onTriggerChange);
 	const isPointerDownRef = import_react.useRef(false);
@@ -24036,7 +24036,7 @@ var TooltipTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-TooltipTrigger$1.displayName = TRIGGER_NAME$6;
+TooltipTrigger$1.displayName = TRIGGER_NAME$5;
 var PORTAL_NAME$6 = "TooltipPortal";
 var [PortalProvider$3, usePortalContext$3] = createTooltipContext(PORTAL_NAME$6, { forceMount: void 0 });
 var TooltipPortal = (props) => {
@@ -25530,23 +25530,23 @@ var Dialog$1 = (props) => {
 	});
 };
 Dialog$1.displayName = DIALOG_NAME;
-var TRIGGER_NAME$5 = "DialogTrigger";
+var TRIGGER_NAME$4 = "DialogTrigger";
 var DialogTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, ...triggerProps } = props;
-	const context = useDialogContext(TRIGGER_NAME$5, __scopeDialog);
+	const context = useDialogContext(TRIGGER_NAME$4, __scopeDialog);
 	const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
 		type: "button",
 		"aria-haspopup": "dialog",
 		"aria-expanded": context.open,
 		"aria-controls": context.contentId,
-		"data-state": getState$3(context.open),
+		"data-state": getState$2(context.open),
 		...triggerProps,
 		ref: composedTriggerRef,
 		onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
 	});
 });
-DialogTrigger$1.displayName = TRIGGER_NAME$5;
+DialogTrigger$1.displayName = TRIGGER_NAME$4;
 var PORTAL_NAME$5 = "DialogPortal";
 var [PortalProvider$2, usePortalContext$2] = createDialogContext(PORTAL_NAME$5, { forceMount: void 0 });
 var DialogPortal$1 = (props) => {
@@ -25589,7 +25589,7 @@ var DialogOverlayImpl = import_react.forwardRef((props, forwardedRef) => {
 		allowPinchZoom: true,
 		shards: [context.contentRef],
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
-			"data-state": getState$3(context.open),
+			"data-state": getState$2(context.open),
 			...overlayProps,
 			ref: forwardedRef,
 			style: {
@@ -25688,7 +25688,7 @@ var DialogContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			id: context.contentId,
 			"aria-describedby": context.descriptionId,
 			"aria-labelledby": context.titleId,
-			"data-state": getState$3(context.open),
+			"data-state": getState$2(context.open),
 			...contentProps,
 			ref: composedRefs,
 			onDismiss: () => context.onOpenChange(false)
@@ -25732,7 +25732,7 @@ var DialogClose$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 DialogClose$1.displayName = CLOSE_NAME$1;
-function getState$3(open) {
+function getState$2(open) {
 	return open ? "open" : "closed";
 }
 var TITLE_WARNING_NAME = "DialogTitleWarning";
@@ -26282,7 +26282,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$25({ inst: {
+			cachedValue = useState$27({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26296,7 +26296,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$20(function() {
+			useEffect$22(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26319,7 +26319,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$65 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$25 = React$65.useState, useEffect$20 = React$65.useEffect, useLayoutEffect$2 = React$65.useLayoutEffect, useDebugValue = React$65.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$65 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$27 = React$65.useState, useEffect$22 = React$65.useEffect, useLayoutEffect$2 = React$65.useLayoutEffect, useDebugValue = React$65.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$65.useSyncExternalStore ? React$65.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -27050,11 +27050,11 @@ var MenuCheckboxItem = import_react.forwardRef((props, forwardedRef) => {
 		checked,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuItem, {
 			role: "menuitemcheckbox",
-			"aria-checked": isIndeterminate$1(checked) ? "mixed" : checked,
+			"aria-checked": isIndeterminate(checked) ? "mixed" : checked,
 			...checkboxItemProps,
 			ref: forwardedRef,
 			"data-state": getCheckedState(checked),
-			onSelect: composeEventHandlers(checkboxItemProps.onSelect, () => onCheckedChange?.(isIndeterminate$1(checked) ? true : !checked), { checkForDefaultPrevented: false })
+			onSelect: composeEventHandlers(checkboxItemProps.onSelect, () => onCheckedChange?.(isIndeterminate(checked) ? true : !checked), { checkForDefaultPrevented: false })
 		})
 	});
 });
@@ -27103,7 +27103,7 @@ var MenuItemIndicator = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeMenu, forceMount, ...itemIndicatorProps } = props;
 	const indicatorContext = useItemIndicatorContext(ITEM_INDICATOR_NAME$1, __scopeMenu);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
-		present: forceMount || isIndeterminate$1(indicatorContext.checked) || indicatorContext.checked === true,
+		present: forceMount || isIndeterminate(indicatorContext.checked) || indicatorContext.checked === true,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
 			...itemIndicatorProps,
 			ref: forwardedRef,
@@ -27326,11 +27326,11 @@ MenuSubContent.displayName = SUB_CONTENT_NAME$1;
 function getOpenState(open) {
 	return open ? "open" : "closed";
 }
-function isIndeterminate$1(checked) {
+function isIndeterminate(checked) {
 	return checked === "indeterminate";
 }
 function getCheckedState(checked) {
-	return isIndeterminate$1(checked) ? "indeterminate" : checked ? "checked" : "unchecked";
+	return isIndeterminate(checked) ? "indeterminate" : checked ? "checked" : "unchecked";
 }
 function focusFirst(candidates) {
 	const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement;
@@ -27424,10 +27424,10 @@ var DropdownMenu$1 = (props) => {
 	});
 };
 DropdownMenu$1.displayName = DROPDOWN_MENU_NAME;
-var TRIGGER_NAME$4 = "DropdownMenuTrigger";
+var TRIGGER_NAME$3 = "DropdownMenuTrigger";
 var DropdownMenuTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, disabled = false, ...triggerProps } = props;
-	const context = useDropdownMenuContext(TRIGGER_NAME$4, __scopeDropdownMenu);
+	const context = useDropdownMenuContext(TRIGGER_NAME$3, __scopeDropdownMenu);
 	const menuScope = useMenuScope(__scopeDropdownMenu);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Anchor2, {
 		asChild: true,
@@ -27462,7 +27462,7 @@ var DropdownMenuTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-DropdownMenuTrigger$1.displayName = TRIGGER_NAME$4;
+DropdownMenuTrigger$1.displayName = TRIGGER_NAME$3;
 var PORTAL_NAME$3 = "DropdownMenuPortal";
 var DropdownMenuPortal$1 = (props) => {
 	const { __scopeDropdownMenu, ...portalProps } = props;
@@ -27573,7 +27573,7 @@ var DropdownMenuRadioItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 DropdownMenuRadioItem$1.displayName = RADIO_ITEM_NAME;
-var INDICATOR_NAME$2 = "DropdownMenuItemIndicator";
+var INDICATOR_NAME$1 = "DropdownMenuItemIndicator";
 var DropdownMenuItemIndicator = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...itemIndicatorProps } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
@@ -27583,7 +27583,7 @@ var DropdownMenuItemIndicator = import_react.forwardRef((props, forwardedRef) =>
 		ref: forwardedRef
 	});
 });
-DropdownMenuItemIndicator.displayName = INDICATOR_NAME$2;
+DropdownMenuItemIndicator.displayName = INDICATOR_NAME$1;
 var SEPARATOR_NAME$1 = "DropdownMenuSeparator";
 var DropdownMenuSeparator$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...separatorProps } = props;
@@ -35680,12 +35680,12 @@ var require_isObject = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 var require_isFunction = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseGetTag$7 = require__baseGetTag(), isObject$12 = require_isObject();
 	var asyncTag = "[object AsyncFunction]", funcTag$1 = "[object Function]", genTag = "[object GeneratorFunction]", proxyTag = "[object Proxy]";
-	function isFunction$25(value) {
+	function isFunction$24(value) {
 		if (!isObject$12(value)) return false;
 		var tag = baseGetTag$7(value);
 		return tag == funcTag$1 || tag == genTag || tag == asyncTag || tag == proxyTag;
 	}
-	module.exports = isFunction$25;
+	module.exports = isFunction$24;
 }));
 var require__coreJsData = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__root()["__core-js_shared__"];
@@ -35717,7 +35717,7 @@ var require__toSource = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = toSource$2;
 }));
 var require__baseIsNative = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var isFunction$24 = require_isFunction(), isMasked = require__isMasked(), isObject$11 = require_isObject(), toSource$1 = require__toSource();
+	var isFunction$23 = require_isFunction(), isMasked = require__isMasked(), isObject$11 = require_isObject(), toSource$1 = require__toSource();
 	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 	var reIsHostCtor = /^\[object .+?Constructor\]$/;
 	var funcProto$1 = Function.prototype, objectProto$3 = Object.prototype;
@@ -35726,7 +35726,7 @@ var require__baseIsNative = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	var reIsNative = RegExp("^" + funcToString$1.call(hasOwnProperty$10).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$");
 	function baseIsNative$1(value) {
 		if (!isObject$11(value) || isMasked(value)) return false;
-		return (isFunction$24(value) ? reIsNative : reIsHostCtor).test(toSource$1(value));
+		return (isFunction$23(value) ? reIsNative : reIsHostCtor).test(toSource$1(value));
 	}
 	module.exports = baseIsNative$1;
 }));
@@ -36167,7 +36167,7 @@ var require_react_is_development$1 = /* @__PURE__ */ __commonJSMin(((exports) =>
 		var ContextProvider = REACT_PROVIDER_TYPE;
 		var Element$1 = REACT_ELEMENT_TYPE;
 		var ForwardRef = REACT_FORWARD_REF_TYPE;
-		var Fragment$5 = REACT_FRAGMENT_TYPE;
+		var Fragment$4 = REACT_FRAGMENT_TYPE;
 		var Lazy = REACT_LAZY_TYPE$1;
 		var Memo = REACT_MEMO_TYPE;
 		var Portal$5 = REACT_PORTAL_TYPE;
@@ -36231,7 +36231,7 @@ var require_react_is_development$1 = /* @__PURE__ */ __commonJSMin(((exports) =>
 		exports.ContextProvider = ContextProvider;
 		exports.Element = Element$1;
 		exports.ForwardRef = ForwardRef;
-		exports.Fragment = Fragment$5;
+		exports.Fragment = Fragment$4;
 		exports.Lazy = Lazy;
 		exports.Memo = Memo;
 		exports.Portal = Portal$5;
@@ -38918,9 +38918,9 @@ var require__baseKeys = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = baseKeys$1;
 }));
 var require_isArrayLike = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var isFunction$21 = require_isFunction(), isLength$1 = require_isLength();
+	var isFunction$20 = require_isFunction(), isLength$1 = require_isLength();
 	function isArrayLike$5(value) {
-		return value != null && isLength$1(value.length) && !isFunction$21(value);
+		return value != null && isLength$1(value.length) && !isFunction$20(value);
 	}
 	module.exports = isArrayLike$5;
 }));
@@ -47822,7 +47822,7 @@ var require_react_is_development = /* @__PURE__ */ __commonJSMin(((exports) => {
 		var ContextProvider = REACT_PROVIDER_TYPE;
 		var Element$1 = REACT_ELEMENT_TYPE;
 		var ForwardRef = REACT_FORWARD_REF_TYPE;
-		var Fragment$5 = REACT_FRAGMENT_TYPE;
+		var Fragment$4 = REACT_FRAGMENT_TYPE;
 		var Lazy = REACT_LAZY_TYPE$1;
 		var Memo = REACT_MEMO_TYPE;
 		var Portal$5 = REACT_PORTAL_TYPE;
@@ -47879,7 +47879,7 @@ var require_react_is_development = /* @__PURE__ */ __commonJSMin(((exports) => {
 		exports.ContextProvider = ContextProvider;
 		exports.Element = Element$1;
 		exports.ForwardRef = ForwardRef;
-		exports.Fragment = Fragment$5;
+		exports.Fragment = Fragment$4;
 		exports.Lazy = Lazy;
 		exports.Memo = Memo;
 		exports.Portal = Portal$5;
@@ -58879,7 +58879,7 @@ var get = (object$1, path$1, defaultValue) => {
 	return isUndefined(result) || result === object$1 ? isUndefined(object$1[path$1]) ? defaultValue : object$1[path$1] : result;
 };
 var isBoolean = (value) => typeof value === "boolean";
-var isFunction$1 = (value) => typeof value === "function";
+var isFunction = (value) => typeof value === "function";
 var set = (object$1, path$1, value) => {
 	let index$1 = -1;
 	const tempPath = isKey(path$1) ? [path$1] : stringToPath(path$1);
@@ -59136,10 +59136,10 @@ function useController(props) {
 	const ref = import_react.useCallback((elm) => {
 		const field$1 = get(control._fields, name);
 		if (field$1 && field$1._f && elm) field$1._f.ref = {
-			focus: () => isFunction$1(elm.focus) && elm.focus(),
-			select: () => isFunction$1(elm.select) && elm.select(),
-			setCustomValidity: (message$1) => isFunction$1(elm.setCustomValidity) && elm.setCustomValidity(message$1),
-			reportValidity: () => isFunction$1(elm.reportValidity) && elm.reportValidity()
+			focus: () => isFunction(elm.focus) && elm.focus(),
+			select: () => isFunction(elm.select) && elm.select(),
+			setCustomValidity: (message$1) => isFunction(elm.setCustomValidity) && elm.setCustomValidity(message$1),
+			reportValidity: () => isFunction(elm.reportValidity) && elm.reportValidity()
 		};
 	}, [control._fields, name]);
 	const field = import_react.useMemo(() => ({
@@ -59323,7 +59323,7 @@ function unset(object$1, path$1) {
 	return object$1;
 }
 var objectHasFunction = (data) => {
-	for (const key in data) if (isFunction$1(data[key])) return true;
+	for (const key in data) if (isFunction(data[key])) return true;
 	return false;
 };
 function isTraversable(value) {
@@ -59416,7 +59416,7 @@ var getValidationModes = (mode) => ({
 	isOnTouch: mode === VALIDATION_MODE.onTouched
 });
 var ASYNC_FUNCTION = "AsyncFunction";
-var hasPromiseValidation = (fieldReference) => !!fieldReference && !!fieldReference.validate && !!(isFunction$1(fieldReference.validate) && fieldReference.validate.constructor.name === ASYNC_FUNCTION || isObject$1(fieldReference.validate) && Object.values(fieldReference.validate).find((validateFunction) => validateFunction.constructor.name === ASYNC_FUNCTION));
+var hasPromiseValidation = (fieldReference) => !!fieldReference && !!fieldReference.validate && !!(isFunction(fieldReference.validate) && fieldReference.validate.constructor.name === ASYNC_FUNCTION || isObject$1(fieldReference.validate) && Object.values(fieldReference.validate).find((validateFunction) => validateFunction.constructor.name === ASYNC_FUNCTION));
 var hasValidation = (options$1) => options$1.mount && (options$1.required || options$1.min || options$1.max || options$1.maxLength || options$1.minLength || options$1.pattern || options$1.validate);
 var isWatched = (name, _names, isBlurEvent) => !isBlurEvent && (_names.watchAll || _names.watch.has(name) || [..._names.watch].some((watchName) => name.startsWith(watchName) && /^\.\w+/.test(name.slice(watchName.length))));
 var iterateFieldsByAction = (fields, action, fieldsNames, abortEarly) => {
@@ -59587,7 +59587,7 @@ var validateField = async (field, disabledFieldNames, formValues, validateAllFie
 		}
 	}
 	if (validate) {
-		if (isFunction$1(validate)) {
+		if (isFunction(validate)) {
 			const validateError = getValidateError(await validate(inputValue, formValues), inputRef);
 			if (validateError) {
 				error[name] = {
@@ -59639,7 +59639,7 @@ function createFormControl(props = {}) {
 		submitCount: 0,
 		isDirty: false,
 		isReady: false,
-		isLoading: isFunction$1(_options.defaultValues),
+		isLoading: isFunction(_options.defaultValues),
 		isValidating: false,
 		isSubmitted: false,
 		isSubmitting: false,
@@ -60049,7 +60049,7 @@ function createFormControl(props = {}) {
 		});
 		options$1 && options$1.shouldFocus && ref && ref.focus && ref.focus();
 	};
-	const watch = (name, defaultValue) => isFunction$1(name) ? _subjects.state.subscribe({ next: (payload) => "values" in payload && name(_getWatch(void 0, defaultValue), payload) }) : _getWatch(name, defaultValue, true);
+	const watch = (name, defaultValue) => isFunction(name) ? _subjects.state.subscribe({ next: (payload) => "values" in payload && name(_getWatch(void 0, defaultValue), payload) }) : _getWatch(name, defaultValue, true);
 	const _subscribe = (props$1) => _subjects.state.subscribe({ next: (formState) => {
 		if (shouldSubscribeByName(props$1.name, formState.name, props$1.exact) && shouldRenderFormState(formState, props$1.formState || _proxyFormState, _setFormState, props$1.reRenderRoot)) props$1.callback({
 			values: { ..._formValues },
@@ -60296,7 +60296,7 @@ function createFormControl(props = {}) {
 			defaultValues: _defaultValues
 		});
 	};
-	const reset = (formValues, keepStateOptions) => _reset(isFunction$1(formValues) ? formValues(_formValues) : formValues, {
+	const reset = (formValues, keepStateOptions) => _reset(isFunction(formValues) ? formValues(_formValues) : formValues, {
 		..._options.resetOptions,
 		...keepStateOptions
 	});
@@ -60307,7 +60307,7 @@ function createFormControl(props = {}) {
 			const fieldRef = fieldReference.refs ? fieldReference.refs[0] : fieldReference.ref;
 			if (fieldRef.focus) setTimeout(() => {
 				fieldRef.focus();
-				options$1.shouldSelect && isFunction$1(fieldRef.select) && fieldRef.select();
+				options$1.shouldSelect && isFunction(fieldRef.select) && fieldRef.select();
 			});
 		}
 	};
@@ -60317,7 +60317,7 @@ function createFormControl(props = {}) {
 			...updatedFormState
 		};
 	};
-	const _resetDefaultValues = () => isFunction$1(_options.defaultValues) && _options.defaultValues().then((values) => {
+	const _resetDefaultValues = () => isFunction(_options.defaultValues) && _options.defaultValues().then((values) => {
 		reset(values, _options.resetOptions);
 		_subjects.state.next({ isLoading: false });
 	});
@@ -60405,7 +60405,7 @@ function useForm(props = {}) {
 	const [formState, updateFormState] = import_react.useState({
 		isDirty: false,
 		isValidating: false,
-		isLoading: isFunction$1(props.defaultValues),
+		isLoading: isFunction(props.defaultValues),
 		isSubmitted: false,
 		isSubmitting: false,
 		isSubmitSuccessful: false,
@@ -60417,14 +60417,14 @@ function useForm(props = {}) {
 		errors: props.errors || {},
 		disabled: props.disabled || false,
 		isReady: false,
-		defaultValues: isFunction$1(props.defaultValues) ? void 0 : props.defaultValues
+		defaultValues: isFunction(props.defaultValues) ? void 0 : props.defaultValues
 	});
 	if (!_formControl.current) if (props.formControl) {
 		_formControl.current = {
 			...props.formControl,
 			formState
 		};
-		if (props.defaultValues && !isFunction$1(props.defaultValues)) props.formControl.reset(props.defaultValues, props.resetOptions);
+		if (props.defaultValues && !isFunction(props.defaultValues)) props.formControl.reset(props.defaultValues, props.resetOptions);
 	} else {
 		const { formControl, ...rest } = createFormControl(props);
 		_formControl.current = {
@@ -61087,6 +61087,7 @@ const string$1 = (params) => {
 };
 const integer = /^-?\d+$/;
 const number$1 = /^-?\d+(?:\.\d+)?$/;
+const boolean$1 = /^(?:true|false)$/i;
 const lowercase = /^[^A-Z]*$/;
 const uppercase = /^[^a-z]*$/;
 const $ZodCheck = /* @__PURE__ */ $constructor("$ZodCheck", (inst, def) => {
@@ -61852,6 +61853,24 @@ const $ZodNumber = /* @__PURE__ */ $constructor("$ZodNumber", (inst, def) => {
 const $ZodNumberFormat = /* @__PURE__ */ $constructor("$ZodNumberFormat", (inst, def) => {
 	$ZodCheckNumberFormat.init(inst, def);
 	$ZodNumber.init(inst, def);
+});
+const $ZodBoolean = /* @__PURE__ */ $constructor("$ZodBoolean", (inst, def) => {
+	$ZodType.init(inst, def);
+	inst._zod.pattern = boolean$1;
+	inst._zod.parse = (payload, _ctx) => {
+		if (def.coerce) try {
+			payload.value = Boolean(payload.value);
+		} catch (_$1) {}
+		const input = payload.value;
+		if (typeof input === "boolean") return payload;
+		payload.issues.push({
+			expected: "boolean",
+			code: "invalid_type",
+			input,
+			inst
+		});
+		return payload;
+	};
 });
 const $ZodUnknown = /* @__PURE__ */ $constructor("$ZodUnknown", (inst, def) => {
 	$ZodType.init(inst, def);
@@ -62864,6 +62883,13 @@ function _int(Class, params) {
 	});
 }
 /* @__NO_SIDE_EFFECTS__ */
+function _boolean(Class, params) {
+	return new Class({
+		type: "boolean",
+		...normalizeParams(params)
+	});
+}
+/* @__NO_SIDE_EFFECTS__ */
 function _unknown(Class) {
 	return new Class({ type: "unknown" });
 }
@@ -63404,6 +63430,9 @@ const numberProcessor = (schema, ctx, _json, _params) => {
 		else delete json.exclusiveMaximum;
 	}
 	if (typeof multipleOf === "number") json.multipleOf = multipleOf;
+};
+const booleanProcessor = (_schema, _ctx, json, _params) => {
+	json.type = "boolean";
 };
 const neverProcessor = (_schema, _ctx, json, _params) => {
 	json.not = {};
@@ -64001,6 +64030,14 @@ const ZodNumberFormat = /* @__PURE__ */ $constructor("ZodNumberFormat", (inst, d
 function int(params) {
 	return /* @__PURE__ */ _int(ZodNumberFormat, params);
 }
+const ZodBoolean = /* @__PURE__ */ $constructor("ZodBoolean", (inst, def) => {
+	$ZodBoolean.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => booleanProcessor(inst, ctx, json, params);
+});
+function boolean(params) {
+	return /* @__PURE__ */ _boolean(ZodBoolean, params);
+}
 const ZodUnknown = /* @__PURE__ */ $constructor("ZodUnknown", (inst, def) => {
 	$ZodUnknown.init(inst, def);
 	ZodType.init(inst, def);
@@ -64464,6 +64501,9 @@ function min(dates, options$1) {
 	});
 	return constructFrom(context, result || NaN);
 }
+function constructNow(date$4) {
+	return constructFrom(date$4, Date.now());
+}
 function isSameDay(laterDate, earlierDate, options$1) {
 	const [dateLeft_, dateRight_] = normalizeDates(options$1?.in, laterDate, earlierDate);
 	return +startOfDay(dateLeft_) === +startOfDay(dateRight_);
@@ -64493,6 +64533,11 @@ function compareLocalAsc(laterDate, earlierDate) {
 	if (diff < 0) return -1;
 	if (diff > 0) return 1;
 	return diff;
+}
+function endOfDay(date$4, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	_date$1.setHours(23, 59, 59, 999);
+	return _date$1;
 }
 function endOfMonth(date$4, options$1) {
 	const _date$1 = toDate(date$4, options$1?.in);
@@ -65754,6 +65799,9 @@ function isAfter(date$4, dateToCompare) {
 function isBefore(date$4, dateToCompare) {
 	return +toDate(date$4) < +toDate(dateToCompare);
 }
+function isPast(date$4) {
+	return +toDate(date$4) < Date.now();
+}
 function isSameMonth(laterDate, earlierDate, options$1) {
 	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
 	return laterDate_.getFullYear() === earlierDate_.getFullYear() && laterDate_.getMonth() === earlierDate_.getMonth();
@@ -65761,6 +65809,9 @@ function isSameMonth(laterDate, earlierDate, options$1) {
 function isSameYear(laterDate, earlierDate, options$1) {
 	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
 	return laterDate_.getFullYear() === earlierDate_.getFullYear();
+}
+function isToday(date$4, options$1) {
+	return isSameDay(constructFrom(options$1?.in || date$4, date$4), constructNow(options$1?.in || date$4));
 }
 function setMonth(date$4, month, options$1) {
 	const _date$1 = toDate(date$4, options$1?.in);
@@ -65993,11 +66044,11 @@ var Select$2 = (props) => {
 	});
 };
 Select$2.displayName = SELECT_NAME;
-var TRIGGER_NAME$3 = "SelectTrigger";
+var TRIGGER_NAME$2 = "SelectTrigger";
 var SelectTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, disabled = false, ...triggerProps } = props;
 	const popperScope = usePopperScope$1(__scopeSelect);
-	const context = useSelectContext(TRIGGER_NAME$3, __scopeSelect);
+	const context = useSelectContext(TRIGGER_NAME$2, __scopeSelect);
 	const isDisabled = context.disabled || disabled;
 	const composedRefs = useComposedRefs(forwardedRef, context.onTriggerChange);
 	const getItems = useCollection(__scopeSelect);
@@ -66059,7 +66110,7 @@ var SelectTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-SelectTrigger$1.displayName = TRIGGER_NAME$3;
+SelectTrigger$1.displayName = TRIGGER_NAME$2;
 var VALUE_NAME = "SelectValue";
 var SelectValue$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, className, style, children, placeholder = "", ...valueProps } = props;
@@ -66774,7 +66825,7 @@ var SelectArrow = import_react.forwardRef((props, forwardedRef) => {
 	}) : null;
 });
 SelectArrow.displayName = ARROW_NAME$1;
-var BUBBLE_INPUT_NAME$2 = "SelectBubbleInput";
+var BUBBLE_INPUT_NAME$1 = "SelectBubbleInput";
 var SelectBubbleInput = import_react.forwardRef(({ __scopeSelect, value, ...props }, forwardedRef) => {
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, ref);
@@ -66800,7 +66851,7 @@ var SelectBubbleInput = import_react.forwardRef(({ __scopeSelect, value, ...prop
 		defaultValue: value
 	});
 });
-SelectBubbleInput.displayName = BUBBLE_INPUT_NAME$2;
+SelectBubbleInput.displayName = BUBBLE_INPUT_NAME$1;
 function shouldShowPlaceholder(value) {
 	return value === "" || value === void 0;
 }
@@ -66968,10 +67019,10 @@ var PopoverAnchor = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 PopoverAnchor.displayName = ANCHOR_NAME;
-var TRIGGER_NAME$2 = "PopoverTrigger";
+var TRIGGER_NAME$1 = "PopoverTrigger";
 var PopoverTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopePopover, ...triggerProps } = props;
-	const context = usePopoverContext(TRIGGER_NAME$2, __scopePopover);
+	const context = usePopoverContext(TRIGGER_NAME$1, __scopePopover);
 	const popperScope = usePopperScope(__scopePopover);
 	const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
 	const trigger = /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
@@ -66979,7 +67030,7 @@ var PopoverTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		"aria-haspopup": "dialog",
 		"aria-expanded": context.open,
 		"aria-controls": context.contentId,
-		"data-state": getState$2(context.open),
+		"data-state": getState$1(context.open),
 		...triggerProps,
 		ref: composedTriggerRef,
 		onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
@@ -66990,7 +67041,7 @@ var PopoverTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		children: trigger
 	});
 });
-PopoverTrigger$1.displayName = TRIGGER_NAME$2;
+PopoverTrigger$1.displayName = TRIGGER_NAME$1;
 var PORTAL_NAME$1 = "PopoverPortal";
 var [PortalProvider, usePortalContext] = createPopoverContext(PORTAL_NAME$1, { forceMount: void 0 });
 var PopoverPortal = (props) => {
@@ -67108,7 +67159,7 @@ var PopoverContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			onFocusOutside,
 			onDismiss: () => context.onOpenChange(false),
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$1, {
-				"data-state": getState$2(context.open),
+				"data-state": getState$1(context.open),
 				role: "dialog",
 				id: context.contentId,
 				...popperScope,
@@ -67149,7 +67200,7 @@ var PopoverArrow = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 PopoverArrow.displayName = ARROW_NAME;
-function getState$2(open) {
+function getState$1(open) {
 	return open ? "open" : "closed";
 }
 var Root2$1 = Popover$1;
@@ -68413,11 +68464,11 @@ function createGetModifiers(days, props, navStart, navEnd, dateLib) {
 		const isAfterNavEnd = Boolean(computedNavEnd && isAfter$1(date$4, computedNavEnd));
 		const isDisabled = Boolean(disabled && dateMatchModifiers(date$4, disabled, dateLib));
 		const isHidden$1 = Boolean(hidden && dateMatchModifiers(date$4, hidden, dateLib)) || isBeforeNavStart || isAfterNavEnd || !broadcastCalendar && !showOutsideDays && isOutside || broadcastCalendar && showOutsideDays === false && isOutside;
-		const isToday = isSameDay$1(date$4, today);
+		const isToday$1 = isSameDay$1(date$4, today);
 		if (isOutside) internalModifiersMap.outside.push(day);
 		if (isDisabled) internalModifiersMap.disabled.push(day);
 		if (isHidden$1) internalModifiersMap.hidden.push(day);
-		if (isToday) internalModifiersMap.today.push(day);
+		if (isToday$1) internalModifiersMap.today.push(day);
 		if (modifiers) Object.keys(modifiers).forEach((name) => {
 			const modifierValue = modifiers?.[name];
 			if (!(modifierValue ? dateMatchModifiers(date$4, modifierValue, dateLib) : false)) return;
@@ -70519,7 +70570,7 @@ function MultiSelect({ options: options$1, selected, onChange, placeholder = "Se
 		})]
 	});
 }
-var formSchema$2 = object({
+var formSchema$3 = object({
 	name: string().min(2, "Nome deve ter pelo menos 2 caracteres."),
 	email: string().email("E-mail inválido."),
 	phone: string().min(14, "Telefone incompleto (mínimo 10 dígitos)."),
@@ -70615,7 +70666,7 @@ function ContactForm({ onSuccess }) {
 	const { toast: toast$2 } = useToast();
 	const [loading, setLoading] = (0, import_react.useState)(false);
 	const form = useForm({
-		resolver: a(formSchema$2),
+		resolver: a(formSchema$3),
 		defaultValues: {
 			name: "",
 			email: "",
@@ -73441,7 +73492,7 @@ function KanbanBoard({ refreshTrigger = 0 }) {
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollBar, { orientation: "horizontal" })]
 	});
 }
-var formSchema$1 = object({
+var formSchema$2 = object({
 	contact_id: string({ required_error: "Selecione um contato." }),
 	title: string().min(3, "O título deve ter pelo menos 3 caracteres."),
 	stage: _enum([
@@ -73469,7 +73520,7 @@ function DealForm({ onSuccess, onCancel }) {
 	const [contactsLoading, setContactsLoading] = (0, import_react.useState)(false);
 	const [openCombobox, setOpenCombobox] = (0, import_react.useState)(false);
 	const form = useForm({
-		resolver: a(formSchema$1),
+		resolver: a(formSchema$2),
 		defaultValues: {
 			title: "",
 			stage: "Lead",
@@ -74292,10 +74343,10 @@ var Progress$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Progress$1.displayName = PROGRESS_NAME;
-var INDICATOR_NAME$1 = "ProgressIndicator";
+var INDICATOR_NAME = "ProgressIndicator";
 var ProgressIndicator = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeProgress, ...indicatorProps } = props;
-	const context = useProgressContext(INDICATOR_NAME$1, __scopeProgress);
+	const context = useProgressContext(INDICATOR_NAME, __scopeProgress);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
 		"data-state": getProgressState(context.value, context.max),
 		"data-value": context.value ?? void 0,
@@ -74304,7 +74355,7 @@ var ProgressIndicator = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	});
 });
-ProgressIndicator.displayName = INDICATOR_NAME$1;
+ProgressIndicator.displayName = INDICATOR_NAME;
 function defaultGetValueLabel(value, max$6) {
 	return `${Math.round(value / max$6 * 100)}%`;
 }
@@ -74531,7 +74582,7 @@ var Switch$1 = import_react.forwardRef((props, forwardedRef) => {
 			role: "switch",
 			"aria-checked": checked,
 			"aria-required": required$1,
-			"data-state": getState$1(checked),
+			"data-state": getState(checked),
 			"data-disabled": disabled ? "" : void 0,
 			disabled,
 			value,
@@ -74563,14 +74614,14 @@ var SwitchThumb = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSwitch, ...thumbProps } = props;
 	const context = useSwitchContext(THUMB_NAME, __scopeSwitch);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
-		"data-state": getState$1(context.checked),
+		"data-state": getState(context.checked),
 		"data-disabled": context.disabled ? "" : void 0,
 		...thumbProps,
 		ref: forwardedRef
 	});
 });
 SwitchThumb.displayName = THUMB_NAME;
-var BUBBLE_INPUT_NAME$1 = "SwitchBubbleInput";
+var BUBBLE_INPUT_NAME = "SwitchBubbleInput";
 var SwitchBubbleInput = import_react.forwardRef(({ __scopeSwitch, control, checked, bubbles = true, ...props }, forwardedRef) => {
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs(ref, forwardedRef);
@@ -74608,8 +74659,8 @@ var SwitchBubbleInput = import_react.forwardRef(({ __scopeSwitch, control, check
 		}
 	});
 });
-SwitchBubbleInput.displayName = BUBBLE_INPUT_NAME$1;
-function getState$1(checked) {
+SwitchBubbleInput.displayName = BUBBLE_INPUT_NAME;
+function getState(checked) {
 	return checked ? "checked" : "unchecked";
 }
 var Root = Switch$1;
@@ -74721,305 +74772,574 @@ function Automacoes() {
 		})]
 	});
 }
-var CHECKBOX_NAME = "Checkbox";
-var [createCheckboxContext, createCheckboxScope] = createContextScope(CHECKBOX_NAME);
-var [CheckboxProviderImpl, useCheckboxContext] = createCheckboxContext(CHECKBOX_NAME);
-function CheckboxProvider(props) {
-	const { __scopeCheckbox, checked: checkedProp, children, defaultChecked, disabled, form, name, onCheckedChange, required: required$1, value = "on", internal_do_not_use_render } = props;
-	const [checked, setChecked] = useControllableState({
-		prop: checkedProp,
-		defaultProp: defaultChecked ?? false,
-		onChange: onCheckedChange,
-		caller: CHECKBOX_NAME
-	});
-	const [control, setControl] = import_react.useState(null);
-	const [bubbleInput, setBubbleInput] = import_react.useState(null);
-	const hasConsumerStoppedPropagationRef = import_react.useRef(false);
-	const isFormControl = control ? !!form || !!control.closest("form") : true;
-	const context = {
-		checked,
-		disabled,
-		setChecked,
-		control,
-		setControl,
-		name,
-		form,
-		value,
-		hasConsumerStoppedPropagationRef,
-		required: required$1,
-		defaultChecked: isIndeterminate(defaultChecked) ? false : defaultChecked,
-		isFormControl,
-		bubbleInput,
-		setBubbleInput
-	};
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckboxProviderImpl, {
-		scope: __scopeCheckbox,
-		...context,
-		children: isFunction(internal_do_not_use_render) ? internal_do_not_use_render(context) : children
-	});
-}
-var TRIGGER_NAME$1 = "CheckboxTrigger";
-var CheckboxTrigger = import_react.forwardRef(({ __scopeCheckbox, onKeyDown, onClick, ...checkboxProps }, forwardedRef) => {
-	const { control, value, disabled, checked, required: required$1, setControl, setChecked, hasConsumerStoppedPropagationRef, isFormControl, bubbleInput } = useCheckboxContext(TRIGGER_NAME$1, __scopeCheckbox);
-	const composedRefs = useComposedRefs(forwardedRef, setControl);
-	const initialCheckedStateRef = import_react.useRef(checked);
-	import_react.useEffect(() => {
-		const form = control?.form;
-		if (form) {
-			const reset = () => setChecked(initialCheckedStateRef.current);
-			form.addEventListener("reset", reset);
-			return () => form.removeEventListener("reset", reset);
-		}
-	}, [control, setChecked]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
-		type: "button",
-		role: "checkbox",
-		"aria-checked": isIndeterminate(checked) ? "mixed" : checked,
-		"aria-required": required$1,
-		"data-state": getState(checked),
-		"data-disabled": disabled ? "" : void 0,
-		disabled,
-		value,
-		...checkboxProps,
-		ref: composedRefs,
-		onKeyDown: composeEventHandlers(onKeyDown, (event) => {
-			if (event.key === "Enter") event.preventDefault();
-		}),
-		onClick: composeEventHandlers(onClick, (event) => {
-			setChecked((prevChecked) => isIndeterminate(prevChecked) ? true : !prevChecked);
-			if (bubbleInput && isFormControl) {
-				hasConsumerStoppedPropagationRef.current = event.isPropagationStopped();
-				if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation();
-			}
-		})
-	});
-});
-CheckboxTrigger.displayName = TRIGGER_NAME$1;
-var Checkbox$1 = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeCheckbox, name, checked, defaultChecked, required: required$1, disabled, value, onCheckedChange, form, ...checkboxProps } = props;
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckboxProvider, {
-		__scopeCheckbox,
-		checked,
-		defaultChecked,
-		disabled,
-		required: required$1,
-		onCheckedChange,
-		name,
-		form,
-		value,
-		internal_do_not_use_render: ({ isFormControl }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckboxTrigger, {
-			...checkboxProps,
-			ref: forwardedRef,
-			__scopeCheckbox
-		}), isFormControl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckboxBubbleInput, { __scopeCheckbox })] })
-	});
-});
-Checkbox$1.displayName = CHECKBOX_NAME;
-var INDICATOR_NAME = "CheckboxIndicator";
-var CheckboxIndicator = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeCheckbox, forceMount, ...indicatorProps } = props;
-	const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
-		present: forceMount || isIndeterminate(context.checked) || context.checked === true,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
-			"data-state": getState(context.checked),
-			"data-disabled": context.disabled ? "" : void 0,
-			...indicatorProps,
-			ref: forwardedRef,
-			style: {
-				pointerEvents: "none",
-				...props.style
-			}
-		})
-	});
-});
-CheckboxIndicator.displayName = INDICATOR_NAME;
-var BUBBLE_INPUT_NAME = "CheckboxBubbleInput";
-var CheckboxBubbleInput = import_react.forwardRef(({ __scopeCheckbox, ...props }, forwardedRef) => {
-	const { control, hasConsumerStoppedPropagationRef, checked, defaultChecked, required: required$1, disabled, name, value, form, bubbleInput, setBubbleInput } = useCheckboxContext(BUBBLE_INPUT_NAME, __scopeCheckbox);
-	const composedRefs = useComposedRefs(forwardedRef, setBubbleInput);
-	const prevChecked = usePrevious(checked);
-	const controlSize = useSize(control);
-	import_react.useEffect(() => {
-		const input = bubbleInput;
-		if (!input) return;
-		const inputProto = window.HTMLInputElement.prototype;
-		const setChecked = Object.getOwnPropertyDescriptor(inputProto, "checked").set;
-		const bubbles = !hasConsumerStoppedPropagationRef.current;
-		if (prevChecked !== checked && setChecked) {
-			const event = new Event("click", { bubbles });
-			input.indeterminate = isIndeterminate(checked);
-			setChecked.call(input, isIndeterminate(checked) ? false : checked);
-			input.dispatchEvent(event);
-		}
-	}, [
-		bubbleInput,
-		prevChecked,
-		checked,
-		hasConsumerStoppedPropagationRef
-	]);
-	const defaultCheckedRef = import_react.useRef(isIndeterminate(checked) ? false : checked);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.input, {
-		type: "checkbox",
-		"aria-hidden": true,
-		defaultChecked: defaultChecked ?? defaultCheckedRef.current,
-		required: required$1,
-		disabled,
-		name,
-		value,
-		form,
-		...props,
-		tabIndex: -1,
-		ref: composedRefs,
-		style: {
-			...props.style,
-			...controlSize,
-			position: "absolute",
-			pointerEvents: "none",
-			opacity: 0,
-			margin: 0,
-			transform: "translateX(-100%)"
-		}
-	});
-});
-CheckboxBubbleInput.displayName = BUBBLE_INPUT_NAME;
-function isFunction(value) {
-	return typeof value === "function";
-}
-function isIndeterminate(checked) {
-	return checked === "indeterminate";
-}
-function getState(checked) {
-	return isIndeterminate(checked) ? "indeterminate" : checked ? "checked" : "unchecked";
-}
-var Checkbox = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Checkbox$1, {
-	ref,
-	className: cn("peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground", className),
-	...props,
-	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckboxIndicator, {
-		className: cn("flex items-center justify-center text-current"),
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-4 w-4" })
-	})
-}));
-Checkbox.displayName = Checkbox$1.displayName;
-var INITIAL_TASKS = [
-	{
-		id: 1,
-		text: "Ligar para Roberto sobre o cavalo Lusitano",
-		completed: false,
-		priority: "Alta",
-		date: "Hoje"
+const tasksService = {
+	async getTasks() {
+		const { data, error } = await supabase.from("tasks").select(`
+        *,
+        contact:contacts(*),
+        deal:deals(id, title)
+      `).order("due_date", { ascending: true });
+		if (error) throw error;
+		return data;
 	},
-	{
-		id: 2,
-		text: "Enviar contrato para Haras Pôr do Sol",
-		completed: true,
-		priority: "Alta",
-		date: "Ontem"
+	async createTask(task) {
+		const { data, error } = await supabase.from("tasks").insert(task).select().single();
+		if (error) throw error;
+		return data;
 	},
-	{
-		id: 3,
-		text: "Atualizar fotos do catálogo no site",
-		completed: false,
-		priority: "Média",
-		date: "Amanhã"
+	async updateTask(id, updates) {
+		const { data, error } = await supabase.from("tasks").update(updates).eq("id", id).select().single();
+		if (error) throw error;
+		return data;
 	},
-	{
-		id: 4,
-		text: "Agendar visita veterinária",
-		completed: false,
-		priority: "Baixa",
-		date: "12 Out"
+	async deleteTask(id) {
+		const { error } = await supabase.from("tasks").delete().eq("id", id);
+		if (error) throw error;
 	},
-	{
-		id: 5,
-		text: "Reunião de equipe semanal",
-		completed: false,
-		priority: "Média",
-		date: "15 Out"
+	async toggleTaskCompletion(id, is_completed) {
+		const { data, error } = await supabase.from("tasks").update({ is_completed }).eq("id", id).select().single();
+		if (error) throw error;
+		return data;
 	}
+};
+var taskTypes = [
+	"Ligação",
+	"E-mail",
+	"WhatsApp",
+	"Outro"
 ];
-function Tarefas() {
-	const [tasks, setTasks] = (0, import_react.useState)(INITIAL_TASKS);
-	const [newTask, setNewTask] = (0, import_react.useState)("");
-	const toggleTask = (id) => {
-		setTasks(tasks.map((t$1) => t$1.id === id ? {
-			...t$1,
-			completed: !t$1.completed
-		} : t$1));
-	};
-	const addTask = () => {
-		if (!newTask.trim()) return;
-		setTasks([{
-			id: Date.now(),
-			text: newTask,
-			completed: false,
-			priority: "Média",
-			date: "Hoje"
-		}, ...tasks]);
-		setNewTask("");
-	};
-	const getPriorityColor = (priority) => {
-		switch (priority) {
-			case "Alta": return "text-red-600 bg-red-100 border-red-200";
-			case "Média": return "text-yellow-600 bg-yellow-100 border-yellow-200";
-			case "Baixa": return "text-green-600 bg-green-100 border-green-200";
-			default: return "text-gray-600 bg-gray-100 border-gray-200";
+var formSchema$1 = object({
+	title: string().min(1, "O título é obrigatório"),
+	description: string().optional(),
+	type: _enum([
+		"Ligação",
+		"E-mail",
+		"WhatsApp",
+		"Outro"
+	]),
+	contact_id: string().optional(),
+	date: date({ required_error: "A data é obrigatória" }),
+	time: string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Formato de hora inválido"),
+	has_reminder: boolean().default(false)
+});
+function TaskForm({ onSuccess, onCancel }) {
+	const [contacts, setContacts] = (0, import_react.useState)([]);
+	const [openCombobox, setOpenCombobox] = (0, import_react.useState)(false);
+	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
+	const { toast: toast$2 } = useToast();
+	const form = useForm({
+		resolver: a(formSchema$1),
+		defaultValues: {
+			title: "",
+			description: "",
+			type: "Ligação",
+			contact_id: "",
+			has_reminder: false,
+			date: /* @__PURE__ */ new Date(),
+			time: format(/* @__PURE__ */ new Date(), "HH:mm")
+		}
+	});
+	(0, import_react.useEffect)(() => {
+		const loadContacts = async () => {
+			try {
+				const { data } = await contactsService.getContacts({ pageSize: 100 });
+				setContacts(data || []);
+			} catch (error) {
+				console.error("Failed to load contacts", error);
+			}
+		};
+		loadContacts();
+	}, []);
+	const onSubmit = async (values) => {
+		setIsLoading(true);
+		try {
+			const dateTime = new Date(values.date);
+			const [hours, minutes] = values.time.split(":").map(Number);
+			dateTime.setHours(hours, minutes);
+			const newTask = {
+				title: values.title,
+				description: values.description,
+				type: values.type,
+				contact_id: values.contact_id || null,
+				due_date: dateTime.toISOString(),
+				has_reminder: values.has_reminder,
+				is_completed: false
+			};
+			await tasksService.createTask(newTask);
+			toast$2({ title: "Tarefa criada com sucesso!" });
+			onSuccess();
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro ao criar tarefa",
+				description: "Ocorreu um erro inesperado. Tente novamente.",
+				variant: "destructive"
+			});
+		} finally {
+			setIsLoading(false);
 		}
 	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Form, {
+		...form,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+			onSubmit: form.handleSubmit(onSubmit),
+			className: "space-y-4",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+					control: form.control,
+					name: "title",
+					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Título" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							placeholder: "Ex: Ligar para confirmar visita",
+							...field
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+					] })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "type",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Tipo" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+								onValueChange: field.onChange,
+								defaultValue: field.value,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o tipo" }) }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: taskTypes.map((type) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: type,
+									children: type
+								}, type)) })]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						] })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "contact_id",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+							className: "flex flex-col",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, {
+									className: "mb-1",
+									children: "Contato Vinculado"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, {
+									open: openCombobox,
+									onOpenChange: setOpenCombobox,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+										asChild: true,
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+											variant: "outline",
+											role: "combobox",
+											className: cn("w-full justify-between pl-3 text-left font-normal", !field.value && "text-muted-foreground"),
+											children: [field.value ? contacts.find((contact) => contact.id === field.value)?.name : "Selecione um contato", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "ml-2 h-4 w-4 opacity-50 rotate-90" })]
+										}) })
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
+										className: "w-[300px] p-0",
+										align: "start",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Command, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandInput, { placeholder: "Buscar contato..." }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CommandList, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandEmpty, { children: "Nenhum contato encontrado." }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandGroup, { children: contacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CommandItem, {
+											value: contact.name,
+											onSelect: () => {
+												form.setValue("contact_id", contact.id);
+												setOpenCombobox(false);
+											},
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: cn("mr-2 h-4 w-4", contact.id === field.value ? "opacity-100" : "opacity-0") }), contact.name]
+										}, contact.id)) })] })] })
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+							]
+						})
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "date",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+							className: "flex flex-col",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Data" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+									asChild: true,
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+										variant: "outline",
+										className: cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground"),
+										children: [field.value ? format(field.value, "PPP", { locale: ptBR }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Selecione a data" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "ml-auto h-4 w-4 opacity-50" })]
+									}) })
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
+									className: "w-auto p-0",
+									align: "start",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar$1, {
+										mode: "single",
+										selected: field.value,
+										onSelect: field.onChange,
+										initialFocus: true
+									})
+								})] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+							]
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "time",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Hora" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "time",
+								...field
+							}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						] })
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+					control: form.control,
+					name: "description",
+					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Descrição" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+							placeholder: "Detalhes adicionais sobre a tarefa...",
+							...field
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+					] })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+					control: form.control,
+					name: "has_reminder",
+					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+						className: "flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-0.5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Lembrete" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Receber notificação sobre esta tarefa" })]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+							checked: field.value,
+							onCheckedChange: field.onChange
+						}) })]
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex justify-end gap-2 pt-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						type: "button",
+						variant: "outline",
+						onClick: onCancel,
+						children: "Cancelar"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						type: "submit",
+						disabled: isLoading,
+						children: [isLoading && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }), "Salvar Tarefa"]
+					})]
+				})
+			]
+		})
+	});
+}
+function TaskCard({ task, onComplete, onDelete }) {
+	const [isHovered, setIsHovered] = (0, import_react.useState)(false);
+	const isOverdue = isPast(new Date(task.due_date)) && !isToday(new Date(task.due_date)) && !task.is_completed;
+	const getTypeIcon = (type) => {
+		switch (type) {
+			case "Ligação": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Phone, { className: "h-3.5 w-3.5" });
+			case "E-mail": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-3.5 w-3.5" });
+			case "WhatsApp": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-3.5 w-3.5" });
+			default: return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ellipsis, { className: "h-3.5 w-3.5" });
+		}
+	};
+	const getTypeColor = (type) => {
+		switch (type) {
+			case "Ligação": return "bg-blue-100 text-blue-700 border-blue-200";
+			case "E-mail": return "bg-purple-100 text-purple-700 border-purple-200";
+			case "WhatsApp": return "bg-green-100 text-green-700 border-green-200";
+			default: return "bg-gray-100 text-gray-700 border-gray-200";
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+		className: cn("transition-all duration-200 hover:shadow-md border-l-4", isOverdue ? "border-l-destructive" : "border-l-primary"),
+		onMouseEnter: () => setIsHovered(true),
+		onMouseLeave: () => setIsHovered(false),
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "p-4",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-start gap-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+					variant: "ghost",
+					size: "icon",
+					className: cn("shrink-0 h-6 w-6 mt-0.5 rounded-full", task.is_completed ? "text-green-600" : "text-muted-foreground hover:text-primary hover:bg-primary/10"),
+					onClick: () => onComplete(task),
+					children: task.is_completed ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-5 w-5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Circle, { className: "h-5 w-5" })
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex-1 min-w-0 space-y-2",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-start justify-between gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+								className: cn("font-semibold text-sm leading-none mb-1.5", task.is_completed && "line-through text-muted-foreground"),
+								children: task.title
+							}), task.description && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-xs text-muted-foreground line-clamp-1 mb-2",
+								children: task.description
+							})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
+								asChild: true,
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+									variant: "ghost",
+									size: "icon",
+									className: "h-6 w-6 -mr-2 text-muted-foreground",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ellipsis, { className: "h-4 w-4" })
+								})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuContent, {
+								align: "end",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, {
+									className: "text-destructive focus:text-destructive",
+									onClick: () => onDelete(task.id),
+									children: "Excluir"
+								})
+							})] })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-wrap items-center gap-2",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+									variant: "outline",
+									className: cn("gap-1.5 font-normal", getTypeColor(task.type)),
+									children: [getTypeIcon(task.type), task.type]
+								}),
+								task.contact && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-1 text-xs text-muted-foreground bg-muted/50 px-2 py-0.5 rounded-full",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(User, { className: "h-3 w-3" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "truncate max-w-[120px]",
+										children: task.contact.name
+									})]
+								}),
+								task.deal && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-1 text-xs text-muted-foreground bg-muted/50 px-2 py-0.5 rounded-full",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Briefcase, { className: "h-3 w-3" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "truncate max-w-[120px]",
+										children: task.deal.title
+									})]
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-4 text-xs pt-1",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: cn("flex items-center gap-1.5 font-medium", isOverdue ? "text-destructive" : "text-muted-foreground"),
+								children: [isOverdue ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleAlert, { className: "h-3.5 w-3.5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [format(new Date(task.due_date), "dd MMM", { locale: ptBR }), isOverdue && " (Atrasada)"] })]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center gap-1.5 text-muted-foreground",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: format(new Date(task.due_date), "HH:mm") })]
+							})]
+						})
+					]
+				})]
+			})
+		})
+	});
+}
+function Tarefas() {
+	const [tasks, setTasks] = (0, import_react.useState)([]);
+	const [isLoading, setIsLoading] = (0, import_react.useState)(true);
+	const [isDialogOpen, setIsDialogOpen] = (0, import_react.useState)(false);
+	const { toast: toast$2 } = useToast();
+	const fetchTasks = async () => {
+		setIsLoading(true);
+		try {
+			setTasks(await tasksService.getTasks() || []);
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível carregar as tarefas.",
+				variant: "destructive"
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	};
+	(0, import_react.useEffect)(() => {
+		fetchTasks();
+	}, []);
+	const handleTaskComplete = async (task) => {
+		try {
+			setTasks(tasks.filter((t$1) => t$1.id !== task.id));
+			await tasksService.toggleTaskCompletion(task.id, true);
+			toast$2({
+				title: "Tarefa concluída!",
+				description: `"${task.title}" foi marcada como feita.`
+			});
+		} catch (error) {
+			console.error(error);
+			fetchTasks();
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível concluir a tarefa.",
+				variant: "destructive"
+			});
+		}
+	};
+	const handleTaskDelete = async (taskId) => {
+		try {
+			await tasksService.deleteTask(taskId);
+			setTasks(tasks.filter((t$1) => t$1.id !== taskId));
+			toast$2({ title: "Tarefa excluída" });
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível excluir a tarefa.",
+				variant: "destructive"
+			});
+		}
+	};
+	const today = /* @__PURE__ */ new Date();
+	const endOfTodayDate = endOfDay(today);
+	const nextWeekStart = addDays(today, 8);
+	const todayTasks = tasks.filter((t$1) => {
+		const dueDate = new Date(t$1.due_date);
+		return !t$1.is_completed && (isToday(dueDate) || isBefore(dueDate, startOfDay(today)));
+	});
+	tasks.filter((t$1) => {
+		const dueDate = new Date(t$1.due_date);
+		return !t$1.is_completed && isAfter(dueDate, endOfTodayDate) && isBefore(dueDate, nextWeekStart);
+	});
+	const upcomingTasks = tasks.filter((t$1) => {
+		const dueDate = new Date(t$1.due_date);
+		return !t$1.is_completed && (isAfter(dueDate, nextWeekStart) || isToday(dueDate) === false && isBefore(dueDate, nextWeekStart) === false && isBefore(dueDate, today) === false);
+	}).filter((t$1) => {
+		const dueDate = new Date(t$1.due_date);
+		return !t$1.is_completed && isAfter(dueDate, addDays(endOfTodayDate, 7));
+	});
+	const weekTasksRefined = tasks.filter((t$1) => {
+		const dueDate = new Date(t$1.due_date);
+		return !t$1.is_completed && isAfter(dueDate, endOfTodayDate) && !isAfter(dueDate, addDays(endOfTodayDate, 7));
+	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "max-w-4xl mx-auto space-y-8",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: "flex items-center justify-between",
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-				className: "text-3xl font-bold font-display text-primary",
-				children: "Minhas Tarefas"
+		className: "h-[calc(100vh-6rem)] flex flex-col space-y-4 animate-fade-in",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-center justify-between shrink-0",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
+				className: "text-3xl font-bold font-display text-primary flex items-center gap-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquareCheckBig, { className: "h-8 w-8" }), "Minhas Tarefas"]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground",
-				children: "Organize seu dia e não perca nenhum compromisso."
-			})] })
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-			className: "border-t-4 border-t-primary shadow-lg",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex gap-4",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-					placeholder: "Adicionar nova tarefa...",
-					className: "flex-1",
-					value: newTask,
-					onChange: (e) => setNewTask(e.target.value),
-					onKeyDown: (e) => e.key === "Enter" && addTask()
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-					onClick: addTask,
-					className: "bg-secondary text-white hover:bg-secondary/90",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4 mr-2" }), " Adicionar"]
-				})]
-			}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "space-y-2",
-				children: tasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: `flex items-center justify-between p-4 rounded-lg border transition-all ${task.completed ? "bg-muted/50 border-transparent opacity-60" : "bg-white hover:shadow-sm border-border"}`,
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-4 flex-1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Checkbox, {
-							checked: task.completed,
-							onCheckedChange: () => toggleTask(task.id),
-							className: "data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: `font-medium ${task.completed ? "line-through text-muted-foreground" : "text-foreground"}`,
-							children: task.text
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-4",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-							variant: "outline",
-							className: `border ${getPriorityColor(task.priority)}`,
-							children: task.priority
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex items-center text-sm text-muted-foreground w-24 justify-end",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3 w-3 mr-1" }), task.date]
-						})]
+				children: "Gerencie suas atividades, organize prioridades e não perca prazos."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+				open: isDialogOpen,
+				onOpenChange: setIsDialogOpen,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+					asChild: true,
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						className: "bg-primary hover:bg-primary/90 text-white shadow-md",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "mr-2 h-4 w-4" }), " Nova Tarefa"]
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+					className: "sm:max-w-[500px]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Adicionar Nova Tarefa" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Crie um lembrete ou atividade vinculada a um contato." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TaskForm, {
+						onSuccess: () => {
+							setIsDialogOpen(false);
+							fetchTasks();
+						},
+						onCancel: () => setIsDialogOpen(false)
 					})]
-				}, task.id))
-			}) })]
+				})]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "flex-1 overflow-x-auto overflow-y-hidden",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex h-full gap-6 min-w-[1000px] pb-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex-1 flex flex-col min-w-[300px] rounded-xl bg-red-50/50 border border-red-100 overflow-hidden",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "p-4 border-b border-red-100 bg-red-50 flex items-center justify-between sticky top-0",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+								className: "font-bold text-red-900 flex items-center gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-4 w-4" }), "Hoje"]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "bg-red-200 text-red-800 text-xs font-medium px-2 py-0.5 rounded-full",
+								children: todayTasks.length
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex-1 overflow-y-auto p-4 space-y-3",
+							children: isLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex justify-center py-8 text-red-400",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-6 w-6 animate-spin" })
+							}) : todayTasks.length > 0 ? todayTasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TaskCard, {
+								task,
+								onComplete: handleTaskComplete,
+								onDelete: handleTaskDelete
+							}, task.id)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "text-center py-10 text-red-300",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-sm",
+									children: "Nenhuma tarefa para hoje."
+								})
+							})
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex-1 flex flex-col min-w-[300px] rounded-xl bg-yellow-50/50 border border-yellow-100 overflow-hidden",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "p-4 border-b border-yellow-100 bg-yellow-50 flex items-center justify-between sticky top-0",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+								className: "font-bold text-yellow-900 flex items-center gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-4 w-4" }), "Esta Semana"]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "bg-yellow-200 text-yellow-800 text-xs font-medium px-2 py-0.5 rounded-full",
+								children: weekTasksRefined.length
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex-1 overflow-y-auto p-4 space-y-3",
+							children: isLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex justify-center py-8 text-yellow-400",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-6 w-6 animate-spin" })
+							}) : weekTasksRefined.length > 0 ? weekTasksRefined.map((task) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TaskCard, {
+								task,
+								onComplete: handleTaskComplete,
+								onDelete: handleTaskDelete
+							}, task.id)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "text-center py-10 text-yellow-300",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-sm",
+									children: "Tudo limpo para esta semana."
+								})
+							})
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex-1 flex flex-col min-w-[300px] rounded-xl bg-white border border-gray-200 overflow-hidden shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "p-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between sticky top-0",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+								className: "font-bold text-gray-700 flex items-center gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-4 w-4" }), "Próximas"]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "bg-gray-200 text-gray-600 text-xs font-medium px-2 py-0.5 rounded-full",
+								children: upcomingTasks.length
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex-1 overflow-y-auto p-4 space-y-3",
+							children: isLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex justify-center py-8 text-gray-400",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-6 w-6 animate-spin" })
+							}) : upcomingTasks.length > 0 ? upcomingTasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TaskCard, {
+								task,
+								onComplete: handleTaskComplete,
+								onDelete: handleTaskDelete
+							}, task.id)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "text-center py-10 text-gray-300",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-sm",
+									children: "Sem tarefas futuras agendadas."
+								})
+							})
+						})]
+					})
+				]
+			})
 		})]
 	});
 }
@@ -75921,4 +76241,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Zc3olC4_.js.map
+//# sourceMappingURL=index-Bqncsz3g.js.map
