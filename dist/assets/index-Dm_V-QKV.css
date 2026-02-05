@@ -2525,9 +2525,6 @@ h1,
 .hover\:bg-secondary:hover{
   background-color: hsl(var(--secondary));
 }
-.hover\:bg-secondary\/20:hover{
-  background-color: hsl(var(--secondary) / 0.2);
-}
 .hover\:bg-secondary\/80:hover{
   background-color: hsl(var(--secondary) / 0.8);
 }

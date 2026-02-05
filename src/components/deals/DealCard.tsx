@@ -60,10 +60,7 @@ export function DealCard({ deal, isDragging, onDragStart }: DealCardProps) {
         </div>
 
         <div className="flex items-center justify-between pt-2 border-t border-dashed">
-          <Badge
-            variant="secondary"
-            className="font-medium text-xs px-1.5 h-5 bg-secondary/10 text-secondary-foreground hover:bg-secondary/20 border-0"
-          >
+          <Badge variant="secondary" className="font-bold text-sm px-2">
             {new Intl.NumberFormat('pt-BR', {
               style: 'currency',
               currency: 'BRL',

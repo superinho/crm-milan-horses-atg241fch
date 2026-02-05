@@ -72523,7 +72523,7 @@ function DealCard({ deal, isDragging, onDragStart }) {
 					className: "flex items-center justify-between pt-2 border-t border-dashed",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 						variant: "secondary",
-						className: "font-medium text-xs px-1.5 h-5 bg-secondary/10 text-secondary-foreground hover:bg-secondary/20 border-0",
+						className: "font-bold text-sm px-2",
 						children: new Intl.NumberFormat("pt-BR", {
 							style: "currency",
 							currency: "BRL",
@@ -75298,4 +75298,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-i-ctZMNN.js.map
+//# sourceMappingURL=index-BjF43A2s.js.map
