@@ -75116,9 +75116,10 @@ const campaignsService = {
 		if (sends.length > 0) {
 			const sendsToInsert = sends.map((send) => ({
 				campaign_id: newCampaign.id,
-				channel: send.channel,
+				channel_type: send.channel_type,
 				scheduled_at: send.scheduled_at,
 				content: send.content,
+				template_id: send.template_id,
 				status: "Pendente"
 			}));
 			const { error: sendsError } = await supabase.from("campaign_sends").insert(sendsToInsert);
@@ -75450,10 +75451,10 @@ function CampaignForm({ onSuccess, onCancel }) {
 				start_date: values.dates.start.toISOString(),
 				end_date: values.dates.end.toISOString(),
 				status: "Agendada",
-				filters: values.filters,
+				audience_filters: values.filters,
 				channels: values.channels
 			}, schedules.map((s$3) => ({
-				channel: s$3.channel,
+				channel_type: s$3.channel,
 				scheduled_at: (/* @__PURE__ */ new Date(`${s$3.date}T${s$3.time}`)).toISOString(),
 				content: s$3.content
 			})));
@@ -78567,4 +78568,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-C9rk9lpS.js.map
+//# sourceMappingURL=index-DK9NQokO.js.map

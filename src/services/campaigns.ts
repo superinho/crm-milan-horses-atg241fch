@@ -15,8 +15,9 @@ export type CampaignFilters = {
 export type CampaignSend = {
   id?: string
   campaign_id?: string
-  channel: 'email' | 'whatsapp'
+  channel_type: 'email' | 'whatsapp'
   scheduled_at: string
+  template_id?: string | null
   content: string
   status: 'Pendente' | 'Enviado' | 'Falha'
 }
@@ -28,7 +29,7 @@ export type Campaign = {
   start_date: string
   end_date: string
   status: CampaignStatus
-  filters: CampaignFilters
+  audience_filters: CampaignFilters
   channels: string[]
   created_at: string
   updated_at: string
@@ -42,7 +43,7 @@ export type CampaignInsert = {
   start_date: string
   end_date: string
   status?: CampaignStatus
-  filters: CampaignFilters
+  audience_filters: CampaignFilters
   channels: string[]
 }
 
@@ -79,9 +80,10 @@ export const campaignsService = {
     if (sends.length > 0) {
       const sendsToInsert = sends.map((send) => ({
         campaign_id: newCampaign.id,
-        channel: send.channel,
+        channel_type: send.channel_type,
         scheduled_at: send.scheduled_at,
         content: send.content,
+        template_id: send.template_id,
         status: 'Pendente',
       }))
 

@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { format } from 'date-fns'
-import { Calendar as CalendarIcon, Loader2, Save } from 'lucide-react'
+import { Loader2, Save } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -104,11 +103,11 @@ export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
           start_date: values.dates.start.toISOString(),
           end_date: values.dates.end.toISOString(),
           status: 'Agendada',
-          filters: values.filters,
+          audience_filters: values.filters,
           channels: values.channels,
         },
         schedules.map((s) => ({
-          channel: s.channel,
+          channel_type: s.channel,
           scheduled_at: new Date(`${s.date}T${s.time}`).toISOString(),
           content: s.content,
         })),

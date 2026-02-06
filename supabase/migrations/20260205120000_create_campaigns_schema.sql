@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS campaigns (
     start_date TIMESTAMP WITH TIME ZONE NOT NULL,
     end_date TIMESTAMP WITH TIME ZONE NOT NULL,
     status TEXT NOT NULL DEFAULT 'Agendada', -- Agendada, Em Andamento, Concluída, Pausada, Rascunho
-    filters JSONB DEFAULT '{}'::jsonb, -- Stores tags and segments selection
-    channels JSONB DEFAULT '[]'::jsonb, -- Stores selected channels ['email', 'whatsapp']
+    audience_filters JSONB DEFAULT '{}'::jsonb, -- Stores tags and segments selection
+    channels TEXT[] DEFAULT '{}', -- Stores selected channels ['email', 'whatsapp']
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -16,8 +16,9 @@ CREATE TABLE IF NOT EXISTS campaigns (
 CREATE TABLE IF NOT EXISTS campaign_sends (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     campaign_id UUID REFERENCES campaigns(id) ON DELETE CASCADE,
-    channel TEXT NOT NULL, -- 'email' or 'whatsapp'
+    channel_type TEXT NOT NULL, -- 'email' or 'whatsapp'
     scheduled_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    template_id UUID REFERENCES message_templates(id), -- Optional foreign key to message_templates
     content TEXT, -- The message content or template reference
     status TEXT NOT NULL DEFAULT 'Pendente', -- Pendente, Enviado, Falha
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
