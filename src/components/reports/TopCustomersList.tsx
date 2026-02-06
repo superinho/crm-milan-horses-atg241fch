@@ -35,7 +35,7 @@ export function TopCustomersList({ data }: TopCustomersListProps) {
             <TableRow className="bg-muted/30">
               <TableHead>Cliente</TableHead>
               <TableHead className="text-center">Compras</TableHead>
-              <TableHead className="text-right">Total Investido</TableHead>
+              <TableHead className="text-right">Valor Investido</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

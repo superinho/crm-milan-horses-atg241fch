@@ -11,7 +11,7 @@ import {
   ChartTooltipContent,
   ChartConfig,
 } from '@/components/ui/chart'
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
+import { Line, LineChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 import { ReportData } from '@/services/reports'
 
 interface SalesEvolutionChartProps {
@@ -31,29 +31,15 @@ export function SalesEvolutionChart({ data }: SalesEvolutionChartProps) {
       <CardHeader>
         <CardTitle>Evolução de Vendas</CardTitle>
         <CardDescription>
-          Volume de vendas mensal no período selecionado.
+          Tendência de vendas mensais no período selecionado.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[300px] w-full">
-          <AreaChart
+          <LineChart
             data={data}
             margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
           >
-            <defs>
-              <linearGradient id="fillSales" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="hsl(var(--primary))"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="hsl(var(--primary))"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-            </defs>
             <CartesianGrid
               vertical={false}
               strokeDasharray="3 3"
@@ -73,15 +59,15 @@ export function SalesEvolutionChart({ data }: SalesEvolutionChartProps) {
               tickFormatter={(value) => `R$${value / 1000}k`}
             />
             <ChartTooltip content={<ChartTooltipContent />} />
-            <Area
+            <Line
               type="monotone"
               dataKey="value"
-              stroke="hsl(var(--primary))"
-              fillOpacity={1}
-              fill="url(#fillSales)"
+              stroke="var(--color-value)"
               strokeWidth={2}
+              dot={false}
+              activeDot={{ r: 6, strokeWidth: 0 }}
             />
-          </AreaChart>
+          </LineChart>
         </ChartContainer>
       </CardContent>
     </Card>

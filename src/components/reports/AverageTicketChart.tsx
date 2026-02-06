@@ -59,7 +59,7 @@ export function AverageTicketChart({ data }: AverageTicketChartProps) {
             <ChartTooltip content={<ChartTooltipContent />} />
             <Bar
               dataKey="average"
-              fill="hsl(var(--secondary))"
+              fill="var(--color-average)"
               radius={[4, 4, 0, 0]}
             />
           </BarChart>
