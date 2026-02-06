@@ -57,7 +57,12 @@ function AppSidebar() {
   const { user } = useAuth()
 
   return (
-    <Sidebar variant="sidebar" side="left" collapsible="icon">
+    <Sidebar
+      variant="sidebar"
+      side="left"
+      collapsible="icon"
+      className="print:hidden"
+    >
       <SidebarHeader className="h-24 flex items-center justify-center border-b border-sidebar-border px-4 py-2">
         <div className="flex items-center gap-2 w-full overflow-hidden transition-all duration-300 justify-start group-data-[collapsible=icon]:justify-center">
           <img
@@ -150,7 +155,7 @@ function TopHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm md:px-6">
+    <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm md:px-6 print:hidden">
       <div className="flex items-center gap-4">
         <SidebarTrigger className="-ml-2 md:hidden" />
 
@@ -219,7 +224,7 @@ export default function Layout() {
         <AppSidebar />
         <div className="flex flex-1 flex-col overflow-hidden">
           <TopHeader />
-          <main className="flex-1 overflow-y-auto p-4 md:p-8 animate-fade-in">
+          <main className="flex-1 overflow-y-auto p-4 md:p-8 animate-fade-in print:overflow-visible print:h-auto">
             <Outlet />
           </main>
         </div>

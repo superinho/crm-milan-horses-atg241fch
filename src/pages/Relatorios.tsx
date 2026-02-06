@@ -1,152 +1,118 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/card'
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
-} from '@/components/ui/chart'
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Pie,
-  PieChart,
-  Cell,
-} from 'recharts'
-
-const revenueData = [
-  { month: 'Jan', receita: 120000, despesa: 45000 },
-  { month: 'Fev', receita: 180000, despesa: 55000 },
-  { month: 'Mar', receita: 150000, despesa: 48000 },
-  { month: 'Abr', receita: 240000, despesa: 70000 },
-  { month: 'Mai', receita: 320000, despesa: 90000 },
-  { month: 'Jun', receita: 450000, despesa: 110000 },
-]
-
-const sourceData = [
-  { name: 'Instagram', value: 400, color: 'hsl(var(--chart-1))' },
-  { name: 'Indicação', value: 300, color: 'hsl(var(--chart-2))' },
-  { name: 'Google Ads', value: 200, color: 'hsl(var(--chart-3))' },
-  { name: 'Eventos', value: 150, color: 'hsl(var(--chart-4))' },
-]
-
-const chartConfig = {
-  receita: { label: 'Receita', color: 'hsl(var(--primary))' },
-  despesa: { label: 'Despesa', color: 'hsl(var(--destructive))' },
-  instagram: { label: 'Instagram', color: 'hsl(var(--chart-1))' },
-  indicacao: { label: 'Indicação', color: 'hsl(var(--chart-2))' },
-  google: { label: 'Google Ads', color: 'hsl(var(--chart-3))' },
-  eventos: { label: 'Eventos', color: 'hsl(var(--chart-4))' },
-}
+import { useState, useEffect } from 'react'
+import { subMonths } from 'date-fns'
+import { DateRange } from 'react-day-picker'
+import { FileDown, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { DateRangeFilter } from '@/components/reports/DateRangeFilter'
+import { ReportSummary } from '@/components/reports/ReportSummary'
+import { SalesEvolutionChart } from '@/components/reports/SalesEvolutionChart'
+import { AverageTicketChart } from '@/components/reports/AverageTicketChart'
+import { BreedDistributionChart } from '@/components/reports/BreedDistributionChart'
+import { TopCustomersList } from '@/components/reports/TopCustomersList'
+import { SeasonalityAnalysis } from '@/components/reports/SeasonalityAnalysis'
+import { reportsService, ReportData } from '@/services/reports'
+import { useToast } from '@/hooks/use-toast'
 
 export default function Relatorios() {
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: subMonths(new Date(), 12),
+    to: new Date(),
+  })
+  const [data, setData] = useState<ReportData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const { toast } = useToast()
+
+  const fetchReports = async () => {
+    if (!date?.from || !date?.to) return
+
+    setLoading(true)
+    try {
+      const reportData = await reportsService.getReportData(date.from, date.to)
+      setData(reportData)
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: 'Erro',
+        description: 'Falha ao carregar relatório.',
+        variant: 'destructive',
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchReports()
+  }, [date])
+
+  const handleExport = () => {
+    window.print()
+  }
+
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold font-display text-primary">
-          Relatórios e Análises
+    <div className="space-y-6 animate-fade-in pb-10">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 print:hidden">
+        <div>
+          <h1 className="text-3xl font-bold font-display text-primary">
+            Relatórios e Análises
+          </h1>
+          <p className="text-muted-foreground">
+            Acompanhe o desempenho de vendas e indicadores estratégicos.
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <DateRangeFilter date={date} setDate={setDate} />
+          <Button
+            variant="outline"
+            onClick={handleExport}
+            className="gap-2 bg-white"
+          >
+            <FileDown className="h-4 w-4" />
+            Exportar PDF
+          </Button>
+        </div>
+      </div>
+
+      {/* Print Header */}
+      <div className="hidden print:block mb-8">
+        <h1 className="text-2xl font-bold text-black">
+          Relatório Gerencial - Milan Horses
         </h1>
-        <p className="text-muted-foreground">
-          Visão detalhada do desempenho do seu negócio.
+        <p className="text-sm text-gray-500">
+          Período: {date?.from?.toLocaleDateString()} a{' '}
+          {date?.to?.toLocaleDateString()}
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card className="shadow-sm">
-          <CardHeader>
-            <CardTitle className="font-display text-primary">
-              Receita vs Despesas
-            </CardTitle>
-            <CardDescription>
-              Comparativo financeiro mensal do último semestre.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig} className="h-[300px] w-full">
-              <BarChart data={revenueData}>
-                <CartesianGrid
-                  vertical={false}
-                  strokeDasharray="3 3"
-                  className="stroke-muted"
-                />
-                <XAxis
-                  dataKey="month"
-                  tickLine={false}
-                  axisLine={false}
-                  className="text-xs"
-                />
-                <YAxis
-                  tickLine={false}
-                  axisLine={false}
-                  className="text-xs"
-                  tickFormatter={(val) => `R$${val / 1000}k`}
-                />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <ChartLegend content={<ChartLegendContent />} />
-                <Bar
-                  dataKey="receita"
-                  fill="var(--color-receita)"
-                  radius={[4, 4, 0, 0]}
-                />
-                <Bar
-                  dataKey="despesa"
-                  fill="var(--color-despesa)"
-                  radius={[4, 4, 0, 0]}
-                />
-              </BarChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
+      {loading ? (
+        <div className="flex justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      ) : data ? (
+        <div className="space-y-6">
+          <ReportSummary data={data.metrics} />
 
-        <Card className="shadow-sm">
-          <CardHeader>
-            <CardTitle className="font-display text-primary">
-              Origem dos Leads
-            </CardTitle>
-            <CardDescription>
-              Principais canais de aquisição de clientes.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer
-              config={chartConfig}
-              className="h-[300px] w-full mx-auto"
-            >
-              <PieChart>
-                <Pie
-                  data={sourceData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={100}
-                  paddingAngle={2}
-                >
-                  {sourceData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={entry.color}
-                      strokeWidth={0}
-                    />
-                  ))}
-                </Pie>
-                <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-                <ChartLegend content={<ChartLegendContent />} />
-              </PieChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-      </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <SalesEvolutionChart data={data.salesByMonth} />
+            <div className="space-y-6 flex flex-col">
+              <SeasonalityAnalysis data={data.seasonality} />
+              <div className="flex-1">
+                <BreedDistributionChart data={data.salesByBreed} />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <TopCustomersList data={data.topCustomers} />
+            <AverageTicketChart data={data.salesByMonth} />
+          </div>
+        </div>
+      ) : (
+        <div className="text-center py-20 text-muted-foreground">
+          Selecione um período para visualizar os dados.
+        </div>
+      )}
     </div>
   )
 }

@@ -19527,6 +19527,27 @@ var Pencil = createLucideIcon("pencil", [["path", {
 	d: "m15 5 4 4",
 	key: "1mk7zo"
 }]]);
+var Percent = createLucideIcon("percent", [
+	["line", {
+		x1: "19",
+		x2: "5",
+		y1: "5",
+		y2: "19",
+		key: "1x9vlm"
+	}],
+	["circle", {
+		cx: "6.5",
+		cy: "6.5",
+		r: "2.5",
+		key: "4mh3h7"
+	}],
+	["circle", {
+		cx: "17.5",
+		cy: "17.5",
+		r: "2.5",
+		key: "1mdrzq"
+	}]
+]);
 var Phone = createLucideIcon("phone", [["path", {
 	d: "M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384",
 	key: "9njp5v"
@@ -19642,6 +19663,24 @@ var ShoppingBag = createLucideIcon("shopping-bag", [
 	["path", {
 		d: "M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z",
 		key: "o988cm"
+	}]
+]);
+var ShoppingCart = createLucideIcon("shopping-cart", [
+	["circle", {
+		cx: "8",
+		cy: "21",
+		r: "1",
+		key: "jimo8o"
+	}],
+	["circle", {
+		cx: "19",
+		cy: "21",
+		r: "1",
+		key: "13723u"
+	}],
+	["path", {
+		d: "M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12",
+		key: "9zh506"
 	}]
 ]);
 var Smartphone = createLucideIcon("smartphone", [["rect", {
@@ -26446,7 +26485,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$37({ inst: {
+			cachedValue = useState$38({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26460,7 +26499,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$31(function() {
+			useEffect$32(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26483,7 +26522,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$67 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$37 = React$67.useState, useEffect$31 = React$67.useEffect, useLayoutEffect$2 = React$67.useLayoutEffect, useDebugValue = React$67.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$67 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$38 = React$67.useState, useEffect$32 = React$67.useEffect, useLayoutEffect$2 = React$67.useLayoutEffect, useDebugValue = React$67.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$67.useSyncExternalStore ? React$67.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -28276,24 +28315,24 @@ var PostgrestFilterBuilder = class extends PostgrestTransformBuilder {
 		this.url.searchParams.append(column, `like.${pattern}`);
 		return this;
 	}
-	likeAllOf(column, patterns) {
-		this.url.searchParams.append(column, `like(all).{${patterns.join(",")}}`);
+	likeAllOf(column, patterns$1) {
+		this.url.searchParams.append(column, `like(all).{${patterns$1.join(",")}}`);
 		return this;
 	}
-	likeAnyOf(column, patterns) {
-		this.url.searchParams.append(column, `like(any).{${patterns.join(",")}}`);
+	likeAnyOf(column, patterns$1) {
+		this.url.searchParams.append(column, `like(any).{${patterns$1.join(",")}}`);
 		return this;
 	}
 	ilike(column, pattern) {
 		this.url.searchParams.append(column, `ilike.${pattern}`);
 		return this;
 	}
-	ilikeAllOf(column, patterns) {
-		this.url.searchParams.append(column, `ilike(all).{${patterns.join(",")}}`);
+	ilikeAllOf(column, patterns$1) {
+		this.url.searchParams.append(column, `ilike(all).{${patterns$1.join(",")}}`);
 		return this;
 	}
-	ilikeAnyOf(column, patterns) {
-		this.url.searchParams.append(column, `ilike(any).{${patterns.join(",")}}`);
+	ilikeAnyOf(column, patterns$1) {
+		this.url.searchParams.append(column, `ilike(any).{${patterns$1.join(",")}}`);
 		return this;
 	}
 	regexMatch(column, pattern) {
@@ -35597,6 +35636,7 @@ function AppSidebar() {
 		variant: "sidebar",
 		side: "left",
 		collapsible: "icon",
+		className: "print:hidden",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarHeader, {
 				className: "h-24 flex items-center justify-center border-b border-sidebar-border px-4 py-2",
@@ -35661,7 +35701,7 @@ function TopHeader() {
 		navigate("/login");
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-		className: "sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm md:px-6",
+		className: "sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm md:px-6 print:hidden",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex items-center gap-4",
 			children: [
@@ -35721,7 +35761,7 @@ function Layout() {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AppSidebar, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex flex-1 flex-col overflow-hidden",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TopHeader, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
-					className: "flex-1 overflow-y-auto p-4 md:p-8 animate-fade-in",
+					className: "flex-1 overflow-y-auto p-4 md:p-8 animate-fade-in print:overflow-visible print:h-auto",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})
 				})]
 			})]
@@ -43676,7 +43716,7 @@ function formatLocale(locale$2) {
 		"d": parseDayOfMonth,
 		"e": parseDayOfMonth,
 		"f": parseMicroseconds,
-		"g": parseYear,
+		"g": parseYear$1,
 		"G": parseFullYear,
 		"H": parseHour24,
 		"I": parseHour24,
@@ -43696,7 +43736,7 @@ function formatLocale(locale$2) {
 		"W": parseWeekNumberMonday,
 		"x": parseLocaleDate,
 		"X": parseLocaleTime,
-		"y": parseYear,
+		"y": parseYear$1,
 		"Y": parseFullYear,
 		"Z": parseZone,
 		"%": parseLiteralPercent
@@ -43915,7 +43955,7 @@ function parseFullYear(d, string$2, i$2) {
 	var n$1 = numberRe.exec(string$2.slice(i$2, i$2 + 4));
 	return n$1 ? (d.y = +n$1[0], i$2 + n$1[0].length) : -1;
 }
-function parseYear(d, string$2, i$2) {
+function parseYear$1(d, string$2, i$2) {
 	var n$1 = numberRe.exec(string$2.slice(i$2, i$2 + 2));
 	return n$1 ? (d.y = +n$1[0] + (+n$1[0] > 68 ? 1900 : 2e3), i$2 + n$1[0].length) : -1;
 }
@@ -58358,7 +58398,7 @@ var chartData = [
 		leads: 90
 	}
 ];
-var chartConfig$1 = {
+var chartConfig$2 = {
 	vendas: {
 		label: "Vendas (R$)",
 		color: "hsl(var(--primary))"
@@ -58545,7 +58585,7 @@ function Index() {
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Resumo de vendas e novos leads no primeiro semestre." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "pl-2",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-								config: chartConfig$1,
+								config: chartConfig$2,
 								className: "h-[300px] w-full",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
 									data: chartData,
@@ -61294,8 +61334,8 @@ function datetime$1(args) {
 	const opts = ["Z"];
 	if (args.local) opts.push("");
 	if (args.offset) opts.push(`([+-](?:[01]\\d|2[0-3]):[0-5]\\d)`);
-	const timeRegex = `${time$3}(?:${opts.join("|")})`;
-	return /* @__PURE__ */ new RegExp(`^${dateSource}T(?:${timeRegex})$`);
+	const timeRegex$1 = `${time$3}(?:${opts.join("|")})`;
+	return /* @__PURE__ */ new RegExp(`^${dateSource}T(?:${timeRegex$1})$`);
 }
 const string$1 = (params) => {
 	const regex = params ? `[\\s\\S]{${params?.minimum ?? 0},${params?.maximum ?? ""}}` : `[\\s\\S]*`;
@@ -62382,8 +62422,8 @@ const $ZodUnion = /* @__PURE__ */ $constructor("$ZodUnion", (inst, def) => {
 	});
 	defineLazy(inst._zod, "pattern", () => {
 		if (def.options.every((o$1) => o$1._zod.pattern)) {
-			const patterns = def.options.map((o$1) => o$1._zod.pattern);
-			return /* @__PURE__ */ new RegExp(`^(${patterns.map((p$1) => cleanRegex(p$1.source)).join("|")})$`);
+			const patterns$1 = def.options.map((o$1) => o$1._zod.pattern);
+			return /* @__PURE__ */ new RegExp(`^(${patterns$1.map((p$1) => cleanRegex(p$1.source)).join("|")})$`);
 		}
 	});
 	const single = def.options.length === 1;
@@ -63604,7 +63644,7 @@ var formatMap = {
 const stringProcessor = (schema, ctx, _json, _params) => {
 	const json = _json;
 	json.type = "string";
-	const { minimum, maximum, format: format$2, patterns, contentEncoding } = schema._zod.bag;
+	const { minimum, maximum, format: format$2, patterns: patterns$1, contentEncoding } = schema._zod.bag;
 	if (typeof minimum === "number") json.minLength = minimum;
 	if (typeof maximum === "number") json.maxLength = maximum;
 	if (format$2) {
@@ -63613,8 +63653,8 @@ const stringProcessor = (schema, ctx, _json, _params) => {
 		if (format$2 === "time") delete json.format;
 	}
 	if (contentEncoding) json.contentEncoding = contentEncoding;
-	if (patterns && patterns.size > 0) {
-		const regexes = [...patterns];
+	if (patterns$1 && patterns$1.size > 0) {
+		const regexes = [...patterns$1];
 		if (regexes.length === 1) json.pattern = regexes[0].source;
 		else if (regexes.length > 1) json.allOf = [...regexes.map((regex) => ({
 			...ctx.target === "draft-07" || ctx.target === "draft-04" || ctx.target === "openapi-3.0" ? { type: "string" } : {},
@@ -64593,6 +64633,8 @@ const daysInYear = 365.2425;
 Math.pow(10, 8) * 24 * 60 * 60 * 1e3;
 const millisecondsInWeek = 6048e5;
 const millisecondsInDay = 864e5;
+const millisecondsInMinute = 6e4;
+const millisecondsInHour = 36e5;
 const secondsInDay = 3600 * 24;
 secondsInDay * 7;
 secondsInDay * daysInYear / 12 * 3;
@@ -66029,6 +66071,166 @@ function isSameYear(laterDate, earlierDate, options$1) {
 function isToday(date$4, options$1) {
 	return isSameDay(constructFrom(options$1?.in || date$4, date$4), constructNow(options$1?.in || date$4));
 }
+function parseISO(argument, options$1) {
+	const invalidDate = () => constructFrom(options$1?.in, NaN);
+	const additionalDigits = options$1?.additionalDigits ?? 2;
+	const dateStrings = splitDateString(argument);
+	let date$4;
+	if (dateStrings.date) {
+		const parseYearResult = parseYear(dateStrings.date, additionalDigits);
+		date$4 = parseDate(parseYearResult.restDateString, parseYearResult.year);
+	}
+	if (!date$4 || isNaN(+date$4)) return invalidDate();
+	const timestamp = +date$4;
+	let time$3 = 0;
+	let offset$3;
+	if (dateStrings.time) {
+		time$3 = parseTime(dateStrings.time);
+		if (isNaN(time$3)) return invalidDate();
+	}
+	if (dateStrings.timezone) {
+		offset$3 = parseTimezone(dateStrings.timezone);
+		if (isNaN(offset$3)) return invalidDate();
+	} else {
+		const tmpDate = new Date(timestamp + time$3);
+		const result = toDate(0, options$1?.in);
+		result.setFullYear(tmpDate.getUTCFullYear(), tmpDate.getUTCMonth(), tmpDate.getUTCDate());
+		result.setHours(tmpDate.getUTCHours(), tmpDate.getUTCMinutes(), tmpDate.getUTCSeconds(), tmpDate.getUTCMilliseconds());
+		return result;
+	}
+	return toDate(timestamp + time$3 + offset$3, options$1?.in);
+}
+var patterns = {
+	dateTimeDelimiter: /[T ]/,
+	timeZoneDelimiter: /[Z ]/i,
+	timezone: /([Z+-].*)$/
+};
+var dateRegex = /^-?(?:(\d{3})|(\d{2})(?:-?(\d{2}))?|W(\d{2})(?:-?(\d{1}))?|)$/;
+var timeRegex = /^(\d{2}(?:[.,]\d*)?)(?::?(\d{2}(?:[.,]\d*)?))?(?::?(\d{2}(?:[.,]\d*)?))?$/;
+var timezoneRegex = /^([+-])(\d{2})(?::?(\d{2}))?$/;
+function splitDateString(dateString) {
+	const dateStrings = {};
+	const array$1 = dateString.split(patterns.dateTimeDelimiter);
+	let timeString;
+	if (array$1.length > 2) return dateStrings;
+	if (/:/.test(array$1[0])) timeString = array$1[0];
+	else {
+		dateStrings.date = array$1[0];
+		timeString = array$1[1];
+		if (patterns.timeZoneDelimiter.test(dateStrings.date)) {
+			dateStrings.date = dateString.split(patterns.timeZoneDelimiter)[0];
+			timeString = dateString.substr(dateStrings.date.length, dateString.length);
+		}
+	}
+	if (timeString) {
+		const token = patterns.timezone.exec(timeString);
+		if (token) {
+			dateStrings.time = timeString.replace(token[1], "");
+			dateStrings.timezone = token[1];
+		} else dateStrings.time = timeString;
+	}
+	return dateStrings;
+}
+function parseYear(dateString, additionalDigits) {
+	const regex = /* @__PURE__ */ new RegExp("^(?:(\\d{4}|[+-]\\d{" + (4 + additionalDigits) + "})|(\\d{2}|[+-]\\d{" + (2 + additionalDigits) + "})$)");
+	const captures = dateString.match(regex);
+	if (!captures) return {
+		year: NaN,
+		restDateString: ""
+	};
+	const year = captures[1] ? parseInt(captures[1]) : null;
+	const century = captures[2] ? parseInt(captures[2]) : null;
+	return {
+		year: century === null ? year : century * 100,
+		restDateString: dateString.slice((captures[1] || captures[2]).length)
+	};
+}
+function parseDate(dateString, year) {
+	if (year === null) return /* @__PURE__ */ new Date(NaN);
+	const captures = dateString.match(dateRegex);
+	if (!captures) return /* @__PURE__ */ new Date(NaN);
+	const isWeekDate = !!captures[4];
+	const dayOfYear = parseDateUnit(captures[1]);
+	const month = parseDateUnit(captures[2]) - 1;
+	const day = parseDateUnit(captures[3]);
+	const week = parseDateUnit(captures[4]);
+	const dayOfWeek = parseDateUnit(captures[5]) - 1;
+	if (isWeekDate) {
+		if (!validateWeekDate(year, week, dayOfWeek)) return /* @__PURE__ */ new Date(NaN);
+		return dayOfISOWeekYear(year, week, dayOfWeek);
+	} else {
+		const date$4 = /* @__PURE__ */ new Date(0);
+		if (!validateDate(year, month, day) || !validateDayOfYearDate(year, dayOfYear)) return /* @__PURE__ */ new Date(NaN);
+		date$4.setUTCFullYear(year, month, Math.max(dayOfYear, day));
+		return date$4;
+	}
+}
+function parseDateUnit(value) {
+	return value ? parseInt(value) : 1;
+}
+function parseTime(timeString) {
+	const captures = timeString.match(timeRegex);
+	if (!captures) return NaN;
+	const hours = parseTimeUnit(captures[1]);
+	const minutes = parseTimeUnit(captures[2]);
+	const seconds$1 = parseTimeUnit(captures[3]);
+	if (!validateTime(hours, minutes, seconds$1)) return NaN;
+	return hours * millisecondsInHour + minutes * millisecondsInMinute + seconds$1 * 1e3;
+}
+function parseTimeUnit(value) {
+	return value && parseFloat(value.replace(",", ".")) || 0;
+}
+function parseTimezone(timezoneString) {
+	if (timezoneString === "Z") return 0;
+	const captures = timezoneString.match(timezoneRegex);
+	if (!captures) return 0;
+	const sign$1 = captures[1] === "+" ? -1 : 1;
+	const hours = parseInt(captures[2]);
+	const minutes = captures[3] && parseInt(captures[3]) || 0;
+	if (!validateTimezone(hours, minutes)) return NaN;
+	return sign$1 * (hours * millisecondsInHour + minutes * millisecondsInMinute);
+}
+function dayOfISOWeekYear(isoWeekYear, week, day) {
+	const date$4 = /* @__PURE__ */ new Date(0);
+	date$4.setUTCFullYear(isoWeekYear, 0, 4);
+	const fourthOfJanuaryDay = date$4.getUTCDay() || 7;
+	const diff = (week - 1) * 7 + day + 1 - fourthOfJanuaryDay;
+	date$4.setUTCDate(date$4.getUTCDate() + diff);
+	return date$4;
+}
+var daysInMonths = [
+	31,
+	null,
+	31,
+	30,
+	31,
+	30,
+	31,
+	31,
+	30,
+	31,
+	30,
+	31
+];
+function isLeapYearIndex(year) {
+	return year % 400 === 0 || year % 4 === 0 && year % 100 !== 0;
+}
+function validateDate(year, month, date$4) {
+	return month >= 0 && month <= 11 && date$4 >= 1 && date$4 <= (daysInMonths[month] || (isLeapYearIndex(year) ? 29 : 28));
+}
+function validateDayOfYearDate(year, dayOfYear) {
+	return dayOfYear >= 1 && dayOfYear <= (isLeapYearIndex(year) ? 366 : 365);
+}
+function validateWeekDate(_year, week, day) {
+	return week >= 1 && week <= 53 && day >= 0 && day <= 6;
+}
+function validateTime(hours, minutes, seconds$1) {
+	if (hours === 24) return minutes === 0 && seconds$1 === 0;
+	return seconds$1 >= 0 && seconds$1 < 60 && minutes >= 0 && minutes < 60 && hours >= 0 && hours < 25;
+}
+function validateTimezone(_hours, minutes) {
+	return minutes >= 0 && minutes <= 59;
+}
 function setMonth(date$4, month, options$1) {
 	const _date$1 = toDate(date$4, options$1?.in);
 	const year = _date$1.getFullYear();
@@ -66045,6 +66247,9 @@ function setYear(date$4, year, options$1) {
 	if (isNaN(+date_)) return constructFrom(options$1?.in || date$4, NaN);
 	date_.setFullYear(year);
 	return date_;
+}
+function subMonths(date$4, amount, options$1) {
+	return addMonths(date$4, -amount, options$1);
 }
 var Textarea = import_react.forwardRef(({ className, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", {
@@ -77372,182 +77577,588 @@ function Tarefas() {
 		})]
 	});
 }
-var revenueData = [
-	{
-		month: "Jan",
-		receita: 12e4,
-		despesa: 45e3
-	},
-	{
-		month: "Fev",
-		receita: 18e4,
-		despesa: 55e3
-	},
-	{
-		month: "Mar",
-		receita: 15e4,
-		despesa: 48e3
-	},
-	{
-		month: "Abr",
-		receita: 24e4,
-		despesa: 7e4
-	},
-	{
-		month: "Mai",
-		receita: 32e4,
-		despesa: 9e4
-	},
-	{
-		month: "Jun",
-		receita: 45e4,
-		despesa: 11e4
-	}
-];
-var sourceData = [
-	{
-		name: "Instagram",
-		value: 400,
-		color: "hsl(var(--chart-1))"
-	},
-	{
-		name: "Indicação",
-		value: 300,
-		color: "hsl(var(--chart-2))"
-	},
-	{
-		name: "Google Ads",
-		value: 200,
-		color: "hsl(var(--chart-3))"
-	},
-	{
-		name: "Eventos",
-		value: 150,
-		color: "hsl(var(--chart-4))"
-	}
-];
-var chartConfig = {
-	receita: {
-		label: "Receita",
-		color: "hsl(var(--primary))"
-	},
-	despesa: {
-		label: "Despesa",
-		color: "hsl(var(--destructive))"
-	},
-	instagram: {
-		label: "Instagram",
-		color: "hsl(var(--chart-1))"
-	},
-	indicacao: {
-		label: "Indicação",
-		color: "hsl(var(--chart-2))"
-	},
-	google: {
-		label: "Google Ads",
-		color: "hsl(var(--chart-3))"
-	},
-	eventos: {
-		label: "Eventos",
-		color: "hsl(var(--chart-4))"
-	}
-};
-function Relatorios() {
+function DateRangeFilter({ date: date$4, setDate, className }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: cn("grid gap-2", className),
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				id: "date",
+				variant: "outline",
+				className: cn("w-[300px] justify-start text-left font-normal bg-background", !date$4 && "text-muted-foreground"),
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "mr-2 h-4 w-4" }), date$4?.from ? date$4.to ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+					format(date$4.from, "dd/MM/y", { locale: ptBR }),
+					" -",
+					" ",
+					format(date$4.to, "dd/MM/y", { locale: ptBR })
+				] }) : format(date$4.from, "dd/MM/y", { locale: ptBR }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Selecione o período" })]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
+			className: "w-auto p-0",
+			align: "start",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar$1, {
+				initialFocus: true,
+				mode: "range",
+				defaultMonth: date$4?.from,
+				selected: date$4,
+				onSelect: setDate,
+				numberOfMonths: 2,
+				locale: ptBR
+			})
+		})] })
+	});
+}
+function ReportSummary({ data }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-8",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex flex-col gap-2",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-				className: "text-3xl font-bold font-display text-primary",
-				children: "Relatórios e Análises"
+		className: "grid gap-4 md:grid-cols-2 lg:grid-cols-4",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-row items-center justify-between space-y-0 pb-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+					className: "text-sm font-medium text-muted-foreground",
+					children: "Receita Total"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-4 w-4 text-primary" })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "text-2xl font-bold font-display text-primary",
+				children: new Intl.NumberFormat("pt-BR", {
+					style: "currency",
+					currency: "BRL",
+					maximumFractionDigits: 0
+				}).format(data.totalRevenue)
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground",
-				children: "Visão detalhada do desempenho do seu negócio."
-			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "grid gap-6 md:grid-cols-2",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				className: "shadow-sm",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-					className: "font-display text-primary",
-					children: "Receita vs Despesas"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Comparativo financeiro mensal do último semestre." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-					config: chartConfig,
-					className: "h-[300px] w-full",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
-						data: revenueData,
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
-								vertical: false,
-								strokeDasharray: "3 3",
-								className: "stroke-muted"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
-								dataKey: "month",
-								tickLine: false,
-								axisLine: false,
-								className: "text-xs"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
-								tickLine: false,
-								axisLine: false,
-								className: "text-xs",
-								tickFormatter: (val) => `R$${val / 1e3}k`
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
-								dataKey: "receita",
-								fill: "var(--color-receita)",
-								radius: [
-									4,
-									4,
-									0,
-									0
-								]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
-								dataKey: "despesa",
-								fill: "var(--color-despesa)",
-								radius: [
-									4,
-									4,
-									0,
-									0
-								]
-							})
+				className: "text-xs text-muted-foreground mt-1",
+				children: "No período selecionado"
+			})] })] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-row items-center justify-between space-y-0 pb-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+					className: "text-sm font-medium text-muted-foreground",
+					children: "Vendas Realizadas"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShoppingCart, { className: "h-4 w-4 text-blue-500" })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "text-2xl font-bold font-display",
+				children: data.totalSales
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-xs text-muted-foreground mt-1",
+				children: "Total de lotes vendidos"
+			})] })] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-row items-center justify-between space-y-0 pb-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+					className: "text-sm font-medium text-muted-foreground",
+					children: "Ticket Médio"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-4 w-4 text-green-500" })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "text-2xl font-bold font-display",
+				children: new Intl.NumberFormat("pt-BR", {
+					style: "currency",
+					currency: "BRL",
+					maximumFractionDigits: 0
+				}).format(data.avgTicket)
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-xs text-muted-foreground mt-1",
+				children: "Média por venda"
+			})] })] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-row items-center justify-between space-y-0 pb-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+					className: "text-sm font-medium text-muted-foreground",
+					children: "Taxa de Conversão"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Percent, { className: "h-4 w-4 text-orange-500" })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "text-2xl font-bold font-display",
+				children: [data.conversionRate.toFixed(1), "%"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+				className: "text-xs text-muted-foreground mt-1",
+				children: [
+					data.totalCustomers,
+					" clientes de ",
+					data.totalLeads,
+					" leads"
+				]
+			})] })] })
+		]
+	});
+}
+var chartConfig$1 = { value: {
+	label: "Vendas (R$)",
+	color: "hsl(var(--primary))"
+} };
+function SalesEvolutionChart({ data }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "col-span-1 lg:col-span-2 shadow-sm",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Evolução de Vendas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Volume de vendas mensal no período selecionado." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+			config: chartConfig$1,
+			className: "h-[300px] w-full",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
+				data,
+				margin: {
+					top: 10,
+					right: 10,
+					left: 0,
+					bottom: 0
+				},
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+						id: "fillSales",
+						x1: "0",
+						y1: "0",
+						x2: "0",
+						y2: "1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "5%",
+							stopColor: "hsl(var(--primary))",
+							stopOpacity: .8
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "95%",
+							stopColor: "hsl(var(--primary))",
+							stopOpacity: .1
+						})]
+					}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+						vertical: false,
+						strokeDasharray: "3 3",
+						className: "stroke-muted/50"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+						dataKey: "name",
+						tickLine: false,
+						axisLine: false,
+						tickMargin: 8,
+						className: "text-xs text-muted-foreground"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+						tickLine: false,
+						axisLine: false,
+						className: "text-xs text-muted-foreground",
+						tickFormatter: (value) => `R$${value / 1e3}k`
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
+						type: "monotone",
+						dataKey: "value",
+						stroke: "hsl(var(--primary))",
+						fillOpacity: 1,
+						fill: "url(#fillSales)",
+						strokeWidth: 2
+					})
+				]
+			})
+		}) })]
+	});
+}
+var chartConfig = { average: {
+	label: "Ticket Médio (R$)",
+	color: "hsl(var(--secondary))"
+} };
+function AverageTicketChart({ data }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "col-span-1 shadow-sm",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Ticket Médio Mensal" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Variação do valor médio por venda." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+			config: chartConfig,
+			className: "h-[300px] w-full",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
+				data,
+				margin: {
+					top: 10,
+					right: 10,
+					left: 0,
+					bottom: 0
+				},
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+						vertical: false,
+						strokeDasharray: "3 3",
+						className: "stroke-muted/50"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+						dataKey: "name",
+						tickLine: false,
+						axisLine: false,
+						tickMargin: 8,
+						className: "text-xs text-muted-foreground"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+						tickLine: false,
+						axisLine: false,
+						className: "text-xs text-muted-foreground",
+						tickFormatter: (value) => `R$${value / 1e3}k`
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
+						dataKey: "average",
+						fill: "hsl(var(--secondary))",
+						radius: [
+							4,
+							4,
+							0,
+							0
 						]
 					})
-				}) })]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				className: "shadow-sm",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-					className: "font-display text-primary",
-					children: "Origem dos Leads"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Principais canais de aquisição de clientes." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-					config: chartConfig,
-					className: "h-[300px] w-full mx-auto",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PieChart, { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pie, {
-							data: sourceData,
-							dataKey: "value",
-							nameKey: "name",
-							cx: "50%",
-							cy: "50%",
-							innerRadius: 60,
-							outerRadius: 100,
-							paddingAngle: 2,
-							children: sourceData.map((entry, index$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
-								fill: entry.color,
-								strokeWidth: 0
-							}, `cell-${index$1}`))
+				]
+			})
+		}) })]
+	});
+}
+var COLORS = [
+	"hsl(var(--chart-1))",
+	"hsl(var(--chart-2))",
+	"hsl(var(--chart-3))",
+	"hsl(var(--chart-4))",
+	"hsl(var(--chart-5))"
+];
+function BreedDistributionChart({ data }) {
+	const chartConfig$3 = data.reduce((acc, curr, index$1) => {
+		acc[curr.name] = {
+			label: curr.name,
+			color: COLORS[index$1 % COLORS.length]
+		};
+		return acc;
+	}, {});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "col-span-1 shadow-sm h-full",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Vendas por Raça" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Distribuição do volume de vendas por raça." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: data.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+			config: chartConfig$3,
+			className: "h-[300px] w-full mx-auto",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PieChart, { children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pie, {
+					data,
+					dataKey: "value",
+					nameKey: "name",
+					cx: "50%",
+					cy: "50%",
+					innerRadius: 60,
+					outerRadius: 100,
+					paddingAngle: 2,
+					children: data.map((entry, index$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
+						fill: COLORS[index$1 % COLORS.length],
+						strokeWidth: 0
+					}, `cell-${index$1}`))
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, { hideLabel: true }) }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, {
+					content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}),
+					className: "flex-wrap gap-2 text-xs"
+				})
+			] })
+		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "h-[300px] flex items-center justify-center text-muted-foreground text-sm",
+			children: "Sem dados de raça disponíveis."
+		}) })]
+	});
+}
+function TopCustomersList({ data }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "col-span-1 lg:col-span-2 shadow-sm",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Top 10 Clientes" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Clientes com maior volume de investimento no período." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+			className: "bg-muted/30",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Cliente" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-center",
+					children: "Compras"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-right",
+					children: "Total Investido"
+				})
+			]
+		}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: data.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+			colSpan: 3,
+			className: "text-center text-muted-foreground h-24",
+			children: "Nenhum dado encontrado."
+		}) }) : data.map((customer, index$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+			className: "hover:bg-muted/30",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+					className: "font-medium flex items-center gap-3",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-muted-foreground font-mono text-xs w-4",
+							children: index$1 + 1
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, { hideLabel: true }) }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) })
-					] })
-				}) })]
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
+							className: "h-8 w-8 border border-muted",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${customer.id}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, {
+								className: "text-xs bg-primary/10 text-primary",
+								children: customer.name.substring(0, 2).toUpperCase()
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "truncate max-w-[150px] sm:max-w-none",
+							children: customer.name
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					className: "text-center",
+					children: customer.count
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					className: "text-right font-semibold text-primary",
+					children: new Intl.NumberFormat("pt-BR", {
+						style: "currency",
+						currency: "BRL",
+						maximumFractionDigits: 0
+					}).format(customer.total)
+				})
+			]
+		}, customer.id)) })] }) })]
+	});
+}
+function SeasonalityAnalysis({ data }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "bg-primary/5 border-primary/20 shadow-sm",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+			className: "flex items-center gap-2 text-primary text-lg",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-5 w-5" }), "Análise de Sazonalidade"]
+		}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+			className: "space-y-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-sm text-foreground/80 leading-relaxed",
+				children: data.analysis
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid grid-cols-2 gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-3 p-3 bg-background rounded-lg border shadow-sm",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "p-2 bg-green-100 text-green-700 rounded-full shrink-0",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-4 w-4" })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "overflow-hidden",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs text-muted-foreground truncate",
+							children: "Melhor Mês"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "font-bold text-lg text-green-700 truncate",
+							children: data.peakMonth
+						})]
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-3 p-3 bg-background rounded-lg border shadow-sm",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "p-2 bg-red-100 text-red-700 rounded-full shrink-0",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleAlert, { className: "h-4 w-4" })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "overflow-hidden",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs text-muted-foreground truncate",
+							children: "Menor Desempenho"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "font-bold text-lg text-red-700 truncate",
+							children: data.lowMonth
+						})]
+					})]
+				})]
 			})]
 		})]
+	});
+}
+const reportsService = { async getReportData(startDate, endDate) {
+	const startStr = startDate.toISOString().split("T")[0];
+	const endStr = endDate.toISOString().split("T")[0];
+	const { data: purchases, error: purchError } = await supabase.from("purchases").select("*, contacts(name)").gte("date", startStr).lte("date", endStr);
+	if (purchError) throw purchError;
+	const { count: totalContacts, error: countError } = await supabase.from("contacts").select("id", {
+		count: "exact",
+		head: true
+	});
+	if (countError) throw countError;
+	const salesMap = /* @__PURE__ */ new Map();
+	eachMonthOfInterval({
+		start: startDate,
+		end: endDate
+	}).forEach((date$4) => {
+		const key = format(date$4, "MMM/yy", { locale: ptBR });
+		const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+		salesMap.set(formattedKey, {
+			value: 0,
+			count: 0
+		});
+	});
+	purchases?.forEach((p$1) => {
+		const date$4 = parseISO(p$1.date);
+		if (date$4 >= startDate && date$4 <= endDate) {
+			const key = format(date$4, "MMM/yy", { locale: ptBR });
+			const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+			const current = salesMap.get(formattedKey) || {
+				value: 0,
+				count: 0
+			};
+			salesMap.set(formattedKey, {
+				value: current.value + Number(p$1.value),
+				count: current.count + 1
+			});
+		}
+	});
+	const salesByMonth = Array.from(salesMap.entries()).map(([name, data]) => ({
+		name,
+		value: data.value,
+		count: data.count,
+		average: data.count > 0 ? data.value / data.count : 0
+	}));
+	const sortedByValue = [...salesByMonth].sort((a$2, b$1) => b$1.value - a$2.value);
+	const peakMonth = sortedByValue[0]?.name || "-";
+	const lowMonth = sortedByValue[sortedByValue.length - 1]?.name || "-";
+	const analysis = `O período apresentou pico de vendas em ${peakMonth}, enquanto ${lowMonth} teve o menor desempenho.`;
+	const customerMap = /* @__PURE__ */ new Map();
+	purchases?.forEach((p$1) => {
+		if (p$1.contact_id) {
+			const current = customerMap.get(p$1.contact_id) || {
+				name: p$1.contacts?.name || "Desconhecido",
+				total: 0,
+				count: 0
+			};
+			customerMap.set(p$1.contact_id, {
+				name: current.name,
+				total: current.total + Number(p$1.value),
+				count: current.count + 1
+			});
+		}
+	});
+	const topCustomers = Array.from(customerMap.entries()).map(([id, data]) => ({
+		id,
+		...data
+	})).sort((a$2, b$1) => b$1.total - a$2.total).slice(0, 10);
+	const breedMap = /* @__PURE__ */ new Map();
+	purchases?.forEach((p$1) => {
+		const desc = (p$1.description || "").toLowerCase();
+		let breed = "Outros";
+		if (desc.includes("lusitano")) breed = "Lusitano";
+		else if (desc.includes("quarto de milha")) breed = "Quarto de Milha";
+		else if (desc.includes("árabe") || desc.includes("arabe")) breed = "Árabe";
+		else if (desc.includes("mangalarga")) breed = "Mangalarga";
+		else if (desc.includes("crioulo")) breed = "Crioulo";
+		else if (desc.includes("campolina")) breed = "Campolina";
+		else if (desc.includes("holandês")) breed = "Holandês";
+		else if (desc.includes("pampa")) breed = "Pampa";
+		breedMap.set(breed, (breedMap.get(breed) || 0) + Number(p$1.value));
+	});
+	const salesByBreed = Array.from(breedMap.entries()).map(([name, value]) => ({
+		name,
+		value
+	})).sort((a$2, b$1) => b$1.value - a$2.value);
+	const totalRevenue = purchases?.reduce((acc, p$1) => acc + Number(p$1.value), 0) || 0;
+	const totalSales = purchases?.length || 0;
+	const avgTicket = totalSales > 0 ? totalRevenue / totalSales : 0;
+	const uniqueCustomers = customerMap.size;
+	const conversionRate = totalContacts ? uniqueCustomers / totalContacts * 100 : 0;
+	return {
+		salesByMonth,
+		topCustomers,
+		salesByBreed,
+		metrics: {
+			totalRevenue,
+			totalSales,
+			avgTicket,
+			totalLeads: totalContacts || 0,
+			totalCustomers: uniqueCustomers,
+			conversionRate
+		},
+		seasonality: {
+			peakMonth,
+			lowMonth,
+			analysis
+		}
+	};
+} };
+function Relatorios() {
+	const [date$4, setDate] = (0, import_react.useState)({
+		from: subMonths(/* @__PURE__ */ new Date(), 12),
+		to: /* @__PURE__ */ new Date()
+	});
+	const [data, setData] = (0, import_react.useState)(null);
+	const [loading, setLoading] = (0, import_react.useState)(true);
+	const { toast: toast$2 } = useToast();
+	const fetchReports = async () => {
+		if (!date$4?.from || !date$4?.to) return;
+		setLoading(true);
+		try {
+			setData(await reportsService.getReportData(date$4.from, date$4.to));
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Falha ao carregar relatório.",
+				variant: "destructive"
+			});
+		} finally {
+			setLoading(false);
+		}
+	};
+	(0, import_react.useEffect)(() => {
+		fetchReports();
+	}, [date$4]);
+	const handleExport = () => {
+		window.print();
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in pb-10",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col md:flex-row md:items-center justify-between gap-4 print:hidden",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+					className: "text-3xl font-bold font-display text-primary",
+					children: "Relatórios e Análises"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground",
+					children: "Acompanhe o desempenho de vendas e indicadores estratégicos."
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col sm:flex-row gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DateRangeFilter, {
+						date: date$4,
+						setDate
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						variant: "outline",
+						onClick: handleExport,
+						className: "gap-2 bg-white",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileDown, { className: "h-4 w-4" }), "Exportar PDF"]
+					})]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "hidden print:block mb-8",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+					className: "text-2xl font-bold text-black",
+					children: "Relatório Gerencial - Milan Horses"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: "text-sm text-gray-500",
+					children: [
+						"Período: ",
+						date$4?.from?.toLocaleDateString(),
+						" a",
+						" ",
+						date$4?.to?.toLocaleDateString()
+					]
+				})]
+			}),
+			loading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex justify-center py-20",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin text-primary" })
+			}) : data ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-6",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReportSummary, { data: data.metrics }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SalesEvolutionChart, { data: data.salesByMonth }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-6 flex flex-col",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SeasonalityAnalysis, { data: data.seasonality }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex-1",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BreedDistributionChart, { data: data.salesByBreed })
+							})]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TopCustomersList, { data: data.topCustomers }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AverageTicketChart, { data: data.salesByMonth })]
+					})
+				]
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "text-center py-20 text-muted-foreground",
+				children: "Selecione um período para visualizar os dados."
+			})
+		]
 	});
 }
 var ROOT_NAME = "AlertDialog";
@@ -79324,4 +79935,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DN80BK2C.js.map
+//# sourceMappingURL=index-cekifI0y.js.map
