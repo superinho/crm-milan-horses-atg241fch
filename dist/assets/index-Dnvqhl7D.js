@@ -75108,10 +75108,23 @@ const campaignsService = {
         sends:campaign_sends(*)
       `).order("created_at", { ascending: false });
 		if (error) throw error;
-		return data;
+		return (data || []).map((campaign) => ({
+			...campaign,
+			objective: campaign.description || campaign.objective || null
+		}));
 	},
 	async createCampaign(campaign, sends) {
-		const { data: newCampaign, error: campaignError } = await supabase.from("campaigns").insert(campaign).select().single();
+		const dbCampaign = {
+			name: campaign.name,
+			description: campaign.objective || campaign.description,
+			start_date: campaign.start_date,
+			end_date: campaign.end_date,
+			status: campaign.status || "Agendada",
+			audience_filters: campaign.audience_filters,
+			channels: campaign.channels,
+			company_id: campaign.company_id
+		};
+		const { data: newCampaign, error: campaignError } = await supabase.from("campaigns").insert(dbCampaign).select().single();
 		if (campaignError) throw campaignError;
 		if (sends.length > 0) {
 			const sendsToInsert = sends.map((send) => ({
@@ -75128,7 +75141,10 @@ const campaignsService = {
 				throw sendsError;
 			}
 		}
-		return newCampaign;
+		return {
+			...newCampaign,
+			objective: newCampaign.description
+		};
 	},
 	async getCampaignById(id) {
 		const { data, error } = await supabase.from("campaigns").select(`
@@ -75136,7 +75152,10 @@ const campaignsService = {
         sends:campaign_sends(*)
       `).eq("id", id).single();
 		if (error) throw error;
-		return data;
+		return {
+			...data,
+			objective: data.description || data.objective || null
+		};
 	}
 };
 function DatePicker({ date: date$4, setDate, className, placeholder = "Selecione uma data" }) {
@@ -78568,4 +78587,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DK9NQokO.js.map
+//# sourceMappingURL=index-Dnvqhl7D.js.map
