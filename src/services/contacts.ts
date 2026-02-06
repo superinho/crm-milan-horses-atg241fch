@@ -75,6 +75,11 @@ type GetContactsParams = {
   sortDirection?: 'asc' | 'desc'
 }
 
+type AudienceFilterParams = {
+  tags?: string[]
+  segments?: string[]
+}
+
 export const contactsService = {
   async getContacts({
     page = 1,
@@ -171,6 +176,54 @@ export const contactsService = {
     }))
 
     return { data: formattedData as Contact[], error, count }
+  },
+
+  async getAudienceCount({ tags, segments }: AudienceFilterParams) {
+    // Start with all contacts
+    let query = supabase
+      .from('contacts')
+      .select('id', { count: 'exact', head: true })
+
+    // Apply Segment Filter
+    if (segments && segments.length > 0) {
+      // Since we can have multiple segments, we need contacts that match ANY of the segments
+      const { data: segmentedContacts, error: segmentError } = await supabase
+        .from('contact_segmentation_view')
+        .select('id')
+        .in('segment', segments)
+
+      if (segmentError) throw segmentError
+
+      const ids = segmentedContacts?.map((c) => c.id) || []
+
+      if (ids.length === 0) {
+        return 0
+      }
+
+      query = query.in('id', ids)
+    }
+
+    // Apply Tag Filter
+    if (tags && tags.length > 0) {
+      const { data: taggedContactIds, error: tagError } = await supabase
+        .from('contact_tags')
+        .select('contact_id, tags!inner(name)')
+        .in('tags.name', tags)
+
+      if (tagError) throw tagError
+
+      const ids = taggedContactIds?.map((tc) => tc.contact_id) || []
+
+      if (ids.length === 0) {
+        return 0
+      }
+
+      query = query.in('id', ids)
+    }
+
+    const { count, error } = await query
+    if (error) throw error
+    return count || 0
   },
 
   async getSegmentationStats() {

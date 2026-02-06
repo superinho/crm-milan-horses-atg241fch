@@ -18065,7 +18065,7 @@ function handleAndDispatchCustomEvent$1(name, handler, detail, { discrete }) {
 	if (discrete) dispatchDiscreteCustomEvent(target, event);
 	else target.dispatchEvent(event);
 }
-var Root$13 = DismissableLayer;
+var Root$12 = DismissableLayer;
 var Branch = DismissableLayerBranch;
 var useLayoutEffect2 = globalThis?.document ? import_react.useLayoutEffect : () => {};
 var import_react_dom$5 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
@@ -18256,7 +18256,7 @@ var VisuallyHidden = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 VisuallyHidden.displayName = NAME$4;
-var Root$12 = VisuallyHidden;
+var Root$11 = VisuallyHidden;
 var import_react_dom$4 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var PROVIDER_NAME$1 = "ToastProvider";
 var [Collection$4, useCollection$4, createCollectionScope$4] = createCollection("Toast");
@@ -18555,7 +18555,7 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 		onClose: handleClose,
 		children: import_react_dom$4.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$4.ItemSlot, {
 			scope: __scopeToast,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$13, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$12, {
 				asChild: true,
 				onEscapeKeyDown: composeEventHandlers(onEscapeKeyDown, () => {
 					if (!context.isFocusedToastEscapeKeyDownRef.current) handleClose();
@@ -19145,37 +19145,6 @@ var CircleCheck = createLucideIcon("circle-check", [["circle", {
 	d: "m9 12 2 2 4-4",
 	key: "dzmm74"
 }]]);
-var CirclePause = createLucideIcon("circle-pause", [
-	["circle", {
-		cx: "12",
-		cy: "12",
-		r: "10",
-		key: "1mglay"
-	}],
-	["line", {
-		x1: "10",
-		x2: "10",
-		y1: "15",
-		y2: "9",
-		key: "c1nkhi"
-	}],
-	["line", {
-		x1: "14",
-		x2: "14",
-		y1: "15",
-		y2: "9",
-		key: "h65svq"
-	}]
-]);
-var CirclePlay = createLucideIcon("circle-play", [["path", {
-	d: "M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z",
-	key: "kmsa83"
-}], ["circle", {
-	cx: "12",
-	cy: "12",
-	r: "10",
-	key: "1mglay"
-}]]);
 var Circle = createLucideIcon("circle", [["circle", {
 	cx: "12",
 	cy: "12",
@@ -19571,6 +19540,20 @@ var RemoveFormatting = createLucideIcon("remove-formatting", [
 	["path", {
 		d: "m20 15-5 5",
 		key: "11p7ol"
+	}]
+]);
+var Save = createLucideIcon("save", [
+	["path", {
+		d: "M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z",
+		key: "1c8476"
+	}],
+	["path", {
+		d: "M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7",
+		key: "1ydtos"
+	}],
+	["path", {
+		d: "M7 3v4a1 1 0 0 0 1 1h7",
+		key: "t51u73"
 	}]
 ]);
 var Search = createLucideIcon("search", [["path", {
@@ -20068,12 +20051,12 @@ var lengthUnitRegex = /\d+(%|px|r?em|[sdl]?v([hwib]|min|max)|pt|pc|in|cm|mm|cap|
 var colorFunctionRegex = /^(rgba?|hsla?|hwb|(ok)?(lab|lch))\(.+\)$/;
 var shadowRegex = /^(inset_)?-?((\d+)?\.?(\d+)[a-z]+|0)_-?((\d+)?\.?(\d+)[a-z]+|0)/;
 var imageRegex = /^(url|image|image-set|cross-fade|element|(repeating-)?(linear|radial|conic)-gradient)\(.+\)$/;
-var isLength$4 = (value) => isNumber$4(value) || stringLengths.has(value) || fractionRegex.test(value);
+var isLength$4 = (value) => isNumber$3(value) || stringLengths.has(value) || fractionRegex.test(value);
 var isArbitraryLength = (value) => getIsArbitraryValue(value, "length", isLengthOnly);
-var isNumber$4 = (value) => Boolean(value) && !Number.isNaN(Number(value));
-var isArbitraryNumber = (value) => getIsArbitraryValue(value, "number", isNumber$4);
+var isNumber$3 = (value) => Boolean(value) && !Number.isNaN(Number(value));
+var isArbitraryNumber = (value) => getIsArbitraryValue(value, "number", isNumber$3);
 var isInteger = (value) => Boolean(value) && Number.isInteger(Number(value));
-var isPercent$1 = (value) => value.endsWith("%") && isNumber$4(value.slice(0, -1));
+var isPercent$1 = (value) => value.endsWith("%") && isNumber$3(value.slice(0, -1));
 var isArbitraryValue = (value) => arbitraryValueRegex.test(value);
 var isTshirtSize = (value) => tshirtUnitRegex.test(value);
 var sizeLabels = /* @__PURE__ */ new Set([
@@ -20150,7 +20133,7 @@ var getDefaultConfig = () => {
 	];
 	const getNumberWithAutoAndArbitrary = () => [
 		"auto",
-		isNumber$4,
+		isNumber$3,
 		isArbitraryValue
 	];
 	const getPositions = () => [
@@ -20213,7 +20196,7 @@ var getDefaultConfig = () => {
 		"right",
 		"column"
 	];
-	const getNumberAndArbitrary = () => [isNumber$4, isArbitraryValue];
+	const getNumberAndArbitrary = () => [isNumber$3, isArbitraryValue];
 	return {
 		cacheSize: 500,
 		separator: ":",
@@ -20602,7 +20585,7 @@ var getDefaultConfig = () => {
 			] }],
 			"line-clamp": [{ "line-clamp": [
 				"none",
-				isNumber$4,
+				isNumber$3,
 				isArbitraryNumber
 			] }],
 			leading: [{ leading: [
@@ -21577,10 +21560,10 @@ var Observer = class {
 			if (typeof id !== "string" && typeof id !== "number") return { unwrap };
 			else return Object.assign(id, { unwrap });
 		};
-		this.custom = (jsx$35, data) => {
+		this.custom = (jsx$34, data) => {
 			const id = (data == null ? void 0 : data.id) || toastsCounter++;
 			this.create({
-				jsx: jsx$35(id),
+				jsx: jsx$34(id),
 				id,
 				...data
 			});
@@ -23716,7 +23699,7 @@ var Arrow$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Arrow$1.displayName = NAME$3;
-var Root$11 = Arrow$1;
+var Root$10 = Arrow$1;
 function useSize(element) {
 	const [size$3, setSize] = import_react.useState(void 0);
 	useLayoutEffect2(() => {
@@ -23933,7 +23916,7 @@ var PopperArrow = import_react.forwardRef(function PopperArrow2(props, forwarded
 			}[contentContext.placedSide],
 			visibility: contentContext.shouldHideArrow ? "hidden" : void 0
 		},
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$11, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$10, {
 			...arrowProps,
 			ref: forwardedRef,
 			style: {
@@ -24315,7 +24298,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Slottable$1, { children }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(VisuallyHiddenContentContextProvider, {
 				scope: __scopeTooltip,
 				isInside: true,
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$12, {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$11, {
 					id: context.contentId,
 					role: "tooltip",
 					children: ariaLabel || children
@@ -24687,15 +24670,15 @@ Separator$3.displayName = NAME$2;
 function isValidOrientation(orientation) {
 	return ORIENTATIONS.includes(orientation);
 }
-var Root$10 = Separator$3;
-var Separator = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$10, {
+var Root$9 = Separator$3;
+var Separator = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
 	ref,
 	decorative,
 	orientation,
 	className: cn("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className),
 	...props
 }));
-Separator.displayName = Root$10.displayName;
+Separator.displayName = Root$9.displayName;
 var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
 var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
 var EVENT_OPTIONS$1 = {
@@ -25893,7 +25876,7 @@ var DescriptionWarning$1 = ({ contentRef, descriptionId }) => {
 	]);
 	return null;
 };
-var Root$9 = Dialog$1;
+var Root$8 = Dialog$1;
 var Trigger$5 = DialogTrigger$1;
 var Portal$4 = DialogPortal$1;
 var Overlay = DialogOverlay$1;
@@ -25901,7 +25884,7 @@ var Content$2 = DialogContent$1;
 var Title = DialogTitle$1;
 var Description = DialogDescription$1;
 var Close = DialogClose$1;
-var Sheet = Root$9;
+var Sheet = Root$8;
 var SheetTrigger = Trigger$5;
 var SheetPortal = Portal$4;
 var SheetOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
@@ -26405,7 +26388,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$31({ inst: {
+			cachedValue = useState$35({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26419,7 +26402,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$27(function() {
+			useEffect$29(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26442,7 +26425,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$67 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$31 = React$67.useState, useEffect$27 = React$67.useEffect, useLayoutEffect$2 = React$67.useLayoutEffect, useDebugValue = React$67.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$67 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$35 = React$67.useState, useEffect$29 = React$67.useEffect, useLayoutEffect$2 = React$67.useLayoutEffect, useDebugValue = React$67.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$67.useSyncExternalStore ? React$67.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -26549,15 +26532,15 @@ function useImageLoadingStatus(src, { referrerPolicy, crossOrigin }) {
 	]);
 	return loadingStatus;
 }
-var Root$8 = Avatar$1;
+var Root$7 = Avatar$1;
 var Image = AvatarImage$1;
 var Fallback = AvatarFallback$1;
-var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
+var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
 	ref,
 	className: cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className),
 	...props
 }));
-Avatar.displayName = Root$8.displayName;
+Avatar.displayName = Root$7.displayName;
 var AvatarImage = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Image, {
 	ref,
 	className: cn("aspect-square h-full w-full", className),
@@ -26755,7 +26738,7 @@ function focusFirst$1(candidates, preventScroll = false) {
 function wrapArray$2(array$1, startIndex) {
 	return array$1.map((_$1, index$1) => array$1[(startIndex + index$1) % array$1.length]);
 }
-var Root$7 = RovingFocusGroup;
+var Root$6 = RovingFocusGroup;
 var Item$2 = RovingFocusGroupItem;
 var SELECTION_KEYS$1 = ["Enter", " "];
 var FIRST_KEYS = [
@@ -26997,7 +26980,7 @@ var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
 					onFocusOutside,
 					onInteractOutside,
 					onDismiss,
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
 						asChild: true,
 						...rovingFocusGroupScope,
 						dir: rootContext.dir,
@@ -27696,7 +27679,7 @@ var DropdownMenuRadioItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 DropdownMenuRadioItem$1.displayName = RADIO_ITEM_NAME;
-var INDICATOR_NAME$2 = "DropdownMenuItemIndicator";
+var INDICATOR_NAME$1 = "DropdownMenuItemIndicator";
 var DropdownMenuItemIndicator = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...itemIndicatorProps } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
@@ -27706,7 +27689,7 @@ var DropdownMenuItemIndicator = import_react.forwardRef((props, forwardedRef) =>
 		ref: forwardedRef
 	});
 });
-DropdownMenuItemIndicator.displayName = INDICATOR_NAME$2;
+DropdownMenuItemIndicator.displayName = INDICATOR_NAME$1;
 var SEPARATOR_NAME$1 = "DropdownMenuSeparator";
 var DropdownMenuSeparator$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...separatorProps } = props;
@@ -36391,15 +36374,15 @@ var require_react_is$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 var require_isNumber = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseGetTag$5 = require__baseGetTag(), isObjectLike$6 = require_isObjectLike();
 	var numberTag$2 = "[object Number]";
-	function isNumber$3(value) {
+	function isNumber$2(value) {
 		return typeof value == "number" || isObjectLike$6(value) && baseGetTag$5(value) == numberTag$2;
 	}
-	module.exports = isNumber$3;
+	module.exports = isNumber$2;
 }));
 var require_isNaN = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var isNumber$2 = require_isNumber();
+	var isNumber$1 = require_isNumber();
 	function isNaN$1(value) {
-		return isNumber$2(value) && value != +value;
+		return isNumber$1(value) && value != +value;
 	}
 	module.exports = isNaN$1;
 }));
@@ -36416,14 +36399,14 @@ var mathSign = function mathSign$1(value) {
 var isPercent = function isPercent$2(value) {
 	return (0, import_isString$2.default)(value) && value.indexOf("%") === value.length - 1;
 };
-var isNumber$1 = function isNumber$5(value) {
+var isNumber = function isNumber$4(value) {
 	return (0, import_isNumber.default)(value) && !(0, import_isNaN$2.default)(value);
 };
 var isNullish = function isNullish$1(value) {
 	return (0, import_isNil$11.default)(value);
 };
 var isNumOrStr = function isNumOrStr$1(value) {
-	return isNumber$1(value) || (0, import_isString$2.default)(value);
+	return isNumber(value) || (0, import_isString$2.default)(value);
 };
 var idCounter = 0;
 var uniqueId = function uniqueId$1(prefix$2) {
@@ -36433,7 +36416,7 @@ var uniqueId = function uniqueId$1(prefix$2) {
 var getPercentValue = function getPercentValue$1(percent, totalValue) {
 	var defaultValue = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : 0;
 	var validate = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : false;
-	if (!isNumber$1(percent) && !(0, import_isString$2.default)(percent)) return defaultValue;
+	if (!isNumber(percent) && !(0, import_isString$2.default)(percent)) return defaultValue;
 	var value;
 	if (isPercent(percent)) {
 		var index$1 = percent.indexOf("%");
@@ -36458,7 +36441,7 @@ var hasDuplicate = function hasDuplicate$1(ary) {
 	return false;
 };
 var interpolateNumber = function interpolateNumber$2(numberA, numberB) {
-	if (isNumber$1(numberA) && isNumber$1(numberB)) return function(t$1) {
+	if (isNumber(numberA) && isNumber(numberB)) return function(t$1) {
 		return numberA + t$1 * (numberB - numberA);
 	};
 	return function() {
@@ -36472,7 +36455,7 @@ function findEntryInArray(ary, specifiedKey, specifiedValue) {
 	});
 }
 var compareValues = function compareValues$1(a$2, b$1) {
-	if (isNumber$1(a$2) && isNumber$1(b$1)) return a$2 - b$1;
+	if (isNumber(a$2) && isNumber(b$1)) return a$2 - b$1;
 	if ((0, import_isString$2.default)(a$2) && (0, import_isString$2.default)(b$1)) return a$2.localeCompare(b$1);
 	if (a$2 instanceof Date && b$1 instanceof Date) return a$2.getTime() - b$1.getTime();
 	return String(a$2).localeCompare(String(b$1));
@@ -37089,7 +37072,7 @@ function findChildByType(children, type) {
 var validateWidthHeight = function validateWidthHeight$1(el) {
 	if (!el || !el.props) return false;
 	var _el$props = el.props, width = _el$props.width, height = _el$props.height;
-	if (!isNumber$1(width) || width <= 0 || !isNumber$1(height) || height <= 0) return false;
+	if (!isNumber(width) || width <= 0 || !isNumber(height) || height <= 0) return false;
 	return true;
 };
 var SVG_TAGS = [
@@ -39683,7 +39666,7 @@ var Legend = /* @__PURE__ */ function(_PureComponent) {
 		key: "getWithHeight",
 		value: function getWithHeight(item, chartWidth) {
 			var layout = _objectSpread$36(_objectSpread$36({}, this.defaultProps), item.props).layout;
-			if (layout === "vertical" && isNumber$1(item.props.height)) return { height: item.props.height };
+			if (layout === "vertical" && isNumber(item.props.height)) return { height: item.props.height };
 			if (layout === "horizontal") return { width: item.props.width || chartWidth };
 			return null;
 		}
@@ -40155,11 +40138,11 @@ var CSS_CLASS_PREFIX = "recharts-tooltip-wrapper";
 var TOOLTIP_HIDDEN = { visibility: "hidden" };
 function getTooltipCSSClassName(_ref) {
 	var coordinate = _ref.coordinate, translateX = _ref.translateX, translateY = _ref.translateY;
-	return clsx_default(CSS_CLASS_PREFIX, _defineProperty$39(_defineProperty$39(_defineProperty$39(_defineProperty$39({}, "".concat(CSS_CLASS_PREFIX, "-right"), isNumber$1(translateX) && coordinate && isNumber$1(coordinate.x) && translateX >= coordinate.x), "".concat(CSS_CLASS_PREFIX, "-left"), isNumber$1(translateX) && coordinate && isNumber$1(coordinate.x) && translateX < coordinate.x), "".concat(CSS_CLASS_PREFIX, "-bottom"), isNumber$1(translateY) && coordinate && isNumber$1(coordinate.y) && translateY >= coordinate.y), "".concat(CSS_CLASS_PREFIX, "-top"), isNumber$1(translateY) && coordinate && isNumber$1(coordinate.y) && translateY < coordinate.y));
+	return clsx_default(CSS_CLASS_PREFIX, _defineProperty$39(_defineProperty$39(_defineProperty$39(_defineProperty$39({}, "".concat(CSS_CLASS_PREFIX, "-right"), isNumber(translateX) && coordinate && isNumber(coordinate.x) && translateX >= coordinate.x), "".concat(CSS_CLASS_PREFIX, "-left"), isNumber(translateX) && coordinate && isNumber(coordinate.x) && translateX < coordinate.x), "".concat(CSS_CLASS_PREFIX, "-bottom"), isNumber(translateY) && coordinate && isNumber(coordinate.y) && translateY >= coordinate.y), "".concat(CSS_CLASS_PREFIX, "-top"), isNumber(translateY) && coordinate && isNumber(coordinate.y) && translateY < coordinate.y));
 }
 function getTooltipTranslateXY(_ref2) {
 	var allowEscapeViewBox = _ref2.allowEscapeViewBox, coordinate = _ref2.coordinate, key = _ref2.key, offsetTopLeft = _ref2.offsetTopLeft, position = _ref2.position, reverseDirection = _ref2.reverseDirection, tooltipDimension = _ref2.tooltipDimension, viewBox = _ref2.viewBox, viewBoxDimension = _ref2.viewBoxDimension;
-	if (position && isNumber$1(position[key])) return position[key];
+	if (position && isNumber(position[key])) return position[key];
 	var negative = coordinate[key] - tooltipDimension - offsetTopLeft;
 	var positive = coordinate[key] + offsetTopLeft;
 	if (allowEscapeViewBox[key]) return reverseDirection[key] ? negative : positive;
@@ -41443,7 +41426,7 @@ var calculateWordWidths = function calculateWordWidths$1(_ref) {
 };
 var calculateWordsByLines = function calculateWordsByLines$1(_ref2, initialWordsWithComputedWith, spaceWidth, lineWidth, scaleToFit) {
 	var maxLines = _ref2.maxLines, children = _ref2.children, style = _ref2.style, breakAll = _ref2.breakAll;
-	var shouldLimitLines = isNumber$1(maxLines);
+	var shouldLimitLines = isNumber(maxLines);
 	var text = children;
 	var calculate = function calculate$1() {
 		return (arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : []).reduce(function(result$1, _ref3) {
@@ -41545,8 +41528,8 @@ var Text = function Text$1(_ref5) {
 	]);
 	var dx = props.dx, dy = props.dy, angle = props.angle, className = props.className, breakAll = props.breakAll, textProps = _objectWithoutProperties$14(props, _excluded2$6);
 	if (!isNumOrStr(propsX) || !isNumOrStr(propsY)) return null;
-	var x$2 = propsX + (isNumber$1(dx) ? dx : 0);
-	var y$1 = propsY + (isNumber$1(dy) ? dy : 0);
+	var x$2 = propsX + (isNumber(dx) ? dx : 0);
+	var y$1 = propsY + (isNumber(dy) ? dy : 0);
 	var startDy;
 	switch (verticalAnchor) {
 		case "start":
@@ -41563,7 +41546,7 @@ var Text = function Text$1(_ref5) {
 	if (scaleToFit) {
 		var lineWidth = wordsByLines[0].width;
 		var width = props.width;
-		transforms.push("scale(".concat((isNumber$1(width) ? width / lineWidth : 1) / lineWidth, ")"));
+		transforms.push("scale(".concat((isNumber(width) ? width / lineWidth : 1) / lineWidth, ")"));
 	}
 	if (angle) transforms.push("rotate(".concat(angle, ", ").concat(x$2, ", ").concat(y$1, ")"));
 	if (transforms.length) textProps.transform = transforms.join(" ");
@@ -46108,7 +46091,7 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
 	});
 	if (type === "number") {
 		var domain = flattenData.filter(function(entry) {
-			return isNumber$1(entry) || parseFloat(entry);
+			return isNumber(entry) || parseFloat(entry);
 		});
 		return domain.length ? [(0, import_min.default)(domain), (0, import_max$1.default)(domain)] : [Infinity, -Infinity];
 	}
@@ -46295,8 +46278,8 @@ var appendOffsetOfLegend = function appendOffsetOfLegend$1(offset$3, _unused, pr
 	if (legendProps) {
 		var _ref4 = legendBox || {}, boxWidth = _ref4.width, boxHeight = _ref4.height;
 		var align = legendProps.align, verticalAlign = legendProps.verticalAlign, layout = legendProps.layout;
-		if ((layout === "vertical" || layout === "horizontal" && verticalAlign === "middle") && align !== "center" && isNumber$1(offset$3[align])) return _objectSpread$29(_objectSpread$29({}, offset$3), {}, _defineProperty$32({}, align, offset$3[align] + (boxWidth || 0)));
-		if ((layout === "horizontal" || layout === "vertical" && align === "center") && verticalAlign !== "middle" && isNumber$1(offset$3[verticalAlign])) return _objectSpread$29(_objectSpread$29({}, offset$3), {}, _defineProperty$32({}, verticalAlign, offset$3[verticalAlign] + (boxHeight || 0)));
+		if ((layout === "vertical" || layout === "horizontal" && verticalAlign === "middle") && align !== "center" && isNumber(offset$3[align])) return _objectSpread$29(_objectSpread$29({}, offset$3), {}, _defineProperty$32({}, align, offset$3[align] + (boxWidth || 0)));
+		if ((layout === "horizontal" || layout === "vertical" && align === "center") && verticalAlign !== "middle" && isNumber(offset$3[verticalAlign])) return _objectSpread$29(_objectSpread$29({}, offset$3), {}, _defineProperty$32({}, verticalAlign, offset$3[verticalAlign] + (boxHeight || 0)));
 	}
 	return offset$3;
 };
@@ -46485,12 +46468,12 @@ var findPositionOfBar = function findPositionOfBar$1(barPosition, child) {
 	return null;
 };
 var truncateByDomain = function truncateByDomain$1(value, domain) {
-	if (!domain || domain.length !== 2 || !isNumber$1(domain[0]) || !isNumber$1(domain[1])) return value;
+	if (!domain || domain.length !== 2 || !isNumber(domain[0]) || !isNumber(domain[1])) return value;
 	var minValue = Math.min(domain[0], domain[1]);
 	var maxValue = Math.max(domain[0], domain[1]);
 	var result = [value[0], value[1]];
-	if (!isNumber$1(value[0]) || value[0] < minValue) result[0] = minValue;
-	if (!isNumber$1(value[1]) || value[1] > maxValue) result[1] = maxValue;
+	if (!isNumber(value[0]) || value[0] < minValue) result[0] = minValue;
+	if (!isNumber(value[1]) || value[1] > maxValue) result[1] = maxValue;
 	if (result[0] > maxValue) result[0] = maxValue;
 	if (result[1] < minValue) result[1] = minValue;
 	return result;
@@ -46648,7 +46631,7 @@ var getStackedDataOfItem = function getStackedDataOfItem$1(item, stackGroups) {
 };
 var getDomainOfSingle = function getDomainOfSingle$1(data) {
 	return data.reduce(function(result, entry) {
-		return [(0, import_min.default)(entry.concat([result[0]]).filter(isNumber$1)), (0, import_max$1.default)(entry.concat([result[1]]).filter(isNumber$1))];
+		return [(0, import_min.default)(entry.concat([result[0]]).filter(isNumber)), (0, import_max$1.default)(entry.concat([result[1]]).filter(isNumber))];
 	}, [Infinity, -Infinity]);
 };
 var getDomainOfStackGroups = function getDomainOfStackGroups$1(stackGroups, startIndex, endIndex) {
@@ -46668,13 +46651,13 @@ var parseSpecifiedDomain = function parseSpecifiedDomain$1(specifiedDomain, data
 	if ((0, import_isFunction$17.default)(specifiedDomain)) return specifiedDomain(dataDomain, allowDataOverflow);
 	if (!Array.isArray(specifiedDomain)) return dataDomain;
 	var domain = [];
-	if (isNumber$1(specifiedDomain[0])) domain[0] = allowDataOverflow ? specifiedDomain[0] : Math.min(specifiedDomain[0], dataDomain[0]);
+	if (isNumber(specifiedDomain[0])) domain[0] = allowDataOverflow ? specifiedDomain[0] : Math.min(specifiedDomain[0], dataDomain[0]);
 	else if (MIN_VALUE_REG.test(specifiedDomain[0])) {
 		var value = +MIN_VALUE_REG.exec(specifiedDomain[0])[1];
 		domain[0] = dataDomain[0] - value;
 	} else if ((0, import_isFunction$17.default)(specifiedDomain[0])) domain[0] = specifiedDomain[0](dataDomain[0]);
 	else domain[0] = dataDomain[0];
-	if (isNumber$1(specifiedDomain[1])) domain[1] = allowDataOverflow ? specifiedDomain[1] : Math.max(specifiedDomain[1], dataDomain[1]);
+	if (isNumber(specifiedDomain[1])) domain[1] = allowDataOverflow ? specifiedDomain[1] : Math.max(specifiedDomain[1], dataDomain[1]);
 	else if (MAX_VALUE_REG.test(specifiedDomain[1])) {
 		var _value = +MAX_VALUE_REG.exec(specifiedDomain[1])[1];
 		domain[1] = dataDomain[1] + _value;
@@ -47252,7 +47235,7 @@ var getAttrsOfCartesianLabel = function getAttrsOfCartesianLabel$1(props) {
 		textAnchor: horizontalEnd,
 		verticalAnchor: verticalEnd
 	}, sizeAttrs);
-	if ((0, import_isObject$1.default)(position) && (isNumber$1(position.x) || isPercent(position.x)) && (isNumber$1(position.y) || isPercent(position.y))) return _objectSpread$27({
+	if ((0, import_isObject$1.default)(position) && (isNumber(position.x) || isPercent(position.x)) && (isNumber(position.y) || isPercent(position.y))) return _objectSpread$27({
 		x: x$2 + getPercentValue(position.x, width),
 		y: y$1 + getPercentValue(position.y, height),
 		textAnchor: "end",
@@ -47266,7 +47249,7 @@ var getAttrsOfCartesianLabel = function getAttrsOfCartesianLabel$1(props) {
 	}, sizeAttrs);
 };
 var isPolar = function isPolar$1(viewBox) {
-	return "cx" in viewBox && isNumber$1(viewBox.cx);
+	return "cx" in viewBox && isNumber(viewBox.cx);
 };
 function Label$3(_ref4) {
 	var _ref4$offset = _ref4.offset, offset$3 = _ref4$offset === void 0 ? 5 : _ref4$offset, restProps = _objectWithoutProperties$12(_ref4, _excluded$12);
@@ -47289,27 +47272,27 @@ Label$3.displayName = "Label";
 var parseViewBox = function parseViewBox$1(props) {
 	var cx$1 = props.cx, cy = props.cy, angle = props.angle, startAngle = props.startAngle, endAngle = props.endAngle, r$2 = props.r, radius = props.radius, innerRadius = props.innerRadius, outerRadius = props.outerRadius, x$2 = props.x, y$1 = props.y, top = props.top, left = props.left, width = props.width, height = props.height, clockWise = props.clockWise, labelViewBox = props.labelViewBox;
 	if (labelViewBox) return labelViewBox;
-	if (isNumber$1(width) && isNumber$1(height)) {
-		if (isNumber$1(x$2) && isNumber$1(y$1)) return {
+	if (isNumber(width) && isNumber(height)) {
+		if (isNumber(x$2) && isNumber(y$1)) return {
 			x: x$2,
 			y: y$1,
 			width,
 			height
 		};
-		if (isNumber$1(top) && isNumber$1(left)) return {
+		if (isNumber(top) && isNumber(left)) return {
 			x: top,
 			y: left,
 			width,
 			height
 		};
 	}
-	if (isNumber$1(x$2) && isNumber$1(y$1)) return {
+	if (isNumber(x$2) && isNumber(y$1)) return {
 		x: x$2,
 		y: y$1,
 		width: 0,
 		height: 0
 	};
-	if (isNumber$1(cx$1) && isNumber$1(cy)) return {
+	if (isNumber(cx$1) && isNumber(cy)) return {
 		cx: cx$1,
 		cy,
 		startAngle: startAngle || angle || 0,
@@ -47867,8 +47850,8 @@ var getPath$1 = function getPath$2(_ref) {
 		lineFunction.defined(defined).curve(curveFactory);
 		return lineFunction(areaPoints);
 	}
-	if (layout === "vertical" && isNumber$1(baseLine)) lineFunction = area_default().y(getY).x1(getX).x0(baseLine);
-	else if (isNumber$1(baseLine)) lineFunction = area_default().x(getX).y1(getY).y0(baseLine);
+	if (layout === "vertical" && isNumber(baseLine)) lineFunction = area_default().y(getY).x1(getX).x0(baseLine);
+	else if (isNumber(baseLine)) lineFunction = area_default().x(getX).y1(getY).y0(baseLine);
 	else lineFunction = line_default().x(getX).y(getY);
 	lineFunction.defined(defined).curve(curveFactory);
 	return lineFunction(formatPoints);
@@ -50241,7 +50224,7 @@ var Cross = function Cross$1(_ref) {
 		width,
 		height
 	}, rest);
-	if (!isNumber$1(x$2) || !isNumber$1(y$1) || !isNumber$1(width) || !isNumber$1(height) || !isNumber$1(top) || !isNumber$1(left)) return null;
+	if (!isNumber(x$2) || !isNumber(y$1) || !isNumber(width) || !isNumber(height) || !isNumber(top) || !isNumber(left)) return null;
 	return /* @__PURE__ */ import_react.createElement("path", _extends$16({}, filterProps(props, true), {
 		className: clsx_default("recharts-cross", className),
 		d: getPath(x$2, y$1, width, height, top, left)
@@ -51528,7 +51511,7 @@ var Pie = /* @__PURE__ */ function(_PureComponent) {
 				var _this5 = this;
 				var _this$props5 = this.props, hide$3 = _this$props5.hide, sectors = _this$props5.sectors, className = _this$props5.className, label = _this$props5.label, cx$1 = _this$props5.cx, cy = _this$props5.cy, innerRadius = _this$props5.innerRadius, outerRadius = _this$props5.outerRadius, isAnimationActive = _this$props5.isAnimationActive;
 				var isAnimationFinished = this.state.isAnimationFinished;
-				if (hide$3 || !sectors || !sectors.length || !isNumber$1(cx$1) || !isNumber$1(cy) || !isNumber$1(innerRadius) || !isNumber$1(outerRadius)) return null;
+				if (hide$3 || !sectors || !sectors.length || !isNumber(cx$1) || !isNumber(cy) || !isNumber(innerRadius) || !isNumber(outerRadius)) return null;
 				var layerClass = clsx_default("recharts-pie", className);
 				return /* @__PURE__ */ import_react.createElement(Layer, {
 					tabIndex: this.props.rootTabIndex,
@@ -51677,7 +51660,7 @@ _defineProperty$17(Pie, "getComposedData", function(_ref4) {
 	var realTotalAngle = absDeltaAngle - notZeroItemCount * minAngle - totalPadingAngle;
 	var sum = pieData.reduce(function(result, entry) {
 		var val = getValueByDataKey(entry, realDataKey, 0);
-		return result + (isNumber$1(val) ? val : 0);
+		return result + (isNumber(val) ? val : 0);
 	}, 0);
 	var sectors;
 	if (sum > 0) {
@@ -51685,7 +51668,7 @@ _defineProperty$17(Pie, "getComposedData", function(_ref4) {
 		sectors = pieData.map(function(entry, i$2) {
 			var val = getValueByDataKey(entry, realDataKey, 0);
 			var name = getValueByDataKey(entry, nameKey, i$2);
-			var percent = (isNumber$1(val) ? val : 0) / sum;
+			var percent = (isNumber(val) ? val : 0) / sum;
 			var tempStartAngle;
 			if (i$2) tempStartAngle = prev.endAngle + mathSign(deltaAngle) * paddingAngle * (val !== 0 ? 1 : 0);
 			else tempStartAngle = startAngle;
@@ -52292,7 +52275,7 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 			value: function render() {
 				var _this$props11 = this.props, data = _this$props11.data, className = _this$props11.className, children = _this$props11.children, x$2 = _this$props11.x, y$1 = _this$props11.y, width = _this$props11.width, height = _this$props11.height, alwaysShowText = _this$props11.alwaysShowText;
 				var _this$state5 = this.state, startX = _this$state5.startX, endX = _this$state5.endX, isTextActive = _this$state5.isTextActive, isSlideMoving = _this$state5.isSlideMoving, isTravellerMoving = _this$state5.isTravellerMoving, isTravellerFocused = _this$state5.isTravellerFocused;
-				if (!data || !data.length || !isNumber$1(x$2) || !isNumber$1(y$1) || !isNumber$1(width) || !isNumber$1(height) || width <= 0 || height <= 0) return null;
+				if (!data || !data.length || !isNumber(x$2) || !isNumber(y$1) || !isNumber(width) || !isNumber(height) || width <= 0 || height <= 0) return null;
 				var layerClass = clsx_default("recharts-brush", className);
 				var isPanoramic = import_react.Children.count(children) === 1;
 				var style = generatePrefixStyle("userSelect", "none");
@@ -52614,7 +52597,7 @@ var minPointSizeCallback = function minPointSizeCallback$1(minPointSize) {
 	var defaultValue = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
 	return function(value, index$1) {
 		if (typeof minPointSize === "number") return minPointSize;
-		var isValueNumberOrNil = isNumber$1(value) || isNullish(value);
+		var isValueNumberOrNil = isNumber(value) || isNullish(value);
 		if (isValueNumberOrNil) return minPointSize(value, index$1);
 		!isValueNumberOrNil && invariant(false, "minPointSize callback function received a value with type of ".concat(_typeof$15(value), ". Currently only numbers or null/undefined are supported."));
 		return defaultValue;
@@ -54294,7 +54277,7 @@ function getTicksStart(sign$1, boundaries, getTickSize, ticks$1, minTickGap, pre
 function getTicks(props, fontSize, letterSpacing) {
 	var tick = props.tick, ticks$1 = props.ticks, viewBox = props.viewBox, minTickGap = props.minTickGap, orientation = props.orientation, interval = props.interval, tickFormatter = props.tickFormatter, unit$1 = props.unit, angle = props.angle;
 	if (!ticks$1 || !ticks$1.length || !tick) return [];
-	if (isNumber$1(interval) || Global.isSsr) return getNumberIntervalTicks(ticks$1, typeof interval === "number" && isNumber$1(interval) ? interval : 0);
+	if (isNumber(interval) || Global.isSsr) return getNumberIntervalTicks(ticks$1, typeof interval === "number" && isNumber(interval) ? interval : 0);
 	var candidates = [];
 	var sizeKey = orientation === "top" || orientation === "bottom" ? "width" : "height";
 	var unitSize = unit$1 && sizeKey === "width" ? getStringSize(unit$1, {
@@ -54515,7 +54498,7 @@ var CartesianAxis = /* @__PURE__ */ function(_Component) {
 				var x1, x2, y1, y2, tx, ty;
 				var sign$1 = mirror ? -1 : 1;
 				var finalTickSize = data.tickSize || tickSize;
-				var tickCoord = isNumber$1(data.tickCoord) ? data.tickCoord : data.coordinate;
+				var tickCoord = isNumber(data.tickCoord) ? data.tickCoord : data.coordinate;
 				switch (orientation) {
 					case "top":
 						x1 = x2 = data.coordinate;
@@ -54972,15 +54955,15 @@ function CartesianGrid(props) {
 		horizontalFill: (_props$horizontalFill = props.horizontalFill) !== null && _props$horizontalFill !== void 0 ? _props$horizontalFill : defaultProps.horizontalFill,
 		vertical: (_props$vertical3 = props.vertical) !== null && _props$vertical3 !== void 0 ? _props$vertical3 : defaultProps.vertical,
 		verticalFill: (_props$verticalFill = props.verticalFill) !== null && _props$verticalFill !== void 0 ? _props$verticalFill : defaultProps.verticalFill,
-		x: isNumber$1(props.x) ? props.x : offset$3.left,
-		y: isNumber$1(props.y) ? props.y : offset$3.top,
-		width: isNumber$1(props.width) ? props.width : offset$3.width,
-		height: isNumber$1(props.height) ? props.height : offset$3.height
+		x: isNumber(props.x) ? props.x : offset$3.left,
+		y: isNumber(props.y) ? props.y : offset$3.top,
+		width: isNumber(props.width) ? props.width : offset$3.width,
+		height: isNumber(props.height) ? props.height : offset$3.height
 	});
 	var x$2 = propsIncludingDefaults.x, y$1 = propsIncludingDefaults.y, width = propsIncludingDefaults.width, height = propsIncludingDefaults.height, syncWithTicks = propsIncludingDefaults.syncWithTicks, horizontalValues = propsIncludingDefaults.horizontalValues, verticalValues = propsIncludingDefaults.verticalValues;
 	var xAxis = useArbitraryXAxis();
 	var yAxis = useYAxisWithFiniteDomainOrRandom();
-	if (!isNumber$1(width) || width <= 0 || !isNumber$1(height) || height <= 0 || !isNumber$1(x$2) || x$2 !== +x$2 || !isNumber$1(y$1) || y$1 !== +y$1) return null;
+	if (!isNumber(width) || width <= 0 || !isNumber(height) || height <= 0 || !isNumber(x$2) || x$2 !== +x$2 || !isNumber(y$1) || y$1 !== +y$1) return null;
 	var verticalCoordinatesGenerator = propsIncludingDefaults.verticalCoordinatesGenerator || defaultVerticalCoordinatesGenerator;
 	var horizontalCoordinatesGenerator = propsIncludingDefaults.horizontalCoordinatesGenerator || defaultHorizontalCoordinatesGenerator;
 	var horizontalPoints = propsIncludingDefaults.horizontalPoints, verticalPoints = propsIncludingDefaults.verticalPoints;
@@ -55250,11 +55233,11 @@ var Area = /* @__PURE__ */ function(_PureComponent) {
 				var maxY = (0, import_max.default)(points.map(function(entry) {
 					return entry.y || 0;
 				}));
-				if (isNumber$1(baseLine) && typeof baseLine === "number") maxY = Math.max(baseLine, maxY);
+				if (isNumber(baseLine) && typeof baseLine === "number") maxY = Math.max(baseLine, maxY);
 				else if (baseLine && Array.isArray(baseLine) && baseLine.length) maxY = Math.max((0, import_max.default)(baseLine.map(function(entry) {
 					return entry.y || 0;
 				})), maxY);
-				if (isNumber$1(maxY)) return /* @__PURE__ */ import_react.createElement("rect", {
+				if (isNumber(maxY)) return /* @__PURE__ */ import_react.createElement("rect", {
 					x: startX < endX ? startX : startX - width,
 					y: 0,
 					width,
@@ -55273,11 +55256,11 @@ var Area = /* @__PURE__ */ function(_PureComponent) {
 				var maxX = (0, import_max.default)(points.map(function(entry) {
 					return entry.x || 0;
 				}));
-				if (isNumber$1(baseLine) && typeof baseLine === "number") maxX = Math.max(baseLine, maxX);
+				if (isNumber(baseLine) && typeof baseLine === "number") maxX = Math.max(baseLine, maxX);
 				else if (baseLine && Array.isArray(baseLine) && baseLine.length) maxX = Math.max((0, import_max.default)(baseLine.map(function(entry) {
 					return entry.x || 0;
 				})), maxX);
-				if (isNumber$1(maxX)) return /* @__PURE__ */ import_react.createElement("rect", {
+				if (isNumber(maxX)) return /* @__PURE__ */ import_react.createElement("rect", {
 					x: 0,
 					y: startY < endY ? startY : startY - height,
 					width: maxX + (strokeWidth ? parseInt("".concat(strokeWidth), 10) : 1),
@@ -55358,7 +55341,7 @@ var Area = /* @__PURE__ */ function(_PureComponent) {
 							return entry;
 						});
 						var stepBaseLine;
-						if (isNumber$1(baseLine) && typeof baseLine === "number") stepBaseLine = interpolateNumber(prevBaseLine, baseLine)(t$1);
+						if (isNumber(baseLine) && typeof baseLine === "number") stepBaseLine = interpolateNumber(prevBaseLine, baseLine)(t$1);
 						else if ((0, import_isNil$1.default)(baseLine) || (0, import_isNaN.default)(baseLine)) stepBaseLine = interpolateNumber(prevBaseLine, 0)(t$1);
 						else stepBaseLine = baseLine.map(function(entry, index$1) {
 							var prevPointIndex = Math.floor(index$1 * prevPointsDiffFactor);
@@ -55461,7 +55444,7 @@ _defineProperty$5(Area, "getBaseValue", function(props, item, xAxis, yAxis) {
 	var layout = props.layout, chartBaseValue = props.baseValue;
 	var itemBaseValue = item.props.baseValue;
 	var baseValue = itemBaseValue !== null && itemBaseValue !== void 0 ? itemBaseValue : chartBaseValue;
-	if (isNumber$1(baseValue) && typeof baseValue === "number") return baseValue;
+	if (isNumber(baseValue) && typeof baseValue === "number") return baseValue;
 	var numericAxis = layout === "horizontal" ? yAxis : xAxis;
 	var domain = numericAxis.scale.domain();
 	if (numericAxis.type === "number") {
@@ -55896,7 +55879,7 @@ var detectReferenceElementsDomain = function detectReferenceElementsDomain$1(chi
 	var valueKey = axisType[0];
 	var finalDomain = domain;
 	if (elements.length) finalDomain = elements.reduce(function(result, el) {
-		if (el.props[idKey] === axisId && ifOverflowMatches(el.props, "extendDomain") && isNumber$1(el.props[valueKey])) {
+		if (el.props[idKey] === axisId && ifOverflowMatches(el.props, "extendDomain") && isNumber(el.props[valueKey])) {
 			var value = el.props[valueKey];
 			return [Math.min(result[0], value), Math.max(result[1], value)];
 		}
@@ -55906,7 +55889,7 @@ var detectReferenceElementsDomain = function detectReferenceElementsDomain$1(chi
 		var key1 = "".concat(valueKey, "1");
 		var key2 = "".concat(valueKey, "2");
 		finalDomain = areas.reduce(function(result, el) {
-			if (el.props[idKey] === axisId && ifOverflowMatches(el.props, "extendDomain") && isNumber$1(el.props[key1]) && isNumber$1(el.props[key2])) {
+			if (el.props[idKey] === axisId && ifOverflowMatches(el.props, "extendDomain") && isNumber(el.props[key1]) && isNumber(el.props[key2])) {
 				var value1 = el.props[key1];
 				var value2 = el.props[key2];
 				return [Math.min(result[0], value1, value2), Math.max(result[1], value1, value2)];
@@ -55915,7 +55898,7 @@ var detectReferenceElementsDomain = function detectReferenceElementsDomain$1(chi
 		}, finalDomain);
 	}
 	if (specifiedTicks && specifiedTicks.length) finalDomain = specifiedTicks.reduce(function(result, tick) {
-		if (isNumber$1(tick)) return [Math.min(result[0], tick), Math.max(result[1], tick)];
+		if (isNumber(tick)) return [Math.min(result[0], tick), Math.max(result[1], tick)];
 		return result;
 	}, finalDomain);
 	return finalDomain;
@@ -56177,7 +56160,7 @@ function isDomainSpecifiedByUser(domain, allowDataOverflow, axisType) {
 	if (axisType === "number" && allowDataOverflow === true && Array.isArray(domain)) {
 		var domainStart = domain === null || domain === void 0 ? void 0 : domain[0];
 		var domainEnd = domain === null || domain === void 0 ? void 0 : domain[1];
-		if (!!domainStart && !!domainEnd && isNumber$1(domainStart) && isNumber$1(domainEnd)) return true;
+		if (!!domainStart && !!domainEnd && isNumber(domainStart) && isNumber(domainEnd)) return true;
 	}
 	return false;
 }
@@ -56603,7 +56586,7 @@ var getDisplayedData = function getDisplayedData$1(data, _ref) {
 		return result;
 	}, []);
 	if (itemsData.length > 0) return itemsData;
-	if (data && data.length && isNumber$1(dataStartIndex) && isNumber$1(dataEndIndex)) return data.slice(dataStartIndex, dataEndIndex + 1);
+	if (data && data.length && isNumber(dataStartIndex) && isNumber(dataEndIndex)) return data.slice(dataStartIndex, dataEndIndex + 1);
 	return [];
 };
 function getDefaultDomainByAxisType(axisType) {
@@ -57287,9 +57270,9 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 					key: element.key || "_recharts-brush",
 					onChange: combineEventHandlers(_this.handleBrushChange, element.props.onChange),
 					data,
-					x: isNumber$1(element.props.x) ? element.props.x : offset$3.left,
-					y: isNumber$1(element.props.y) ? element.props.y : offset$3.top + offset$3.height + offset$3.brushBottom - (margin.bottom || 0),
-					width: isNumber$1(element.props.width) ? element.props.width : offset$3.width,
+					x: isNumber(element.props.x) ? element.props.x : offset$3.left,
+					y: isNumber(element.props.y) ? element.props.y : offset$3.top + offset$3.height + offset$3.brushBottom - (margin.bottom || 0),
+					width: isNumber(element.props.width) ? element.props.width : offset$3.width,
 					startIndex: dataStartIndex,
 					endIndex: dataEndIndex,
 					updateId: "brush-".concat(updateId)
@@ -58115,6 +58098,29 @@ const contactsService = {
 			count: count$3
 		};
 	},
+	async getAudienceCount({ tags, segments }) {
+		let query = supabase.from("contacts").select("id", {
+			count: "exact",
+			head: true
+		});
+		if (segments && segments.length > 0) {
+			const { data: segmentedContacts, error: segmentError } = await supabase.from("contact_segmentation_view").select("id").in("segment", segments);
+			if (segmentError) throw segmentError;
+			const ids = segmentedContacts?.map((c$1) => c$1.id) || [];
+			if (ids.length === 0) return 0;
+			query = query.in("id", ids);
+		}
+		if (tags && tags.length > 0) {
+			const { data: taggedContactIds, error: tagError } = await supabase.from("contact_tags").select("contact_id, tags!inner(name)").in("tags.name", tags);
+			if (tagError) throw tagError;
+			const ids = taggedContactIds?.map((tc) => tc.contact_id) || [];
+			if (ids.length === 0) return 0;
+			query = query.in("id", ids);
+		}
+		const { count: count$3, error } = await query;
+		if (error) throw error;
+		return count$3 || 0;
+	},
 	async getSegmentationStats() {
 		const { data, error } = await supabase.from("contact_segmentation_view").select("segment");
 		if (error) throw error;
@@ -58801,7 +58807,7 @@ var Toggle$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Toggle$1.displayName = NAME$1;
-var Root$6 = Toggle$1;
+var Root$5 = Toggle$1;
 var TOGGLE_GROUP_NAME = "ToggleGroup";
 var [createToggleGroupContext, createToggleGroupScope] = createContextScope(TOGGLE_GROUP_NAME, [createRovingFocusGroupScope]);
 var useRovingFocusGroupScope$2 = createRovingFocusGroupScope();
@@ -58876,7 +58882,7 @@ var ToggleGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 		scope: __scopeToggleGroup,
 		rovingFocus,
 		disabled,
-		children: rovingFocus ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
+		children: rovingFocus ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
 			asChild: true,
 			...rovingFocusGroupScope,
 			orientation,
@@ -58958,7 +58964,7 @@ var toggleVariants = cva("inline-flex items-center justify-center rounded-md tex
 		size: "default"
 	}
 });
-var Toggle = import_react.forwardRef(({ className, variant, size: size$3, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
+var Toggle = import_react.forwardRef(({ className, variant, size: size$3, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
 	ref,
 	className: cn(toggleVariants({
 		variant,
@@ -58967,7 +58973,7 @@ var Toggle = import_react.forwardRef(({ className, variant, size: size$3, ...pro
 	})),
 	...props
 }));
-Toggle.displayName = Root$6.displayName;
+Toggle.displayName = Root$5.displayName;
 var ToggleGroupContext = import_react.createContext({
 	size: "default",
 	variant: "default"
@@ -66003,14 +66009,14 @@ var Label$2 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Label$2.displayName = NAME;
-var Root$5 = Label$2;
+var Root$4 = Label$2;
 var labelVariants = cva("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
-var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
+var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
 	ref,
 	className: cn(labelVariants(), className),
 	...props
 }));
-Label.displayName = Root$5.displayName;
+Label.displayName = Root$4.displayName;
 var Form = FormProvider;
 var FormFieldContext = import_react.createContext({});
 var FormField = ({ ...props }) => {
@@ -68479,7 +68485,7 @@ function PreviousMonthButton(props) {
 	const { components } = useDayPicker();
 	return import_react.createElement(components.Button, { ...props });
 }
-function Root$4(props) {
+function Root$3(props) {
 	const { rootRef, ...rest } = props;
 	return import_react.createElement("div", {
 		...rest,
@@ -68531,7 +68537,7 @@ var custom_components_exports = /* @__PURE__ */ __export({
 	NextMonthButton: () => NextMonthButton,
 	Option: () => Option,
 	PreviousMonthButton: () => PreviousMonthButton,
-	Root: () => Root$4,
+	Root: () => Root$3,
 	Select: () => Select$1,
 	Week: () => Week,
 	WeekNumber: () => WeekNumber,
@@ -70450,7 +70456,7 @@ var N = "[cmdk-group=\"\"]", Y = "[cmdk-group-items=\"\"]", be = "[cmdk-group-he
 	}, m$1)));
 }), xe = import_react.forwardRef((r$2, o$1) => {
 	let { open: n$1, onOpenChange: u$1, overlayClassName: c$1, contentClassName: d, container: f, ...p$1 } = r$2;
-	return import_react.createElement(Root$9, {
+	return import_react.createElement(Root$8, {
 		open: n$1,
 		onOpenChange: u$1
 	}, import_react.createElement(Portal$4, { container: f }, import_react.createElement(Overlay, {
@@ -70560,7 +70566,7 @@ var Te = {
 	whiteSpace: "nowrap",
 	borderWidth: "0"
 };
-var Dialog = Root$9;
+var Dialog = Root$8;
 var DialogTrigger = Trigger$5;
 var DialogPortal = Portal$4;
 var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
@@ -72307,7 +72313,7 @@ var TabsList$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, loop = true, ...listProps } = props;
 	const context = useTabsContext(TAB_LIST_NAME, __scopeTabs);
 	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeTabs);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
 		asChild: true,
 		...rovingFocusGroupScope,
 		orientation: context.orientation,
@@ -74077,10 +74083,10 @@ function useResizeObserver(element, onResize) {
 		}
 	}, [element, handleResize]);
 }
-var Root$3 = ScrollArea$1;
+var Root$2 = ScrollArea$1;
 var Viewport = ScrollAreaViewport;
 var Corner = ScrollAreaCorner;
-var ScrollArea = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Root$3, {
+var ScrollArea = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Root$2, {
 	ref,
 	className: cn("relative overflow-hidden", className),
 	...props,
@@ -74093,7 +74099,7 @@ var ScrollArea = import_react.forwardRef(({ className, children, ...props }, ref
 		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Corner, {})
 	]
 }));
-ScrollArea.displayName = Root$3.displayName;
+ScrollArea.displayName = Root$2.displayName;
 var ScrollBar = import_react.forwardRef(({ className, orientation = "vertical", ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollAreaScrollbar, {
 	ref,
 	orientation,
@@ -75095,249 +75101,684 @@ function DealDetails() {
 		]
 	});
 }
-var PROGRESS_NAME = "Progress";
-var DEFAULT_MAX = 100;
-var [createProgressContext, createProgressScope] = createContextScope$1(PROGRESS_NAME);
-var [ProgressProvider, useProgressContext] = createProgressContext(PROGRESS_NAME);
-var Progress$1 = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeProgress, value: valueProp = null, max: maxProp, getValueLabel = defaultGetValueLabel, ...progressProps } = props;
-	if ((maxProp || maxProp === 0) && !isValidMaxNumber(maxProp)) console.error(getInvalidMaxError(`${maxProp}`, "Progress"));
-	const max$6 = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX;
-	if (valueProp !== null && !isValidValueNumber(valueProp, max$6)) console.error(getInvalidValueError(`${valueProp}`, "Progress"));
-	const value = isValidValueNumber(valueProp, max$6) ? valueProp : null;
-	const valueLabel = isNumber(value) ? getValueLabel(value, max$6) : void 0;
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ProgressProvider, {
-		scope: __scopeProgress,
-		value,
-		max: max$6,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
-			"aria-valuemax": max$6,
-			"aria-valuemin": 0,
-			"aria-valuenow": isNumber(value) ? value : void 0,
-			"aria-valuetext": valueLabel,
-			role: "progressbar",
-			"data-state": getProgressState(value, max$6),
-			"data-value": value ?? void 0,
-			"data-max": max$6,
-			...progressProps,
-			ref: forwardedRef
+const campaignsService = {
+	async getCampaigns() {
+		const { data, error } = await supabase.from("campaigns").select(`
+        *,
+        sends:campaign_sends(*)
+      `).order("created_at", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async createCampaign(campaign, sends) {
+		const { data: newCampaign, error: campaignError } = await supabase.from("campaigns").insert(campaign).select().single();
+		if (campaignError) throw campaignError;
+		if (sends.length > 0) {
+			const sendsToInsert = sends.map((send) => ({
+				campaign_id: newCampaign.id,
+				channel: send.channel,
+				scheduled_at: send.scheduled_at,
+				content: send.content,
+				status: "Pendente"
+			}));
+			const { error: sendsError } = await supabase.from("campaign_sends").insert(sendsToInsert);
+			if (sendsError) {
+				console.error("Error creating campaign sends:", sendsError);
+				throw sendsError;
+			}
+		}
+		return newCampaign;
+	},
+	async getCampaignById(id) {
+		const { data, error } = await supabase.from("campaigns").select(`
+        *,
+        sends:campaign_sends(*)
+      `).eq("id", id).single();
+		if (error) throw error;
+		return data;
+	}
+};
+function DatePicker({ date: date$4, setDate, className, placeholder = "Selecione uma data" }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+		asChild: true,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+			variant: "outline",
+			className: cn("w-full justify-start text-left font-normal", !date$4 && "text-muted-foreground", className),
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "mr-2 h-4 w-4" }), date$4 ? format(date$4, "PPP", { locale: ptBR }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: placeholder })]
 		})
-	});
-});
-Progress$1.displayName = PROGRESS_NAME;
-var INDICATOR_NAME$1 = "ProgressIndicator";
-var ProgressIndicator = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeProgress, ...indicatorProps } = props;
-	const context = useProgressContext(INDICATOR_NAME$1, __scopeProgress);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
-		"data-state": getProgressState(context.value, context.max),
-		"data-value": context.value ?? void 0,
-		"data-max": context.max,
-		...indicatorProps,
-		ref: forwardedRef
-	});
-});
-ProgressIndicator.displayName = INDICATOR_NAME$1;
-function defaultGetValueLabel(value, max$6) {
-	return `${Math.round(value / max$6 * 100)}%`;
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
+		className: "w-auto p-0",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar$1, {
+			mode: "single",
+			selected: date$4,
+			onSelect: setDate,
+			initialFocus: true,
+			locale: ptBR
+		})
+	})] });
 }
-function getProgressState(value, maxValue) {
-	return value == null ? "indeterminate" : value === maxValue ? "complete" : "loading";
-}
-function isNumber(value) {
-	return typeof value === "number";
-}
-function isValidMaxNumber(max$6) {
-	return isNumber(max$6) && !isNaN(max$6) && max$6 > 0;
-}
-function isValidValueNumber(value, max$6) {
-	return isNumber(value) && !isNaN(value) && value <= max$6 && value >= 0;
-}
-function getInvalidMaxError(propValue, componentName) {
-	return `Invalid prop \`max\` of value \`${propValue}\` supplied to \`${componentName}\`. Only numbers greater than 0 are valid max values. Defaulting to \`${DEFAULT_MAX}\`.`;
-}
-function getInvalidValueError(propValue, componentName) {
-	return `Invalid prop \`value\` of value \`${propValue}\` supplied to \`${componentName}\`. The \`value\` prop must be:
-  - a positive number
-  - less than the value passed to \`max\` (or ${DEFAULT_MAX} if no \`max\` prop is set)
-  - \`null\` or \`undefined\` if the progress is indeterminate.
-
-Defaulting to \`null\`.`;
-}
-var Root$2 = Progress$1;
-var Indicator$1 = ProgressIndicator;
-var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$2, {
-	ref,
-	className: cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className),
-	...props,
-	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Indicator$1, {
-		className: "h-full w-full flex-1 bg-primary transition-all",
-		style: { transform: `translateX(-${100 - (value || 0)}%)` }
-	})
-}));
-Progress.displayName = Root$2.displayName;
-var CAMPAIGNS = [
+var SEGMENT_OPTIONS = [
 	{
-		id: 1,
-		name: "Leilão de Verão - Convite VIP",
-		type: "Email",
-		status: "Ativa",
-		sent: 1250,
-		openRate: 45,
-		clickRate: 12
+		label: "VIP",
+		value: "VIP"
 	},
 	{
-		id: 2,
-		name: "Oferta Especial: Lusitanos",
-		type: "WhatsApp",
-		status: "Pausada",
-		sent: 500,
-		openRate: 88,
-		clickRate: 35
+		label: "Frequentes",
+		value: "Frequentes"
 	},
 	{
-		id: 3,
-		name: "Newsletter Mensal - Outubro",
-		type: "Email",
-		status: "Concluída",
-		sent: 3400,
-		openRate: 32,
-		clickRate: 5
+		label: "Ativos",
+		value: "Ativos"
 	},
 	{
-		id: 4,
-		name: "Lançamento Coleção Selas",
-		type: "SMS",
-		status: "Rascunho",
-		sent: 0,
-		openRate: 0,
-		clickRate: 0
+		label: "Novos Leads",
+		value: "Novos Leads"
+	},
+	{
+		label: "Inativos",
+		value: "Inativos"
 	}
 ];
+function AudienceSelector({ selectedTags, selectedSegments, onTagsChange, onSegmentsChange }) {
+	const [tagOptions, setTagOptions] = (0, import_react.useState)([]);
+	const [audienceCount, setAudienceCount] = (0, import_react.useState)(null);
+	const [loadingCount, setLoadingCount] = (0, import_react.useState)(false);
+	(0, import_react.useEffect)(() => {
+		tagsService.getTags().then((tags) => {
+			setTagOptions(tags.map((t$1) => ({
+				label: t$1.name,
+				value: t$1.name
+			})));
+		}).catch(console.error);
+	}, []);
+	(0, import_react.useEffect)(() => {
+		const calculate = async () => {
+			setLoadingCount(true);
+			try {
+				setAudienceCount(await contactsService.getAudienceCount({
+					tags: selectedTags,
+					segments: selectedSegments
+				}));
+			} catch (error) {
+				console.error("Failed to count audience", error);
+			} finally {
+				setLoadingCount(false);
+			}
+		};
+		calculate();
+	}, [selectedTags, selectedSegments]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-4 rounded-lg border p-4 bg-muted/20",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center justify-between",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+					className: "font-semibold flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "h-4 w-4 text-primary" }), "Definição de Público"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "text-sm font-medium",
+					children: loadingCount ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "flex items-center text-muted-foreground",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-3 w-3 animate-spin" }), " Calculando..."]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: audienceCount === 0 ? "text-destructive" : "text-primary",
+						children: [audienceCount, " destinatários encontrados"]
+					})
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-4 md:grid-cols-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Segmentos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MultiSelect, {
+						options: SEGMENT_OPTIONS,
+						selected: selectedSegments,
+						onChange: onSegmentsChange,
+						placeholder: "Selecione segmentos..."
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tags" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MultiSelect, {
+						options: tagOptions,
+						selected: selectedTags,
+						onChange: onTagsChange,
+						placeholder: "Selecione tags..."
+					})]
+				})]
+			}),
+			audienceCount === 0 && (selectedTags.length > 0 || selectedSegments.length > 0) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-xs text-destructive mt-2",
+				children: "Atenção: Nenhum contato corresponde aos filtros selecionados. A campanha não terá destinatários."
+			})
+		]
+	});
+}
+function CampaignScheduler({ schedules, setSchedules, allowedChannels }) {
+	const [newDate$1, setNewDate] = (0, import_react.useState)("");
+	const [newTime, setNewTime] = (0, import_react.useState)("09:00");
+	const [newChannel, setNewChannel] = (0, import_react.useState)("email");
+	const [newContent, setNewContent] = (0, import_react.useState)("");
+	const handleAdd = () => {
+		if (!newDate$1 || !newTime || !newContent) return;
+		const newItem = {
+			id: Math.random().toString(36).substring(7),
+			date: newDate$1,
+			time: newTime,
+			channel: newChannel,
+			content: newContent
+		};
+		setSchedules([...schedules, newItem].sort((a$2, b$1) => {
+			return (/* @__PURE__ */ new Date(`${a$2.date}T${a$2.time}`)).getTime() - (/* @__PURE__ */ new Date(`${b$1.date}T${b$1.time}`)).getTime();
+		}));
+		setNewContent("");
+	};
+	const handleRemove = (id) => {
+		setSchedules(schedules.filter((s$3) => s$3.id !== id));
+	};
+	const isAddDisabled = !newDate$1 || !newTime || !newContent || !allowedChannels.includes(newChannel);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-4",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center justify-between",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+					className: "font-semibold text-sm",
+					children: "Cronograma de Envios"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+					variant: "outline",
+					children: [schedules.length, " envios programados"]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-4 p-4 border rounded-md bg-muted/10",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 md:grid-cols-4 gap-4",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Data" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "date",
+								value: newDate$1,
+								onChange: (e) => setNewDate(e.target.value),
+								min: (/* @__PURE__ */ new Date()).toISOString().split("T")[0]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Horário" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "time",
+								value: newTime,
+								onChange: (e) => setNewTime(e.target.value)
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Canal" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+								value: newChannel,
+								onValueChange: (v) => setNewChannel(v),
+								disabled: allowedChannels.length === 0,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "email",
+									disabled: !allowedChannels.includes("email"),
+									children: "E-mail"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "whatsapp",
+									disabled: !allowedChannels.includes("whatsapp"),
+									children: "WhatsApp"
+								})] })]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex items-end",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								className: "w-full",
+								onClick: handleAdd,
+								disabled: isAddDisabled,
+								type: "button",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "mr-2 h-4 w-4" }), " Adicionar"]
+							})
+						})
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Conteúdo da Mensagem" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+						placeholder: "Digite o conteúdo ou selecione um template...",
+						value: newContent,
+						onChange: (e) => setNewContent(e.target.value),
+						rows: 2
+					})]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "space-y-3",
+				children: schedules.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-sm text-muted-foreground text-center py-4 italic",
+					children: "Nenhum envio programado. Adicione eventos acima."
+				}) : schedules.map((schedule) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+					className: "relative overflow-hidden group",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "p-4 flex flex-col md:flex-row gap-4 items-start md:items-center",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: `p-2 rounded-full shrink-0 ${schedule.channel === "email" ? "bg-blue-100 text-blue-600" : "bg-green-100 text-green-600"}`,
+								children: schedule.channel === "email" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-5 w-5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageSquare, { className: "h-5 w-5" })
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex-1 min-w-0",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-2 mb-1",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-semibold text-sm capitalize",
+										children: schedule.channel
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "text-xs text-muted-foreground flex items-center gap-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3 w-3" }), format(/* @__PURE__ */ new Date(`${schedule.date}T${schedule.time}`), "dd 'de' MMMM 'às' HH:mm", { locale: ptBR })]
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-sm text-muted-foreground truncate",
+									children: schedule.content
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								variant: "ghost",
+								size: "icon",
+								className: "shrink-0 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity",
+								onClick: () => handleRemove(schedule.id),
+								type: "button",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
+							})
+						]
+					})
+				}, schedule.id))
+			})
+		]
+	});
+}
+var campaignSchema = object({
+	name: string().min(3, "O nome deve ter pelo menos 3 caracteres"),
+	objective: string().optional(),
+	dates: object({
+		start: date({ required_error: "Data de início obrigatória" }),
+		end: date({ required_error: "Data de fim obrigatória" })
+	}).refine((data) => data.end >= data.start, {
+		message: "A data de fim deve ser posterior à data de início",
+		path: ["end"]
+	}),
+	channels: array(string()).min(1, "Selecione pelo menos um canal"),
+	filters: object({
+		tags: array(string()),
+		segments: array(string())
+	})
+});
+function CampaignForm({ onSuccess, onCancel }) {
+	const [schedules, setSchedules] = (0, import_react.useState)([]);
+	const [isSubmitting, setIsSubmitting] = (0, import_react.useState)(false);
+	const { toast: toast$2 } = useToast();
+	const form = useForm({
+		resolver: a(campaignSchema),
+		defaultValues: {
+			name: "",
+			objective: "",
+			channels: ["email"],
+			filters: {
+				tags: [],
+				segments: []
+			}
+		}
+	});
+	const selectedChannels = form.watch("channels");
+	const filters = form.watch("filters");
+	const onSubmit = async (values) => {
+		if (values.filters.tags.length === 0 && values.filters.segments.length === 0) toast$2({
+			title: "Atenção",
+			description: "Você não selecionou nenhum filtro de público. Isso pode resultar em 0 destinatários.",
+			variant: "destructive"
+		});
+		if (schedules.length === 0) {
+			toast$2({
+				title: "Erro",
+				description: "Adicione pelo menos um envio ao cronograma.",
+				variant: "destructive"
+			});
+			return;
+		}
+		setIsSubmitting(true);
+		try {
+			await campaignsService.createCampaign({
+				name: values.name,
+				objective: values.objective,
+				start_date: values.dates.start.toISOString(),
+				end_date: values.dates.end.toISOString(),
+				status: "Agendada",
+				filters: values.filters,
+				channels: values.channels
+			}, schedules.map((s$3) => ({
+				channel: s$3.channel,
+				scheduled_at: (/* @__PURE__ */ new Date(`${s$3.date}T${s$3.time}`)).toISOString(),
+				content: s$3.content
+			})));
+			toast$2({
+				title: "Sucesso",
+				description: "Campanha criada e agendada com sucesso!"
+			});
+			onSuccess();
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro ao criar campanha",
+				description: "Ocorreu um erro inesperado. Tente novamente.",
+				variant: "destructive"
+			});
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Form, {
+		...form,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+			onSubmit: form.handleSubmit(onSubmit),
+			className: "space-y-8 py-4",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-4",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+							className: "text-lg font-semibold border-b pb-2",
+							children: "Informações Básicas"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+							control: form.control,
+							name: "name",
+							render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Nome da Campanha" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									placeholder: "Ex: Leilão de Primavera",
+									...field
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+							] })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+							control: form.control,
+							name: "objective",
+							render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Objetivo" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+									placeholder: "Qual o objetivo desta campanha?",
+									...field
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+							] })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-2 gap-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+								control: form.control,
+								name: "dates.start",
+								render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+									className: "flex flex-col",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Início" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DatePicker, {
+											date: field.value,
+											setDate: field.onChange
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+									]
+								})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+								control: form.control,
+								name: "dates.end",
+								render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+									className: "flex flex-col",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Fim" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DatePicker, {
+											date: field.value,
+											setDate: field.onChange
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+									]
+								})
+							})]
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "space-y-4",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AudienceSelector, {
+						selectedTags: filters.tags,
+						selectedSegments: filters.segments,
+						onTagsChange: (tags) => form.setValue("filters.tags", tags),
+						onSegmentsChange: (segs) => form.setValue("filters.segments", segs)
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						className: "text-lg font-semibold border-b pb-2",
+						children: "Canais de Comunicação"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "channels",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, {
+								className: "block mb-2",
+								children: "Selecione os canais"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ToggleGroup, {
+								type: "multiple",
+								variant: "outline",
+								value: field.value,
+								onValueChange: (val) => {
+									if (val.length > 0) field.onChange(val);
+								},
+								className: "justify-start",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItem, {
+									value: "email",
+									"aria-label": "Toggle email",
+									children: "E-mail"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItem, {
+									value: "whatsapp",
+									"aria-label": "Toggle whatsapp",
+									children: "WhatsApp"
+								})]
+							}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Escolha por onde deseja enviar as mensagens." }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						] })
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						className: "text-lg font-semibold border-b pb-2",
+						children: "Cronograma"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CampaignScheduler, {
+						schedules,
+						setSchedules,
+						allowedChannels: selectedChannels
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex justify-end gap-2 pt-4 border-t",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						type: "button",
+						variant: "outline",
+						onClick: onCancel,
+						children: "Cancelar"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						type: "submit",
+						disabled: isSubmitting,
+						className: "bg-primary",
+						children: [isSubmitting ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "mr-2 h-4 w-4" }), "Criar Campanha"]
+					})]
+				})
+			]
+		})
+	});
+}
 function Campanhas() {
+	const [campaigns, setCampaigns] = (0, import_react.useState)([]);
+	const [loading, setLoading] = (0, import_react.useState)(true);
+	const [isCreateOpen, setIsCreateOpen] = (0, import_react.useState)(false);
+	const fetchCampaigns = async () => {
+		setLoading(true);
+		try {
+			setCampaigns(await campaignsService.getCampaigns());
+		} catch (error) {
+			console.error("Failed to fetch campaigns", error);
+		} finally {
+			setLoading(false);
+		}
+	};
+	(0, import_react.useEffect)(() => {
+		fetchCampaigns();
+	}, []);
 	const getStatusColor = (status) => {
 		switch (status) {
-			case "Ativa": return "bg-green-500 hover:bg-green-600";
+			case "Ativa":
+			case "Em Andamento": return "bg-green-500 hover:bg-green-600";
 			case "Pausada": return "bg-yellow-500 hover:bg-yellow-600";
 			case "Concluída": return "bg-blue-500 hover:bg-blue-600";
+			case "Agendada": return "bg-purple-500 hover:bg-purple-600";
 			default: return "bg-gray-400 hover:bg-gray-500";
 		}
 	};
-	const getIcon = (type) => {
-		switch (type) {
-			case "Email": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-5 w-5 text-blue-500" });
-			case "WhatsApp": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageSquare, { className: "h-5 w-5 text-green-500" });
-			default: return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Megaphone, { className: "h-5 w-5 text-primary" });
-		}
-	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6",
+		className: "space-y-6 animate-fade-in",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex items-center justify-between",
+			className: "flex flex-col md:flex-row md:items-center justify-between gap-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 				className: "text-3xl font-bold font-display text-primary",
 				children: "Campanhas de Marketing"
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground",
-				children: "Engaje sua audiência com campanhas segmentadas."
-			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-				className: "bg-primary hover:bg-primary/90 text-white",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "mr-2 h-4 w-4" }), " Nova Campanha"]
+				children: "Engaje sua audiência com campanhas segmentadas multicanal."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+				open: isCreateOpen,
+				onOpenChange: setIsCreateOpen,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+					asChild: true,
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						className: "bg-primary hover:bg-primary/90 text-white shadow-md",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "mr-2 h-4 w-4" }), " Nova Campanha"]
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+					className: "max-w-4xl max-h-[90vh] overflow-y-auto",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Criar Nova Campanha" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Configure os detalhes, público e cronograma da sua campanha." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CampaignForm, {
+						onSuccess: () => {
+							setIsCreateOpen(false);
+							fetchCampaigns();
+						},
+						onCancel: () => setIsCreateOpen(false)
+					})]
+				})]
 			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: "grid gap-6",
-			children: CAMPAIGNS.map((campaign) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
-				className: "transition-all hover:shadow-md",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-					className: "p-6",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-col md:flex-row gap-6 items-center",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "p-4 bg-muted/30 rounded-full shrink-0",
-								children: getIcon(campaign.type)
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex-1 space-y-1 text-center md:text-left",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center justify-center md:justify-start gap-2",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-										className: "font-semibold text-lg",
-										children: campaign.name
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-										className: `${getStatusColor(campaign.status)} text-white border-0`,
-										children: campaign.status
-									})]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-									className: "text-sm text-muted-foreground flex items-center justify-center md:justify-start gap-2",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["Tipo: ", campaign.type] }),
-										" •",
-										" ",
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["Enviados: ", campaign.sent] })
-									]
-								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "flex flex-row gap-8 w-full md:w-auto justify-center md:justify-end",
-								children: campaign.status !== "Rascunho" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex flex-col items-center w-24",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-											className: "text-2xl font-bold font-display text-primary",
-											children: [campaign.openRate, "%"]
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "text-xs text-muted-foreground uppercase tracking-wider",
-											children: "Abertura"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
-											value: campaign.openRate,
-											className: "h-1 mt-2 w-full"
-										})
-									]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex flex-col items-center w-24",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-											className: "text-2xl font-bold font-display text-secondary",
-											children: [campaign.clickRate, "%"]
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "text-xs text-muted-foreground uppercase tracking-wider",
-											children: "Cliques"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
-											value: campaign.clickRate,
-											className: "h-1 mt-2 w-full [&>div]:bg-secondary"
-										})
-									]
-								})] })
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex gap-2 shrink-0",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-									variant: "outline",
-									size: "icon",
-									title: "Ver Relatório",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartNoAxesColumn, { className: "h-4 w-4" })
-								}), campaign.status === "Ativa" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-									variant: "outline",
-									size: "icon",
-									title: "Pausar",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CirclePause, { className: "h-4 w-4" })
-								}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-									variant: "outline",
-									size: "icon",
-									title: "Iniciar/Retomar",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CirclePlay, { className: "h-4 w-4" })
-								})]
-							})
-						]
+		}), loading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "flex justify-center py-12",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin text-primary" })
+		}) : campaigns.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+			className: "border-dashed",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+				className: "flex flex-col items-center justify-center p-12 text-center",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Megaphone, { className: "h-12 w-12 text-muted-foreground mb-4 opacity-50" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						className: "text-lg font-medium",
+						children: "Nenhuma campanha encontrada"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-muted-foreground mt-2 mb-6 max-w-sm",
+						children: "Crie sua primeira campanha para começar a se comunicar com seus contatos."
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						onClick: () => setIsCreateOpen(true),
+						children: "Criar Campanha"
+					})
+				]
+			})
+		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+			className: "pb-2",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Visão Geral de Campanhas" })
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+				className: "w-[300px]",
+				children: "Nome & Objetivo"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Período" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Canais" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Destinatários" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+				className: "text-right",
+				children: "Ações"
+			})
+		] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: campaigns.map((campaign) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+			className: "group",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "font-semibold text-base",
+						children: campaign.name
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "text-xs text-muted-foreground line-clamp-1",
+						title: campaign.objective || "",
+						children: campaign.objective || "Sem objetivo definido"
+					})]
+				}) }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+					className: `${getStatusColor(campaign.status)} text-white border-0`,
+					children: campaign.status
+				}) }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col text-sm",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "flex items-center gap-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-muted-foreground text-xs",
+							children: "Início:"
+						}), format(new Date(campaign.start_date), "dd/MM/yy")]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "flex items-center gap-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-muted-foreground text-xs",
+							children: "Fim:"
+						}), format(new Date(campaign.end_date), "dd/MM/yy")]
+					})]
+				}) }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex gap-1",
+					children: [campaign.channels.includes("email") && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "p-1.5 bg-blue-100 text-blue-600 rounded-md",
+						title: "E-mail",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-4 w-4" })
+					}), campaign.channels.includes("whatsapp") && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "p-1.5 bg-green-100 text-green-600 rounded-md",
+						title: "WhatsApp",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageSquare, { className: "h-4 w-4" })
+					})]
+				}) }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-2 text-sm",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "h-4 w-4 text-muted-foreground" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "-" }),
+						" "
+					]
+				}) }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					className: "text-right",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						variant: "ghost",
+						size: "sm",
+						title: "Ver detalhes",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartNoAxesColumn, { className: "h-4 w-4 text-muted-foreground hover:text-primary" })
 					})
 				})
-			}, campaign.id))
-		})]
+			]
+		}, campaign.id)) })] }) })] })]
 	});
 }
 var SWITCH_NAME = "Switch";
@@ -76362,7 +76803,7 @@ var useDialogScope = createDialogScope();
 var AlertDialog$1 = (props) => {
 	const { __scopeAlertDialog, ...alertDialogProps } = props;
 	const dialogScope = useDialogScope(__scopeAlertDialog);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
 		...dialogScope,
 		...alertDialogProps,
 		modal: true
@@ -77313,7 +77754,7 @@ var RadioGroup$1 = import_react.forwardRef((props, forwardedRef) => {
 		disabled,
 		value,
 		onValueChange: setValue,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
 			asChild: true,
 			...rovingFocusGroupScope,
 			orientation,
@@ -78126,4 +78567,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-CfcX3m0W.js.map
+//# sourceMappingURL=index-C9rk9lpS.js.map
