@@ -11,6 +11,7 @@ import ContatoDetalhes from './pages/ContatoDetalhes'
 import Negocios from './pages/Negocios'
 import DealDetails from './pages/DealDetails'
 import Campanhas from './pages/Campanhas'
+import CampaignDetails from './pages/CampaignDetails'
 import Automacoes from './pages/Automacoes'
 import Tarefas from './pages/Tarefas'
 import Relatorios from './pages/Relatorios'
@@ -60,6 +61,7 @@ const App = () => (
             <Route path="/negocios" element={<Negocios />} />
             <Route path="/negocios/:id" element={<DealDetails />} />
             <Route path="/campanhas" element={<Campanhas />} />
+            <Route path="/campanhas/:id" element={<CampaignDetails />} />
             <Route path="/automacoes" element={<Automacoes />} />
             <Route path="/tarefas" element={<Tarefas />} />
             <Route path="/relatorios" element={<Relatorios />} />

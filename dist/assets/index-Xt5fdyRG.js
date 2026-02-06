@@ -19483,6 +19483,28 @@ var MessageSquare = createLucideIcon("message-square", [["path", {
 	d: "M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z",
 	key: "18887p"
 }]]);
+var MousePointerClick = createLucideIcon("mouse-pointer-click", [
+	["path", {
+		d: "M14 4.1 12 6",
+		key: "ita8i4"
+	}],
+	["path", {
+		d: "m5.1 8-2.9-.8",
+		key: "1go3kf"
+	}],
+	["path", {
+		d: "m6 12-1.9 2",
+		key: "mnht97"
+	}],
+	["path", {
+		d: "M7.2 2.2 8 5.1",
+		key: "1cfko1"
+	}],
+	["path", {
+		d: "M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z",
+		key: "s0h3yz"
+	}]
+]);
 var PanelLeft = createLucideIcon("panel-left", [["rect", {
 	width: "18",
 	height: "18",
@@ -19520,6 +19542,42 @@ var Plus = createLucideIcon("plus", [["path", {
 	d: "M12 5v14",
 	key: "s699le"
 }]]);
+var RefreshCcw = createLucideIcon("refresh-ccw", [
+	["path", {
+		d: "M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8",
+		key: "14sxne"
+	}],
+	["path", {
+		d: "M3 3v5h5",
+		key: "1xhq8a"
+	}],
+	["path", {
+		d: "M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16",
+		key: "1hlbsb"
+	}],
+	["path", {
+		d: "M16 16h5v5",
+		key: "ccwih5"
+	}]
+]);
+var RefreshCw = createLucideIcon("refresh-cw", [
+	["path", {
+		d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8",
+		key: "v9h5vc"
+	}],
+	["path", {
+		d: "M21 3v5h-5",
+		key: "1q7to0"
+	}],
+	["path", {
+		d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16",
+		key: "3uifl3"
+	}],
+	["path", {
+		d: "M8 16H3v5",
+		key: "1cv678"
+	}]
+]);
 var RemoveFormatting = createLucideIcon("remove-formatting", [
 	["path", {
 		d: "M4 7V4h16v3",
@@ -26388,7 +26446,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$35({ inst: {
+			cachedValue = useState$37({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26402,7 +26460,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$29(function() {
+			useEffect$31(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26425,7 +26483,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$67 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$35 = React$67.useState, useEffect$29 = React$67.useEffect, useLayoutEffect$2 = React$67.useLayoutEffect, useDebugValue = React$67.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$67 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$37 = React$67.useState, useEffect$31 = React$67.useEffect, useLayoutEffect$2 = React$67.useLayoutEffect, useDebugValue = React$67.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$67.useSyncExternalStore ? React$67.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -75105,7 +75163,7 @@ const campaignsService = {
 	async getCampaigns() {
 		const { data, error } = await supabase.from("campaigns").select(`
         *,
-        sends:campaign_sends(*)
+        schedules:campaign_schedules(*)
       `).order("created_at", { ascending: false });
 		if (error) throw error;
 		return (data || []).map((campaign) => ({
@@ -75113,7 +75171,20 @@ const campaignsService = {
 			objective: campaign.description || campaign.objective || null
 		}));
 	},
-	async createCampaign(campaign, sends) {
+	async getCampaignById(id) {
+		const { data, error } = await supabase.from("campaigns").select(`
+        *,
+        schedules:campaign_schedules(*)
+      `).eq("id", id).single();
+		if (error) throw error;
+		const campaign = {
+			...data,
+			objective: data.description || data.objective || null
+		};
+		campaign.stats = await this.getCampaignStats(id);
+		return campaign;
+	},
+	async createCampaign(campaign, schedules) {
 		const dbCampaign = {
 			name: campaign.name,
 			description: campaign.objective || campaign.description,
@@ -75126,8 +75197,8 @@ const campaignsService = {
 		};
 		const { data: newCampaign, error: campaignError } = await supabase.from("campaigns").insert(dbCampaign).select().single();
 		if (campaignError) throw campaignError;
-		if (sends.length > 0) {
-			const sendsToInsert = sends.map((send) => ({
+		if (schedules.length > 0) {
+			const schedulesToInsert = schedules.map((send) => ({
 				campaign_id: newCampaign.id,
 				channel_type: send.channel_type,
 				scheduled_at: send.scheduled_at,
@@ -75135,10 +75206,10 @@ const campaignsService = {
 				template_id: send.template_id,
 				status: "Pendente"
 			}));
-			const { error: sendsError } = await supabase.from("campaign_sends").insert(sendsToInsert);
-			if (sendsError) {
-				console.error("Error creating campaign sends:", sendsError);
-				throw sendsError;
+			const { error: schedulesError } = await supabase.from("campaign_schedules").insert(schedulesToInsert);
+			if (schedulesError) {
+				console.error("Error creating campaign schedules:", schedulesError);
+				throw schedulesError;
 			}
 		}
 		return {
@@ -75146,16 +75217,65 @@ const campaignsService = {
 			objective: newCampaign.description
 		};
 	},
-	async getCampaignById(id) {
-		const { data, error } = await supabase.from("campaigns").select(`
-        *,
-        sends:campaign_sends(*)
-      `).eq("id", id).single();
-		if (error) throw error;
+	async getCampaignStats(campaignId) {
+		const { data, error } = await supabase.from("campaign_sends").select("channel, status").eq("campaign_id", campaignId);
+		if (error) {
+			console.error("Error fetching stats", error);
+			return {
+				total_sends: 0,
+				emails_sent: 0,
+				emails_opened: 0,
+				emails_clicked: 0,
+				whatsapp_sent: 0,
+				whatsapp_pending: 0,
+				open_rate: 0,
+				click_rate: 0
+			};
+		}
+		const stats = data.reduce((acc, log$1) => {
+			acc.total_sends++;
+			if (log$1.channel === "email") {
+				acc.emails_sent++;
+				if (["opened", "clicked"].includes(log$1.status)) acc.emails_opened++;
+				if (log$1.status === "clicked") acc.emails_clicked++;
+			} else if (log$1.channel === "whatsapp") {
+				if (log$1.status === "sent") acc.whatsapp_sent++;
+				if (log$1.status === "pending") acc.whatsapp_pending++;
+			}
+			return acc;
+		}, {
+			total_sends: 0,
+			emails_sent: 0,
+			emails_opened: 0,
+			emails_clicked: 0,
+			whatsapp_sent: 0,
+			whatsapp_pending: 0
+		});
 		return {
-			...data,
-			objective: data.description || data.objective || null
+			...stats,
+			open_rate: stats.emails_sent > 0 ? stats.emails_opened / stats.emails_sent * 100 : 0,
+			click_rate: stats.emails_sent > 0 ? stats.emails_clicked / stats.emails_sent * 100 : 0
 		};
+	},
+	async getWhatsAppQueue(campaignId) {
+		const { data, error } = await supabase.from("campaign_sends").select(`
+        *,
+        contact:contacts(name, phone, whatsapp, email)
+      `).eq("campaign_id", campaignId).eq("channel", "whatsapp").eq("status", "pending").order("created_at", { ascending: true });
+		if (error) throw error;
+		return data;
+	},
+	async markAsSent(logId) {
+		const { error } = await supabase.from("campaign_sends").update({
+			status: "sent",
+			sent_at: (/* @__PURE__ */ new Date()).toISOString()
+		}).eq("id", logId);
+		if (error) throw error;
+	},
+	async triggerProcessing() {
+		const { data, error } = await supabase.functions.invoke("process-campaigns");
+		if (error) throw error;
+		return data;
 	}
 };
 function DatePicker({ date: date$4, setDate, className, placeholder = "Selecione uma data" }) {
@@ -75729,7 +75849,7 @@ function Campanhas() {
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Período" }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Canais" }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Destinatários" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Audience" }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 				className: "text-right",
 				children: "Ações"
@@ -75739,9 +75859,10 @@ function Campanhas() {
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex flex-col",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "font-semibold text-base",
-						children: campaign.name
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+						to: `/campanhas/${campaign.id}`,
+						className: "font-semibold text-base hover:text-primary transition-colors flex items-center gap-1",
+						children: [campaign.name, /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { className: "h-3 w-3 opacity-50" })]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "text-xs text-muted-foreground line-clamp-1",
 						title: campaign.objective || "",
@@ -75782,23 +75903,492 @@ function Campanhas() {
 				}) }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center gap-2 text-sm",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "h-4 w-4 text-muted-foreground" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "-" }),
-						" "
-					]
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: campaign.audience_filters.segments.length > 0 ? campaign.audience_filters.segments.join(", ") : "Todos" })]
 				}) }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 					className: "text-right",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 						variant: "ghost",
 						size: "sm",
-						title: "Ver detalhes",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartNoAxesColumn, { className: "h-4 w-4 text-muted-foreground hover:text-primary" })
+						title: "Ver Dashboard",
+						asChild: true,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+							to: `/campanhas/${campaign.id}`,
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartNoAxesColumn, { className: "h-4 w-4 text-muted-foreground hover:text-primary" })
+						})
 					})
 				})
 			]
 		}, campaign.id)) })] }) })] })]
+	});
+}
+function WhatsAppSender({ campaignId, onRefresh }) {
+	const [queue, setQueue] = (0, import_react.useState)([]);
+	const [loading, setLoading] = (0, import_react.useState)(true);
+	const [processingId, setProcessingId] = (0, import_react.useState)(null);
+	const { toast: toast$2 } = useToast();
+	const fetchQueue = async () => {
+		setLoading(true);
+		try {
+			setQueue(await campaignsService.getWhatsAppQueue(campaignId));
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível carregar a fila de envio.",
+				variant: "destructive"
+			});
+		} finally {
+			setLoading(false);
+		}
+	};
+	(0, import_react.useEffect)(() => {
+		fetchQueue();
+	}, [campaignId]);
+	const handleSend = async (item) => {
+		const phone = item.contact?.whatsapp || item.contact?.phone;
+		if (!phone) {
+			toast$2({
+				title: "Erro",
+				description: "Contato sem número de telefone.",
+				variant: "destructive"
+			});
+			return;
+		}
+		const url = `https://wa.me/55${phone.replace(/\D/g, "")}`;
+		window.open(url, "_blank");
+		setProcessingId(item.id);
+		try {
+			await campaignsService.markAsSent(item.id);
+			setQueue((prev) => prev.filter((q) => q.id !== item.id));
+			toast$2({
+				title: "Enviado",
+				description: "Marcado como enviado com sucesso."
+			});
+			onRefresh();
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Falha ao atualizar status.",
+				variant: "destructive"
+			});
+		} finally {
+			setProcessingId(null);
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "grid gap-6 md:grid-cols-3",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "md:col-span-2",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "h-full flex flex-col",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex justify-between items-center",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+						className: "flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageSquare, { className: "h-5 w-5 text-green-600" }), "Fila de Envio Manual"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardDescription, { children: [queue.length, " mensagens aguardando envio"] })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						variant: "ghost",
+						size: "icon",
+						onClick: fetchQueue,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { className: "h-4 w-4" })
+					})]
+				}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					className: "flex-1 p-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollArea, {
+						className: "h-[500px]",
+						children: loading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex justify-center p-8",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin text-green-600" })
+						}) : queue.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col items-center justify-center h-full p-8 text-muted-foreground",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-12 w-12 text-green-100 mb-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Todos os envios foram concluídos!" })]
+						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "divide-y",
+							children: queue.map((item, index$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "p-4 flex items-center justify-between hover:bg-muted/20 transition-colors",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-3",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "flex items-center justify-center w-8 h-8 rounded-full bg-muted font-mono text-xs",
+										children: index$1 + 1
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "font-medium text-sm",
+										children: item.contact?.name || "Contato Sem Nome"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs text-muted-foreground",
+										children: item.contact?.whatsapp || item.contact?.phone
+									})] })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+									size: "sm",
+									className: "bg-green-600 hover:bg-green-700 text-white",
+									onClick: () => handleSend(item),
+									disabled: !!processingId,
+									children: processingId === item.id ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-4 w-4 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Send, { className: "mr-2 h-4 w-4" }), " Enviar"] })
+								})]
+							}, item.id))
+						})
+					})
+				})]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Instruções" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+			className: "space-y-4 text-sm",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "O WhatsApp não permite envio em massa automático via API oficial sem custos elevados. Utilize esta ferramenta para envios sequenciais semirrpaidos." }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ol", {
+					className: "list-decimal list-inside space-y-2 text-muted-foreground",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Clique em \"Enviar\" para abrir a conversa no WhatsApp Web/Desktop." }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "A mensagem (se configurada) já estará digitada." }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Aperte Enter no WhatsApp para enviar." }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "O sistema marcará automaticamente como \"Enviado\" e passará para o próximo." })
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "bg-yellow-50 p-3 rounded border border-yellow-100 text-yellow-800 text-xs mt-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Dica:" }), " Mantenha o WhatsApp Web aberto em outra aba para agilizar o processo."]
+				})
+			]
+		})] }) })]
+	});
+}
+function CampaignDetails() {
+	const { id } = useParams();
+	const navigate = useNavigate();
+	const { toast: toast$2 } = useToast();
+	const [campaign, setCampaign] = (0, import_react.useState)(null);
+	const [loading, setLoading] = (0, import_react.useState)(true);
+	const [refreshing, setRefreshing] = (0, import_react.useState)(false);
+	const fetchCampaign = async () => {
+		if (!id) return;
+		try {
+			setCampaign(await campaignsService.getCampaignById(id));
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível carregar a campanha.",
+				variant: "destructive"
+			});
+			navigate("/campanhas");
+		} finally {
+			setLoading(false);
+			setRefreshing(false);
+		}
+	};
+	(0, import_react.useEffect)(() => {
+		fetchCampaign();
+	}, [id]);
+	const handleManualProcessing = async () => {
+		try {
+			setRefreshing(true);
+			await campaignsService.triggerProcessing();
+			toast$2({
+				title: "Processamento iniciado",
+				description: "Verificando cronograma e gerando envios..."
+			});
+			setTimeout(fetchCampaign, 2e3);
+		} catch (error) {
+			setRefreshing(false);
+			toast$2({
+				title: "Erro",
+				description: "Falha ao processar campanha.",
+				variant: "destructive"
+			});
+		}
+	};
+	if (loading) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "flex items-center justify-center h-[calc(100vh-200px)]",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "animate-spin rounded-full h-12 w-12 border-b-2 border-primary" })
+	});
+	if (!campaign) return null;
+	const stats = campaign.stats || {
+		total_sends: 0,
+		emails_sent: 0,
+		emails_opened: 0,
+		emails_clicked: 0,
+		whatsapp_sent: 0,
+		whatsapp_pending: 0,
+		open_rate: 0,
+		click_rate: 0
+	};
+	const chartData$1 = [
+		{
+			name: "Enviados",
+			value: stats.emails_sent,
+			fill: "hsl(var(--primary))"
+		},
+		{
+			name: "Abertos",
+			value: stats.emails_opened,
+			fill: "hsl(var(--blue-500))"
+		},
+		{
+			name: "Clicados",
+			value: stats.emails_clicked,
+			fill: "hsl(var(--green-500))"
+		}
+	];
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in pb-10",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col md:flex-row md:items-center justify-between gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						variant: "ghost",
+						size: "icon",
+						onClick: () => navigate("/campanhas"),
+						className: "shrink-0",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowLeft, { className: "h-5 w-5" })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+						className: "text-2xl font-bold font-display text-primary flex items-center gap-3",
+						children: campaign.name
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-2 mt-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+							variant: "outline",
+							children: campaign.status
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "text-sm text-muted-foreground flex items-center gap-1",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3 w-3" }),
+								format(new Date(campaign.start_date), "d 'de' MMM", { locale: ptBR }),
+								" ",
+								"-",
+								" ",
+								format(new Date(campaign.end_date), "d 'de' MMM, yyyy", { locale: ptBR })
+							]
+						})]
+					})] })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex gap-2",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						variant: "outline",
+						onClick: handleManualProcessing,
+						disabled: refreshing,
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCcw, { className: `mr-2 h-4 w-4 ${refreshing ? "animate-spin" : ""}` }), "Atualizar / Processar"]
+					})
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid grid-cols-2 md:grid-cols-4 gap-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "p-4 pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm font-medium text-muted-foreground",
+							children: "Total Envios"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "p-4 pt-0",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "text-2xl font-bold",
+							children: stats.total_sends
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs text-muted-foreground mt-1",
+							children: "Email + WhatsApp"
+						})]
+					})] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "p-4 pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm font-medium text-muted-foreground",
+							children: "Taxa de Abertura (Email)"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "p-4 pt-0",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-2xl font-bold flex items-center gap-2",
+							children: [
+								stats.open_rate.toFixed(1),
+								"%",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Eye, { className: "h-4 w-4 text-blue-500" })
+							]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+							className: "text-xs text-muted-foreground mt-1",
+							children: [stats.emails_opened, " aberturas únicas"]
+						})]
+					})] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "p-4 pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm font-medium text-muted-foreground",
+							children: "Taxa de Cliques (Email)"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "p-4 pt-0",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-2xl font-bold flex items-center gap-2",
+							children: [
+								stats.click_rate.toFixed(1),
+								"%",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MousePointerClick, { className: "h-4 w-4 text-green-500" })
+							]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+							className: "text-xs text-muted-foreground mt-1",
+							children: [stats.emails_clicked, " cliques únicos"]
+						})]
+					})] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "p-4 pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm font-medium text-muted-foreground",
+							children: "WhatsApp"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "p-4 pt-0",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-2xl font-bold flex items-center gap-2",
+							children: [stats.whatsapp_sent, /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-4 w-4 text-green-600" })]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+							className: "text-xs text-muted-foreground mt-1",
+							children: [stats.whatsapp_pending, " pendentes de envio"]
+						})]
+					})] })
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+				defaultValue: "overview",
+				className: "space-y-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "overview",
+							children: "Visão Geral"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+							value: "whatsapp",
+							disabled: !campaign.channels.includes("whatsapp"),
+							children: [
+								"Envio WhatsApp",
+								" ",
+								stats.whatsapp_pending > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+									variant: "secondary",
+									className: "ml-2 h-5 px-1",
+									children: stats.whatsapp_pending
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "schedules",
+							children: "Cronograma"
+						})
+					] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "overview",
+						className: "space-y-4",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-1 md:grid-cols-2 gap-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Engajamento de Email" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Funil de interação da campanha" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+								config: { value: {
+									label: "Quantidade",
+									color: "hsl(var(--primary))"
+								} },
+								className: "h-[300px] w-full",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
+									data: chartData$1,
+									margin: {
+										top: 20,
+										right: 30,
+										left: 20,
+										bottom: 5
+									},
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+											dataKey: "name",
+											fontSize: 12,
+											tickLine: false,
+											axisLine: false
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+											fontSize: 12,
+											tickLine: false,
+											axisLine: false
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
+											dataKey: "value",
+											radius: [
+												4,
+												4,
+												0,
+												0
+											]
+										})
+									]
+								})
+							}) })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Configurações de Público" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+								className: "space-y-4",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+									className: "text-sm font-medium text-muted-foreground mb-2",
+									children: "Segmentos Alvo"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "flex flex-wrap gap-2",
+									children: campaign.audience_filters.segments.length > 0 ? campaign.audience_filters.segments.map((seg) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+										variant: "secondary",
+										children: seg
+									}, seg)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-sm text-muted-foreground",
+										children: "Todos os segmentos"
+									})
+								})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+									className: "text-sm font-medium text-muted-foreground mb-2",
+									children: "Tags Filtradas"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "flex flex-wrap gap-2",
+									children: campaign.audience_filters.tags.length > 0 ? campaign.audience_filters.tags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+										variant: "outline",
+										children: tag
+									}, tag)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-sm text-muted-foreground",
+										children: "Nenhuma tag específica"
+									})
+								})] })]
+							})] })]
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "whatsapp",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WhatsAppSender, {
+							campaignId: campaign.id,
+							onRefresh: fetchCampaign
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "schedules",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Cronograma de Envios" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "space-y-4",
+							children: campaign.schedules?.map((schedule, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center p-4 border rounded-lg bg-card",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: `p-2 rounded-full mr-4 ${schedule.channel_type === "email" ? "bg-blue-100 text-blue-600" : "bg-green-100 text-green-600"}`,
+										children: schedule.channel_type === "email" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-5 w-5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageSquare, { className: "h-5 w-5" })
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "font-semibold text-sm",
+											children: format(new Date(schedule.scheduled_at), "dd 'de' MMMM 'às' HH:mm", { locale: ptBR })
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-xs text-muted-foreground truncate max-w-md",
+											children: schedule.content
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+										variant: schedule.status === "Processado" ? "default" : "outline",
+										children: schedule.status
+									}) })
+								]
+							}, schedule.id || idx))
+						}) })] })
+					})
+				]
+			})
+		]
 	});
 }
 var SWITCH_NAME = "Switch";
@@ -78556,6 +79146,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Campanhas, {})
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+						path: "/campanhas/:id",
+						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CampaignDetails, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 						path: "/automacoes",
 						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Automacoes, {})
 					}),
@@ -78587,4 +79181,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Dnvqhl7D.js.map
+//# sourceMappingURL=index-Xt5fdyRG.js.map

@@ -71,7 +71,6 @@ export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
   const filters = form.watch('filters')
 
   const onSubmit = async (values: CampaignFormValues) => {
-    // Validation: Check if at least one filter selected (soft check)
     if (
       values.filters.tags.length === 0 &&
       values.filters.segments.length === 0
@@ -82,7 +81,6 @@ export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
           'Você não selecionou nenhum filtro de público. Isso pode resultar em 0 destinatários.',
         variant: 'destructive',
       })
-      // We allow proceed but warn. Or we could block.
     }
 
     if (schedules.length === 0) {

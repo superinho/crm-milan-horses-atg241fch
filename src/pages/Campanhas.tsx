@@ -1,25 +1,17 @@
 import { useState, useEffect } from 'react'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/card'
+import { Link } from 'react-router-dom'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
 import {
   Megaphone,
   Mail,
   MessageSquare,
   Plus,
   BarChart2,
-  PauseCircle,
-  PlayCircle,
-  Calendar as CalendarIcon,
   Users,
   Loader2,
+  ExternalLink,
 } from 'lucide-react'
 import {
   Dialog,
@@ -146,7 +138,7 @@ export default function Campanhas() {
                   <TableHead>Status</TableHead>
                   <TableHead>Período</TableHead>
                   <TableHead>Canais</TableHead>
-                  <TableHead>Destinatários</TableHead>
+                  <TableHead>Audience</TableHead>
                   <TableHead className="text-right">Ações</TableHead>
                 </TableRow>
               </TableHeader>
@@ -155,9 +147,13 @@ export default function Campanhas() {
                   <TableRow key={campaign.id} className="group">
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="font-semibold text-base">
+                        <Link
+                          to={`/campanhas/${campaign.id}`}
+                          className="font-semibold text-base hover:text-primary transition-colors flex items-center gap-1"
+                        >
                           {campaign.name}
-                        </span>
+                          <ExternalLink className="h-3 w-3 opacity-50" />
+                        </Link>
                         <span
                           className="text-xs text-muted-foreground line-clamp-1"
                           title={campaign.objective || ''}
@@ -210,16 +206,25 @@ export default function Campanhas() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {/* This would be real data ideally, for now placeholder or computed if available */}
                       <div className="flex items-center gap-2 text-sm">
                         <Users className="h-4 w-4 text-muted-foreground" />
-                        <span>-</span>{' '}
-                        {/* We don't store audience count persistently yet, or we fetch it */}
+                        <span>
+                          {campaign.audience_filters.segments.length > 0
+                            ? campaign.audience_filters.segments.join(', ')
+                            : 'Todos'}
+                        </span>
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button variant="ghost" size="sm" title="Ver detalhes">
-                        <BarChart2 className="h-4 w-4 text-muted-foreground hover:text-primary" />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        title="Ver Dashboard"
+                        asChild
+                      >
+                        <Link to={`/campanhas/${campaign.id}`}>
+                          <BarChart2 className="h-4 w-4 text-muted-foreground hover:text-primary" />
+                        </Link>
                       </Button>
                     </TableCell>
                   </TableRow>

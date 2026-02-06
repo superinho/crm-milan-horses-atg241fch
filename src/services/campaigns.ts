@@ -12,20 +12,39 @@ export type CampaignFilters = {
   segments: string[]
 }
 
-export type CampaignSend = {
-  id?: string
-  campaign_id?: string
+export type CampaignSchedule = {
+  id: string
+  campaign_id: string
   channel_type: 'email' | 'whatsapp'
   scheduled_at: string
   template_id?: string | null
   content: string
-  status: 'Pendente' | 'Enviado' | 'Falha'
+  status: 'Pendente' | 'Processado' | 'Falha'
+  created_at: string
+}
+
+export type CampaignSendLog = {
+  id: string
+  campaign_id: string
+  schedule_id: string
+  recipient_id: string
+  channel: 'email' | 'whatsapp'
+  status: 'pending' | 'sent' | 'delivered' | 'opened' | 'clicked' | 'failed'
+  sent_at?: string
+  opened_at?: string
+  clicked_at?: string
+  contact?: {
+    name: string
+    email: string
+    phone: string
+    whatsapp?: string
+  }
 }
 
 export type Campaign = {
   id: string
   name: string
-  objective: string | null // Mapped from description for UI compatibility
+  objective: string | null
   description?: string | null
   start_date: string
   end_date: string
@@ -35,8 +54,19 @@ export type Campaign = {
   company_id?: string | null
   created_at: string
   updated_at: string
-  sends?: CampaignSend[]
-  audience_count?: number // Computed field
+  schedules?: CampaignSchedule[]
+  stats?: CampaignStats
+}
+
+export type CampaignStats = {
+  total_sends: number
+  emails_sent: number
+  emails_opened: number
+  emails_clicked: number
+  whatsapp_sent: number
+  whatsapp_pending: number
+  open_rate: number
+  click_rate: number
 }
 
 export type CampaignInsert = {
@@ -53,31 +83,56 @@ export type CampaignInsert = {
 
 export const campaignsService = {
   async getCampaigns() {
-    // We use 'as any' for the table name to avoid type errors if the types definition is not yet updated
     const { data, error } = await supabase
-      .from('campaigns' as any)
+      .from('campaigns')
       .select(
         `
         *,
-        sends:campaign_sends(*)
+        schedules:campaign_schedules(*)
       `,
       )
       .order('created_at', { ascending: false })
 
     if (error) throw error
 
-    // Map description to objective for UI compatibility
     return (data || []).map((campaign: any) => ({
       ...campaign,
       objective: campaign.description || campaign.objective || null,
     })) as Campaign[]
   },
 
+  async getCampaignById(id: string) {
+    const { data, error } = await supabase
+      .from('campaigns')
+      .select(
+        `
+        *,
+        schedules:campaign_schedules(*)
+      `,
+      )
+      .eq('id', id)
+      .single()
+
+    if (error) throw error
+
+    const campaign = {
+      ...data,
+      objective: data.description || data.objective || null,
+    } as Campaign
+
+    // Fetch stats
+    campaign.stats = await this.getCampaignStats(id)
+
+    return campaign
+  },
+
   async createCampaign(
     campaign: CampaignInsert,
-    sends: Omit<CampaignSend, 'id' | 'campaign_id' | 'status'>[],
+    schedules: Omit<
+      CampaignSchedule,
+      'id' | 'campaign_id' | 'status' | 'created_at'
+    >[],
   ) {
-    // Map objective to description for DB persistence
     const dbCampaign = {
       name: campaign.name,
       description: campaign.objective || campaign.description,
@@ -89,18 +144,16 @@ export const campaignsService = {
       company_id: campaign.company_id,
     }
 
-    // 1. Create Campaign
     const { data: newCampaign, error: campaignError } = await supabase
-      .from('campaigns' as any)
+      .from('campaigns')
       .insert(dbCampaign)
       .select()
       .single()
 
     if (campaignError) throw campaignError
 
-    // 2. Create Sends
-    if (sends.length > 0) {
-      const sendsToInsert = sends.map((send) => ({
+    if (schedules.length > 0) {
+      const schedulesToInsert = schedules.map((send) => ({
         campaign_id: newCampaign.id,
         channel_type: send.channel_type,
         scheduled_at: send.scheduled_at,
@@ -109,15 +162,13 @@ export const campaignsService = {
         status: 'Pendente',
       }))
 
-      const { error: sendsError } = await supabase
-        .from('campaign_sends' as any)
-        .insert(sendsToInsert)
+      const { error: schedulesError } = await supabase
+        .from('campaign_schedules')
+        .insert(schedulesToInsert)
 
-      if (sendsError) {
-        // Optional: Rollback campaign creation or log error
-        console.error('Error creating campaign sends:', sendsError)
-        // For now, throwing to notify caller
-        throw sendsError
+      if (schedulesError) {
+        console.error('Error creating campaign schedules:', schedulesError)
+        throw schedulesError
       }
     }
 
@@ -127,23 +178,97 @@ export const campaignsService = {
     }
   },
 
-  async getCampaignById(id: string) {
+  async getCampaignStats(campaignId: string): Promise<CampaignStats> {
     const { data, error } = await supabase
-      .from('campaigns' as any)
+      .from('campaign_sends')
+      .select('channel, status')
+      .eq('campaign_id', campaignId)
+
+    if (error) {
+      console.error('Error fetching stats', error)
+      return {
+        total_sends: 0,
+        emails_sent: 0,
+        emails_opened: 0,
+        emails_clicked: 0,
+        whatsapp_sent: 0,
+        whatsapp_pending: 0,
+        open_rate: 0,
+        click_rate: 0,
+      }
+    }
+
+    const stats = data.reduce(
+      (acc, log) => {
+        acc.total_sends++
+        if (log.channel === 'email') {
+          acc.emails_sent++
+          if (['opened', 'clicked'].includes(log.status)) acc.emails_opened++
+          if (log.status === 'clicked') acc.emails_clicked++
+        } else if (log.channel === 'whatsapp') {
+          if (log.status === 'sent') acc.whatsapp_sent++
+          if (log.status === 'pending') acc.whatsapp_pending++
+        }
+        return acc
+      },
+      {
+        total_sends: 0,
+        emails_sent: 0,
+        emails_opened: 0,
+        emails_clicked: 0,
+        whatsapp_sent: 0,
+        whatsapp_pending: 0,
+      },
+    )
+
+    return {
+      ...stats,
+      open_rate:
+        stats.emails_sent > 0
+          ? (stats.emails_opened / stats.emails_sent) * 100
+          : 0,
+      click_rate:
+        stats.emails_sent > 0
+          ? (stats.emails_clicked / stats.emails_sent) * 100
+          : 0,
+    }
+  },
+
+  async getWhatsAppQueue(campaignId: string) {
+    const { data, error } = await supabase
+      .from('campaign_sends')
       .select(
         `
         *,
-        sends:campaign_sends(*)
+        contact:contacts(name, phone, whatsapp, email)
       `,
       )
-      .eq('id', id)
-      .single()
+      .eq('campaign_id', campaignId)
+      .eq('channel', 'whatsapp')
+      .eq('status', 'pending')
+      .order('created_at', { ascending: true })
 
     if (error) throw error
+    return data as CampaignSendLog[]
+  },
 
-    return {
-      ...data,
-      objective: data.description || data.objective || null,
-    } as Campaign
+  async markAsSent(logId: string) {
+    const { error } = await supabase
+      .from('campaign_sends')
+      .update({
+        status: 'sent',
+        sent_at: new Date().toISOString(),
+      })
+      .eq('id', logId)
+
+    if (error) throw error
+  },
+
+  async triggerProcessing() {
+    // This calls the edge function to process schedules
+    // In a real app, this is triggered by cron, but we allow manual trigger for demo
+    const { data, error } = await supabase.functions.invoke('process-campaigns')
+    if (error) throw error
+    return data
   },
 }
