@@ -1257,6 +1257,9 @@ h1,
 .right-2{
   right: 0.5rem;
 }
+.right-2\.5{
+  right: 0.625rem;
+}
 .right-3{
   right: 0.75rem;
 }
