@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase/client'
+import { DateRange } from 'react-day-picker'
 
 export type Contact = {
   id: string
@@ -65,12 +66,18 @@ export type SegmentStats = {
   percentage: number
 }
 
-type GetContactsParams = {
+export type GetContactsParams = {
   page?: number
   pageSize?: number
   search?: string
   tags?: string[]
   segment?: string | null
+  minInvestment?: number
+  maxInvestment?: number
+  lastContactRange?: DateRange
+  status?: 'active' | 'inactive' | null
+  breed?: string | null
+  location?: string | null
   sortBy?: string
   sortDirection?: 'asc' | 'desc'
 }
@@ -87,6 +94,12 @@ export const contactsService = {
     search = '',
     tags = [],
     segment = null,
+    minInvestment,
+    maxInvestment,
+    lastContactRange,
+    status,
+    breed,
+    location,
     sortBy = 'created_at',
     sortDirection = 'desc',
   }: GetContactsParams) {
@@ -111,19 +124,57 @@ export const contactsService = {
       { count: 'exact' },
     )
 
+    // Basic Search
     if (search) {
-      query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%`)
+      query = query.or(
+        `name.ilike.%${search}%,email.ilike.%${search}%,phone.ilike.%${search}%`,
+      )
     }
 
-    if (segment) {
-      const { data: segmentedContacts, error: segmentError } = await supabase
-        .from('contact_segmentation_view')
-        .select('id')
-        .eq('segment', segment)
+    // Advanced Filtering - Location
+    if (location) {
+      query = query.ilike('address', `%${location}%`)
+    }
 
-      if (segmentError) throw segmentError
+    // Advanced Filtering - Breed
+    if (breed) {
+      // Assuming preferences is stored as { "breeds": ["Lusitano", ...] }
+      // This is a loose check if the JSON string contains the breed name
+      // Ideally should use -> 'breeds' @> [breed] but Supabase JS syntax for that can be tricky with arrays inside json
+      // Using implicit cast to text for simple containment check
+      query = query.textSearch('preferences', `'${breed}'`)
+    }
 
-      const ids = segmentedContacts?.map((c) => c.id) || []
+    // Advanced Filtering - Last Contact
+    if (lastContactRange?.from) {
+      query = query.gte('updated_at', lastContactRange.from.toISOString())
+      if (lastContactRange.to) {
+        query = query.lte('updated_at', lastContactRange.to.toISOString())
+      }
+    }
+
+    // Filtering via View (Segment & Investment)
+    // If we have filters that depend on the view (segment or investment), we fetch IDs from view first
+    if (segment || minInvestment !== undefined || maxInvestment !== undefined) {
+      let viewQuery = supabase.from('contact_segmentation_view').select('id')
+
+      if (segment) {
+        viewQuery = viewQuery.eq('segment', segment)
+      }
+
+      if (minInvestment !== undefined) {
+        viewQuery = viewQuery.gte('total_purchase_value', minInvestment)
+      }
+
+      if (maxInvestment !== undefined) {
+        viewQuery = viewQuery.lte('total_purchase_value', maxInvestment)
+      }
+
+      const { data: viewData, error: viewError } = await viewQuery
+
+      if (viewError) throw viewError
+
+      const ids = viewData?.map((c) => c.id) || []
 
       if (ids.length === 0) {
         return { data: [], count: 0, error: null }
@@ -132,14 +183,7 @@ export const contactsService = {
       query = query.in('id', ids)
     }
 
-    if (sortBy === 'lastContact') {
-      query = query.order('updated_at', { ascending: sortDirection === 'asc' })
-    } else if (sortBy === 'totalInvested') {
-      query = query.order('name', { ascending: sortDirection === 'asc' })
-    } else {
-      query = query.order(sortBy as any, { ascending: sortDirection === 'asc' })
-    }
-
+    // Tags filtering
     if (tags && tags.length > 0) {
       const { data: taggedContactIds, error: tagError } = await supabase
         .from('contact_tags')
@@ -149,11 +193,40 @@ export const contactsService = {
       if (tagError) throw tagError
 
       const ids = taggedContactIds?.map((tc) => tc.contact_id) || []
-      if (ids.length > 0) {
-        query = query.in('id', ids)
-      } else {
+      // If no contacts have these tags, return empty immediately
+      if (ids.length === 0) {
         return { data: [], count: 0, error: null }
       }
+      query = query.in('id', ids)
+    }
+
+    // Status (Simulated via Tags)
+    if (status) {
+      const statusTag = status === 'active' ? 'Ativo' : 'Inativo'
+      // We need to find contacts that have this specific tag
+      // This logic is additive to the existing tags logic
+      const { data: statusContactIds, error: statusError } = await supabase
+        .from('contact_tags')
+        .select('contact_id, tags!inner(name)')
+        .eq('tags.name', statusTag)
+
+      if (statusError) throw statusError
+
+      const ids = statusContactIds?.map((tc) => tc.contact_id) || []
+      if (ids.length === 0) {
+        return { data: [], count: 0, error: null }
+      }
+      query = query.in('id', ids)
+    }
+
+    // Sorting
+    if (sortBy === 'lastContact') {
+      query = query.order('updated_at', { ascending: sortDirection === 'asc' })
+    } else if (sortBy === 'totalInvested') {
+      query = query.order('name', { ascending: sortDirection === 'asc' })
+      // Note: Real totalInvested sort would require joining the view or sorting in memory
+    } else {
+      query = query.order(sortBy as any, { ascending: sortDirection === 'asc' })
     }
 
     query = query.range(from, to)
@@ -453,8 +526,6 @@ export const contactsService = {
   },
 
   async getBirthdays(month: number, day: number) {
-    // Note: This is a client-side filter approximation because simple Supabase filters don't support date parts extraction easily without SQL functions.
-    // For large databases, this should be an RPC or edge function.
     const { data, error } = await supabase
       .from('contacts')
       .select('id, name, birth_date')
@@ -464,7 +535,6 @@ export const contactsService = {
 
     return data.filter((contact) => {
       if (!contact.birth_date) return false
-      // birth_date format YYYY-MM-DD
       const [_, m, d] = contact.birth_date.split('-').map(Number)
       return m === month && d === day
     })
@@ -475,7 +545,6 @@ export const contactsService = {
     thresholdDate.setDate(thresholdDate.getDate() - daysThreshold)
     const thresholdStr = thresholdDate.toISOString()
 
-    // Using updated_at as a proxy for activity
     const { count, error } = await supabase
       .from('contacts')
       .select('id', { count: 'exact', head: true })

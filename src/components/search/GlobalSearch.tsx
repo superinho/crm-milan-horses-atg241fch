@@ -75,7 +75,8 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
           .filter(
             (d) =>
               d.title.toLowerCase().includes(query.toLowerCase()) ||
-              d.value.toString().includes(query),
+              d.value.toString().includes(query) ||
+              d.contact?.name.toLowerCase().includes(query.toLowerCase()),
           )
           .slice(0, 5)
 
@@ -173,6 +174,11 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                 <span className="ml-2 text-xs text-muted-foreground truncate">
                   {contact.email}
                 </span>
+                {contact.phone && (
+                  <span className="ml-2 text-xs text-muted-foreground truncate">
+                    {contact.phone}
+                  </span>
+                )}
               </CommandItem>
             ))}
           </CommandGroup>
@@ -190,7 +196,12 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
                 >
                   <Briefcase className="mr-2 h-4 w-4 text-orange-500" />
                   <span>{deal.title}</span>
-                  <span className="ml-2 text-xs text-muted-foreground">
+                  {deal.contact && (
+                    <span className="ml-2 text-xs text-muted-foreground">
+                      - {deal.contact.name}
+                    </span>
+                  )}
+                  <span className="ml-auto text-xs text-muted-foreground">
                     {new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
                       currency: 'BRL',

@@ -19,7 +19,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuCheckboxItem,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -37,11 +36,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import {
   Search,
   Plus,
-  Filter,
   MoreHorizontal,
   Phone,
   Mail,
@@ -50,51 +47,29 @@ import {
   FileDown,
   Loader2,
   X,
-  Users,
 } from 'lucide-react'
 import { cn, getContrastColor } from '@/lib/utils'
 import { ContactForm } from '@/components/contacts/ContactForm'
 import { contactsService, type Contact, type Tag } from '@/services/contacts'
 import { useToast } from '@/hooks/use-toast'
 import { TagSelector } from '@/components/tags/TagSelector'
-
-const SEGMENTS = [
-  {
-    value: 'VIP',
-    label: 'VIP',
-    class:
-      'data-[state=on]:bg-yellow-100 data-[state=on]:text-yellow-700 hover:bg-yellow-50 hover:text-yellow-600',
-  },
-  {
-    value: 'Frequentes',
-    label: 'Frequentes',
-    class:
-      'data-[state=on]:bg-blue-100 data-[state=on]:text-blue-700 hover:bg-blue-50 hover:text-blue-600',
-  },
-  {
-    value: 'Ativos',
-    label: 'Ativos',
-    class:
-      'data-[state=on]:bg-green-100 data-[state=on]:text-green-700 hover:bg-green-50 hover:text-green-600',
-  },
-  {
-    value: 'Novos Leads',
-    label: 'Novos Leads',
-    class:
-      'data-[state=on]:bg-purple-100 data-[state=on]:text-purple-700 hover:bg-purple-50 hover:text-purple-600',
-  },
-  {
-    value: 'Inativos',
-    label: 'Inativos',
-    class:
-      'data-[state=on]:bg-gray-100 data-[state=on]:text-gray-700 hover:bg-gray-50 hover:text-gray-600',
-  },
-]
+import {
+  AdvancedFilter,
+  FilterState,
+} from '@/components/contacts/AdvancedFilter'
 
 export default function Contatos() {
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
+  const [filters, setFilters] = useState<FilterState>({
+    tags: [],
+    segment: null,
+    minInvestment: '',
+    maxInvestment: '',
+    status: null,
+    breed: null,
+    location: '',
+  })
+
   const [sortConfig, setSortConfig] = useState<{
     key: string
     direction: 'asc' | 'desc'
@@ -103,18 +78,9 @@ export default function Contatos() {
   const [isSheetOpen, setSheetOpen] = useState(false)
   const [contacts, setContacts] = useState<Contact[]>([])
   const [totalCount, setTotalCount] = useState(0)
-  const [availableTags, setAvailableTags] = useState<Tag[]>([])
   const [loading, setLoading] = useState(true)
   const itemsPerPage = 10
   const { toast } = useToast()
-
-  // Fetch Tags
-  useEffect(() => {
-    contactsService
-      .getTags()
-      .then((tags) => setAvailableTags(tags || []))
-      .catch(console.error)
-  }, [])
 
   // Fetch Contacts
   const fetchContacts = async () => {
@@ -124,8 +90,18 @@ export default function Contatos() {
         page: currentPage,
         pageSize: itemsPerPage,
         search: searchTerm,
-        tags: selectedTags,
-        segment: selectedSegment,
+        tags: filters.tags,
+        segment: filters.segment,
+        minInvestment: filters.minInvestment
+          ? Number(filters.minInvestment)
+          : undefined,
+        maxInvestment: filters.maxInvestment
+          ? Number(filters.maxInvestment)
+          : undefined,
+        lastContactRange: filters.lastContactRange,
+        status: filters.status,
+        breed: filters.breed,
+        location: filters.location,
         sortBy: sortConfig.key,
         sortDirection: sortConfig.direction,
       })
@@ -150,7 +126,7 @@ export default function Contatos() {
       fetchContacts()
     }, 500)
     return () => clearTimeout(timer)
-  }, [currentPage, searchTerm, selectedTags, selectedSegment, sortConfig])
+  }, [currentPage, searchTerm, filters, sortConfig])
 
   const totalPages = Math.ceil(totalCount / itemsPerPage)
 
@@ -160,15 +136,6 @@ export default function Contatos() {
       direction:
         current.key === key && current.direction === 'asc' ? 'desc' : 'asc',
     }))
-  }
-
-  const toggleTag = (tagName: string) => {
-    setSelectedTags((current) =>
-      current.includes(tagName)
-        ? current.filter((t) => t !== tagName)
-        : [...current, tagName],
-    )
-    setCurrentPage(1)
   }
 
   const handleRemoveTag = async (contactId: string, tagId: string) => {
@@ -193,8 +160,12 @@ export default function Contatos() {
         border: 'none',
       }
     }
-    // Fallback for old class-based tags (if any)
     return {}
+  }
+
+  const handleFilterChange = (newFilters: FilterState) => {
+    setFilters(newFilters)
+    setCurrentPage(1)
   }
 
   return (
@@ -245,56 +216,17 @@ export default function Contatos() {
               <div className="relative w-full md:w-72">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Buscar por nome ou email..."
+                  placeholder="Buscar por nome, email ou telefone..."
                   className="pl-9"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="w-full md:w-auto ml-auto"
-                  >
-                    <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
-                    Filtrar Tags
-                    {selectedTags.length > 0 && (
-                      <Badge
-                        variant="secondary"
-                        className="ml-2 h-5 px-1.5 rounded-full text-xs"
-                      >
-                        {selectedTags.length}
-                      </Badge>
-                    )}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>Filtrar por Status</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {availableTags.map((tag) => (
-                    <DropdownMenuCheckboxItem
-                      key={tag.id}
-                      checked={selectedTags.includes(tag.name)}
-                      onCheckedChange={() => toggleTag(tag.name)}
-                    >
-                      {tag.name}
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                  {selectedTags.length > 0 && (
-                    <>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        className="justify-center text-center font-medium text-destructive cursor-pointer"
-                        onClick={() => setSelectedTags([])}
-                      >
-                        Limpar Filtros
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <AdvancedFilter
+                onFilterChange={handleFilterChange}
+                currentFilters={filters}
+              />
 
               <Button variant="outline" size="icon" className="hidden md:flex">
                 <FileDown className="h-4 w-4 text-muted-foreground" />
@@ -302,47 +234,44 @@ export default function Contatos() {
             </div>
           </div>
 
-          {/* Segment Filter Buttons */}
-          <div className="flex flex-col sm:flex-row gap-2 items-center justify-between border-t pt-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap">
-              <Users className="h-4 w-4" />
-              <span>Segmentos:</span>
+          {/* Active Filters Display */}
+          {(filters.tags.length > 0 ||
+            filters.segment ||
+            filters.status ||
+            filters.breed ||
+            filters.location ||
+            filters.minInvestment ||
+            filters.lastContactRange) && (
+            <div className="flex flex-wrap gap-2 pt-2">
+              <span className="text-sm text-muted-foreground self-center mr-1">
+                Filtros ativos:
+              </span>
+              {filters.tags.map((t) => (
+                <Badge
+                  key={`tag-${t}`}
+                  variant="secondary"
+                  className="px-2 py-1 text-xs"
+                >
+                  Tag: {t}
+                </Badge>
+              ))}
+              {filters.segment && (
+                <Badge variant="secondary" className="px-2 py-1 text-xs">
+                  Segmento: {filters.segment}
+                </Badge>
+              )}
+              {filters.status && (
+                <Badge variant="secondary" className="px-2 py-1 text-xs">
+                  Status: {filters.status === 'active' ? 'Ativo' : 'Inativo'}
+                </Badge>
+              )}
+              {filters.breed && (
+                <Badge variant="secondary" className="px-2 py-1 text-xs">
+                  Raça: {filters.breed}
+                </Badge>
+              )}
             </div>
-            <div className="w-full overflow-x-auto pb-1 sm:pb-0">
-              <ToggleGroup
-                type="single"
-                value={selectedSegment || ''}
-                onValueChange={(val) => {
-                  setSelectedSegment(val || null)
-                  setCurrentPage(1)
-                }}
-                className="justify-start sm:justify-end"
-              >
-                {SEGMENTS.map((segment) => (
-                  <ToggleGroupItem
-                    key={segment.value}
-                    value={segment.value}
-                    className={cn(
-                      'border border-transparent data-[state=on]:border-transparent rounded-full px-3 py-1 h-8 text-xs font-medium transition-all',
-                      segment.class,
-                    )}
-                  >
-                    {segment.label}
-                  </ToggleGroupItem>
-                ))}
-                {selectedSegment && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 rounded-full px-2 text-xs text-muted-foreground hover:text-foreground ml-1"
-                    onClick={() => setSelectedSegment(null)}
-                  >
-                    <X className="h-3 w-3 mr-1" /> Limpar
-                  </Button>
-                )}
-              </ToggleGroup>
-            </div>
-          </div>
+          )}
         </CardHeader>
 
         <CardContent>
@@ -416,6 +345,14 @@ export default function Contatos() {
                             >
                               {contact.name}
                             </Link>
+                            {contact.address && (
+                              <span
+                                className="text-xs text-muted-foreground truncate max-w-[150px]"
+                                title={contact.address}
+                              >
+                                {contact.address}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </TableCell>
@@ -525,8 +462,16 @@ export default function Contatos() {
                           variant="link"
                           onClick={() => {
                             setSearchTerm('')
-                            setSelectedTags([])
-                            setSelectedSegment(null)
+                            setFilters({
+                              tags: [],
+                              segment: null,
+                              minInvestment: '',
+                              maxInvestment: '',
+                              lastContactRange: undefined,
+                              status: null,
+                              breed: null,
+                              location: '',
+                            })
                           }}
                           className="mt-2 text-primary"
                         >
