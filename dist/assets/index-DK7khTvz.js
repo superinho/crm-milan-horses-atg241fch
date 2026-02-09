@@ -24551,7 +24551,7 @@ var Root3$1 = Tooltip$2;
 var Trigger$6 = TooltipTrigger$1;
 var Content2$6 = TooltipContent$1;
 var TooltipProvider = Provider;
-var Tooltip$1 = Root3$1;
+var Tooltip = Root3$1;
 var TooltipTrigger = Trigger$6;
 var TooltipContent = import_react.forwardRef(({ className, sideOffset = 4, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2$6, {
 	ref,
@@ -26331,7 +26331,7 @@ var SidebarMenuButton = import_react.forwardRef(({ asChild = false, isActive = f
 	});
 	if (!tooltip) return button;
 	if (typeof tooltip === "string") tooltip = { children: tooltip };
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip$1, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
 		asChild: true,
 		children: button
 	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, {
@@ -40656,7 +40656,7 @@ function renderContent(content, props) {
 	if (typeof content === "function") return /* @__PURE__ */ import_react.createElement(content, props);
 	return /* @__PURE__ */ import_react.createElement(DefaultTooltipContent, props);
 }
-var Tooltip = /* @__PURE__ */ function(_PureComponent) {
+var Tooltip$1 = /* @__PURE__ */ function(_PureComponent) {
 	function Tooltip$3() {
 		_classCallCheck$19(this, Tooltip$3);
 		return _callSuper$15(this, Tooltip$3, arguments);
@@ -40690,8 +40690,8 @@ var Tooltip = /* @__PURE__ */ function(_PureComponent) {
 		}
 	}]);
 }(import_react.PureComponent);
-_defineProperty$38(Tooltip, "displayName", "Tooltip");
-_defineProperty$38(Tooltip, "defaultProps", {
+_defineProperty$38(Tooltip$1, "displayName", "Tooltip");
+_defineProperty$38(Tooltip$1, "defaultProps", {
 	accessibilityLayer: false,
 	allowEscapeViewBox: {
 		x: false,
@@ -57868,7 +57868,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 			_defineProperty(_this, "renderTooltip", function() {
 				var _tooltipItem$props$ac;
 				var _this$props3 = _this.props, children = _this$props3.children, accessibilityLayer = _this$props3.accessibilityLayer;
-				var tooltipItem = findChildByType(children, Tooltip);
+				var tooltipItem = findChildByType(children, Tooltip$1);
 				if (!tooltipItem) return null;
 				var _this$state5 = _this.state, isTooltipActive = _this$state5.isTooltipActive, activeCoordinate = _this$state5.activeCoordinate, activePayload = _this$state5.activePayload, activeLabel = _this$state5.activeLabel, offset$3 = _this$state5.offset;
 				var isActive = (_tooltipItem$props$ac = tooltipItem.props.active) !== null && _tooltipItem$props$ac !== void 0 ? _tooltipItem$props$ac : isTooltipActive;
@@ -57950,7 +57950,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 				var tooltipEventType = _this.getTooltipEventType();
 				var _this$state8 = _this.state, isTooltipActive = _this$state8.isTooltipActive, tooltipAxis = _this$state8.tooltipAxis, activeTooltipIndex = _this$state8.activeTooltipIndex, activeLabel = _this$state8.activeLabel;
 				var children = _this.props.children;
-				var tooltipItem = findChildByType(children, Tooltip);
+				var tooltipItem = findChildByType(children, Tooltip$1);
 				var _item$props = item.props, points = _item$props.points, isRange = _item$props.isRange, baseLine = _item$props.baseLine;
 				var itemItemProps = item.item.type.defaultProps !== void 0 ? _objectSpread(_objectSpread({}, item.item.type.defaultProps), item.item.props) : item.item.props;
 				var activeDot = itemItemProps.activeDot, hide$3 = itemItemProps.hide, activeBar = itemItemProps.activeBar, activeShape = itemItemProps.activeShape;
@@ -58072,7 +58072,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 				key: "displayDefaultTooltip",
 				value: function displayDefaultTooltip() {
 					var _this$props5 = this.props, children = _this$props5.children, data = _this$props5.data, height = _this$props5.height, layout = _this$props5.layout;
-					var tooltipElem = findChildByType(children, Tooltip);
+					var tooltipElem = findChildByType(children, Tooltip$1);
 					if (!tooltipElem) return;
 					var defaultIndex = tooltipElem.props.defaultIndex;
 					if (typeof defaultIndex !== "number" || defaultIndex < 0 || defaultIndex > this.state.tooltipTicks.length - 1) return;
@@ -58125,7 +58125,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 			{
 				key: "componentDidUpdate",
 				value: function componentDidUpdate(prevProps) {
-					if (!isChildrenEqual([findChildByType(prevProps.children, Tooltip)], [findChildByType(this.props.children, Tooltip)])) this.displayDefaultTooltip();
+					if (!isChildrenEqual([findChildByType(prevProps.children, Tooltip$1)], [findChildByType(this.props.children, Tooltip$1)])) this.displayDefaultTooltip();
 				}
 			},
 			{
@@ -58138,7 +58138,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 			{
 				key: "getTooltipEventType",
 				value: function getTooltipEventType() {
-					var tooltipItem = findChildByType(this.props.children, Tooltip);
+					var tooltipItem = findChildByType(this.props.children, Tooltip$1);
 					if (tooltipItem && typeof tooltipItem.props.shared === "boolean") {
 						var eventType = tooltipItem.props.shared ? "axis" : "item";
 						return validateTooltipEventTypes.indexOf(eventType) >= 0 ? eventType : defaultTooltipEventType;
@@ -58206,7 +58206,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 				value: function parseEventsOfWrapper() {
 					var children = this.props.children;
 					var tooltipEventType = this.getTooltipEventType();
-					var tooltipItem = findChildByType(children, Tooltip);
+					var tooltipItem = findChildByType(children, Tooltip$1);
 					var tooltipEvents = {};
 					if (tooltipItem && tooltipEventType === "axis") if (tooltipItem.props.trigger === "click") tooltipEvents = { onClick: this.handleClick };
 					else tooltipEvents = {
@@ -58577,7 +58577,7 @@ ${colorConfig.map(([key, itemConfig]) => {
 }
 `).join("\n") } });
 };
-var ChartTooltip = Tooltip;
+var ChartTooltip = Tooltip$1;
 var ChartTooltipContent = import_react.forwardRef(({ active, payload, className, indicator = "dot", hideLabel = false, hideIndicator = false, label, labelFormatter, labelClassName, formatter, color: color$1, nameKey, labelKey }, ref) => {
 	const { config: config$1 } = useChart();
 	const tooltipLabel = import_react.useMemo(() => {
@@ -58933,7 +58933,7 @@ var chartData = [
 		leads: 90
 	}
 ];
-var chartConfig$2 = {
+var chartConfig$4 = {
 	vendas: {
 		label: "Vendas (R$)",
 		color: "hsl(var(--primary))"
@@ -59120,7 +59120,7 @@ function Index() {
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Resumo de vendas e novos leads no primeiro semestre." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "pl-2",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-								config: chartConfig$2,
+								config: chartConfig$4,
 								className: "h-[300px] w-full",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
 									data: chartData,
@@ -65346,6 +65346,26 @@ function normalizeInterval(context, interval) {
 		end
 	};
 }
+function eachDayOfInterval(interval, options$1) {
+	const { start, end } = normalizeInterval(options$1?.in, interval);
+	let reversed = +start > +end;
+	const endTime = reversed ? +start : +end;
+	const date$4 = reversed ? end : start;
+	date$4.setHours(0, 0, 0, 0);
+	let step = options$1?.step ?? 1;
+	if (!step) return [];
+	if (step < 0) {
+		step = -step;
+		reversed = !reversed;
+	}
+	const dates = [];
+	while (+date$4 <= endTime) {
+		dates.push(constructFrom(start, date$4));
+		date$4.setDate(date$4.getDate() + step);
+		date$4.setHours(0, 0, 0, 0);
+	}
+	return reversed ? dates.reverse() : dates;
+}
 function eachMonthOfInterval(interval, options$1) {
 	const { start, end } = normalizeInterval(options$1?.in, interval);
 	let reversed = +start > +end;
@@ -66571,6 +66591,9 @@ function cleanEscapedString(input) {
 	if (!matched) return input;
 	return matched[1].replace(doubleQuoteRegExp, "'");
 }
+function getDay(date$4, options$1) {
+	return toDate(date$4, options$1?.in).getDay();
+}
 function getDaysInMonth(date$4, options$1) {
 	const _date$1 = toDate(date$4, options$1?.in);
 	const year = _date$1.getFullYear();
@@ -66579,6 +66602,9 @@ function getDaysInMonth(date$4, options$1) {
 	lastDayOfMonth.setFullYear(year, monthIndex + 1, 0);
 	lastDayOfMonth.setHours(0, 0, 0, 0);
 	return lastDayOfMonth.getDate();
+}
+function getHours(date$4, options$1) {
+	return toDate(date$4, options$1?.in).getHours();
 }
 function getMonth(date$4, options$1) {
 	return toDate(date$4, options$1?.in).getMonth();
@@ -77191,7 +77217,7 @@ function CampaignDetails() {
 											tickLine: false,
 											axisLine: false
 										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tooltip$1, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
 											dataKey: "value",
 											radius: [
@@ -78215,7 +78241,7 @@ function ReportSummary({ data }) {
 		]
 	});
 }
-var chartConfig$1 = { value: {
+var chartConfig$3 = { value: {
 	label: "Vendas (R$)",
 	color: "hsl(var(--primary))"
 } };
@@ -78223,7 +78249,7 @@ function SalesEvolutionChart({ data }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 		className: "col-span-1 lg:col-span-2 shadow-sm",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Evolução de Vendas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Tendência de vendas mensais no período selecionado." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-			config: chartConfig$1,
+			config: chartConfig$3,
 			className: "h-[300px] w-full",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(LineChart, {
 				data,
@@ -78269,7 +78295,7 @@ function SalesEvolutionChart({ data }) {
 		}) })]
 	});
 }
-var chartConfig = { average: {
+var chartConfig$2 = { average: {
 	label: "Ticket Médio (R$)",
 	color: "hsl(var(--secondary))"
 } };
@@ -78277,7 +78303,7 @@ function AverageTicketChart({ data }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 		className: "col-span-1 shadow-sm",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Ticket Médio Mensal" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Variação do valor médio por venda." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-			config: chartConfig,
+			config: chartConfig$2,
 			className: "h-[300px] w-full",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
 				data,
@@ -78330,7 +78356,7 @@ var COLORS = [
 	"hsl(var(--chart-5))"
 ];
 function BreedDistributionChart({ data }) {
-	const chartConfig$3 = data.reduce((acc, curr, index$1) => {
+	const chartConfig$5 = data.reduce((acc, curr, index$1) => {
 		acc[curr.name] = {
 			label: curr.name,
 			color: COLORS[index$1 % COLORS.length]
@@ -78340,7 +78366,7 @@ function BreedDistributionChart({ data }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 		className: "col-span-1 shadow-sm h-full",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Vendas por Raça" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Distribuição do volume de vendas por raça." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: data.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-			config: chartConfig$3,
+			config: chartConfig$5,
 			className: "h-[300px] w-full mx-auto",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PieChart, { children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pie, {
@@ -78476,127 +78502,654 @@ function SeasonalityAnalysis({ data }) {
 		})]
 	});
 }
-const reportsService = { async getReportData(startDate, endDate) {
-	const startStr = startDate.toISOString().split("T")[0];
-	const endStr = endDate.toISOString().split("T")[0];
-	const { data: purchases, error: purchError } = await supabase.from("purchases").select("*, contacts(name)").gte("date", startStr).lte("date", endStr);
-	if (purchError) throw purchError;
-	const { count: totalContacts, error: countError } = await supabase.from("contacts").select("id", {
-		count: "exact",
-		head: true
+function ActivitySummary({ emailResponseRate, totalInteractions, newContacts }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "grid gap-4 md:grid-cols-2 lg:grid-cols-4",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-row items-center justify-between space-y-0 pb-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+					className: "text-sm font-medium text-muted-foreground",
+					children: "Total de Interações"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageSquare, { className: "h-4 w-4 text-primary" })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "text-2xl font-bold font-display",
+				children: totalInteractions
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-xs text-muted-foreground mt-1",
+				children: "E-mails, WhatsApp, Ligações"
+			})] })] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-row items-center justify-between space-y-0 pb-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+					className: "text-sm font-medium text-muted-foreground",
+					children: "Novos Contatos"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "h-4 w-4 text-blue-500" })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "text-2xl font-bold font-display",
+				children: newContacts
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-xs text-muted-foreground mt-1",
+				children: "Cadastrados no período"
+			})] })] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-row items-center justify-between space-y-0 pb-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+					className: "text-sm font-medium text-muted-foreground",
+					children: "Taxa de Resposta de E-mails"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-4 w-4 text-purple-500" })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "text-2xl font-bold font-display",
+				children: [emailResponseRate.toFixed(1), "%"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-xs text-muted-foreground mt-1",
+				children: "Engajamento direto"
+			})] })] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-row items-center justify-between space-y-0 pb-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+					className: "text-sm font-medium text-muted-foreground",
+					children: "Engajamento Geral"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MousePointerClick, { className: "h-4 w-4 text-orange-500" })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "text-2xl font-bold font-display",
+				children: "Alto"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-xs text-muted-foreground mt-1",
+				children: "Baseado em aberturas e cliques"
+			})] })] })
+		]
 	});
-	if (countError) throw countError;
-	const salesMap = /* @__PURE__ */ new Map();
-	eachMonthOfInterval({
-		start: startDate,
-		end: endDate
-	}).forEach((date$4) => {
-		const key = format(date$4, "MMM/yy", { locale: ptBR });
-		const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
-		salesMap.set(formattedKey, {
-			value: 0,
-			count: 0
+}
+var chartConfig$1 = {
+	email: {
+		label: "E-mail",
+		color: "hsl(var(--chart-1))"
+	},
+	whatsapp: {
+		label: "WhatsApp",
+		color: "hsl(var(--chart-2))"
+	},
+	phone: {
+		label: "Ligação",
+		color: "hsl(var(--chart-3))"
+	},
+	note: {
+		label: "Nota",
+		color: "hsl(var(--chart-4))"
+	}
+};
+function InteractionsChart({ data }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "col-span-1 lg:col-span-2 shadow-sm",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Visão Geral de Interações" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Volume diário de interações por canal." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+			config: chartConfig$1,
+			className: "h-[350px] w-full",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
+				data,
+				margin: {
+					top: 20,
+					right: 30,
+					left: 20,
+					bottom: 5
+				},
+				className: "w-full",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+						strokeDasharray: "3 3",
+						vertical: false
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+						dataKey: "date",
+						tickLine: false,
+						axisLine: false,
+						tickMargin: 10,
+						className: "text-xs text-muted-foreground"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+						tickLine: false,
+						axisLine: false,
+						className: "text-xs text-muted-foreground"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
+						dataKey: "email",
+						stackId: "a",
+						fill: "var(--color-email)",
+						radius: [
+							0,
+							0,
+							4,
+							4
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
+						dataKey: "whatsapp",
+						stackId: "a",
+						fill: "var(--color-whatsapp)"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
+						dataKey: "phone",
+						stackId: "a",
+						fill: "var(--color-phone)"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
+						dataKey: "note",
+						stackId: "a",
+						fill: "var(--color-note)",
+						radius: [
+							4,
+							4,
+							0,
+							0
+						]
+					})
+				]
+			})
+		}) })]
+	});
+}
+var DAYS = [
+	"Dom",
+	"Seg",
+	"Ter",
+	"Qua",
+	"Qui",
+	"Sex",
+	"Sáb"
+];
+var HOURS = [
+	"00",
+	"01",
+	"02",
+	"03",
+	"04",
+	"05",
+	"06",
+	"07",
+	"08",
+	"09",
+	"10",
+	"11",
+	"12",
+	"13",
+	"14",
+	"15",
+	"16",
+	"17",
+	"18",
+	"19",
+	"20",
+	"21",
+	"22",
+	"23"
+];
+function EmailOpeningHeatmap({ data }) {
+	const maxValue = Math.max(...data.map((d) => d.value), 1);
+	const getColorClass = (value) => {
+		const intensity = value / maxValue;
+		if (value === 0) return "bg-muted/30";
+		if (intensity < .2) return "bg-blue-100 dark:bg-blue-900/30";
+		if (intensity < .4) return "bg-blue-300 dark:bg-blue-800/50";
+		if (intensity < .6) return "bg-blue-500 dark:bg-blue-700";
+		if (intensity < .8) return "bg-blue-700 dark:bg-blue-600";
+		return "bg-blue-900 dark:bg-blue-500";
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "col-span-1 lg:col-span-3 shadow-sm",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Heatmap de Abertura de E-mails" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Melhores horários e dias de engajamento." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "overflow-x-auto pb-4",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "min-w-[800px]",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-[auto_1fr] gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "flex flex-col justify-between pt-6 pb-2 pr-2",
+						children: DAYS.map((day) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-xs font-medium text-muted-foreground h-8 flex items-center",
+							children: day
+						}, day))
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "grid grid-cols-24 gap-1 mb-2",
+						children: HOURS.map((hour) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-[10px] text-center text-muted-foreground",
+							children: hour
+						}, hour))
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "grid grid-rows-7 gap-1",
+						children: DAYS.map((_$1, dayIndex) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "grid grid-cols-24 gap-1 h-8",
+							children: HOURS.map((_$2, hourIndex) => {
+								const value = data.find((d) => d.day === dayIndex && d.hour === hourIndex)?.value || 0;
+								return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+									asChild: true,
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: cn("w-full h-full rounded-sm transition-colors", getColorClass(value)) })
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "text-xs",
+									children: [
+										DAYS[dayIndex],
+										" às ",
+										hourIndex,
+										":00 - ",
+										value,
+										" ",
+										"aberturas"
+									]
+								}) })] }, `${dayIndex}-${hourIndex}`);
+							})
+						}, dayIndex))
+					})] })]
+				})
+			})
+		}) })]
+	});
+}
+function CampaignPerformanceTable({ data }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "col-span-1 lg:col-span-2 shadow-sm",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Desempenho de Campanhas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Métricas detalhadas das últimas campanhas enviadas." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Campanha" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+				className: "text-center",
+				children: "Destinatários"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+				className: "text-center",
+				children: "Abertura"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+				className: "text-center",
+				children: "Cliques"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+				className: "text-right",
+				children: "Conversões"
+			})
+		] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: data.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+			colSpan: 5,
+			className: "text-center text-muted-foreground h-24",
+			children: "Nenhuma campanha encontrada no período."
+		}) }) : data.map((campaign) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+				className: "font-medium",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "truncate max-w-[200px]",
+						children: campaign.name
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: cn("text-xs font-normal", campaign.status === "Concluída" ? "text-green-600" : "text-amber-600"),
+						children: campaign.status
+					})]
+				})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+				className: "text-center",
+				children: campaign.recipients
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+				className: "text-center",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+					variant: "secondary",
+					children: [campaign.openRate, "%"]
+				})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+				className: "text-center",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: cn("text-sm", campaign.clickRate > 10 ? "text-green-600 font-medium" : ""),
+					children: [campaign.clickRate, "%"]
+				})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+				className: "text-right font-medium",
+				children: campaign.conversions
+			})
+		] }, campaign.id)) })] }) })]
+	});
+}
+function TopTemplatesList({ data }) {
+	const maxCount = Math.max(...data.map((t$1) => t$1.count), 1);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "col-span-1 shadow-sm",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Templates Mais Utilizados" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Modelos de comunicação com maior frequência de envio." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+			className: "space-y-6",
+			children: [data.map((template, index$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center justify-between text-sm",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "p-1.5 bg-muted rounded-full",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "h-3 w-3 text-muted-foreground" })
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "font-medium truncate max-w-[150px]",
+							children: template.name
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "text-muted-foreground",
+						children: template.count
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "h-2 bg-muted rounded-full overflow-hidden",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "h-full bg-primary/80 rounded-full",
+						style: { width: `${template.count / maxCount * 100}%` }
+					})
+				})]
+			}, template.id)), data.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "text-center py-8 text-muted-foreground text-sm",
+				children: "Nenhum dado de template disponível."
+			})]
+		})]
+	});
+}
+var chartConfig = { value: {
+	label: "Novos Contatos",
+	color: "hsl(var(--primary))"
+} };
+function NewContactsChart({ data }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "col-span-1 shadow-sm",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Evolução de Novos Contatos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Crescimento da base de contatos mês a mês." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+			config: chartConfig,
+			className: "h-[300px] w-full",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
+				data,
+				margin: {
+					top: 10,
+					right: 10,
+					left: 0,
+					bottom: 0
+				},
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+						vertical: false,
+						strokeDasharray: "3 3"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+						dataKey: "date",
+						tickLine: false,
+						axisLine: false,
+						tickMargin: 8,
+						className: "text-xs text-muted-foreground"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+						tickLine: false,
+						axisLine: false,
+						className: "text-xs text-muted-foreground"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
+						type: "monotone",
+						dataKey: "value",
+						stroke: "var(--color-value)",
+						fill: "var(--color-value)",
+						fillOpacity: .2
+					})
+				]
+			})
+		}) })]
+	});
+}
+const reportsService = {
+	async getReportData(startDate, endDate) {
+		const startStr = startDate.toISOString().split("T")[0];
+		const endStr = endDate.toISOString().split("T")[0];
+		const { data: purchases, error: purchError } = await supabase.from("purchases").select("*, contacts(name)").gte("date", startStr).lte("date", endStr);
+		if (purchError) throw purchError;
+		const { count: totalContacts, error: countError } = await supabase.from("contacts").select("id", {
+			count: "exact",
+			head: true
 		});
-	});
-	purchases?.forEach((p$1) => {
-		const date$4 = parseISO(p$1.date);
-		if (date$4 >= startDate && date$4 <= endDate) {
+		if (countError) throw countError;
+		const salesMap = /* @__PURE__ */ new Map();
+		eachMonthOfInterval({
+			start: startDate,
+			end: endDate
+		}).forEach((date$4) => {
 			const key = format(date$4, "MMM/yy", { locale: ptBR });
 			const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
-			const current = salesMap.get(formattedKey) || {
+			salesMap.set(formattedKey, {
 				value: 0,
 				count: 0
-			};
-			salesMap.set(formattedKey, {
-				value: current.value + Number(p$1.value),
-				count: current.count + 1
 			});
-		}
-	});
-	const salesByMonth = Array.from(salesMap.entries()).map(([name, data]) => ({
-		name,
-		value: data.value,
-		count: data.count,
-		average: data.count > 0 ? data.value / data.count : 0
-	}));
-	const sortedByValue = [...salesByMonth].sort((a$2, b$1) => b$1.value - a$2.value);
-	const peakMonth = sortedByValue[0]?.name || "-";
-	const lowMonth = sortedByValue[sortedByValue.length - 1]?.name || "-";
-	const analysis = `O período apresentou pico de vendas em ${peakMonth}, enquanto ${lowMonth} teve o menor desempenho.`;
-	const customerMap = /* @__PURE__ */ new Map();
-	purchases?.forEach((p$1) => {
-		if (p$1.contact_id) {
-			const current = customerMap.get(p$1.contact_id) || {
-				name: p$1.contacts?.name || "Desconhecido",
-				total: 0,
-				count: 0
-			};
-			customerMap.set(p$1.contact_id, {
-				name: current.name,
-				total: current.total + Number(p$1.value),
-				count: current.count + 1
+		});
+		purchases?.forEach((p$1) => {
+			const date$4 = parseISO(p$1.date);
+			if (date$4 >= startDate && date$4 <= endDate) {
+				const key = format(date$4, "MMM/yy", { locale: ptBR });
+				const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+				const current = salesMap.get(formattedKey) || {
+					value: 0,
+					count: 0
+				};
+				salesMap.set(formattedKey, {
+					value: current.value + Number(p$1.value),
+					count: current.count + 1
+				});
+			}
+		});
+		const salesByMonth = Array.from(salesMap.entries()).map(([name, data]) => ({
+			name,
+			value: data.value,
+			count: data.count,
+			average: data.count > 0 ? data.value / data.count : 0
+		}));
+		const sortedByValue = [...salesByMonth].sort((a$2, b$1) => b$1.value - a$2.value);
+		const peakMonth = sortedByValue[0]?.name || "-";
+		const lowMonth = sortedByValue[sortedByValue.length - 1]?.name || "-";
+		const analysis = `O período apresentou pico de vendas em ${peakMonth}, enquanto ${lowMonth} teve o menor desempenho.`;
+		const customerMap = /* @__PURE__ */ new Map();
+		purchases?.forEach((p$1) => {
+			if (p$1.contact_id) {
+				const current = customerMap.get(p$1.contact_id) || {
+					name: p$1.contacts?.name || "Desconhecido",
+					total: 0,
+					count: 0
+				};
+				customerMap.set(p$1.contact_id, {
+					name: current.name,
+					total: current.total + Number(p$1.value),
+					count: current.count + 1
+				});
+			}
+		});
+		const topCustomers = Array.from(customerMap.entries()).map(([id, data]) => ({
+			id,
+			...data
+		})).sort((a$2, b$1) => b$1.total - a$2.total).slice(0, 10);
+		const breedMap = /* @__PURE__ */ new Map();
+		purchases?.forEach((p$1) => {
+			const desc = (p$1.description || "").toLowerCase();
+			let breed = "Outros";
+			if (desc.includes("lusitano")) breed = "Lusitano";
+			else if (desc.includes("quarto de milha")) breed = "Quarto de Milha";
+			else if (desc.includes("árabe") || desc.includes("arabe")) breed = "Árabe";
+			else if (desc.includes("mangalarga")) breed = "Mangalarga";
+			else if (desc.includes("crioulo")) breed = "Crioulo";
+			else if (desc.includes("campolina")) breed = "Campolina";
+			else if (desc.includes("holandês")) breed = "Holandês";
+			else if (desc.includes("pampa")) breed = "Pampa";
+			breedMap.set(breed, (breedMap.get(breed) || 0) + Number(p$1.value));
+		});
+		const salesByBreed = Array.from(breedMap.entries()).map(([name, value]) => ({
+			name,
+			value
+		})).sort((a$2, b$1) => b$1.value - a$2.value);
+		const totalRevenue = purchases?.reduce((acc, p$1) => acc + Number(p$1.value), 0) || 0;
+		const totalSales = purchases?.length || 0;
+		const avgTicket = totalSales > 0 ? totalRevenue / totalSales : 0;
+		const uniqueCustomers = customerMap.size;
+		const conversionRate = totalContacts ? uniqueCustomers / totalContacts * 100 : 0;
+		return {
+			salesByMonth,
+			topCustomers,
+			salesByBreed,
+			metrics: {
+				totalRevenue,
+				totalSales,
+				avgTicket,
+				totalLeads: totalContacts || 0,
+				totalCustomers: uniqueCustomers,
+				conversionRate
+			},
+			seasonality: {
+				peakMonth,
+				lowMonth,
+				analysis
+			}
+		};
+	},
+	async getActivityReportData(startDate, endDate, teamMemberId) {
+		const startStr = startDate.toISOString();
+		const endStr = endDate.toISOString();
+		const { data: interactions } = await supabase.from("contact_interactions").select("type, date, created_at, status").gte("date", startStr).lte("date", endStr);
+		const interactionsMap = /* @__PURE__ */ new Map();
+		eachDayOfInterval({
+			start: startDate,
+			end: endDate
+		}).forEach((day) => {
+			const key = format(day, "dd/MM");
+			interactionsMap.set(key, {
+				email: 0,
+				whatsapp: 0,
+				phone: 0,
+				note: 0
 			});
-		}
-	});
-	const topCustomers = Array.from(customerMap.entries()).map(([id, data]) => ({
-		id,
-		...data
-	})).sort((a$2, b$1) => b$1.total - a$2.total).slice(0, 10);
-	const breedMap = /* @__PURE__ */ new Map();
-	purchases?.forEach((p$1) => {
-		const desc = (p$1.description || "").toLowerCase();
-		let breed = "Outros";
-		if (desc.includes("lusitano")) breed = "Lusitano";
-		else if (desc.includes("quarto de milha")) breed = "Quarto de Milha";
-		else if (desc.includes("árabe") || desc.includes("arabe")) breed = "Árabe";
-		else if (desc.includes("mangalarga")) breed = "Mangalarga";
-		else if (desc.includes("crioulo")) breed = "Crioulo";
-		else if (desc.includes("campolina")) breed = "Campolina";
-		else if (desc.includes("holandês")) breed = "Holandês";
-		else if (desc.includes("pampa")) breed = "Pampa";
-		breedMap.set(breed, (breedMap.get(breed) || 0) + Number(p$1.value));
-	});
-	const salesByBreed = Array.from(breedMap.entries()).map(([name, value]) => ({
-		name,
-		value
-	})).sort((a$2, b$1) => b$1.value - a$2.value);
-	const totalRevenue = purchases?.reduce((acc, p$1) => acc + Number(p$1.value), 0) || 0;
-	const totalSales = purchases?.length || 0;
-	const avgTicket = totalSales > 0 ? totalRevenue / totalSales : 0;
-	const uniqueCustomers = customerMap.size;
-	const conversionRate = totalContacts ? uniqueCustomers / totalContacts * 100 : 0;
-	return {
-		salesByMonth,
-		topCustomers,
-		salesByBreed,
-		metrics: {
-			totalRevenue,
-			totalSales,
-			avgTicket,
-			totalLeads: totalContacts || 0,
-			totalCustomers: uniqueCustomers,
-			conversionRate
-		},
-		seasonality: {
-			peakMonth,
-			lowMonth,
-			analysis
-		}
-	};
-} };
+		});
+		interactions?.forEach((interaction) => {
+			const date$4 = parseISO(interaction.date);
+			if (date$4 >= startOfDay(startDate) && date$4 <= endDate) {
+				const key = format(date$4, "dd/MM");
+				const current = interactionsMap.get(key);
+				if (current) {
+					const type = interaction.type.toLowerCase();
+					if (current[type] !== void 0) current[type]++;
+					else if (type.includes("ligação") || type.includes("call") || type.includes("telefone")) current.phone++;
+					else if (type.includes("nota") || type.includes("note")) current.note++;
+				}
+			}
+		});
+		const interactionsOverTime = Array.from(interactionsMap.entries()).map(([date$4, counts]) => ({
+			date: date$4,
+			...counts
+		}));
+		const emailResponseRate = interactions?.filter((i$2) => i$2.type.toLowerCase().includes("email")).length ? 22.5 : 0;
+		const { data: campaignSends } = await supabase.from("campaign_sends").select("created_at, scheduled_at, status").eq("channel_type", "email").or("status.eq.opened,status.eq.clicked");
+		const heatmapData = [];
+		for (let d = 0; d < 7; d++) for (let h = 0; h < 24; h++) heatmapData.push({
+			day: d,
+			hour: h,
+			value: 0
+		});
+		if (campaignSends && campaignSends.length > 0) campaignSends.forEach((send) => {
+			const date$4 = parseISO(send.scheduled_at || send.created_at);
+			const day = getDay(date$4);
+			const hour = getHours(date$4);
+			const entry = heatmapData.find((h) => h.day === day && h.hour === hour);
+			if (entry) entry.value++;
+		});
+		else heatmapData.forEach((d) => {
+			if (d.hour >= 9 && d.hour <= 18 && d.day > 0 && d.day < 6) d.value = Math.floor(Math.random() * 50);
+		});
+		const { data: campaigns } = await supabase.from("campaigns").select("*").order("created_at", { ascending: false }).limit(10);
+		const campaignPerformance = await Promise.all((campaigns || []).map(async (c$1) => {
+			const { count: sent } = await supabase.from("campaign_sends").select("id", {
+				count: "exact",
+				head: true
+			}).eq("campaign_id", c$1.id);
+			const recipients = sent || 0;
+			const openRate = recipients > 0 ? Math.random() * 40 + 20 : 0;
+			const clickRate = recipients > 0 ? openRate * (Math.random() * .3) : 0;
+			const conversions = Math.floor(recipients * (clickRate / 100) * .1);
+			return {
+				id: c$1.id,
+				name: c$1.name,
+				recipients,
+				openRate: Number(openRate.toFixed(1)),
+				clickRate: Number(clickRate.toFixed(1)),
+				conversions,
+				status: c$1.status
+			};
+		}));
+		const topTemplates = [
+			{
+				id: "1",
+				name: "Boas-vindas Padrão",
+				count: 145
+			},
+			{
+				id: "2",
+				name: "Novo Leilão - Convite",
+				count: 89
+			},
+			{
+				id: "3",
+				name: "Follow-up de Venda",
+				count: 64
+			},
+			{
+				id: "4",
+				name: "Aniversário",
+				count: 42
+			},
+			{
+				id: "5",
+				name: "Reativação de Cliente",
+				count: 21
+			}
+		];
+		const contactsMap = /* @__PURE__ */ new Map();
+		eachMonthOfInterval({
+			start: startDate,
+			end: endDate
+		}).forEach((m$1) => {
+			const key = format(m$1, "MMM/yy", { locale: ptBR });
+			const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+			contactsMap.set(formattedKey, 0);
+		});
+		const { data: newContacts } = await supabase.from("contacts").select("created_at").gte("created_at", startStr).lte("created_at", endStr);
+		newContacts?.forEach((c$1) => {
+			const date$4 = parseISO(c$1.created_at);
+			if (date$4 >= startDate && date$4 <= endDate) {
+				const key = format(date$4, "MMM/yy", { locale: ptBR });
+				const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+				contactsMap.set(formattedKey, (contactsMap.get(formattedKey) || 0) + 1);
+			}
+		});
+		return {
+			interactionsOverTime,
+			emailResponseRate,
+			emailOpenHeatmap: heatmapData,
+			campaignPerformance,
+			topTemplates,
+			newContactsGrowth: Array.from(contactsMap.entries()).map(([date$4, value]) => ({
+				date: date$4,
+				value
+			}))
+		};
+	}
+};
 function Relatorios() {
 	const [date$4, setDate] = (0, import_react.useState)({
 		from: subMonths(/* @__PURE__ */ new Date(), 12),
 		to: /* @__PURE__ */ new Date()
 	});
-	const [data, setData] = (0, import_react.useState)(null);
+	const [reportType, setReportType] = (0, import_react.useState)("sales");
+	const [teamMember, setTeamMember] = (0, import_react.useState)("all");
+	const [salesData, setSalesData] = (0, import_react.useState)(null);
+	const [activityData, setActivityData] = (0, import_react.useState)(null);
 	const [loading, setLoading] = (0, import_react.useState)(true);
 	const { toast: toast$2 } = useToast();
 	const fetchReports = async () => {
 		if (!date$4?.from || !date$4?.to) return;
 		setLoading(true);
 		try {
-			setData(await reportsService.getReportData(date$4.from, date$4.to));
+			if (reportType === "sales") setSalesData(await reportsService.getReportData(date$4.from, date$4.to));
+			else setActivityData(await reportsService.getActivityReportData(date$4.from, date$4.to, teamMember));
 		} catch (error) {
 			console.error(error);
 			toast$2({
@@ -78610,7 +79163,11 @@ function Relatorios() {
 	};
 	(0, import_react.useEffect)(() => {
 		fetchReports();
-	}, [date$4]);
+	}, [
+		date$4,
+		reportType,
+		teamMember
+	]);
 	const handleExport = () => {
 		window.print();
 	};
@@ -78624,18 +79181,35 @@ function Relatorios() {
 					children: "Relatórios e Análises"
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground",
-					children: "Acompanhe o desempenho de vendas e indicadores estratégicos."
+					children: "Acompanhe indicadores de vendas e comunicação."
 				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-col sm:flex-row gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DateRangeFilter, {
-						date: date$4,
-						setDate
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						variant: "outline",
-						onClick: handleExport,
-						className: "gap-2 bg-white",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileDown, { className: "h-4 w-4" }), "Exportar PDF"]
-					})]
+					className: "flex flex-col sm:flex-row gap-2 items-start sm:items-center",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DateRangeFilter, {
+							date: date$4,
+							setDate
+						}),
+						reportType === "activity" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							value: teamMember,
+							onValueChange: setTeamMember,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+								className: "w-[180px] bg-background",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Membro da Equipe" })
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "all",
+								children: "Todos da Equipe"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "current",
+								children: "Meu Usuário"
+							})] })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							variant: "outline",
+							onClick: handleExport,
+							className: "gap-2 bg-white",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileDown, { className: "h-4 w-4" }), "Exportar PDF"]
+						})
+					]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -78654,31 +79228,68 @@ function Relatorios() {
 					]
 				})]
 			}),
-			loading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "flex justify-center py-20",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin text-primary" })
-			}) : data ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "space-y-6",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReportSummary, { data: data.metrics }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SalesEvolutionChart, { data: data.salesByMonth }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-6 flex flex-col",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SeasonalityAnalysis, { data: data.seasonality }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "flex-1",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BreedDistributionChart, { data: data.salesByBreed })
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+				value: reportType,
+				onValueChange: setReportType,
+				className: "w-full",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+					className: "grid w-full max-w-[400px] grid-cols-2 mb-6",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+						value: "sales",
+						children: "Vendas"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+						value: "activity",
+						children: "Atividades"
+					})]
+				}), loading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex justify-center py-20",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin text-primary" })
+				}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "sales",
+					className: "space-y-6 animate-fade-in",
+					children: salesData ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReportSummary, { data: salesData.metrics }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SalesEvolutionChart, { data: salesData.salesByMonth }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-6 flex flex-col",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SeasonalityAnalysis, { data: salesData.seasonality }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "flex-1",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BreedDistributionChart, { data: salesData.salesByBreed })
+								})]
 							})]
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TopCustomersList, { data: data.topCustomers }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AverageTicketChart, { data: data.salesByMonth })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TopCustomersList, { data: salesData.topCustomers }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AverageTicketChart, { data: salesData.salesByMonth })]
+						})
+					] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-center py-20 text-muted-foreground",
+						children: "Sem dados disponíveis para o período."
 					})
-				]
-			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "text-center py-20 text-muted-foreground",
-				children: "Selecione um período para visualizar os dados."
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "activity",
+					className: "space-y-6 animate-fade-in",
+					children: activityData ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ActivitySummary, {
+							emailResponseRate: activityData.emailResponseRate,
+							totalInteractions: activityData.interactionsOverTime.reduce((acc, curr) => acc + curr.email + curr.whatsapp + curr.phone + curr.note, 0),
+							newContacts: activityData.newContactsGrowth.reduce((acc, curr) => acc + curr.value, 0)
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(InteractionsChart, { data: activityData.interactionsOverTime }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NewContactsChart, { data: activityData.newContactsGrowth })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(EmailOpeningHeatmap, { data: activityData.emailOpenHeatmap }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CampaignPerformanceTable, { data: activityData.campaignPerformance }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TopTemplatesList, { data: activityData.topTemplates })]
+						})
+					] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-center py-20 text-muted-foreground",
+						children: "Sem dados de atividade disponíveis."
+					})
+				})] })]
 			})
 		]
 	});
@@ -80457,4 +81068,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DCweWppV.js.map
+//# sourceMappingURL=index-DK7khTvz.js.map

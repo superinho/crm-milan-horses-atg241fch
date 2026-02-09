@@ -3,6 +3,14 @@ import { subMonths } from 'date-fns'
 import { DateRange } from 'react-day-picker'
 import { FileDown, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DateRangeFilter } from '@/components/reports/DateRangeFilter'
 import { ReportSummary } from '@/components/reports/ReportSummary'
 import { SalesEvolutionChart } from '@/components/reports/SalesEvolutionChart'
@@ -10,7 +18,17 @@ import { AverageTicketChart } from '@/components/reports/AverageTicketChart'
 import { BreedDistributionChart } from '@/components/reports/BreedDistributionChart'
 import { TopCustomersList } from '@/components/reports/TopCustomersList'
 import { SeasonalityAnalysis } from '@/components/reports/SeasonalityAnalysis'
-import { reportsService, ReportData } from '@/services/reports'
+import { ActivitySummary } from '@/components/reports/ActivitySummary'
+import { InteractionsChart } from '@/components/reports/InteractionsChart'
+import { EmailOpeningHeatmap } from '@/components/reports/EmailOpeningHeatmap'
+import { CampaignPerformanceTable } from '@/components/reports/CampaignPerformanceTable'
+import { TopTemplatesList } from '@/components/reports/TopTemplatesList'
+import { NewContactsChart } from '@/components/reports/NewContactsChart'
+import {
+  reportsService,
+  ReportData,
+  ActivityReportData,
+} from '@/services/reports'
 import { useToast } from '@/hooks/use-toast'
 
 export default function Relatorios() {
@@ -18,7 +36,14 @@ export default function Relatorios() {
     from: subMonths(new Date(), 12),
     to: new Date(),
   })
-  const [data, setData] = useState<ReportData | null>(null)
+  const [reportType, setReportType] = useState('sales')
+  const [teamMember, setTeamMember] = useState('all')
+
+  const [salesData, setSalesData] = useState<ReportData | null>(null)
+  const [activityData, setActivityData] = useState<ActivityReportData | null>(
+    null,
+  )
+
   const [loading, setLoading] = useState(true)
   const { toast } = useToast()
 
@@ -27,8 +52,17 @@ export default function Relatorios() {
 
     setLoading(true)
     try {
-      const reportData = await reportsService.getReportData(date.from, date.to)
-      setData(reportData)
+      if (reportType === 'sales') {
+        const data = await reportsService.getReportData(date.from, date.to)
+        setSalesData(data)
+      } else {
+        const data = await reportsService.getActivityReportData(
+          date.from,
+          date.to,
+          teamMember,
+        )
+        setActivityData(data)
+      }
     } catch (error) {
       console.error(error)
       toast({
@@ -43,7 +77,7 @@ export default function Relatorios() {
 
   useEffect(() => {
     fetchReports()
-  }, [date])
+  }, [date, reportType, teamMember])
 
   const handleExport = () => {
     window.print()
@@ -58,11 +92,23 @@ export default function Relatorios() {
             Relatórios e Análises
           </h1>
           <p className="text-muted-foreground">
-            Acompanhe o desempenho de vendas e indicadores estratégicos.
+            Acompanhe indicadores de vendas e comunicação.
           </p>
         </div>
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
           <DateRangeFilter date={date} setDate={setDate} />
+          {reportType === 'activity' && (
+            <Select value={teamMember} onValueChange={setTeamMember}>
+              <SelectTrigger className="w-[180px] bg-background">
+                <SelectValue placeholder="Membro da Equipe" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos da Equipe</SelectItem>
+                <SelectItem value="current">Meu Usuário</SelectItem>
+                {/* Future users would be mapped here */}
+              </SelectContent>
+            </Select>
+          )}
           <Button
             variant="outline"
             onClick={handleExport}
@@ -85,34 +131,90 @@ export default function Relatorios() {
         </p>
       </div>
 
-      {loading ? (
-        <div className="flex justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-      ) : data ? (
-        <div className="space-y-6">
-          <ReportSummary data={data.metrics} />
+      <Tabs value={reportType} onValueChange={setReportType} className="w-full">
+        <TabsList className="grid w-full max-w-[400px] grid-cols-2 mb-6">
+          <TabsTrigger value="sales">Vendas</TabsTrigger>
+          <TabsTrigger value="activity">Atividades</TabsTrigger>
+        </TabsList>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <SalesEvolutionChart data={data.salesByMonth} />
-            <div className="space-y-6 flex flex-col">
-              <SeasonalityAnalysis data={data.seasonality} />
-              <div className="flex-1">
-                <BreedDistributionChart data={data.salesByBreed} />
-              </div>
-            </div>
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
+        ) : (
+          <>
+            <TabsContent value="sales" className="space-y-6 animate-fade-in">
+              {salesData ? (
+                <>
+                  <ReportSummary data={salesData.metrics} />
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <TopCustomersList data={data.topCustomers} />
-            <AverageTicketChart data={data.salesByMonth} />
-          </div>
-        </div>
-      ) : (
-        <div className="text-center py-20 text-muted-foreground">
-          Selecione um período para visualizar os dados.
-        </div>
-      )}
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <SalesEvolutionChart data={salesData.salesByMonth} />
+                    <div className="space-y-6 flex flex-col">
+                      <SeasonalityAnalysis data={salesData.seasonality} />
+                      <div className="flex-1">
+                        <BreedDistributionChart data={salesData.salesByBreed} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <TopCustomersList data={salesData.topCustomers} />
+                    <AverageTicketChart data={salesData.salesByMonth} />
+                  </div>
+                </>
+              ) : (
+                <div className="text-center py-20 text-muted-foreground">
+                  Sem dados disponíveis para o período.
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="activity" className="space-y-6 animate-fade-in">
+              {activityData ? (
+                <>
+                  <ActivitySummary
+                    emailResponseRate={activityData.emailResponseRate}
+                    totalInteractions={activityData.interactionsOverTime.reduce(
+                      (acc, curr) =>
+                        acc +
+                        curr.email +
+                        curr.whatsapp +
+                        curr.phone +
+                        curr.note,
+                      0,
+                    )}
+                    newContacts={activityData.newContactsGrowth.reduce(
+                      (acc, curr) => acc + curr.value,
+                      0,
+                    )}
+                  />
+
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <InteractionsChart
+                      data={activityData.interactionsOverTime}
+                    />
+                    <NewContactsChart data={activityData.newContactsGrowth} />
+                  </div>
+
+                  <EmailOpeningHeatmap data={activityData.emailOpenHeatmap} />
+
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <CampaignPerformanceTable
+                      data={activityData.campaignPerformance}
+                    />
+                    <TopTemplatesList data={activityData.topTemplates} />
+                  </div>
+                </>
+              ) : (
+                <div className="text-center py-20 text-muted-foreground">
+                  Sem dados de atividade disponíveis.
+                </div>
+              )}
+            </TabsContent>
+          </>
+        )}
+      </Tabs>
     </div>
   )
 }
