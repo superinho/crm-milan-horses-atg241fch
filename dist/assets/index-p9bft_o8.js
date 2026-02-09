@@ -18974,6 +18974,56 @@ var Briefcase = createLucideIcon("briefcase", [["path", {
 	rx: "2",
 	key: "i6l2r4"
 }]]);
+var Building = createLucideIcon("building", [
+	["path", {
+		d: "M12 10h.01",
+		key: "1nrarc"
+	}],
+	["path", {
+		d: "M12 14h.01",
+		key: "1etili"
+	}],
+	["path", {
+		d: "M12 6h.01",
+		key: "1vi96p"
+	}],
+	["path", {
+		d: "M16 10h.01",
+		key: "1m94wz"
+	}],
+	["path", {
+		d: "M16 14h.01",
+		key: "1gbofw"
+	}],
+	["path", {
+		d: "M16 6h.01",
+		key: "1x0f13"
+	}],
+	["path", {
+		d: "M8 10h.01",
+		key: "19clt8"
+	}],
+	["path", {
+		d: "M8 14h.01",
+		key: "6423bh"
+	}],
+	["path", {
+		d: "M8 6h.01",
+		key: "1dz90k"
+	}],
+	["path", {
+		d: "M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3",
+		key: "cabbwy"
+	}],
+	["rect", {
+		x: "4",
+		y: "2",
+		width: "16",
+		height: "20",
+		rx: "2",
+		key: "1uxh74"
+	}]
+]);
 var Calculator = createLucideIcon("calculator", [
 	["rect", {
 		width: "16",
@@ -19651,6 +19701,15 @@ var Send = createLucideIcon("send", [["path", {
 	d: "m21.854 2.147-10.94 10.939",
 	key: "12cjpa"
 }]]);
+var Settings = createLucideIcon("settings", [["path", {
+	d: "M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915",
+	key: "1i5ecw"
+}], ["circle", {
+	cx: "12",
+	cy: "12",
+	r: "3",
+	key: "1v7zrd"
+}]]);
 var ShoppingBag = createLucideIcon("shopping-bag", [
 	["path", {
 		d: "M16 10a4 4 0 0 1-8 0",
@@ -19726,6 +19785,26 @@ var Tag = createLucideIcon("tag", [["path", {
 	fill: "currentColor",
 	key: "kqv944"
 }]]);
+var Target = createLucideIcon("target", [
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "10",
+		key: "1mglay"
+	}],
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "6",
+		key: "1vlfrh"
+	}],
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "2",
+		key: "1c9p78"
+	}]
+]);
 var Trash2 = createLucideIcon("trash-2", [
 	["path", {
 		d: "M10 11v6",
@@ -25177,9 +25256,9 @@ function createSidecarMedium(options$1) {
 var SideCar = function(_a$1) {
 	var sideCar = _a$1.sideCar, rest = __rest(_a$1, ["sideCar"]);
 	if (!sideCar) throw new Error("Sidecar: please provide `sideCar` property to import the right car");
-	var Target = sideCar.read();
-	if (!Target) throw new Error("Sidecar medium not found");
-	return import_react.createElement(Target, __assign({}, rest));
+	var Target$1 = sideCar.read();
+	if (!Target$1) throw new Error("Sidecar medium not found");
+	return import_react.createElement(Target$1, __assign({}, rest));
 };
 SideCar.isSideCarExport = true;
 function exportSidecar(medium, exported) {
@@ -26485,7 +26564,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$38({ inst: {
+			cachedValue = useState$39({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26499,7 +26578,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$32(function() {
+			useEffect$33(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26522,7 +26601,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$68 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$38 = React$68.useState, useEffect$32 = React$68.useEffect, useLayoutEffect$2 = React$68.useLayoutEffect, useDebugValue = React$68.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$68 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$39 = React$68.useState, useEffect$33 = React$68.useEffect, useLayoutEffect$2 = React$68.useLayoutEffect, useDebugValue = React$68.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$68.useSyncExternalStore ? React$68.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -35627,6 +35706,11 @@ var NAV_ITEMS = [
 		label: "Modelos",
 		icon: FileText,
 		path: "/modelos"
+	},
+	{
+		label: "Configurações",
+		icon: Settings,
+		path: "/configuracoes"
 	}
 ];
 function AppSidebar() {
@@ -35741,7 +35825,13 @@ function TopHeader() {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuLabel, { children: "Minha Conta" }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(User, { className: "mr-2 h-4 w-4" }), " Perfil"] }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "mr-2 h-4 w-4" }), " Configurações"] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, {
+						asChild: true,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+							to: "/configuracoes",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, { className: "mr-2 h-4 w-4" }), " Configurações"]
+						})
+					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
 						className: "text-destructive",
@@ -71552,7 +71642,7 @@ function MultiSelect({ options: options$1, selected, onChange, placeholder = "Se
 		})]
 	});
 }
-var formSchema$3 = object({
+var formSchema$4 = object({
 	name: string().min(2, "Nome deve ter pelo menos 2 caracteres."),
 	email: string().email("E-mail inválido."),
 	phone: string().min(14, "Telefone incompleto (mínimo 10 dígitos)."),
@@ -71648,7 +71738,7 @@ function ContactForm({ onSuccess }) {
 	const { toast: toast$2 } = useToast();
 	const [loading, setLoading] = (0, import_react.useState)(false);
 	const form = useForm({
-		resolver: a(formSchema$3),
+		resolver: a(formSchema$4),
 		defaultValues: {
 			name: "",
 			email: "",
@@ -75104,7 +75194,7 @@ function KanbanBoard({ refreshTrigger = 0 }) {
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollBar, { orientation: "horizontal" })]
 	});
 }
-var formSchema$2 = object({
+var formSchema$3 = object({
 	contact_id: string({ required_error: "Selecione um contato." }),
 	title: string().min(3, "O título deve ter pelo menos 3 caracteres."),
 	stage: _enum([
@@ -75132,7 +75222,7 @@ function DealForm({ onSuccess, onCancel }) {
 	const [contactsLoading, setContactsLoading] = (0, import_react.useState)(false);
 	const [openCombobox, setOpenCombobox] = (0, import_react.useState)(false);
 	const form = useForm({
-		resolver: a(formSchema$2),
+		resolver: a(formSchema$3),
 		defaultValues: {
 			title: "",
 			stage: "Lead",
@@ -77603,7 +77693,7 @@ var taskTypes = [
 	"WhatsApp",
 	"Outro"
 ];
-var formSchema$1 = object({
+var formSchema$2 = object({
 	title: string().min(1, "O título é obrigatório"),
 	description: string().optional(),
 	type: _enum([
@@ -77623,7 +77713,7 @@ function TaskForm({ onSuccess, onCancel }) {
 	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
 	const { toast: toast$2 } = useToast();
 	const form = useForm({
-		resolver: a(formSchema$1),
+		resolver: a(formSchema$2),
 		defaultValues: {
 			title: "",
 			description: "",
@@ -79489,7 +79579,7 @@ var AlertDialogCancel = import_react.forwardRef(({ className, ...props }, ref) =
 	...props
 }));
 AlertDialogCancel.displayName = Cancel.displayName;
-var formSchema = object({
+var formSchema$1 = object({
 	name: string().min(2, "Nome deve ter pelo menos 2 caracteres."),
 	color: string().regex(/^#[0-9A-F]{6}$/i, "Cor inválida (deve ser HEX).")
 });
@@ -79497,7 +79587,7 @@ function TagDialog({ open, onOpenChange, tagToEdit, onSuccess }) {
 	const { toast: toast$2 } = useToast();
 	const [loading, setLoading] = (0, import_react.useState)(false);
 	const form = useForm({
-		resolver: a(formSchema),
+		resolver: a(formSchema$1),
 		defaultValues: {
 			name: "",
 			color: "#000000"
@@ -80790,6 +80880,535 @@ function Modelos() {
 		]
 	});
 }
+const defaultSettings = {
+	company_name: "Minha Empresa",
+	logo_url: null,
+	primary_color: "#000000",
+	secondary_color: "#ffffff",
+	contact_email: "",
+	contact_phone: "",
+	contact_whatsapp: "",
+	website: "",
+	address: "",
+	email_signature: "",
+	alerts_overdue_tasks: true,
+	alerts_new_leads: true,
+	alerts_birthdays: true,
+	monthly_sales_goal: 0,
+	monthly_new_contacts_goal: 0,
+	conversion_rate_goal: 0,
+	auction_default_location: "",
+	auction_default_time: "",
+	auction_default_fees: ""
+};
+const settingsService = {
+	async getSettings() {
+		const { data, error } = await supabase.from("company_settings").select("*").limit(1).maybeSingle();
+		if (error) {
+			console.error("Error fetching settings:", error);
+			return defaultSettings;
+		}
+		return data || defaultSettings;
+	},
+	async updateSettings(settings) {
+		const { data: existing } = await supabase.from("company_settings").select("id").limit(1).maybeSingle();
+		let result;
+		if (existing?.id) result = await supabase.from("company_settings").update({
+			...settings,
+			updated_at: (/* @__PURE__ */ new Date()).toISOString()
+		}).eq("id", existing.id).select().single();
+		else result = await supabase.from("company_settings").insert({
+			...settings,
+			updated_at: (/* @__PURE__ */ new Date()).toISOString()
+		}).select().single();
+		if (result.error) throw result.error;
+		return result.data;
+	}
+};
+var formSchema = object({
+	company_name: string().min(2, "Nome da empresa é obrigatório"),
+	logo_url: string().url("URL inválida").optional().or(literal("")),
+	primary_color: string(),
+	secondary_color: string(),
+	contact_email: string().email("E-mail inválido").optional().or(literal("")),
+	contact_phone: string().optional(),
+	contact_whatsapp: string().optional(),
+	website: string().url("URL inválida").optional().or(literal("")),
+	address: string().optional(),
+	email_signature: string().optional(),
+	alerts_overdue_tasks: boolean(),
+	alerts_new_leads: boolean(),
+	alerts_birthdays: boolean(),
+	monthly_sales_goal: number().min(0),
+	monthly_new_contacts_goal: number().min(0),
+	conversion_rate_goal: number().min(0).max(100),
+	auction_default_location: string().optional(),
+	auction_default_time: string().optional(),
+	auction_default_fees: string().optional()
+});
+function Configuracoes() {
+	const [loading, setLoading] = (0, import_react.useState)(true);
+	const [saving, setSaving] = (0, import_react.useState)(false);
+	const { toast: toast$2 } = useToast();
+	const form = useForm({
+		resolver: a(formSchema),
+		defaultValues: defaultSettings
+	});
+	(0, import_react.useEffect)(() => {
+		loadSettings();
+	}, []);
+	const loadSettings = async () => {
+		setLoading(true);
+		try {
+			const data = await settingsService.getSettings();
+			form.reset({
+				...defaultSettings,
+				...data,
+				logo_url: data.logo_url || "",
+				contact_email: data.contact_email || "",
+				contact_phone: data.contact_phone || "",
+				contact_whatsapp: data.contact_whatsapp || "",
+				website: data.website || "",
+				address: data.address || "",
+				email_signature: data.email_signature || "",
+				auction_default_location: data.auction_default_location || "",
+				auction_default_time: data.auction_default_time || "",
+				auction_default_fees: data.auction_default_fees || ""
+			});
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível carregar as configurações.",
+				variant: "destructive"
+			});
+		} finally {
+			setLoading(false);
+		}
+	};
+	const onSubmit = async (values) => {
+		setSaving(true);
+		try {
+			await settingsService.updateSettings(values);
+			toast$2({
+				title: "Sucesso",
+				description: "Configurações salvas com sucesso."
+			});
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Falha ao salvar as configurações.",
+				variant: "destructive"
+			});
+		} finally {
+			setSaving(false);
+		}
+	};
+	if (loading) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "flex h-screen items-center justify-center",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin text-primary" })
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in pb-12",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-center justify-between",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+				className: "text-3xl font-bold font-display text-primary",
+				children: "Configurações"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-muted-foreground",
+				children: "Gerencie a identidade da empresa, preferências e metas."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				onClick: form.handleSubmit(onSubmit),
+				disabled: saving,
+				children: [saving ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "mr-2 h-4 w-4" }), "Salvar Configurações"]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Form, {
+			...form,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("form", {
+				onSubmit: form.handleSubmit(onSubmit),
+				className: "space-y-8",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+					defaultValue: "company",
+					className: "w-full",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+						className: "grid w-full grid-cols-5 h-auto",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+								value: "company",
+								className: "py-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Building, { className: "mr-2 h-4 w-4" }), " Perfil"]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+								value: "signature",
+								className: "py-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "mr-2 h-4 w-4" }), " Assinatura"]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+								value: "notifications",
+								className: "py-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "mr-2 h-4 w-4" }), " Notificações"]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+								value: "goals",
+								className: "py-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { className: "mr-2 h-4 w-4" }), " Metas"]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+								value: "auctions",
+								className: "py-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Gavel, { className: "mr-2 h-4 w-4" }), " Leilões"]
+							})
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-6",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
+								value: "company",
+								className: "space-y-6",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Identidade Visual" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Configure o nome, logo e cores da marca." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+									className: "space-y-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+											control: form.control,
+											name: "company_name",
+											render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Nome da Empresa" }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+													placeholder: "Milan Horses",
+													...field
+												}) }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+											] })
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+											control: form.control,
+											name: "logo_url",
+											render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "URL do Logo" }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+													className: "flex gap-2",
+													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+														placeholder: "https://exemplo.com/logo.png",
+														...field
+													}) }), field.value && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+														className: "h-10 w-10 shrink-0 overflow-hidden rounded-md border p-1",
+														children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+															src: field.value,
+															alt: "Logo preview",
+															className: "h-full w-full object-contain"
+														})
+													})]
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+											] })
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+											control: form.control,
+											name: "primary_color",
+											render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Cor Primária" }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+													className: "flex gap-2 items-center",
+													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+														type: "color",
+														className: "w-12 h-10 p-1 cursor-pointer",
+														...field
+													}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+														...field,
+														className: "font-mono"
+													})]
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+											] })
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+											control: form.control,
+											name: "secondary_color",
+											render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Cor Secundária" }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+													className: "flex gap-2 items-center",
+													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+														type: "color",
+														className: "w-12 h-10 p-1 cursor-pointer",
+														...field
+													}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+														...field,
+														className: "font-mono"
+													})]
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+											] })
+										})]
+									})]
+								})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Informações de Contato" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Dados públicos da empresa para comunicação." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+									className: "space-y-4",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+												control: form.control,
+												name: "contact_email",
+												render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "E-mail de Contato" }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+														type: "email",
+														placeholder: "contato@milanhorses.com",
+														...field
+													}) }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+												] })
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+												control: form.control,
+												name: "website",
+												render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Website" }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+														placeholder: "https://milanhorses.com",
+														...field
+													}) }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+												] })
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+												control: form.control,
+												name: "contact_phone",
+												render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Telefone" }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+														placeholder: "(11) 9999-9999",
+														...field
+													}) }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+												] })
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+												control: form.control,
+												name: "contact_whatsapp",
+												render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "WhatsApp" }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+														placeholder: "(11) 99999-9999",
+														...field
+													}) }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+												] })
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+											control: form.control,
+											name: "address",
+											render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Endereço Físico" }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+													placeholder: "Rua Exemplo, 123 - São Paulo, SP",
+													className: "resize-none",
+													...field
+												}) }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+											] })
+										})
+									]
+								})] })]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+								value: "signature",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Assinatura de E-mail" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Configure a assinatura padrão para os e-mails enviados pelo sistema." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+									className: "space-y-6",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+										control: form.control,
+										name: "email_signature",
+										render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Conteúdo da Assinatura (HTML)" }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+												placeholder: "<div>Atenciosamente,<br/><strong>Equipe Milan</strong></div>",
+												className: "min-h-[150px] font-mono text-sm",
+												...field
+											}) }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Você pode usar tags HTML para formatar o texto." }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+										] })
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "rounded-lg border p-4 bg-gray-50",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-xs font-semibold text-muted-foreground uppercase mb-2",
+											children: "Prévia Visual"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+											className: "bg-white p-4 rounded border shadow-sm min-h-[100px]",
+											children: form.watch("email_signature") ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { dangerouslySetInnerHTML: { __html: form.watch("email_signature") || "" } }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+												className: "text-muted-foreground italic text-sm",
+												children: "A assinatura aparecerá aqui..."
+											})
+										})]
+									})]
+								})] })
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+								value: "notifications",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Preferências de Notificação" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Escolha quais alertas você deseja receber no sistema." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+									className: "space-y-6",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+											control: form.control,
+											name: "alerts_overdue_tasks",
+											render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+												className: "flex flex-row items-center justify-between rounded-lg border p-4",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+													className: "space-y-0.5",
+													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, {
+														className: "text-base",
+														children: "Alertas de tarefas atrasadas"
+													}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Receba avisos sobre tarefas que passaram do prazo." })]
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+													checked: field.value,
+													onCheckedChange: field.onChange
+												}) })]
+											})
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+											control: form.control,
+											name: "alerts_new_leads",
+											render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+												className: "flex flex-row items-center justify-between rounded-lg border p-4",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+													className: "space-y-0.5",
+													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, {
+														className: "text-base",
+														children: "Novos leads"
+													}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Seja notificado quando um novo contato for cadastrado." })]
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+													checked: field.value,
+													onCheckedChange: field.onChange
+												}) })]
+											})
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+											control: form.control,
+											name: "alerts_birthdays",
+											render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+												className: "flex flex-row items-center justify-between rounded-lg border p-4",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+													className: "space-y-0.5",
+													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, {
+														className: "text-base",
+														children: "Aniversários"
+													}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Lembretes diários de aniversariantes do dia." })]
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+													checked: field.value,
+													onCheckedChange: field.onChange
+												}) })]
+											})
+										})
+									]
+								})] })
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+								value: "goals",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Metas Mensais" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Defina os objetivos para acompanhar no dashboard." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+									className: "space-y-4",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "grid grid-cols-1 md:grid-cols-3 gap-6",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+												control: form.control,
+												name: "monthly_sales_goal",
+												render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Valor de vendas esperado (R$)" }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+														type: "number",
+														step: "0.01",
+														...field
+													}) }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Meta de faturamento mensal." }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+												] })
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+												control: form.control,
+												name: "monthly_new_contacts_goal",
+												render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Número de novos contatos" }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+														type: "number",
+														...field
+													}) }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Meta de aquisição de leads." }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+												] })
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+												control: form.control,
+												name: "conversion_rate_goal",
+												render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Taxa de conversão (%)" }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+														type: "number",
+														step: "0.1",
+														...field
+													}) }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Percentual desejado de vendas." }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+												] })
+											})
+										]
+									})
+								})] })
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+								value: "auctions",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Padrões de Leilão" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Configurações padrão para novos leilões criados." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+									className: "space-y-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+										control: form.control,
+										name: "auction_default_location",
+										render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Local Padrão" }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												placeholder: "Ex: Tattersall de Cidade Jardim",
+												...field
+											}) }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+										] })
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+											control: form.control,
+											name: "auction_default_time",
+											render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Horário Típico" }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+													placeholder: "Ex: 19:00",
+													...field
+												}) }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+											] })
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+											control: form.control,
+											name: "auction_default_fees",
+											render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Taxas Padrão" }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+													placeholder: "Ex: 8% (Comissão)",
+													...field
+												}) }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+											] })
+										})]
+									})]
+								})] })
+							})
+						]
+					})]
+				})
+			})
+		})]
+	});
+}
 var NotFound = () => {
 	const location = useLocation();
 	(0, import_react.useEffect)(() => {
@@ -81055,6 +81674,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 						path: "/modelos",
 						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Modelos, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+						path: "/configuracoes",
+						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Configuracoes, {})
 					})
 				]
 			}),
@@ -81068,4 +81691,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DK7khTvz.js.map
+//# sourceMappingURL=index-p9bft_o8.js.map

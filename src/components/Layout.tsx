@@ -25,6 +25,7 @@ import {
   LogOut,
   Tag as TagIcon,
   FileText,
+  Settings,
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
@@ -50,6 +51,7 @@ const NAV_ITEMS = [
   { label: 'Relatórios', icon: BarChart3, path: '/relatorios' },
   { label: 'Tags', icon: TagIcon, path: '/tags' },
   { label: 'Modelos', icon: FileText, path: '/modelos' },
+  { label: 'Configurações', icon: Settings, path: '/configuracoes' },
 ]
 
 function AppSidebar() {
@@ -200,8 +202,10 @@ function TopHeader() {
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" /> Perfil
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Zap className="mr-2 h-4 w-4" /> Configurações
+            <DropdownMenuItem asChild>
+              <Link to="/configuracoes">
+                <Settings className="mr-2 h-4 w-4" /> Configurações
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
