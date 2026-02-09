@@ -115,7 +115,6 @@ export const contactsService = {
       query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%`)
     }
 
-    // Filter by Segment (using the view)
     if (segment) {
       const { data: segmentedContacts, error: segmentError } = await supabase
         .from('contact_segmentation_view')
@@ -126,7 +125,6 @@ export const contactsService = {
 
       const ids = segmentedContacts?.map((c) => c.id) || []
 
-      // If no contacts match the segment, return empty immediately
       if (ids.length === 0) {
         return { data: [], count: 0, error: null }
       }
@@ -134,7 +132,6 @@ export const contactsService = {
       query = query.in('id', ids)
     }
 
-    // Sorting
     if (sortBy === 'lastContact') {
       query = query.order('updated_at', { ascending: sortDirection === 'asc' })
     } else if (sortBy === 'totalInvested') {
@@ -179,14 +176,11 @@ export const contactsService = {
   },
 
   async getAudienceCount({ tags, segments }: AudienceFilterParams) {
-    // Start with all contacts
     let query = supabase
       .from('contacts')
       .select('id', { count: 'exact', head: true })
 
-    // Apply Segment Filter
     if (segments && segments.length > 0) {
-      // Since we can have multiple segments, we need contacts that match ANY of the segments
       const { data: segmentedContacts, error: segmentError } = await supabase
         .from('contact_segmentation_view')
         .select('id')
@@ -203,7 +197,6 @@ export const contactsService = {
       query = query.in('id', ids)
     }
 
-    // Apply Tag Filter
     if (tags && tags.length > 0) {
       const { data: taggedContactIds, error: tagError } = await supabase
         .from('contact_tags')
@@ -363,7 +356,6 @@ export const contactsService = {
     html: string,
     attachments?: { filename: string; content: string }[],
   ) {
-    // 1. Send via Edge Function
     const { data, error } = await supabase.functions.invoke(
       'send-contact-email',
       {
@@ -373,7 +365,6 @@ export const contactsService = {
 
     if (error) throw error
 
-    // 2. Log Interaction
     await this.addInteraction({
       contact_id: contactId,
       type: 'email',
@@ -459,5 +450,38 @@ export const contactsService = {
       .eq('tag_id', tagId)
 
     if (error) throw error
+  },
+
+  async getBirthdays(month: number, day: number) {
+    // Note: This is a client-side filter approximation because simple Supabase filters don't support date parts extraction easily without SQL functions.
+    // For large databases, this should be an RPC or edge function.
+    const { data, error } = await supabase
+      .from('contacts')
+      .select('id, name, birth_date')
+      .not('birth_date', 'is', null)
+
+    if (error) throw error
+
+    return data.filter((contact) => {
+      if (!contact.birth_date) return false
+      // birth_date format YYYY-MM-DD
+      const [_, m, d] = contact.birth_date.split('-').map(Number)
+      return m === month && d === day
+    })
+  },
+
+  async getInactiveContactsCount(daysThreshold: number) {
+    const thresholdDate = new Date()
+    thresholdDate.setDate(thresholdDate.getDate() - daysThreshold)
+    const thresholdStr = thresholdDate.toISOString()
+
+    // Using updated_at as a proxy for activity
+    const { count, error } = await supabase
+      .from('contacts')
+      .select('id', { count: 'exact', head: true })
+      .lt('updated_at', thresholdStr)
+
+    if (error) throw error
+    return count || 0
   },
 }

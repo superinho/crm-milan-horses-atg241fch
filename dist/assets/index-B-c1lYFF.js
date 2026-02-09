@@ -18065,7 +18065,7 @@ function handleAndDispatchCustomEvent$1(name, handler, detail, { discrete }) {
 	if (discrete) dispatchDiscreteCustomEvent(target, event);
 	else target.dispatchEvent(event);
 }
-var Root$12 = DismissableLayer;
+var Root$13 = DismissableLayer;
 var Branch = DismissableLayerBranch;
 var useLayoutEffect2 = globalThis?.document ? import_react.useLayoutEffect : () => {};
 var import_react_dom$5 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
@@ -18256,7 +18256,7 @@ var VisuallyHidden = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 VisuallyHidden.displayName = NAME$4;
-var Root$11 = VisuallyHidden;
+var Root$12 = VisuallyHidden;
 var import_react_dom$4 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var PROVIDER_NAME$1 = "ToastProvider";
 var [Collection$4, useCollection$4, createCollectionScope$4] = createCollection("Toast");
@@ -18555,7 +18555,7 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 		onClose: handleClose,
 		children: import_react_dom$4.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$4.ItemSlot, {
 			scope: __scopeToast,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$12, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$13, {
 				asChild: true,
 				onEscapeKeyDown: composeEventHandlers(onEscapeKeyDown, () => {
 					if (!context.isFocusedToastEscapeKeyDownRef.current) handleClose();
@@ -18913,19 +18913,19 @@ var Activity = createLucideIcon("activity", [["path", {
 	d: "M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2",
 	key: "169zse"
 }]]);
-var ArrowDown = createLucideIcon("arrow-down", [["path", {
-	d: "M12 5v14",
-	key: "s699le"
-}], ["path", {
-	d: "m19 12-7 7-7-7",
-	key: "1idqje"
-}]]);
 var ArrowLeft = createLucideIcon("arrow-left", [["path", {
 	d: "m12 19-7-7 7-7",
 	key: "1l729n"
 }], ["path", {
 	d: "M19 12H5",
 	key: "x3x0zl"
+}]]);
+var ArrowRight = createLucideIcon("arrow-right", [["path", {
+	d: "M5 12h14",
+	key: "1ays0h"
+}], ["path", {
+	d: "m12 5 7 7-7 7",
+	key: "xquz4c"
 }]]);
 var ArrowUpDown = createLucideIcon("arrow-up-down", [
 	["path", {
@@ -18945,13 +18945,6 @@ var ArrowUpDown = createLucideIcon("arrow-up-down", [
 		key: "1glfcx"
 	}]
 ]);
-var ArrowUp = createLucideIcon("arrow-up", [["path", {
-	d: "m5 12 7-7 7 7",
-	key: "hav0vg"
-}], ["path", {
-	d: "M12 19V5",
-	key: "x0mq9r"
-}]]);
 var Bell = createLucideIcon("bell", [["path", {
 	d: "M10.268 21a2 2 0 0 0 3.464 0",
 	key: "vwvbt9"
@@ -19024,6 +19017,44 @@ var Building = createLucideIcon("building", [
 		key: "1uxh74"
 	}]
 ]);
+var Cake = createLucideIcon("cake", [
+	["path", {
+		d: "M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8",
+		key: "1w3rig"
+	}],
+	["path", {
+		d: "M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1",
+		key: "n2jgmb"
+	}],
+	["path", {
+		d: "M2 21h20",
+		key: "1nyx9w"
+	}],
+	["path", {
+		d: "M7 8v3",
+		key: "1qtyvj"
+	}],
+	["path", {
+		d: "M12 8v3",
+		key: "hwp4zt"
+	}],
+	["path", {
+		d: "M17 8v3",
+		key: "1i6e5u"
+	}],
+	["path", {
+		d: "M7 4h.01",
+		key: "1bh4kh"
+	}],
+	["path", {
+		d: "M12 4h.01",
+		key: "1ujb9j"
+	}],
+	["path", {
+		d: "M17 4h.01",
+		key: "1upcoc"
+	}]
+]);
 var Calculator = createLucideIcon("calculator", [
 	["rect", {
 		width: "16",
@@ -19074,6 +19105,34 @@ var Calculator = createLucideIcon("calculator", [
 	["path", {
 		d: "M8 18h.01",
 		key: "lrp35t"
+	}]
+]);
+var CalendarClock = createLucideIcon("calendar-clock", [
+	["path", {
+		d: "M16 14v2.2l1.6 1",
+		key: "fo4ql5"
+	}],
+	["path", {
+		d: "M16 2v4",
+		key: "4m81vk"
+	}],
+	["path", {
+		d: "M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5",
+		key: "1osxxc"
+	}],
+	["path", {
+		d: "M3 10h5",
+		key: "r794hk"
+	}],
+	["path", {
+		d: "M8 2v4",
+		key: "1cmpym"
+	}],
+	["circle", {
+		cx: "16",
+		cy: "16",
+		r: "6",
+		key: "qoo3c4"
 	}]
 ]);
 var Calendar = createLucideIcon("calendar", [
@@ -19130,13 +19189,6 @@ var ChartNoAxesColumn = createLucideIcon("chart-no-axes-column", [
 		key: "unv183"
 	}]
 ]);
-var ChartPie = createLucideIcon("chart-pie", [["path", {
-	d: "M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z",
-	key: "pzmjnu"
-}], ["path", {
-	d: "M21.21 15.89A10 10 0 1 1 8 2.83",
-	key: "k2fpak"
-}]]);
 var Check = createLucideIcon("check", [["path", {
 	d: "M20 6 9 17l-5-5",
 	key: "1gmf2c"
@@ -19900,6 +19952,32 @@ var UserPlus = createLucideIcon("user-plus", [
 		key: "1shjgl"
 	}]
 ]);
+var UserX = createLucideIcon("user-x", [
+	["path", {
+		d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2",
+		key: "1yyitq"
+	}],
+	["circle", {
+		cx: "9",
+		cy: "7",
+		r: "4",
+		key: "nufk8"
+	}],
+	["line", {
+		x1: "17",
+		x2: "22",
+		y1: "8",
+		y2: "13",
+		key: "3nzzx3"
+	}],
+	["line", {
+		x1: "22",
+		x2: "17",
+		y1: "8",
+		y2: "13",
+		key: "1swrse"
+	}]
+]);
 var User = createLucideIcon("user", [["path", {
 	d: "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2",
 	key: "975kel"
@@ -20227,12 +20305,12 @@ var lengthUnitRegex = /\d+(%|px|r?em|[sdl]?v([hwib]|min|max)|pt|pc|in|cm|mm|cap|
 var colorFunctionRegex = /^(rgba?|hsla?|hwb|(ok)?(lab|lch))\(.+\)$/;
 var shadowRegex = /^(inset_)?-?((\d+)?\.?(\d+)[a-z]+|0)_-?((\d+)?\.?(\d+)[a-z]+|0)/;
 var imageRegex = /^(url|image|image-set|cross-fade|element|(repeating-)?(linear|radial|conic)-gradient)\(.+\)$/;
-var isLength$4 = (value) => isNumber$3(value) || stringLengths.has(value) || fractionRegex.test(value);
+var isLength$4 = (value) => isNumber$4(value) || stringLengths.has(value) || fractionRegex.test(value);
 var isArbitraryLength = (value) => getIsArbitraryValue(value, "length", isLengthOnly);
-var isNumber$3 = (value) => Boolean(value) && !Number.isNaN(Number(value));
-var isArbitraryNumber = (value) => getIsArbitraryValue(value, "number", isNumber$3);
+var isNumber$4 = (value) => Boolean(value) && !Number.isNaN(Number(value));
+var isArbitraryNumber = (value) => getIsArbitraryValue(value, "number", isNumber$4);
 var isInteger = (value) => Boolean(value) && Number.isInteger(Number(value));
-var isPercent$1 = (value) => value.endsWith("%") && isNumber$3(value.slice(0, -1));
+var isPercent$1 = (value) => value.endsWith("%") && isNumber$4(value.slice(0, -1));
 var isArbitraryValue = (value) => arbitraryValueRegex.test(value);
 var isTshirtSize = (value) => tshirtUnitRegex.test(value);
 var sizeLabels = /* @__PURE__ */ new Set([
@@ -20309,7 +20387,7 @@ var getDefaultConfig = () => {
 	];
 	const getNumberWithAutoAndArbitrary = () => [
 		"auto",
-		isNumber$3,
+		isNumber$4,
 		isArbitraryValue
 	];
 	const getPositions = () => [
@@ -20372,7 +20450,7 @@ var getDefaultConfig = () => {
 		"right",
 		"column"
 	];
-	const getNumberAndArbitrary = () => [isNumber$3, isArbitraryValue];
+	const getNumberAndArbitrary = () => [isNumber$4, isArbitraryValue];
 	return {
 		cacheSize: 500,
 		separator: ":",
@@ -20761,7 +20839,7 @@ var getDefaultConfig = () => {
 			] }],
 			"line-clamp": [{ "line-clamp": [
 				"none",
-				isNumber$3,
+				isNumber$4,
 				isArbitraryNumber
 			] }],
 			leading: [{ leading: [
@@ -21736,10 +21814,10 @@ var Observer = class {
 			if (typeof id !== "string" && typeof id !== "number") return { unwrap };
 			else return Object.assign(id, { unwrap });
 		};
-		this.custom = (jsx$34, data) => {
+		this.custom = (jsx$35, data) => {
 			const id = (data == null ? void 0 : data.id) || toastsCounter++;
 			this.create({
-				jsx: jsx$34(id),
+				jsx: jsx$35(id),
 				id,
 				...data
 			});
@@ -23875,7 +23953,7 @@ var Arrow$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Arrow$1.displayName = NAME$3;
-var Root$10 = Arrow$1;
+var Root$11 = Arrow$1;
 function useSize(element) {
 	const [size$3, setSize] = import_react.useState(void 0);
 	useLayoutEffect2(() => {
@@ -24092,7 +24170,7 @@ var PopperArrow = import_react.forwardRef(function PopperArrow2(props, forwarded
 			}[contentContext.placedSide],
 			visibility: contentContext.shouldHideArrow ? "hidden" : void 0
 		},
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$10, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$11, {
 			...arrowProps,
 			ref: forwardedRef,
 			style: {
@@ -24474,7 +24552,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Slottable$1, { children }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(VisuallyHiddenContentContextProvider, {
 				scope: __scopeTooltip,
 				isInside: true,
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$11, {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$12, {
 					id: context.contentId,
 					role: "tooltip",
 					children: ariaLabel || children
@@ -24846,15 +24924,15 @@ Separator$3.displayName = NAME$2;
 function isValidOrientation(orientation) {
 	return ORIENTATIONS.includes(orientation);
 }
-var Root$9 = Separator$3;
-var Separator = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
+var Root$10 = Separator$3;
+var Separator = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$10, {
 	ref,
 	decorative,
 	orientation,
 	className: cn("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className),
 	...props
 }));
-Separator.displayName = Root$9.displayName;
+Separator.displayName = Root$10.displayName;
 var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
 var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
 var EVENT_OPTIONS$1 = {
@@ -26052,7 +26130,7 @@ var DescriptionWarning$1 = ({ contentRef, descriptionId }) => {
 	]);
 	return null;
 };
-var Root$8 = Dialog$1;
+var Root$9 = Dialog$1;
 var Trigger$5 = DialogTrigger$1;
 var Portal$4 = DialogPortal$1;
 var Overlay = DialogOverlay$1;
@@ -26060,7 +26138,7 @@ var Content$2 = DialogContent$1;
 var Title = DialogTitle$1;
 var Description = DialogDescription$1;
 var Close = DialogClose$1;
-var Sheet = Root$8;
+var Sheet = Root$9;
 var SheetTrigger = Trigger$5;
 var SheetPortal = Portal$4;
 var SheetOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
@@ -26708,15 +26786,15 @@ function useImageLoadingStatus(src, { referrerPolicy, crossOrigin }) {
 	]);
 	return loadingStatus;
 }
-var Root$7 = Avatar$1;
+var Root$8 = Avatar$1;
 var Image = AvatarImage$1;
 var Fallback = AvatarFallback$1;
-var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
+var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
 	ref,
 	className: cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className),
 	...props
 }));
-Avatar.displayName = Root$7.displayName;
+Avatar.displayName = Root$8.displayName;
 var AvatarImage = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Image, {
 	ref,
 	className: cn("aspect-square h-full w-full", className),
@@ -26914,7 +26992,7 @@ function focusFirst$1(candidates, preventScroll = false) {
 function wrapArray$2(array$1, startIndex) {
 	return array$1.map((_$1, index$1) => array$1[(startIndex + index$1) % array$1.length]);
 }
-var Root$6 = RovingFocusGroup;
+var Root$7 = RovingFocusGroup;
 var Item$2 = RovingFocusGroupItem;
 var SELECTION_KEYS$1 = ["Enter", " "];
 var FIRST_KEYS = [
@@ -27156,7 +27234,7 @@ var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
 					onFocusOutside,
 					onInteractOutside,
 					onDismiss,
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
 						asChild: true,
 						...rovingFocusGroupScope,
 						dir: rootContext.dir,
@@ -27855,7 +27933,7 @@ var DropdownMenuRadioItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 DropdownMenuRadioItem$1.displayName = RADIO_ITEM_NAME;
-var INDICATOR_NAME$1 = "DropdownMenuItemIndicator";
+var INDICATOR_NAME$2 = "DropdownMenuItemIndicator";
 var DropdownMenuItemIndicator = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...itemIndicatorProps } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
@@ -27865,7 +27943,7 @@ var DropdownMenuItemIndicator = import_react.forwardRef((props, forwardedRef) =>
 		ref: forwardedRef
 	});
 });
-DropdownMenuItemIndicator.displayName = INDICATOR_NAME$1;
+DropdownMenuItemIndicator.displayName = INDICATOR_NAME$2;
 var SEPARATOR_NAME$1 = "DropdownMenuSeparator";
 var DropdownMenuSeparator$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...separatorProps } = props;
@@ -35858,6 +35936,2822 @@ function Layout() {
 		})
 	});
 }
+const defaultSettings = {
+	company_name: "Minha Empresa",
+	logo_url: null,
+	primary_color: "#000000",
+	secondary_color: "#ffffff",
+	contact_email: "",
+	contact_phone: "",
+	contact_whatsapp: "",
+	website: "",
+	address: "",
+	email_signature: "",
+	alerts_overdue_tasks: true,
+	alerts_new_leads: true,
+	alerts_birthdays: true,
+	monthly_sales_goal: 0,
+	monthly_new_contacts_goal: 0,
+	conversion_rate_goal: 0,
+	auction_default_location: "",
+	auction_default_time: "",
+	auction_default_fees: ""
+};
+const settingsService = {
+	async getSettings() {
+		const { data, error } = await supabase.from("company_settings").select("*").limit(1).maybeSingle();
+		if (error) {
+			console.error("Error fetching settings:", error);
+			return defaultSettings;
+		}
+		return data || defaultSettings;
+	},
+	async updateSettings(settings) {
+		const { data: existing } = await supabase.from("company_settings").select("id").limit(1).maybeSingle();
+		let result;
+		if (existing?.id) result = await supabase.from("company_settings").update({
+			...settings,
+			updated_at: (/* @__PURE__ */ new Date()).toISOString()
+		}).eq("id", existing.id).select().single();
+		else result = await supabase.from("company_settings").insert({
+			...settings,
+			updated_at: (/* @__PURE__ */ new Date()).toISOString()
+		}).select().single();
+		if (result.error) throw result.error;
+		return result.data;
+	}
+};
+const daysInYear = 365.2425;
+Math.pow(10, 8) * 24 * 60 * 60 * 1e3;
+const millisecondsInWeek = 6048e5;
+const millisecondsInDay = 864e5;
+const millisecondsInMinute = 6e4;
+const millisecondsInHour = 36e5;
+const secondsInDay = 3600 * 24;
+secondsInDay * 7;
+secondsInDay * daysInYear / 12 * 3;
+const constructFromSymbol$1 = Symbol.for("constructDateFrom");
+function constructFrom(date$4, value) {
+	if (typeof date$4 === "function") return date$4(value);
+	if (date$4 && typeof date$4 === "object" && constructFromSymbol$1 in date$4) return date$4[constructFromSymbol$1](value);
+	if (date$4 instanceof Date) return new date$4.constructor(value);
+	return new Date(value);
+}
+function toDate(argument, context) {
+	return constructFrom(context || argument, argument);
+}
+function addDays(date$4, amount, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	if (isNaN(amount)) return constructFrom(options$1?.in || date$4, NaN);
+	if (!amount) return _date$1;
+	_date$1.setDate(_date$1.getDate() + amount);
+	return _date$1;
+}
+function addMonths(date$4, amount, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	if (isNaN(amount)) return constructFrom(options$1?.in || date$4, NaN);
+	if (!amount) return _date$1;
+	const dayOfMonth = _date$1.getDate();
+	const endOfDesiredMonth = constructFrom(options$1?.in || date$4, _date$1.getTime());
+	endOfDesiredMonth.setMonth(_date$1.getMonth() + amount + 1, 0);
+	if (dayOfMonth >= endOfDesiredMonth.getDate()) return endOfDesiredMonth;
+	else {
+		_date$1.setFullYear(endOfDesiredMonth.getFullYear(), endOfDesiredMonth.getMonth(), dayOfMonth);
+		return _date$1;
+	}
+}
+var defaultOptions$1 = {};
+function getDefaultOptions() {
+	return defaultOptions$1;
+}
+function startOfWeek(date$4, options$1) {
+	const defaultOptions$2 = getDefaultOptions();
+	const weekStartsOn = options$1?.weekStartsOn ?? options$1?.locale?.options?.weekStartsOn ?? defaultOptions$2.weekStartsOn ?? defaultOptions$2.locale?.options?.weekStartsOn ?? 0;
+	const _date$1 = toDate(date$4, options$1?.in);
+	const day = _date$1.getDay();
+	const diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn;
+	_date$1.setDate(_date$1.getDate() - diff);
+	_date$1.setHours(0, 0, 0, 0);
+	return _date$1;
+}
+function startOfISOWeek(date$4, options$1) {
+	return startOfWeek(date$4, {
+		...options$1,
+		weekStartsOn: 1
+	});
+}
+function getISOWeekYear(date$4, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	const year = _date$1.getFullYear();
+	const fourthOfJanuaryOfNextYear = constructFrom(_date$1, 0);
+	fourthOfJanuaryOfNextYear.setFullYear(year + 1, 0, 4);
+	fourthOfJanuaryOfNextYear.setHours(0, 0, 0, 0);
+	const startOfNextYear = startOfISOWeek(fourthOfJanuaryOfNextYear);
+	const fourthOfJanuaryOfThisYear = constructFrom(_date$1, 0);
+	fourthOfJanuaryOfThisYear.setFullYear(year, 0, 4);
+	fourthOfJanuaryOfThisYear.setHours(0, 0, 0, 0);
+	const startOfThisYear = startOfISOWeek(fourthOfJanuaryOfThisYear);
+	if (_date$1.getTime() >= startOfNextYear.getTime()) return year + 1;
+	else if (_date$1.getTime() >= startOfThisYear.getTime()) return year;
+	else return year - 1;
+}
+function getTimezoneOffsetInMilliseconds(date$4) {
+	const _date$1 = toDate(date$4);
+	const utcDate$1 = new Date(Date.UTC(_date$1.getFullYear(), _date$1.getMonth(), _date$1.getDate(), _date$1.getHours(), _date$1.getMinutes(), _date$1.getSeconds(), _date$1.getMilliseconds()));
+	utcDate$1.setUTCFullYear(_date$1.getFullYear());
+	return +date$4 - +utcDate$1;
+}
+function normalizeDates(context, ...dates) {
+	const normalize$1 = constructFrom.bind(null, context || dates.find((date$4) => typeof date$4 === "object"));
+	return dates.map(normalize$1);
+}
+function startOfDay(date$4, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	_date$1.setHours(0, 0, 0, 0);
+	return _date$1;
+}
+function differenceInCalendarDays(laterDate, earlierDate, options$1) {
+	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
+	const laterStartOfDay = startOfDay(laterDate_);
+	const earlierStartOfDay = startOfDay(earlierDate_);
+	const laterTimestamp = +laterStartOfDay - getTimezoneOffsetInMilliseconds(laterStartOfDay);
+	const earlierTimestamp = +earlierStartOfDay - getTimezoneOffsetInMilliseconds(earlierStartOfDay);
+	return Math.round((laterTimestamp - earlierTimestamp) / millisecondsInDay);
+}
+function startOfISOWeekYear(date$4, options$1) {
+	const year = getISOWeekYear(date$4, options$1);
+	const fourthOfJanuary = constructFrom(options$1?.in || date$4, 0);
+	fourthOfJanuary.setFullYear(year, 0, 4);
+	fourthOfJanuary.setHours(0, 0, 0, 0);
+	return startOfISOWeek(fourthOfJanuary);
+}
+function addWeeks(date$4, amount, options$1) {
+	return addDays(date$4, amount * 7, options$1);
+}
+function addYears(date$4, amount, options$1) {
+	return addMonths(date$4, amount * 12, options$1);
+}
+function max(dates, options$1) {
+	let result;
+	let context = options$1?.in;
+	dates.forEach((date$4) => {
+		if (!context && typeof date$4 === "object") context = constructFrom.bind(null, date$4);
+		const date_ = toDate(date$4, context);
+		if (!result || result < date_ || isNaN(+date_)) result = date_;
+	});
+	return constructFrom(context, result || NaN);
+}
+function min(dates, options$1) {
+	let result;
+	let context = options$1?.in;
+	dates.forEach((date$4) => {
+		if (!context && typeof date$4 === "object") context = constructFrom.bind(null, date$4);
+		const date_ = toDate(date$4, context);
+		if (!result || result > date_ || isNaN(+date_)) result = date_;
+	});
+	return constructFrom(context, result || NaN);
+}
+function constructNow(date$4) {
+	return constructFrom(date$4, Date.now());
+}
+function isSameDay(laterDate, earlierDate, options$1) {
+	const [dateLeft_, dateRight_] = normalizeDates(options$1?.in, laterDate, earlierDate);
+	return +startOfDay(dateLeft_) === +startOfDay(dateRight_);
+}
+function isDate(value) {
+	return value instanceof Date || typeof value === "object" && Object.prototype.toString.call(value) === "[object Date]";
+}
+function isValid(date$4) {
+	return !(!isDate(date$4) && typeof date$4 !== "number" || isNaN(+toDate(date$4)));
+}
+function differenceInCalendarMonths(laterDate, earlierDate, options$1) {
+	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
+	const yearsDiff = laterDate_.getFullYear() - earlierDate_.getFullYear();
+	const monthsDiff = laterDate_.getMonth() - earlierDate_.getMonth();
+	return yearsDiff * 12 + monthsDiff;
+}
+function differenceInDays(laterDate, earlierDate, options$1) {
+	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
+	const sign$1 = compareLocalAsc(laterDate_, earlierDate_);
+	const difference = Math.abs(differenceInCalendarDays(laterDate_, earlierDate_));
+	laterDate_.setDate(laterDate_.getDate() - sign$1 * difference);
+	const result = sign$1 * (difference - Number(compareLocalAsc(laterDate_, earlierDate_) === -sign$1));
+	return result === 0 ? 0 : result;
+}
+function compareLocalAsc(laterDate, earlierDate) {
+	const diff = laterDate.getFullYear() - earlierDate.getFullYear() || laterDate.getMonth() - earlierDate.getMonth() || laterDate.getDate() - earlierDate.getDate() || laterDate.getHours() - earlierDate.getHours() || laterDate.getMinutes() - earlierDate.getMinutes() || laterDate.getSeconds() - earlierDate.getSeconds() || laterDate.getMilliseconds() - earlierDate.getMilliseconds();
+	if (diff < 0) return -1;
+	if (diff > 0) return 1;
+	return diff;
+}
+function endOfDay(date$4, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	_date$1.setHours(23, 59, 59, 999);
+	return _date$1;
+}
+function endOfMonth(date$4, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	const month = _date$1.getMonth();
+	_date$1.setFullYear(_date$1.getFullYear(), month + 1, 0);
+	_date$1.setHours(23, 59, 59, 999);
+	return _date$1;
+}
+function normalizeInterval(context, interval) {
+	const [start, end] = normalizeDates(context, interval.start, interval.end);
+	return {
+		start,
+		end
+	};
+}
+function eachDayOfInterval(interval, options$1) {
+	const { start, end } = normalizeInterval(options$1?.in, interval);
+	let reversed = +start > +end;
+	const endTime = reversed ? +start : +end;
+	const date$4 = reversed ? end : start;
+	date$4.setHours(0, 0, 0, 0);
+	let step = options$1?.step ?? 1;
+	if (!step) return [];
+	if (step < 0) {
+		step = -step;
+		reversed = !reversed;
+	}
+	const dates = [];
+	while (+date$4 <= endTime) {
+		dates.push(constructFrom(start, date$4));
+		date$4.setDate(date$4.getDate() + step);
+		date$4.setHours(0, 0, 0, 0);
+	}
+	return reversed ? dates.reverse() : dates;
+}
+function eachMonthOfInterval(interval, options$1) {
+	const { start, end } = normalizeInterval(options$1?.in, interval);
+	let reversed = +start > +end;
+	const endTime = reversed ? +start : +end;
+	const date$4 = reversed ? end : start;
+	date$4.setHours(0, 0, 0, 0);
+	date$4.setDate(1);
+	let step = options$1?.step ?? 1;
+	if (!step) return [];
+	if (step < 0) {
+		step = -step;
+		reversed = !reversed;
+	}
+	const dates = [];
+	while (+date$4 <= endTime) {
+		dates.push(constructFrom(start, date$4));
+		date$4.setMonth(date$4.getMonth() + step);
+	}
+	return reversed ? dates.reverse() : dates;
+}
+function startOfMonth(date$4, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	_date$1.setDate(1);
+	_date$1.setHours(0, 0, 0, 0);
+	return _date$1;
+}
+function endOfYear(date$4, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	const year = _date$1.getFullYear();
+	_date$1.setFullYear(year + 1, 0, 0);
+	_date$1.setHours(23, 59, 59, 999);
+	return _date$1;
+}
+function startOfYear(date$4, options$1) {
+	const date_ = toDate(date$4, options$1?.in);
+	date_.setFullYear(date_.getFullYear(), 0, 1);
+	date_.setHours(0, 0, 0, 0);
+	return date_;
+}
+function eachYearOfInterval(interval, options$1) {
+	const { start, end } = normalizeInterval(options$1?.in, interval);
+	let reversed = +start > +end;
+	const endTime = reversed ? +start : +end;
+	const date$4 = reversed ? end : start;
+	date$4.setHours(0, 0, 0, 0);
+	date$4.setMonth(0, 1);
+	let step = options$1?.step ?? 1;
+	if (!step) return [];
+	if (step < 0) {
+		step = -step;
+		reversed = !reversed;
+	}
+	const dates = [];
+	while (+date$4 <= endTime) {
+		dates.push(constructFrom(start, date$4));
+		date$4.setFullYear(date$4.getFullYear() + step);
+	}
+	return reversed ? dates.reverse() : dates;
+}
+function endOfWeek(date$4, options$1) {
+	const defaultOptions$2 = getDefaultOptions();
+	const weekStartsOn = options$1?.weekStartsOn ?? options$1?.locale?.options?.weekStartsOn ?? defaultOptions$2.weekStartsOn ?? defaultOptions$2.locale?.options?.weekStartsOn ?? 0;
+	const _date$1 = toDate(date$4, options$1?.in);
+	const day = _date$1.getDay();
+	const diff = (day < weekStartsOn ? -7 : 0) + 6 - (day - weekStartsOn);
+	_date$1.setDate(_date$1.getDate() + diff);
+	_date$1.setHours(23, 59, 59, 999);
+	return _date$1;
+}
+function endOfISOWeek(date$4, options$1) {
+	return endOfWeek(date$4, {
+		...options$1,
+		weekStartsOn: 1
+	});
+}
+var formatDistanceLocale$1 = {
+	lessThanXSeconds: {
+		one: "less than a second",
+		other: "less than {{count}} seconds"
+	},
+	xSeconds: {
+		one: "1 second",
+		other: "{{count}} seconds"
+	},
+	halfAMinute: "half a minute",
+	lessThanXMinutes: {
+		one: "less than a minute",
+		other: "less than {{count}} minutes"
+	},
+	xMinutes: {
+		one: "1 minute",
+		other: "{{count}} minutes"
+	},
+	aboutXHours: {
+		one: "about 1 hour",
+		other: "about {{count}} hours"
+	},
+	xHours: {
+		one: "1 hour",
+		other: "{{count}} hours"
+	},
+	xDays: {
+		one: "1 day",
+		other: "{{count}} days"
+	},
+	aboutXWeeks: {
+		one: "about 1 week",
+		other: "about {{count}} weeks"
+	},
+	xWeeks: {
+		one: "1 week",
+		other: "{{count}} weeks"
+	},
+	aboutXMonths: {
+		one: "about 1 month",
+		other: "about {{count}} months"
+	},
+	xMonths: {
+		one: "1 month",
+		other: "{{count}} months"
+	},
+	aboutXYears: {
+		one: "about 1 year",
+		other: "about {{count}} years"
+	},
+	xYears: {
+		one: "1 year",
+		other: "{{count}} years"
+	},
+	overXYears: {
+		one: "over 1 year",
+		other: "over {{count}} years"
+	},
+	almostXYears: {
+		one: "almost 1 year",
+		other: "almost {{count}} years"
+	}
+};
+const formatDistance$1 = (token, count$3, options$1) => {
+	let result;
+	const tokenValue = formatDistanceLocale$1[token];
+	if (typeof tokenValue === "string") result = tokenValue;
+	else if (count$3 === 1) result = tokenValue.one;
+	else result = tokenValue.other.replace("{{count}}", count$3.toString());
+	if (options$1?.addSuffix) if (options$1.comparison && options$1.comparison > 0) return "in " + result;
+	else return result + " ago";
+	return result;
+};
+function buildFormatLongFn(args) {
+	return (options$1 = {}) => {
+		const width = options$1.width ? String(options$1.width) : args.defaultWidth;
+		return args.formats[width] || args.formats[args.defaultWidth];
+	};
+}
+const formatLong$1 = {
+	date: buildFormatLongFn({
+		formats: {
+			full: "EEEE, MMMM do, y",
+			long: "MMMM do, y",
+			medium: "MMM d, y",
+			short: "MM/dd/yyyy"
+		},
+		defaultWidth: "full"
+	}),
+	time: buildFormatLongFn({
+		formats: {
+			full: "h:mm:ss a zzzz",
+			long: "h:mm:ss a z",
+			medium: "h:mm:ss a",
+			short: "h:mm a"
+		},
+		defaultWidth: "full"
+	}),
+	dateTime: buildFormatLongFn({
+		formats: {
+			full: "{{date}} 'at' {{time}}",
+			long: "{{date}} 'at' {{time}}",
+			medium: "{{date}}, {{time}}",
+			short: "{{date}}, {{time}}"
+		},
+		defaultWidth: "full"
+	})
+};
+var formatRelativeLocale$1 = {
+	lastWeek: "'last' eeee 'at' p",
+	yesterday: "'yesterday at' p",
+	today: "'today at' p",
+	tomorrow: "'tomorrow at' p",
+	nextWeek: "eeee 'at' p",
+	other: "P"
+};
+const formatRelative$1 = (token, _date$1, _baseDate, _options) => formatRelativeLocale$1[token];
+function buildLocalizeFn(args) {
+	return (value, options$1) => {
+		const context = options$1?.context ? String(options$1.context) : "standalone";
+		let valuesArray;
+		if (context === "formatting" && args.formattingValues) {
+			const defaultWidth = args.defaultFormattingWidth || args.defaultWidth;
+			const width = options$1?.width ? String(options$1.width) : defaultWidth;
+			valuesArray = args.formattingValues[width] || args.formattingValues[defaultWidth];
+		} else {
+			const defaultWidth = args.defaultWidth;
+			const width = options$1?.width ? String(options$1.width) : args.defaultWidth;
+			valuesArray = args.values[width] || args.values[defaultWidth];
+		}
+		const index$1 = args.argumentCallback ? args.argumentCallback(value) : value;
+		return valuesArray[index$1];
+	};
+}
+var eraValues$1 = {
+	narrow: ["B", "A"],
+	abbreviated: ["BC", "AD"],
+	wide: ["Before Christ", "Anno Domini"]
+};
+var quarterValues$1 = {
+	narrow: [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	abbreviated: [
+		"Q1",
+		"Q2",
+		"Q3",
+		"Q4"
+	],
+	wide: [
+		"1st quarter",
+		"2nd quarter",
+		"3rd quarter",
+		"4th quarter"
+	]
+};
+var monthValues$1 = {
+	narrow: [
+		"J",
+		"F",
+		"M",
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
+	abbreviated: [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec"
+	],
+	wide: [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December"
+	]
+};
+var dayValues$1 = {
+	narrow: [
+		"S",
+		"M",
+		"T",
+		"W",
+		"T",
+		"F",
+		"S"
+	],
+	short: [
+		"Su",
+		"Mo",
+		"Tu",
+		"We",
+		"Th",
+		"Fr",
+		"Sa"
+	],
+	abbreviated: [
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
+	],
+	wide: [
+		"Sunday",
+		"Monday",
+		"Tuesday",
+		"Wednesday",
+		"Thursday",
+		"Friday",
+		"Saturday"
+	]
+};
+var dayPeriodValues$1 = {
+	narrow: {
+		am: "a",
+		pm: "p",
+		midnight: "mi",
+		noon: "n",
+		morning: "morning",
+		afternoon: "afternoon",
+		evening: "evening",
+		night: "night"
+	},
+	abbreviated: {
+		am: "AM",
+		pm: "PM",
+		midnight: "midnight",
+		noon: "noon",
+		morning: "morning",
+		afternoon: "afternoon",
+		evening: "evening",
+		night: "night"
+	},
+	wide: {
+		am: "a.m.",
+		pm: "p.m.",
+		midnight: "midnight",
+		noon: "noon",
+		morning: "morning",
+		afternoon: "afternoon",
+		evening: "evening",
+		night: "night"
+	}
+};
+var formattingDayPeriodValues$1 = {
+	narrow: {
+		am: "a",
+		pm: "p",
+		midnight: "mi",
+		noon: "n",
+		morning: "in the morning",
+		afternoon: "in the afternoon",
+		evening: "in the evening",
+		night: "at night"
+	},
+	abbreviated: {
+		am: "AM",
+		pm: "PM",
+		midnight: "midnight",
+		noon: "noon",
+		morning: "in the morning",
+		afternoon: "in the afternoon",
+		evening: "in the evening",
+		night: "at night"
+	},
+	wide: {
+		am: "a.m.",
+		pm: "p.m.",
+		midnight: "midnight",
+		noon: "noon",
+		morning: "in the morning",
+		afternoon: "in the afternoon",
+		evening: "in the evening",
+		night: "at night"
+	}
+};
+var ordinalNumber$1 = (dirtyNumber, _options) => {
+	const number$5 = Number(dirtyNumber);
+	const rem100 = number$5 % 100;
+	if (rem100 > 20 || rem100 < 10) switch (rem100 % 10) {
+		case 1: return number$5 + "st";
+		case 2: return number$5 + "nd";
+		case 3: return number$5 + "rd";
+	}
+	return number$5 + "th";
+};
+const localize$1 = {
+	ordinalNumber: ordinalNumber$1,
+	era: buildLocalizeFn({
+		values: eraValues$1,
+		defaultWidth: "wide"
+	}),
+	quarter: buildLocalizeFn({
+		values: quarterValues$1,
+		defaultWidth: "wide",
+		argumentCallback: (quarter) => quarter - 1
+	}),
+	month: buildLocalizeFn({
+		values: monthValues$1,
+		defaultWidth: "wide"
+	}),
+	day: buildLocalizeFn({
+		values: dayValues$1,
+		defaultWidth: "wide"
+	}),
+	dayPeriod: buildLocalizeFn({
+		values: dayPeriodValues$1,
+		defaultWidth: "wide",
+		formattingValues: formattingDayPeriodValues$1,
+		defaultFormattingWidth: "wide"
+	})
+};
+function buildMatchFn(args) {
+	return (string$2, options$1 = {}) => {
+		const width = options$1.width;
+		const matchPattern = width && args.matchPatterns[width] || args.matchPatterns[args.defaultMatchWidth];
+		const matchResult = string$2.match(matchPattern);
+		if (!matchResult) return null;
+		const matchedString = matchResult[0];
+		const parsePatterns = width && args.parsePatterns[width] || args.parsePatterns[args.defaultParseWidth];
+		const key = Array.isArray(parsePatterns) ? findIndex$1(parsePatterns, (pattern) => pattern.test(matchedString)) : findKey(parsePatterns, (pattern) => pattern.test(matchedString));
+		let value;
+		value = args.valueCallback ? args.valueCallback(key) : key;
+		value = options$1.valueCallback ? options$1.valueCallback(value) : value;
+		const rest = string$2.slice(matchedString.length);
+		return {
+			value,
+			rest
+		};
+	};
+}
+function findKey(object$1, predicate) {
+	for (const key in object$1) if (Object.prototype.hasOwnProperty.call(object$1, key) && predicate(object$1[key])) return key;
+}
+function findIndex$1(array$1, predicate) {
+	for (let key = 0; key < array$1.length; key++) if (predicate(array$1[key])) return key;
+}
+function buildMatchPatternFn(args) {
+	return (string$2, options$1 = {}) => {
+		const matchResult = string$2.match(args.matchPattern);
+		if (!matchResult) return null;
+		const matchedString = matchResult[0];
+		const parseResult = string$2.match(args.parsePattern);
+		if (!parseResult) return null;
+		let value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
+		value = options$1.valueCallback ? options$1.valueCallback(value) : value;
+		const rest = string$2.slice(matchedString.length);
+		return {
+			value,
+			rest
+		};
+	};
+}
+const enUS$1 = {
+	code: "en-US",
+	formatDistance: formatDistance$1,
+	formatLong: formatLong$1,
+	formatRelative: formatRelative$1,
+	localize: localize$1,
+	match: {
+		ordinalNumber: buildMatchPatternFn({
+			matchPattern: /^(\d+)(th|st|nd|rd)?/i,
+			parsePattern: /\d+/i,
+			valueCallback: (value) => parseInt(value, 10)
+		}),
+		era: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(b|a)/i,
+				abbreviated: /^(b\.?\s?c\.?|b\.?\s?c\.?\s?e\.?|a\.?\s?d\.?|c\.?\s?e\.?)/i,
+				wide: /^(before christ|before common era|anno domini|common era)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: { any: [/^b/i, /^(a|c)/i] },
+			defaultParseWidth: "any"
+		}),
+		quarter: buildMatchFn({
+			matchPatterns: {
+				narrow: /^[1234]/i,
+				abbreviated: /^q[1234]/i,
+				wide: /^[1234](th|st|nd|rd)? quarter/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: { any: [
+				/1/i,
+				/2/i,
+				/3/i,
+				/4/i
+			] },
+			defaultParseWidth: "any",
+			valueCallback: (index$1) => index$1 + 1
+		}),
+		month: buildMatchFn({
+			matchPatterns: {
+				narrow: /^[jfmasond]/i,
+				abbreviated: /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i,
+				wide: /^(january|february|march|april|may|june|july|august|september|october|november|december)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				narrow: [
+					/^j/i,
+					/^f/i,
+					/^m/i,
+					/^a/i,
+					/^m/i,
+					/^j/i,
+					/^j/i,
+					/^a/i,
+					/^s/i,
+					/^o/i,
+					/^n/i,
+					/^d/i
+				],
+				any: [
+					/^ja/i,
+					/^f/i,
+					/^mar/i,
+					/^ap/i,
+					/^may/i,
+					/^jun/i,
+					/^jul/i,
+					/^au/i,
+					/^s/i,
+					/^o/i,
+					/^n/i,
+					/^d/i
+				]
+			},
+			defaultParseWidth: "any"
+		}),
+		day: buildMatchFn({
+			matchPatterns: {
+				narrow: /^[smtwf]/i,
+				short: /^(su|mo|tu|we|th|fr|sa)/i,
+				abbreviated: /^(sun|mon|tue|wed|thu|fri|sat)/i,
+				wide: /^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				narrow: [
+					/^s/i,
+					/^m/i,
+					/^t/i,
+					/^w/i,
+					/^t/i,
+					/^f/i,
+					/^s/i
+				],
+				any: [
+					/^su/i,
+					/^m/i,
+					/^tu/i,
+					/^w/i,
+					/^th/i,
+					/^f/i,
+					/^sa/i
+				]
+			},
+			defaultParseWidth: "any"
+		}),
+		dayPeriod: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(a|p|mi|n|(in the|at) (morning|afternoon|evening|night))/i,
+				any: /^([ap]\.?\s?m\.?|midnight|noon|(in the|at) (morning|afternoon|evening|night))/i
+			},
+			defaultMatchWidth: "any",
+			parsePatterns: { any: {
+				am: /^a/i,
+				pm: /^p/i,
+				midnight: /^mi/i,
+				noon: /^no/i,
+				morning: /morning/i,
+				afternoon: /afternoon/i,
+				evening: /evening/i,
+				night: /night/i
+			} },
+			defaultParseWidth: "any"
+		})
+	},
+	options: {
+		weekStartsOn: 0,
+		firstWeekContainsDate: 1
+	}
+};
+function getDayOfYear(date$4, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	return differenceInCalendarDays(_date$1, startOfYear(_date$1)) + 1;
+}
+function getISOWeek(date$4, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	const diff = +startOfISOWeek(_date$1) - +startOfISOWeekYear(_date$1);
+	return Math.round(diff / millisecondsInWeek) + 1;
+}
+function getWeekYear(date$4, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	const year = _date$1.getFullYear();
+	const defaultOptions$2 = getDefaultOptions();
+	const firstWeekContainsDate = options$1?.firstWeekContainsDate ?? options$1?.locale?.options?.firstWeekContainsDate ?? defaultOptions$2.firstWeekContainsDate ?? defaultOptions$2.locale?.options?.firstWeekContainsDate ?? 1;
+	const firstWeekOfNextYear = constructFrom(options$1?.in || date$4, 0);
+	firstWeekOfNextYear.setFullYear(year + 1, 0, firstWeekContainsDate);
+	firstWeekOfNextYear.setHours(0, 0, 0, 0);
+	const startOfNextYear = startOfWeek(firstWeekOfNextYear, options$1);
+	const firstWeekOfThisYear = constructFrom(options$1?.in || date$4, 0);
+	firstWeekOfThisYear.setFullYear(year, 0, firstWeekContainsDate);
+	firstWeekOfThisYear.setHours(0, 0, 0, 0);
+	const startOfThisYear = startOfWeek(firstWeekOfThisYear, options$1);
+	if (+_date$1 >= +startOfNextYear) return year + 1;
+	else if (+_date$1 >= +startOfThisYear) return year;
+	else return year - 1;
+}
+function startOfWeekYear(date$4, options$1) {
+	const defaultOptions$2 = getDefaultOptions();
+	const firstWeekContainsDate = options$1?.firstWeekContainsDate ?? options$1?.locale?.options?.firstWeekContainsDate ?? defaultOptions$2.firstWeekContainsDate ?? defaultOptions$2.locale?.options?.firstWeekContainsDate ?? 1;
+	const year = getWeekYear(date$4, options$1);
+	const firstWeek = constructFrom(options$1?.in || date$4, 0);
+	firstWeek.setFullYear(year, 0, firstWeekContainsDate);
+	firstWeek.setHours(0, 0, 0, 0);
+	return startOfWeek(firstWeek, options$1);
+}
+function getWeek(date$4, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	const diff = +startOfWeek(_date$1, options$1) - +startOfWeekYear(_date$1, options$1);
+	return Math.round(diff / millisecondsInWeek) + 1;
+}
+function addLeadingZeros(number$5, targetLength) {
+	return (number$5 < 0 ? "-" : "") + Math.abs(number$5).toString().padStart(targetLength, "0");
+}
+const lightFormatters = {
+	y(date$4, token) {
+		const signedYear = date$4.getFullYear();
+		const year = signedYear > 0 ? signedYear : 1 - signedYear;
+		return addLeadingZeros(token === "yy" ? year % 100 : year, token.length);
+	},
+	M(date$4, token) {
+		const month = date$4.getMonth();
+		return token === "M" ? String(month + 1) : addLeadingZeros(month + 1, 2);
+	},
+	d(date$4, token) {
+		return addLeadingZeros(date$4.getDate(), token.length);
+	},
+	a(date$4, token) {
+		const dayPeriodEnumValue = date$4.getHours() / 12 >= 1 ? "pm" : "am";
+		switch (token) {
+			case "a":
+			case "aa": return dayPeriodEnumValue.toUpperCase();
+			case "aaa": return dayPeriodEnumValue;
+			case "aaaaa": return dayPeriodEnumValue[0];
+			case "aaaa":
+			default: return dayPeriodEnumValue === "am" ? "a.m." : "p.m.";
+		}
+	},
+	h(date$4, token) {
+		return addLeadingZeros(date$4.getHours() % 12 || 12, token.length);
+	},
+	H(date$4, token) {
+		return addLeadingZeros(date$4.getHours(), token.length);
+	},
+	m(date$4, token) {
+		return addLeadingZeros(date$4.getMinutes(), token.length);
+	},
+	s(date$4, token) {
+		return addLeadingZeros(date$4.getSeconds(), token.length);
+	},
+	S(date$4, token) {
+		const numberOfDigits = token.length;
+		const milliseconds$1 = date$4.getMilliseconds();
+		return addLeadingZeros(Math.trunc(milliseconds$1 * Math.pow(10, numberOfDigits - 3)), token.length);
+	}
+};
+var dayPeriodEnum = {
+	am: "am",
+	pm: "pm",
+	midnight: "midnight",
+	noon: "noon",
+	morning: "morning",
+	afternoon: "afternoon",
+	evening: "evening",
+	night: "night"
+};
+const formatters = {
+	G: function(date$4, token, localize$2) {
+		const era = date$4.getFullYear() > 0 ? 1 : 0;
+		switch (token) {
+			case "G":
+			case "GG":
+			case "GGG": return localize$2.era(era, { width: "abbreviated" });
+			case "GGGGG": return localize$2.era(era, { width: "narrow" });
+			case "GGGG":
+			default: return localize$2.era(era, { width: "wide" });
+		}
+	},
+	y: function(date$4, token, localize$2) {
+		if (token === "yo") {
+			const signedYear = date$4.getFullYear();
+			const year = signedYear > 0 ? signedYear : 1 - signedYear;
+			return localize$2.ordinalNumber(year, { unit: "year" });
+		}
+		return lightFormatters.y(date$4, token);
+	},
+	Y: function(date$4, token, localize$2, options$1) {
+		const signedWeekYear = getWeekYear(date$4, options$1);
+		const weekYear = signedWeekYear > 0 ? signedWeekYear : 1 - signedWeekYear;
+		if (token === "YY") return addLeadingZeros(weekYear % 100, 2);
+		if (token === "Yo") return localize$2.ordinalNumber(weekYear, { unit: "year" });
+		return addLeadingZeros(weekYear, token.length);
+	},
+	R: function(date$4, token) {
+		return addLeadingZeros(getISOWeekYear(date$4), token.length);
+	},
+	u: function(date$4, token) {
+		return addLeadingZeros(date$4.getFullYear(), token.length);
+	},
+	Q: function(date$4, token, localize$2) {
+		const quarter = Math.ceil((date$4.getMonth() + 1) / 3);
+		switch (token) {
+			case "Q": return String(quarter);
+			case "QQ": return addLeadingZeros(quarter, 2);
+			case "Qo": return localize$2.ordinalNumber(quarter, { unit: "quarter" });
+			case "QQQ": return localize$2.quarter(quarter, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "QQQQQ": return localize$2.quarter(quarter, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "QQQQ":
+			default: return localize$2.quarter(quarter, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	q: function(date$4, token, localize$2) {
+		const quarter = Math.ceil((date$4.getMonth() + 1) / 3);
+		switch (token) {
+			case "q": return String(quarter);
+			case "qq": return addLeadingZeros(quarter, 2);
+			case "qo": return localize$2.ordinalNumber(quarter, { unit: "quarter" });
+			case "qqq": return localize$2.quarter(quarter, {
+				width: "abbreviated",
+				context: "standalone"
+			});
+			case "qqqqq": return localize$2.quarter(quarter, {
+				width: "narrow",
+				context: "standalone"
+			});
+			case "qqqq":
+			default: return localize$2.quarter(quarter, {
+				width: "wide",
+				context: "standalone"
+			});
+		}
+	},
+	M: function(date$4, token, localize$2) {
+		const month = date$4.getMonth();
+		switch (token) {
+			case "M":
+			case "MM": return lightFormatters.M(date$4, token);
+			case "Mo": return localize$2.ordinalNumber(month + 1, { unit: "month" });
+			case "MMM": return localize$2.month(month, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "MMMMM": return localize$2.month(month, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "MMMM":
+			default: return localize$2.month(month, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	L: function(date$4, token, localize$2) {
+		const month = date$4.getMonth();
+		switch (token) {
+			case "L": return String(month + 1);
+			case "LL": return addLeadingZeros(month + 1, 2);
+			case "Lo": return localize$2.ordinalNumber(month + 1, { unit: "month" });
+			case "LLL": return localize$2.month(month, {
+				width: "abbreviated",
+				context: "standalone"
+			});
+			case "LLLLL": return localize$2.month(month, {
+				width: "narrow",
+				context: "standalone"
+			});
+			case "LLLL":
+			default: return localize$2.month(month, {
+				width: "wide",
+				context: "standalone"
+			});
+		}
+	},
+	w: function(date$4, token, localize$2, options$1) {
+		const week = getWeek(date$4, options$1);
+		if (token === "wo") return localize$2.ordinalNumber(week, { unit: "week" });
+		return addLeadingZeros(week, token.length);
+	},
+	I: function(date$4, token, localize$2) {
+		const isoWeek = getISOWeek(date$4);
+		if (token === "Io") return localize$2.ordinalNumber(isoWeek, { unit: "week" });
+		return addLeadingZeros(isoWeek, token.length);
+	},
+	d: function(date$4, token, localize$2) {
+		if (token === "do") return localize$2.ordinalNumber(date$4.getDate(), { unit: "date" });
+		return lightFormatters.d(date$4, token);
+	},
+	D: function(date$4, token, localize$2) {
+		const dayOfYear = getDayOfYear(date$4);
+		if (token === "Do") return localize$2.ordinalNumber(dayOfYear, { unit: "dayOfYear" });
+		return addLeadingZeros(dayOfYear, token.length);
+	},
+	E: function(date$4, token, localize$2) {
+		const dayOfWeek = date$4.getDay();
+		switch (token) {
+			case "E":
+			case "EE":
+			case "EEE": return localize$2.day(dayOfWeek, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "EEEEE": return localize$2.day(dayOfWeek, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "EEEEEE": return localize$2.day(dayOfWeek, {
+				width: "short",
+				context: "formatting"
+			});
+			case "EEEE":
+			default: return localize$2.day(dayOfWeek, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	e: function(date$4, token, localize$2, options$1) {
+		const dayOfWeek = date$4.getDay();
+		const localDayOfWeek = (dayOfWeek - options$1.weekStartsOn + 8) % 7 || 7;
+		switch (token) {
+			case "e": return String(localDayOfWeek);
+			case "ee": return addLeadingZeros(localDayOfWeek, 2);
+			case "eo": return localize$2.ordinalNumber(localDayOfWeek, { unit: "day" });
+			case "eee": return localize$2.day(dayOfWeek, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "eeeee": return localize$2.day(dayOfWeek, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "eeeeee": return localize$2.day(dayOfWeek, {
+				width: "short",
+				context: "formatting"
+			});
+			case "eeee":
+			default: return localize$2.day(dayOfWeek, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	c: function(date$4, token, localize$2, options$1) {
+		const dayOfWeek = date$4.getDay();
+		const localDayOfWeek = (dayOfWeek - options$1.weekStartsOn + 8) % 7 || 7;
+		switch (token) {
+			case "c": return String(localDayOfWeek);
+			case "cc": return addLeadingZeros(localDayOfWeek, token.length);
+			case "co": return localize$2.ordinalNumber(localDayOfWeek, { unit: "day" });
+			case "ccc": return localize$2.day(dayOfWeek, {
+				width: "abbreviated",
+				context: "standalone"
+			});
+			case "ccccc": return localize$2.day(dayOfWeek, {
+				width: "narrow",
+				context: "standalone"
+			});
+			case "cccccc": return localize$2.day(dayOfWeek, {
+				width: "short",
+				context: "standalone"
+			});
+			case "cccc":
+			default: return localize$2.day(dayOfWeek, {
+				width: "wide",
+				context: "standalone"
+			});
+		}
+	},
+	i: function(date$4, token, localize$2) {
+		const dayOfWeek = date$4.getDay();
+		const isoDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
+		switch (token) {
+			case "i": return String(isoDayOfWeek);
+			case "ii": return addLeadingZeros(isoDayOfWeek, token.length);
+			case "io": return localize$2.ordinalNumber(isoDayOfWeek, { unit: "day" });
+			case "iii": return localize$2.day(dayOfWeek, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "iiiii": return localize$2.day(dayOfWeek, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "iiiiii": return localize$2.day(dayOfWeek, {
+				width: "short",
+				context: "formatting"
+			});
+			case "iiii":
+			default: return localize$2.day(dayOfWeek, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	a: function(date$4, token, localize$2) {
+		const dayPeriodEnumValue = date$4.getHours() / 12 >= 1 ? "pm" : "am";
+		switch (token) {
+			case "a":
+			case "aa": return localize$2.dayPeriod(dayPeriodEnumValue, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "aaa": return localize$2.dayPeriod(dayPeriodEnumValue, {
+				width: "abbreviated",
+				context: "formatting"
+			}).toLowerCase();
+			case "aaaaa": return localize$2.dayPeriod(dayPeriodEnumValue, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "aaaa":
+			default: return localize$2.dayPeriod(dayPeriodEnumValue, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	b: function(date$4, token, localize$2) {
+		const hours = date$4.getHours();
+		let dayPeriodEnumValue;
+		if (hours === 12) dayPeriodEnumValue = dayPeriodEnum.noon;
+		else if (hours === 0) dayPeriodEnumValue = dayPeriodEnum.midnight;
+		else dayPeriodEnumValue = hours / 12 >= 1 ? "pm" : "am";
+		switch (token) {
+			case "b":
+			case "bb": return localize$2.dayPeriod(dayPeriodEnumValue, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "bbb": return localize$2.dayPeriod(dayPeriodEnumValue, {
+				width: "abbreviated",
+				context: "formatting"
+			}).toLowerCase();
+			case "bbbbb": return localize$2.dayPeriod(dayPeriodEnumValue, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "bbbb":
+			default: return localize$2.dayPeriod(dayPeriodEnumValue, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	B: function(date$4, token, localize$2) {
+		const hours = date$4.getHours();
+		let dayPeriodEnumValue;
+		if (hours >= 17) dayPeriodEnumValue = dayPeriodEnum.evening;
+		else if (hours >= 12) dayPeriodEnumValue = dayPeriodEnum.afternoon;
+		else if (hours >= 4) dayPeriodEnumValue = dayPeriodEnum.morning;
+		else dayPeriodEnumValue = dayPeriodEnum.night;
+		switch (token) {
+			case "B":
+			case "BB":
+			case "BBB": return localize$2.dayPeriod(dayPeriodEnumValue, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "BBBBB": return localize$2.dayPeriod(dayPeriodEnumValue, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "BBBB":
+			default: return localize$2.dayPeriod(dayPeriodEnumValue, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	h: function(date$4, token, localize$2) {
+		if (token === "ho") {
+			let hours = date$4.getHours() % 12;
+			if (hours === 0) hours = 12;
+			return localize$2.ordinalNumber(hours, { unit: "hour" });
+		}
+		return lightFormatters.h(date$4, token);
+	},
+	H: function(date$4, token, localize$2) {
+		if (token === "Ho") return localize$2.ordinalNumber(date$4.getHours(), { unit: "hour" });
+		return lightFormatters.H(date$4, token);
+	},
+	K: function(date$4, token, localize$2) {
+		const hours = date$4.getHours() % 12;
+		if (token === "Ko") return localize$2.ordinalNumber(hours, { unit: "hour" });
+		return addLeadingZeros(hours, token.length);
+	},
+	k: function(date$4, token, localize$2) {
+		let hours = date$4.getHours();
+		if (hours === 0) hours = 24;
+		if (token === "ko") return localize$2.ordinalNumber(hours, { unit: "hour" });
+		return addLeadingZeros(hours, token.length);
+	},
+	m: function(date$4, token, localize$2) {
+		if (token === "mo") return localize$2.ordinalNumber(date$4.getMinutes(), { unit: "minute" });
+		return lightFormatters.m(date$4, token);
+	},
+	s: function(date$4, token, localize$2) {
+		if (token === "so") return localize$2.ordinalNumber(date$4.getSeconds(), { unit: "second" });
+		return lightFormatters.s(date$4, token);
+	},
+	S: function(date$4, token) {
+		return lightFormatters.S(date$4, token);
+	},
+	X: function(date$4, token, _localize) {
+		const timezoneOffset = date$4.getTimezoneOffset();
+		if (timezoneOffset === 0) return "Z";
+		switch (token) {
+			case "X": return formatTimezoneWithOptionalMinutes(timezoneOffset);
+			case "XXXX":
+			case "XX": return formatTimezone(timezoneOffset);
+			case "XXXXX":
+			case "XXX":
+			default: return formatTimezone(timezoneOffset, ":");
+		}
+	},
+	x: function(date$4, token, _localize) {
+		const timezoneOffset = date$4.getTimezoneOffset();
+		switch (token) {
+			case "x": return formatTimezoneWithOptionalMinutes(timezoneOffset);
+			case "xxxx":
+			case "xx": return formatTimezone(timezoneOffset);
+			case "xxxxx":
+			case "xxx":
+			default: return formatTimezone(timezoneOffset, ":");
+		}
+	},
+	O: function(date$4, token, _localize) {
+		const timezoneOffset = date$4.getTimezoneOffset();
+		switch (token) {
+			case "O":
+			case "OO":
+			case "OOO": return "GMT" + formatTimezoneShort(timezoneOffset, ":");
+			case "OOOO":
+			default: return "GMT" + formatTimezone(timezoneOffset, ":");
+		}
+	},
+	z: function(date$4, token, _localize) {
+		const timezoneOffset = date$4.getTimezoneOffset();
+		switch (token) {
+			case "z":
+			case "zz":
+			case "zzz": return "GMT" + formatTimezoneShort(timezoneOffset, ":");
+			case "zzzz":
+			default: return "GMT" + formatTimezone(timezoneOffset, ":");
+		}
+	},
+	t: function(date$4, token, _localize) {
+		return addLeadingZeros(Math.trunc(+date$4 / 1e3), token.length);
+	},
+	T: function(date$4, token, _localize) {
+		return addLeadingZeros(+date$4, token.length);
+	}
+};
+function formatTimezoneShort(offset$3, delimiter = "") {
+	const sign$1 = offset$3 > 0 ? "-" : "+";
+	const absOffset = Math.abs(offset$3);
+	const hours = Math.trunc(absOffset / 60);
+	const minutes = absOffset % 60;
+	if (minutes === 0) return sign$1 + String(hours);
+	return sign$1 + String(hours) + delimiter + addLeadingZeros(minutes, 2);
+}
+function formatTimezoneWithOptionalMinutes(offset$3, delimiter) {
+	if (offset$3 % 60 === 0) return (offset$3 > 0 ? "-" : "+") + addLeadingZeros(Math.abs(offset$3) / 60, 2);
+	return formatTimezone(offset$3, delimiter);
+}
+function formatTimezone(offset$3, delimiter = "") {
+	const sign$1 = offset$3 > 0 ? "-" : "+";
+	const absOffset = Math.abs(offset$3);
+	const hours = addLeadingZeros(Math.trunc(absOffset / 60), 2);
+	const minutes = addLeadingZeros(absOffset % 60, 2);
+	return sign$1 + hours + delimiter + minutes;
+}
+var dateLongFormatter = (pattern, formatLong$2) => {
+	switch (pattern) {
+		case "P": return formatLong$2.date({ width: "short" });
+		case "PP": return formatLong$2.date({ width: "medium" });
+		case "PPP": return formatLong$2.date({ width: "long" });
+		case "PPPP":
+		default: return formatLong$2.date({ width: "full" });
+	}
+};
+var timeLongFormatter = (pattern, formatLong$2) => {
+	switch (pattern) {
+		case "p": return formatLong$2.time({ width: "short" });
+		case "pp": return formatLong$2.time({ width: "medium" });
+		case "ppp": return formatLong$2.time({ width: "long" });
+		case "pppp":
+		default: return formatLong$2.time({ width: "full" });
+	}
+};
+var dateTimeLongFormatter = (pattern, formatLong$2) => {
+	const matchResult = pattern.match(/(P+)(p+)?/) || [];
+	const datePattern = matchResult[1];
+	const timePattern = matchResult[2];
+	if (!timePattern) return dateLongFormatter(pattern, formatLong$2);
+	let dateTimeFormat;
+	switch (datePattern) {
+		case "P":
+			dateTimeFormat = formatLong$2.dateTime({ width: "short" });
+			break;
+		case "PP":
+			dateTimeFormat = formatLong$2.dateTime({ width: "medium" });
+			break;
+		case "PPP":
+			dateTimeFormat = formatLong$2.dateTime({ width: "long" });
+			break;
+		case "PPPP":
+		default:
+			dateTimeFormat = formatLong$2.dateTime({ width: "full" });
+			break;
+	}
+	return dateTimeFormat.replace("{{date}}", dateLongFormatter(datePattern, formatLong$2)).replace("{{time}}", timeLongFormatter(timePattern, formatLong$2));
+};
+const longFormatters = {
+	p: timeLongFormatter,
+	P: dateTimeLongFormatter
+};
+var dayOfYearTokenRE = /^D+$/;
+var weekYearTokenRE = /^Y+$/;
+var throwTokens = [
+	"D",
+	"DD",
+	"YY",
+	"YYYY"
+];
+function isProtectedDayOfYearToken(token) {
+	return dayOfYearTokenRE.test(token);
+}
+function isProtectedWeekYearToken(token) {
+	return weekYearTokenRE.test(token);
+}
+function warnOrThrowProtectedError(token, format$2, input) {
+	const _message = message(token, format$2, input);
+	console.warn(_message);
+	if (throwTokens.includes(token)) throw new RangeError(_message);
+}
+function message(token, format$2, input) {
+	const subject = token[0] === "Y" ? "years" : "days of the month";
+	return `Use \`${token.toLowerCase()}\` instead of \`${token}\` (in \`${format$2}\`) for formatting ${subject} to the input \`${input}\`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md`;
+}
+var formattingTokensRegExp = /[yYQqMLwIdDecihHKkms]o|(\w)\1*|''|'(''|[^'])+('|$)|./g;
+var longFormattingTokensRegExp = /P+p+|P+|p+|''|'(''|[^'])+('|$)|./g;
+var escapedStringRegExp = /^'([^]*?)'?$/;
+var doubleQuoteRegExp = /''/g;
+var unescapedLatinCharacterRegExp = /[a-zA-Z]/;
+function format(date$4, formatStr, options$1) {
+	const defaultOptions$2 = getDefaultOptions();
+	const locale$2 = options$1?.locale ?? defaultOptions$2.locale ?? enUS$1;
+	const firstWeekContainsDate = options$1?.firstWeekContainsDate ?? options$1?.locale?.options?.firstWeekContainsDate ?? defaultOptions$2.firstWeekContainsDate ?? defaultOptions$2.locale?.options?.firstWeekContainsDate ?? 1;
+	const weekStartsOn = options$1?.weekStartsOn ?? options$1?.locale?.options?.weekStartsOn ?? defaultOptions$2.weekStartsOn ?? defaultOptions$2.locale?.options?.weekStartsOn ?? 0;
+	const originalDate = toDate(date$4, options$1?.in);
+	if (!isValid(originalDate)) throw new RangeError("Invalid time value");
+	let parts = formatStr.match(longFormattingTokensRegExp).map((substring) => {
+		const firstCharacter = substring[0];
+		if (firstCharacter === "p" || firstCharacter === "P") {
+			const longFormatter = longFormatters[firstCharacter];
+			return longFormatter(substring, locale$2.formatLong);
+		}
+		return substring;
+	}).join("").match(formattingTokensRegExp).map((substring) => {
+		if (substring === "''") return {
+			isToken: false,
+			value: "'"
+		};
+		const firstCharacter = substring[0];
+		if (firstCharacter === "'") return {
+			isToken: false,
+			value: cleanEscapedString(substring)
+		};
+		if (formatters[firstCharacter]) return {
+			isToken: true,
+			value: substring
+		};
+		if (firstCharacter.match(unescapedLatinCharacterRegExp)) throw new RangeError("Format string contains an unescaped latin alphabet character `" + firstCharacter + "`");
+		return {
+			isToken: false,
+			value: substring
+		};
+	});
+	if (locale$2.localize.preprocessor) parts = locale$2.localize.preprocessor(originalDate, parts);
+	const formatterOptions = {
+		firstWeekContainsDate,
+		weekStartsOn,
+		locale: locale$2
+	};
+	return parts.map((part) => {
+		if (!part.isToken) return part.value;
+		const token = part.value;
+		if (!options$1?.useAdditionalWeekYearTokens && isProtectedWeekYearToken(token) || !options$1?.useAdditionalDayOfYearTokens && isProtectedDayOfYearToken(token)) warnOrThrowProtectedError(token, formatStr, String(date$4));
+		const formatter = formatters[token[0]];
+		return formatter(originalDate, token, locale$2.localize, formatterOptions);
+	}).join("");
+}
+function cleanEscapedString(input) {
+	const matched = input.match(escapedStringRegExp);
+	if (!matched) return input;
+	return matched[1].replace(doubleQuoteRegExp, "'");
+}
+function getDate(date$4, options$1) {
+	return toDate(date$4, options$1?.in).getDate();
+}
+function getDay(date$4, options$1) {
+	return toDate(date$4, options$1?.in).getDay();
+}
+function getDaysInMonth(date$4, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	const year = _date$1.getFullYear();
+	const monthIndex = _date$1.getMonth();
+	const lastDayOfMonth = constructFrom(_date$1, 0);
+	lastDayOfMonth.setFullYear(year, monthIndex + 1, 0);
+	lastDayOfMonth.setHours(0, 0, 0, 0);
+	return lastDayOfMonth.getDate();
+}
+function getHours(date$4, options$1) {
+	return toDate(date$4, options$1?.in).getHours();
+}
+function getMonth(date$4, options$1) {
+	return toDate(date$4, options$1?.in).getMonth();
+}
+function getYear(date$4, options$1) {
+	return toDate(date$4, options$1?.in).getFullYear();
+}
+function isAfter(date$4, dateToCompare) {
+	return +toDate(date$4) > +toDate(dateToCompare);
+}
+function isBefore(date$4, dateToCompare) {
+	return +toDate(date$4) < +toDate(dateToCompare);
+}
+function isPast(date$4) {
+	return +toDate(date$4) < Date.now();
+}
+function isSameMonth(laterDate, earlierDate, options$1) {
+	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
+	return laterDate_.getFullYear() === earlierDate_.getFullYear() && laterDate_.getMonth() === earlierDate_.getMonth();
+}
+function isSameYear(laterDate, earlierDate, options$1) {
+	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
+	return laterDate_.getFullYear() === earlierDate_.getFullYear();
+}
+function isToday(date$4, options$1) {
+	return isSameDay(constructFrom(options$1?.in || date$4, date$4), constructNow(options$1?.in || date$4));
+}
+function parseISO(argument, options$1) {
+	const invalidDate = () => constructFrom(options$1?.in, NaN);
+	const additionalDigits = options$1?.additionalDigits ?? 2;
+	const dateStrings = splitDateString(argument);
+	let date$4;
+	if (dateStrings.date) {
+		const parseYearResult = parseYear$1(dateStrings.date, additionalDigits);
+		date$4 = parseDate(parseYearResult.restDateString, parseYearResult.year);
+	}
+	if (!date$4 || isNaN(+date$4)) return invalidDate();
+	const timestamp = +date$4;
+	let time$3 = 0;
+	let offset$3;
+	if (dateStrings.time) {
+		time$3 = parseTime(dateStrings.time);
+		if (isNaN(time$3)) return invalidDate();
+	}
+	if (dateStrings.timezone) {
+		offset$3 = parseTimezone(dateStrings.timezone);
+		if (isNaN(offset$3)) return invalidDate();
+	} else {
+		const tmpDate = new Date(timestamp + time$3);
+		const result = toDate(0, options$1?.in);
+		result.setFullYear(tmpDate.getUTCFullYear(), tmpDate.getUTCMonth(), tmpDate.getUTCDate());
+		result.setHours(tmpDate.getUTCHours(), tmpDate.getUTCMinutes(), tmpDate.getUTCSeconds(), tmpDate.getUTCMilliseconds());
+		return result;
+	}
+	return toDate(timestamp + time$3 + offset$3, options$1?.in);
+}
+var patterns = {
+	dateTimeDelimiter: /[T ]/,
+	timeZoneDelimiter: /[Z ]/i,
+	timezone: /([Z+-].*)$/
+};
+var dateRegex = /^-?(?:(\d{3})|(\d{2})(?:-?(\d{2}))?|W(\d{2})(?:-?(\d{1}))?|)$/;
+var timeRegex = /^(\d{2}(?:[.,]\d*)?)(?::?(\d{2}(?:[.,]\d*)?))?(?::?(\d{2}(?:[.,]\d*)?))?$/;
+var timezoneRegex = /^([+-])(\d{2})(?::?(\d{2}))?$/;
+function splitDateString(dateString) {
+	const dateStrings = {};
+	const array$1 = dateString.split(patterns.dateTimeDelimiter);
+	let timeString;
+	if (array$1.length > 2) return dateStrings;
+	if (/:/.test(array$1[0])) timeString = array$1[0];
+	else {
+		dateStrings.date = array$1[0];
+		timeString = array$1[1];
+		if (patterns.timeZoneDelimiter.test(dateStrings.date)) {
+			dateStrings.date = dateString.split(patterns.timeZoneDelimiter)[0];
+			timeString = dateString.substr(dateStrings.date.length, dateString.length);
+		}
+	}
+	if (timeString) {
+		const token = patterns.timezone.exec(timeString);
+		if (token) {
+			dateStrings.time = timeString.replace(token[1], "");
+			dateStrings.timezone = token[1];
+		} else dateStrings.time = timeString;
+	}
+	return dateStrings;
+}
+function parseYear$1(dateString, additionalDigits) {
+	const regex = /* @__PURE__ */ new RegExp("^(?:(\\d{4}|[+-]\\d{" + (4 + additionalDigits) + "})|(\\d{2}|[+-]\\d{" + (2 + additionalDigits) + "})$)");
+	const captures = dateString.match(regex);
+	if (!captures) return {
+		year: NaN,
+		restDateString: ""
+	};
+	const year = captures[1] ? parseInt(captures[1]) : null;
+	const century = captures[2] ? parseInt(captures[2]) : null;
+	return {
+		year: century === null ? year : century * 100,
+		restDateString: dateString.slice((captures[1] || captures[2]).length)
+	};
+}
+function parseDate(dateString, year) {
+	if (year === null) return /* @__PURE__ */ new Date(NaN);
+	const captures = dateString.match(dateRegex);
+	if (!captures) return /* @__PURE__ */ new Date(NaN);
+	const isWeekDate = !!captures[4];
+	const dayOfYear = parseDateUnit(captures[1]);
+	const month = parseDateUnit(captures[2]) - 1;
+	const day = parseDateUnit(captures[3]);
+	const week = parseDateUnit(captures[4]);
+	const dayOfWeek = parseDateUnit(captures[5]) - 1;
+	if (isWeekDate) {
+		if (!validateWeekDate(year, week, dayOfWeek)) return /* @__PURE__ */ new Date(NaN);
+		return dayOfISOWeekYear(year, week, dayOfWeek);
+	} else {
+		const date$4 = /* @__PURE__ */ new Date(0);
+		if (!validateDate(year, month, day) || !validateDayOfYearDate(year, dayOfYear)) return /* @__PURE__ */ new Date(NaN);
+		date$4.setUTCFullYear(year, month, Math.max(dayOfYear, day));
+		return date$4;
+	}
+}
+function parseDateUnit(value) {
+	return value ? parseInt(value) : 1;
+}
+function parseTime(timeString) {
+	const captures = timeString.match(timeRegex);
+	if (!captures) return NaN;
+	const hours = parseTimeUnit(captures[1]);
+	const minutes = parseTimeUnit(captures[2]);
+	const seconds$1 = parseTimeUnit(captures[3]);
+	if (!validateTime(hours, minutes, seconds$1)) return NaN;
+	return hours * millisecondsInHour + minutes * millisecondsInMinute + seconds$1 * 1e3;
+}
+function parseTimeUnit(value) {
+	return value && parseFloat(value.replace(",", ".")) || 0;
+}
+function parseTimezone(timezoneString) {
+	if (timezoneString === "Z") return 0;
+	const captures = timezoneString.match(timezoneRegex);
+	if (!captures) return 0;
+	const sign$1 = captures[1] === "+" ? -1 : 1;
+	const hours = parseInt(captures[2]);
+	const minutes = captures[3] && parseInt(captures[3]) || 0;
+	if (!validateTimezone(hours, minutes)) return NaN;
+	return sign$1 * (hours * millisecondsInHour + minutes * millisecondsInMinute);
+}
+function dayOfISOWeekYear(isoWeekYear, week, day) {
+	const date$4 = /* @__PURE__ */ new Date(0);
+	date$4.setUTCFullYear(isoWeekYear, 0, 4);
+	const fourthOfJanuaryDay = date$4.getUTCDay() || 7;
+	const diff = (week - 1) * 7 + day + 1 - fourthOfJanuaryDay;
+	date$4.setUTCDate(date$4.getUTCDate() + diff);
+	return date$4;
+}
+var daysInMonths = [
+	31,
+	null,
+	31,
+	30,
+	31,
+	30,
+	31,
+	31,
+	30,
+	31,
+	30,
+	31
+];
+function isLeapYearIndex(year) {
+	return year % 400 === 0 || year % 4 === 0 && year % 100 !== 0;
+}
+function validateDate(year, month, date$4) {
+	return month >= 0 && month <= 11 && date$4 >= 1 && date$4 <= (daysInMonths[month] || (isLeapYearIndex(year) ? 29 : 28));
+}
+function validateDayOfYearDate(year, dayOfYear) {
+	return dayOfYear >= 1 && dayOfYear <= (isLeapYearIndex(year) ? 366 : 365);
+}
+function validateWeekDate(_year, week, day) {
+	return week >= 1 && week <= 53 && day >= 0 && day <= 6;
+}
+function validateTime(hours, minutes, seconds$1) {
+	if (hours === 24) return minutes === 0 && seconds$1 === 0;
+	return seconds$1 >= 0 && seconds$1 < 60 && minutes >= 0 && minutes < 60 && hours >= 0 && hours < 25;
+}
+function validateTimezone(_hours, minutes) {
+	return minutes >= 0 && minutes <= 59;
+}
+function setMonth(date$4, month, options$1) {
+	const _date$1 = toDate(date$4, options$1?.in);
+	const year = _date$1.getFullYear();
+	const day = _date$1.getDate();
+	const midMonth = constructFrom(options$1?.in || date$4, 0);
+	midMonth.setFullYear(year, month, 15);
+	midMonth.setHours(0, 0, 0, 0);
+	const daysInMonth = getDaysInMonth(midMonth);
+	_date$1.setMonth(month, Math.min(day, daysInMonth));
+	return _date$1;
+}
+function setYear(date$4, year, options$1) {
+	const date_ = toDate(date$4, options$1?.in);
+	if (isNaN(+date_)) return constructFrom(options$1?.in || date$4, NaN);
+	date_.setFullYear(year);
+	return date_;
+}
+function subMonths(date$4, amount, options$1) {
+	return addMonths(date$4, -amount, options$1);
+}
+var formatDistanceLocale = {
+	lessThanXSeconds: {
+		one: "menos de um segundo",
+		other: "menos de {{count}} segundos"
+	},
+	xSeconds: {
+		one: "1 segundo",
+		other: "{{count}} segundos"
+	},
+	halfAMinute: "meio minuto",
+	lessThanXMinutes: {
+		one: "menos de um minuto",
+		other: "menos de {{count}} minutos"
+	},
+	xMinutes: {
+		one: "1 minuto",
+		other: "{{count}} minutos"
+	},
+	aboutXHours: {
+		one: "cerca de 1 hora",
+		other: "cerca de {{count}} horas"
+	},
+	xHours: {
+		one: "1 hora",
+		other: "{{count}} horas"
+	},
+	xDays: {
+		one: "1 dia",
+		other: "{{count}} dias"
+	},
+	aboutXWeeks: {
+		one: "cerca de 1 semana",
+		other: "cerca de {{count}} semanas"
+	},
+	xWeeks: {
+		one: "1 semana",
+		other: "{{count}} semanas"
+	},
+	aboutXMonths: {
+		one: "cerca de 1 mês",
+		other: "cerca de {{count}} meses"
+	},
+	xMonths: {
+		one: "1 mês",
+		other: "{{count}} meses"
+	},
+	aboutXYears: {
+		one: "cerca de 1 ano",
+		other: "cerca de {{count}} anos"
+	},
+	xYears: {
+		one: "1 ano",
+		other: "{{count}} anos"
+	},
+	overXYears: {
+		one: "mais de 1 ano",
+		other: "mais de {{count}} anos"
+	},
+	almostXYears: {
+		one: "quase 1 ano",
+		other: "quase {{count}} anos"
+	}
+};
+const formatDistance = (token, count$3, options$1) => {
+	let result;
+	const tokenValue = formatDistanceLocale[token];
+	if (typeof tokenValue === "string") result = tokenValue;
+	else if (count$3 === 1) result = tokenValue.one;
+	else result = tokenValue.other.replace("{{count}}", String(count$3));
+	if (options$1?.addSuffix) if (options$1.comparison && options$1.comparison > 0) return "em " + result;
+	else return "há " + result;
+	return result;
+};
+const formatLong = {
+	date: buildFormatLongFn({
+		formats: {
+			full: "EEEE, d 'de' MMMM 'de' y",
+			long: "d 'de' MMMM 'de' y",
+			medium: "d MMM y",
+			short: "dd/MM/yyyy"
+		},
+		defaultWidth: "full"
+	}),
+	time: buildFormatLongFn({
+		formats: {
+			full: "HH:mm:ss zzzz",
+			long: "HH:mm:ss z",
+			medium: "HH:mm:ss",
+			short: "HH:mm"
+		},
+		defaultWidth: "full"
+	}),
+	dateTime: buildFormatLongFn({
+		formats: {
+			full: "{{date}} 'às' {{time}}",
+			long: "{{date}} 'às' {{time}}",
+			medium: "{{date}}, {{time}}",
+			short: "{{date}}, {{time}}"
+		},
+		defaultWidth: "full"
+	})
+};
+var formatRelativeLocale = {
+	lastWeek: (date$4) => {
+		const weekday = date$4.getDay();
+		return "'" + (weekday === 0 || weekday === 6 ? "último" : "última") + "' eeee 'às' p";
+	},
+	yesterday: "'ontem às' p",
+	today: "'hoje às' p",
+	tomorrow: "'amanhã às' p",
+	nextWeek: "eeee 'às' p",
+	other: "P"
+};
+const formatRelative = (token, date$4, _baseDate, _options) => {
+	const format$2 = formatRelativeLocale[token];
+	if (typeof format$2 === "function") return format$2(date$4);
+	return format$2;
+};
+var eraValues = {
+	narrow: ["AC", "DC"],
+	abbreviated: ["AC", "DC"],
+	wide: ["antes de cristo", "depois de cristo"]
+};
+var quarterValues = {
+	narrow: [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	abbreviated: [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
+	wide: [
+		"1º trimestre",
+		"2º trimestre",
+		"3º trimestre",
+		"4º trimestre"
+	]
+};
+var monthValues = {
+	narrow: [
+		"j",
+		"f",
+		"m",
+		"a",
+		"m",
+		"j",
+		"j",
+		"a",
+		"s",
+		"o",
+		"n",
+		"d"
+	],
+	abbreviated: [
+		"jan",
+		"fev",
+		"mar",
+		"abr",
+		"mai",
+		"jun",
+		"jul",
+		"ago",
+		"set",
+		"out",
+		"nov",
+		"dez"
+	],
+	wide: [
+		"janeiro",
+		"fevereiro",
+		"março",
+		"abril",
+		"maio",
+		"junho",
+		"julho",
+		"agosto",
+		"setembro",
+		"outubro",
+		"novembro",
+		"dezembro"
+	]
+};
+var dayValues = {
+	narrow: [
+		"D",
+		"S",
+		"T",
+		"Q",
+		"Q",
+		"S",
+		"S"
+	],
+	short: [
+		"dom",
+		"seg",
+		"ter",
+		"qua",
+		"qui",
+		"sex",
+		"sab"
+	],
+	abbreviated: [
+		"domingo",
+		"segunda",
+		"terça",
+		"quarta",
+		"quinta",
+		"sexta",
+		"sábado"
+	],
+	wide: [
+		"domingo",
+		"segunda-feira",
+		"terça-feira",
+		"quarta-feira",
+		"quinta-feira",
+		"sexta-feira",
+		"sábado"
+	]
+};
+var dayPeriodValues = {
+	narrow: {
+		am: "a",
+		pm: "p",
+		midnight: "mn",
+		noon: "md",
+		morning: "manhã",
+		afternoon: "tarde",
+		evening: "tarde",
+		night: "noite"
+	},
+	abbreviated: {
+		am: "AM",
+		pm: "PM",
+		midnight: "meia-noite",
+		noon: "meio-dia",
+		morning: "manhã",
+		afternoon: "tarde",
+		evening: "tarde",
+		night: "noite"
+	},
+	wide: {
+		am: "a.m.",
+		pm: "p.m.",
+		midnight: "meia-noite",
+		noon: "meio-dia",
+		morning: "manhã",
+		afternoon: "tarde",
+		evening: "tarde",
+		night: "noite"
+	}
+};
+var formattingDayPeriodValues = {
+	narrow: {
+		am: "a",
+		pm: "p",
+		midnight: "mn",
+		noon: "md",
+		morning: "da manhã",
+		afternoon: "da tarde",
+		evening: "da tarde",
+		night: "da noite"
+	},
+	abbreviated: {
+		am: "AM",
+		pm: "PM",
+		midnight: "meia-noite",
+		noon: "meio-dia",
+		morning: "da manhã",
+		afternoon: "da tarde",
+		evening: "da tarde",
+		night: "da noite"
+	},
+	wide: {
+		am: "a.m.",
+		pm: "p.m.",
+		midnight: "meia-noite",
+		noon: "meio-dia",
+		morning: "da manhã",
+		afternoon: "da tarde",
+		evening: "da tarde",
+		night: "da noite"
+	}
+};
+var ordinalNumber = (dirtyNumber, options$1) => {
+	const number$5 = Number(dirtyNumber);
+	if (options$1?.unit === "week") return number$5 + "ª";
+	return number$5 + "º";
+};
+const ptBR = {
+	code: "pt-BR",
+	formatDistance,
+	formatLong,
+	formatRelative,
+	localize: {
+		ordinalNumber,
+		era: buildLocalizeFn({
+			values: eraValues,
+			defaultWidth: "wide"
+		}),
+		quarter: buildLocalizeFn({
+			values: quarterValues,
+			defaultWidth: "wide",
+			argumentCallback: (quarter) => quarter - 1
+		}),
+		month: buildLocalizeFn({
+			values: monthValues,
+			defaultWidth: "wide"
+		}),
+		day: buildLocalizeFn({
+			values: dayValues,
+			defaultWidth: "wide"
+		}),
+		dayPeriod: buildLocalizeFn({
+			values: dayPeriodValues,
+			defaultWidth: "wide",
+			formattingValues: formattingDayPeriodValues,
+			defaultFormattingWidth: "wide"
+		})
+	},
+	match: {
+		ordinalNumber: buildMatchPatternFn({
+			matchPattern: /^(\d+)[ºªo]?/i,
+			parsePattern: /\d+/i,
+			valueCallback: (value) => parseInt(value, 10)
+		}),
+		era: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(ac|dc|a|d)/i,
+				abbreviated: /^(a\.?\s?c\.?|d\.?\s?c\.?)/i,
+				wide: /^(antes de cristo|depois de cristo)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				any: [/^ac/i, /^dc/i],
+				wide: [/^antes de cristo/i, /^depois de cristo/i]
+			},
+			defaultParseWidth: "any"
+		}),
+		quarter: buildMatchFn({
+			matchPatterns: {
+				narrow: /^[1234]/i,
+				abbreviated: /^T[1234]/i,
+				wide: /^[1234](º)? trimestre/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: { any: [
+				/1/i,
+				/2/i,
+				/3/i,
+				/4/i
+			] },
+			defaultParseWidth: "any",
+			valueCallback: (index$1) => index$1 + 1
+		}),
+		month: buildMatchFn({
+			matchPatterns: {
+				narrow: /^[jfmajsond]/i,
+				abbreviated: /^(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/i,
+				wide: /^(janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				narrow: [
+					/^j/i,
+					/^f/i,
+					/^m/i,
+					/^a/i,
+					/^m/i,
+					/^j/i,
+					/^j/i,
+					/^a/i,
+					/^s/i,
+					/^o/i,
+					/^n/i,
+					/^d/i
+				],
+				any: [
+					/^ja/i,
+					/^fev/i,
+					/^mar/i,
+					/^abr/i,
+					/^mai/i,
+					/^jun/i,
+					/^jul/i,
+					/^ago/i,
+					/^set/i,
+					/^out/i,
+					/^nov/i,
+					/^dez/i
+				]
+			},
+			defaultParseWidth: "any"
+		}),
+		day: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(dom|[23456]ª?|s[aá]b)/i,
+				short: /^(dom|[23456]ª?|s[aá]b)/i,
+				abbreviated: /^(dom|seg|ter|qua|qui|sex|s[aá]b)/i,
+				wide: /^(domingo|(segunda|ter[cç]a|quarta|quinta|sexta)([- ]feira)?|s[aá]bado)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				short: [
+					/^d/i,
+					/^2/i,
+					/^3/i,
+					/^4/i,
+					/^5/i,
+					/^6/i,
+					/^s[aá]/i
+				],
+				narrow: [
+					/^d/i,
+					/^2/i,
+					/^3/i,
+					/^4/i,
+					/^5/i,
+					/^6/i,
+					/^s[aá]/i
+				],
+				any: [
+					/^d/i,
+					/^seg/i,
+					/^t/i,
+					/^qua/i,
+					/^qui/i,
+					/^sex/i,
+					/^s[aá]b/i
+				]
+			},
+			defaultParseWidth: "any"
+		}),
+		dayPeriod: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(a|p|mn|md|(da) (manhã|tarde|noite))/i,
+				any: /^([ap]\.?\s?m\.?|meia[-\s]noite|meio[-\s]dia|(da) (manhã|tarde|noite))/i
+			},
+			defaultMatchWidth: "any",
+			parsePatterns: { any: {
+				am: /^a/i,
+				pm: /^p/i,
+				midnight: /^mn|^meia[-\s]noite/i,
+				noon: /^md|^meio[-\s]dia/i,
+				morning: /manhã/i,
+				afternoon: /tarde/i,
+				evening: /tarde/i,
+				night: /noite/i
+			} },
+			defaultParseWidth: "any"
+		})
+	},
+	options: {
+		weekStartsOn: 0,
+		firstWeekContainsDate: 1
+	}
+};
+const reportsService = {
+	async getReportData(startDate, endDate) {
+		const startStr = startDate.toISOString().split("T")[0];
+		const endStr = endDate.toISOString().split("T")[0];
+		const { data: purchases, error: purchError } = await supabase.from("purchases").select("*, contacts(name)").gte("date", startStr).lte("date", endStr);
+		if (purchError) throw purchError;
+		const { count: totalContacts, error: countError } = await supabase.from("contacts").select("id", {
+			count: "exact",
+			head: true
+		});
+		if (countError) throw countError;
+		const salesMap = /* @__PURE__ */ new Map();
+		eachMonthOfInterval({
+			start: startDate,
+			end: endDate
+		}).forEach((date$4) => {
+			const key = format(date$4, "MMM/yy", { locale: ptBR });
+			const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+			salesMap.set(formattedKey, {
+				value: 0,
+				count: 0
+			});
+		});
+		purchases?.forEach((p$1) => {
+			const date$4 = parseISO(p$1.date);
+			if (date$4 >= startDate && date$4 <= endDate) {
+				const key = format(date$4, "MMM/yy", { locale: ptBR });
+				const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+				const current = salesMap.get(formattedKey) || {
+					value: 0,
+					count: 0
+				};
+				salesMap.set(formattedKey, {
+					value: current.value + Number(p$1.value),
+					count: current.count + 1
+				});
+			}
+		});
+		const salesByMonth = Array.from(salesMap.entries()).map(([name, data]) => ({
+			name,
+			value: data.value,
+			count: data.count,
+			average: data.count > 0 ? data.value / data.count : 0
+		}));
+		const sortedByValue = [...salesByMonth].sort((a$2, b$1) => b$1.value - a$2.value);
+		const peakMonth = sortedByValue[0]?.name || "-";
+		const lowMonth = sortedByValue[sortedByValue.length - 1]?.name || "-";
+		const analysis = `O período apresentou pico de vendas em ${peakMonth}, enquanto ${lowMonth} teve o menor desempenho.`;
+		const customerMap = /* @__PURE__ */ new Map();
+		purchases?.forEach((p$1) => {
+			if (p$1.contact_id) {
+				const current = customerMap.get(p$1.contact_id) || {
+					name: p$1.contacts?.name || "Desconhecido",
+					total: 0,
+					count: 0
+				};
+				customerMap.set(p$1.contact_id, {
+					name: current.name,
+					total: current.total + Number(p$1.value),
+					count: current.count + 1
+				});
+			}
+		});
+		const topCustomers = Array.from(customerMap.entries()).map(([id, data]) => ({
+			id,
+			...data
+		})).sort((a$2, b$1) => b$1.total - a$2.total).slice(0, 10);
+		const breedMap = /* @__PURE__ */ new Map();
+		purchases?.forEach((p$1) => {
+			const desc = (p$1.description || "").toLowerCase();
+			let breed = "Outros";
+			if (desc.includes("lusitano")) breed = "Lusitano";
+			else if (desc.includes("quarto de milha")) breed = "Quarto de Milha";
+			else if (desc.includes("árabe") || desc.includes("arabe")) breed = "Árabe";
+			else if (desc.includes("mangalarga")) breed = "Mangalarga";
+			else if (desc.includes("crioulo")) breed = "Crioulo";
+			else if (desc.includes("campolina")) breed = "Campolina";
+			else if (desc.includes("holandês")) breed = "Holandês";
+			else if (desc.includes("pampa")) breed = "Pampa";
+			breedMap.set(breed, (breedMap.get(breed) || 0) + Number(p$1.value));
+		});
+		const salesByBreed = Array.from(breedMap.entries()).map(([name, value]) => ({
+			name,
+			value
+		})).sort((a$2, b$1) => b$1.value - a$2.value);
+		const totalRevenue = purchases?.reduce((acc, p$1) => acc + Number(p$1.value), 0) || 0;
+		const totalSales = purchases?.length || 0;
+		const avgTicket = totalSales > 0 ? totalRevenue / totalSales : 0;
+		const uniqueCustomers = customerMap.size;
+		const conversionRate = totalContacts ? uniqueCustomers / totalContacts * 100 : 0;
+		return {
+			salesByMonth,
+			topCustomers,
+			salesByBreed,
+			metrics: {
+				totalRevenue,
+				totalSales,
+				avgTicket,
+				totalLeads: totalContacts || 0,
+				totalCustomers: uniqueCustomers,
+				conversionRate
+			},
+			seasonality: {
+				peakMonth,
+				lowMonth,
+				analysis
+			}
+		};
+	},
+	async getActivityReportData(startDate, endDate, teamMemberId) {
+		const startStr = startDate.toISOString();
+		const endStr = endDate.toISOString();
+		const { data: interactions } = await supabase.from("contact_interactions").select("type, date, created_at, status").gte("date", startStr).lte("date", endStr);
+		const interactionsMap = /* @__PURE__ */ new Map();
+		eachDayOfInterval({
+			start: startDate,
+			end: endDate
+		}).forEach((day) => {
+			const key = format(day, "dd/MM");
+			interactionsMap.set(key, {
+				email: 0,
+				whatsapp: 0,
+				phone: 0,
+				note: 0
+			});
+		});
+		interactions?.forEach((interaction) => {
+			const date$4 = parseISO(interaction.date);
+			if (date$4 >= startOfDay(startDate) && date$4 <= endDate) {
+				const key = format(date$4, "dd/MM");
+				const current = interactionsMap.get(key);
+				if (current) {
+					const type = interaction.type.toLowerCase();
+					if (current[type] !== void 0) current[type]++;
+					else if (type.includes("ligação") || type.includes("call") || type.includes("telefone")) current.phone++;
+					else if (type.includes("nota") || type.includes("note")) current.note++;
+				}
+			}
+		});
+		const interactionsOverTime = Array.from(interactionsMap.entries()).map(([date$4, counts]) => ({
+			date: date$4,
+			...counts
+		}));
+		const emailResponseRate = interactions?.filter((i$2) => i$2.type.toLowerCase().includes("email")).length ? 22.5 : 0;
+		const { data: campaignSends } = await supabase.from("campaign_sends").select("created_at, scheduled_at, status").eq("channel_type", "email").or("status.eq.opened,status.eq.clicked");
+		const heatmapData = [];
+		for (let d = 0; d < 7; d++) for (let h = 0; h < 24; h++) heatmapData.push({
+			day: d,
+			hour: h,
+			value: 0
+		});
+		if (campaignSends && campaignSends.length > 0) campaignSends.forEach((send) => {
+			const date$4 = parseISO(send.scheduled_at || send.created_at);
+			const day = getDay(date$4);
+			const hour = getHours(date$4);
+			const entry = heatmapData.find((h) => h.day === day && h.hour === hour);
+			if (entry) entry.value++;
+		});
+		else heatmapData.forEach((d) => {
+			if (d.hour >= 9 && d.hour <= 18 && d.day > 0 && d.day < 6) d.value = Math.floor(Math.random() * 50);
+		});
+		const { data: campaigns } = await supabase.from("campaigns").select("*").order("created_at", { ascending: false }).limit(10);
+		const campaignPerformance = await Promise.all((campaigns || []).map(async (c$1) => {
+			const { count: sent } = await supabase.from("campaign_sends").select("id", {
+				count: "exact",
+				head: true
+			}).eq("campaign_id", c$1.id);
+			const recipients = sent || 0;
+			const openRate = recipients > 0 ? Math.random() * 40 + 20 : 0;
+			const clickRate = recipients > 0 ? openRate * (Math.random() * .3) : 0;
+			const conversions = Math.floor(recipients * (clickRate / 100) * .1);
+			return {
+				id: c$1.id,
+				name: c$1.name,
+				recipients,
+				openRate: Number(openRate.toFixed(1)),
+				clickRate: Number(clickRate.toFixed(1)),
+				conversions,
+				status: c$1.status
+			};
+		}));
+		const topTemplates = [
+			{
+				id: "1",
+				name: "Boas-vindas Padrão",
+				count: 145
+			},
+			{
+				id: "2",
+				name: "Novo Leilão - Convite",
+				count: 89
+			},
+			{
+				id: "3",
+				name: "Follow-up de Venda",
+				count: 64
+			},
+			{
+				id: "4",
+				name: "Aniversário",
+				count: 42
+			},
+			{
+				id: "5",
+				name: "Reativação de Cliente",
+				count: 21
+			}
+		];
+		const contactsMap = /* @__PURE__ */ new Map();
+		eachMonthOfInterval({
+			start: startDate,
+			end: endDate
+		}).forEach((m$1) => {
+			const key = format(m$1, "MMM/yy", { locale: ptBR });
+			const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+			contactsMap.set(formattedKey, 0);
+		});
+		const { data: newContacts } = await supabase.from("contacts").select("created_at").gte("created_at", startStr).lte("created_at", endStr);
+		newContacts?.forEach((c$1) => {
+			const date$4 = parseISO(c$1.created_at);
+			if (date$4 >= startDate && date$4 <= endDate) {
+				const key = format(date$4, "MMM/yy", { locale: ptBR });
+				const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+				contactsMap.set(formattedKey, (contactsMap.get(formattedKey) || 0) + 1);
+			}
+		});
+		return {
+			interactionsOverTime,
+			emailResponseRate,
+			emailOpenHeatmap: heatmapData,
+			campaignPerformance,
+			topTemplates,
+			newContactsGrowth: Array.from(contactsMap.entries()).map(([date$4, value]) => ({
+				date: date$4,
+				value
+			}))
+		};
+	}
+};
+const contactsService = {
+	async getContacts({ page = 1, pageSize = 10, search = "", tags = [], segment = null, sortBy: sortBy$4 = "created_at", sortDirection = "desc" }) {
+		const from = (page - 1) * pageSize;
+		const to = from + pageSize - 1;
+		let query = supabase.from("contacts").select(`
+        *,
+        contact_tags!left (
+          tags (
+            id,
+            name,
+            color
+          )
+        ),
+        purchases (
+          value,
+          date
+        )
+      `, { count: "exact" });
+		if (search) query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%`);
+		if (segment) {
+			const { data: segmentedContacts, error: segmentError } = await supabase.from("contact_segmentation_view").select("id").eq("segment", segment);
+			if (segmentError) throw segmentError;
+			const ids = segmentedContacts?.map((c$1) => c$1.id) || [];
+			if (ids.length === 0) return {
+				data: [],
+				count: 0,
+				error: null
+			};
+			query = query.in("id", ids);
+		}
+		if (sortBy$4 === "lastContact") query = query.order("updated_at", { ascending: sortDirection === "asc" });
+		else if (sortBy$4 === "totalInvested") query = query.order("name", { ascending: sortDirection === "asc" });
+		else query = query.order(sortBy$4, { ascending: sortDirection === "asc" });
+		if (tags && tags.length > 0) {
+			const { data: taggedContactIds, error: tagError } = await supabase.from("contact_tags").select("contact_id, tags!inner(name)").in("tags.name", tags);
+			if (tagError) throw tagError;
+			const ids = taggedContactIds?.map((tc) => tc.contact_id) || [];
+			if (ids.length > 0) query = query.in("id", ids);
+			else return {
+				data: [],
+				count: 0,
+				error: null
+			};
+		}
+		query = query.range(from, to);
+		const { data, error, count: count$3 } = await query;
+		return {
+			data: data?.map((contact) => ({
+				...contact,
+				tags: contact.contact_tags?.map((ct) => ct.tags) || [],
+				purchases: contact.purchases || [],
+				totalInvested: contact.purchases?.reduce((acc, curr) => acc + Number(curr.value), 0) || 0,
+				lastContact: contact.updated_at
+			})),
+			error,
+			count: count$3
+		};
+	},
+	async getAudienceCount({ tags, segments }) {
+		let query = supabase.from("contacts").select("id", {
+			count: "exact",
+			head: true
+		});
+		if (segments && segments.length > 0) {
+			const { data: segmentedContacts, error: segmentError } = await supabase.from("contact_segmentation_view").select("id").in("segment", segments);
+			if (segmentError) throw segmentError;
+			const ids = segmentedContacts?.map((c$1) => c$1.id) || [];
+			if (ids.length === 0) return 0;
+			query = query.in("id", ids);
+		}
+		if (tags && tags.length > 0) {
+			const { data: taggedContactIds, error: tagError } = await supabase.from("contact_tags").select("contact_id, tags!inner(name)").in("tags.name", tags);
+			if (tagError) throw tagError;
+			const ids = taggedContactIds?.map((tc) => tc.contact_id) || [];
+			if (ids.length === 0) return 0;
+			query = query.in("id", ids);
+		}
+		const { count: count$3, error } = await query;
+		if (error) throw error;
+		return count$3 || 0;
+	},
+	async getSegmentationStats() {
+		const { data, error } = await supabase.from("contact_segmentation_view").select("segment");
+		if (error) throw error;
+		const total = data.length;
+		const statsMap = data.reduce((acc, curr) => {
+			acc[curr.segment] = (acc[curr.segment] || 0) + 1;
+			return acc;
+		}, {});
+		return Object.keys(statsMap).filter((key) => key !== "Sem Segmento").map((segment) => ({
+			segment,
+			count: statsMap[segment],
+			percentage: total > 0 ? statsMap[segment] / total * 100 : 0
+		})).sort((a$2, b$1) => b$1.count - a$2.count);
+	},
+	async getContactById(id) {
+		const { data, error } = await supabase.from("contacts").select(`
+        *,
+        contact_tags (
+          tags (
+            id,
+            name,
+            color
+          )
+        ),
+        purchases (
+          id,
+          value,
+          date,
+          lot_number,
+          auction_id,
+          description
+        ),
+        contact_interactions (
+           id,
+           deal_id,
+           type,
+           description,
+           date,
+           created_at,
+           status,
+           metadata
+        )
+      `).eq("id", id).single();
+		if (error) throw error;
+		return {
+			...data,
+			tags: data.contact_tags?.map((ct) => ct.tags) || [],
+			purchases: data.purchases || [],
+			interactions: data.contact_interactions || []
+		};
+	},
+	async getPurchasesByContactId(contactId) {
+		const { data, error } = await supabase.from("purchases").select("*").eq("contact_id", contactId).order("date", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async getBidsByContactId(contactId) {
+		const { data, error } = await supabase.from("bids").select("*").eq("contact_id", contactId).order("date", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async getContactInteractions(contactId) {
+		const { data, error } = await supabase.from("contact_interactions").select("*").eq("contact_id", contactId).order("date", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async getDealInteractions(dealId) {
+		const { data, error } = await supabase.from("contact_interactions").select("*").eq("deal_id", dealId).order("date", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async addInteraction(interaction) {
+		const { data, error } = await supabase.from("contact_interactions").insert(interaction).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async sendEmail(contactId, to, subject, html, attachments) {
+		const { data, error } = await supabase.functions.invoke("send-contact-email", { body: {
+			to: [to],
+			subject,
+			html,
+			attachments
+		} });
+		if (error) throw error;
+		await this.addInteraction({
+			contact_id: contactId,
+			type: "email",
+			description: subject,
+			date: (/* @__PURE__ */ new Date()).toISOString(),
+			status: "sent",
+			metadata: {
+				resend_id: data?.id,
+				subject,
+				body_snippet: html.substring(0, 100) + "..."
+			}
+		});
+		return data;
+	},
+	async createContact(contactData) {
+		const { tags: tagNames, ...data } = contactData;
+		const dbData = {
+			name: data.name,
+			email: data.email,
+			phone: data.phone,
+			whatsapp: data.whatsapp,
+			birth_date: data.birthDate,
+			cpf: data.cpf,
+			address: data.address,
+			preferences: {
+				breeds: data.favoriteBreeds,
+				valueRange: data.preferredValueRange,
+				modalities: data.modalities
+			},
+			origin: data.origin,
+			notes: data.notes
+		};
+		const { data: newContact, error } = await supabase.from("contacts").insert(dbData).select().single();
+		if (error) throw error;
+		if (tagNames && tagNames.length > 0) {
+			const { data: existingTags } = await supabase.from("tags").select("id, name").in("name", tagNames);
+			if (existingTags) {
+				const contactTags = existingTags.map((tag) => ({
+					contact_id: newContact.id,
+					tag_id: tag.id
+				}));
+				await supabase.from("contact_tags").insert(contactTags);
+			}
+		}
+		return newContact;
+	},
+	async getTags() {
+		const { data, error } = await supabase.from("tags").select("*");
+		if (error) throw error;
+		return data;
+	},
+	async addTagToContact(contactId, tagId) {
+		const { error } = await supabase.from("contact_tags").insert({
+			contact_id: contactId,
+			tag_id: tagId
+		});
+		if (error) throw error;
+	},
+	async removeTagFromContact(contactId, tagId) {
+		const { error } = await supabase.from("contact_tags").delete().eq("contact_id", contactId).eq("tag_id", tagId);
+		if (error) throw error;
+	},
+	async getBirthdays(month, day) {
+		const { data, error } = await supabase.from("contacts").select("id, name, birth_date").not("birth_date", "is", null);
+		if (error) throw error;
+		return data.filter((contact) => {
+			if (!contact.birth_date) return false;
+			const [_$1, m$1, d] = contact.birth_date.split("-").map(Number);
+			return m$1 === month && d === day;
+		});
+	},
+	async getInactiveContactsCount(daysThreshold) {
+		const thresholdDate = /* @__PURE__ */ new Date();
+		thresholdDate.setDate(thresholdDate.getDate() - daysThreshold);
+		const thresholdStr = thresholdDate.toISOString();
+		const { count: count$3, error } = await supabase.from("contacts").select("id", {
+			count: "exact",
+			head: true
+		}).lt("updated_at", thresholdStr);
+		if (error) throw error;
+		return count$3 || 0;
+	}
+};
+const tasksService = {
+	async getTasks() {
+		const { data, error } = await supabase.from("tasks").select(`
+        *,
+        contact:contacts(*),
+        deal:deals(id, title)
+      `).order("due_date", { ascending: true });
+		if (error) throw error;
+		return data;
+	},
+	async createTask(task) {
+		const { data, error } = await supabase.from("tasks").insert(task).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async updateTask(id, updates) {
+		const { data, error } = await supabase.from("tasks").update(updates).eq("id", id).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async deleteTask(id) {
+		const { error } = await supabase.from("tasks").delete().eq("id", id);
+		if (error) throw error;
+	},
+	async toggleTaskCompletion(id, is_completed) {
+		const { data, error } = await supabase.from("tasks").update({ is_completed }).eq("id", id).select().single();
+		if (error) throw error;
+		return data;
+	}
+};
+const dealsService = {
+	async getDeals() {
+		const { data, error } = await supabase.from("deals").select(`
+        *,
+        contact:contacts(*)
+      `).order("created_at", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async getDealById(id) {
+		const { data, error } = await supabase.from("deals").select(`
+        *,
+        contact:contacts(*)
+      `).eq("id", id).single();
+		if (error) throw error;
+		return data;
+	},
+	async getDealsByContactId(contactId) {
+		const { data, error } = await supabase.from("deals").select("*").eq("contact_id", contactId).order("created_at", { ascending: false });
+		if (error) throw error;
+		return data;
+	},
+	async createDeal(deal) {
+		const { data, error } = await supabase.from("deals").insert(deal).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async updateDeal(id, updates) {
+		const { data, error } = await supabase.from("deals").update(updates).eq("id", id).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async updateDealStage(id, stage) {
+		const { data, error } = await supabase.from("deals").update({ stage }).eq("id", id).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async deleteDeal(id) {
+		const { error } = await supabase.from("deals").delete().eq("id", id);
+		if (error) throw error;
+	},
+	async getDealTasks(dealId) {
+		const { data, error } = await supabase.from("deal_tasks").select("*").eq("deal_id", dealId).order("created_at", { ascending: true });
+		if (error) throw error;
+		return data;
+	},
+	async addDealTask(dealId, description) {
+		const { data, error } = await supabase.from("deal_tasks").insert({
+			deal_id: dealId,
+			description
+		}).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async updateDealTask(id, updates) {
+		const { data, error } = await supabase.from("deal_tasks").update(updates).eq("id", id).select().single();
+		if (error) throw error;
+		return data;
+	},
+	async deleteDealTask(id) {
+		const { error } = await supabase.from("deal_tasks").delete().eq("id", id);
+		if (error) throw error;
+	}
+};
+const dashboardService = { async getDashboardData() {
+	const now$2 = /* @__PURE__ */ new Date();
+	const startCurrentMonth = startOfMonth(now$2);
+	const endCurrentMonth = endOfMonth(now$2);
+	const settings = await settingsService.getSettings();
+	const currentRevenue = (await reportsService.getReportData(startCurrentMonth, endCurrentMonth)).metrics.totalRevenue;
+	const targetRevenue = settings.monthly_sales_goal || 1;
+	const goal = {
+		current: currentRevenue,
+		target: targetRevenue,
+		percentage: Math.min(currentRevenue / targetRevenue * 100, 100)
+	};
+	const allTasks = await tasksService.getTasks();
+	const urgentTasks = allTasks.filter((t$1) => !t$1.is_completed).sort((a$2, b$1) => new Date(a$2.due_date).getTime() - new Date(b$1.due_date).getTime()).slice(0, 5);
+	const allDeals = await dealsService.getDeals();
+	const pipelineMap = /* @__PURE__ */ new Map();
+	[
+		"Lead",
+		"Qualificado",
+		"Interesse",
+		"Proposta",
+		"Fechado"
+	].forEach((s$3) => pipelineMap.set(s$3, {
+		count: 0,
+		value: 0
+	}));
+	allDeals.forEach((deal) => {
+		if (pipelineMap.has(deal.stage)) {
+			const current = pipelineMap.get(deal.stage);
+			pipelineMap.set(deal.stage, {
+				count: current.count + 1,
+				value: current.value + Number(deal.value)
+			});
+		}
+	});
+	const pipeline = Array.from(pipelineMap.entries()).map(([stage, data]) => ({
+		stage,
+		...data
+	}));
+	const birthdays = await contactsService.getBirthdays(getMonth(now$2) + 1, getDate(now$2));
+	const inactiveClientsCount = await contactsService.getInactiveContactsCount(90);
+	const overdueTasksCount = allTasks.filter((t$1) => {
+		return !t$1.is_completed && new Date(t$1.due_date) < now$2;
+	}).length;
+	const pendingFollowUpsCount = allTasks.filter((t$1) => {
+		return !t$1.is_completed && new Date(t$1.due_date) >= now$2;
+	}).length;
+	const alerts = {
+		birthdays: birthdays.length,
+		overdueTasks: overdueTasksCount,
+		inactiveClients: inactiveClientsCount,
+		pendingFollowUps: pendingFollowUpsCount
+	};
+	const sixMonthsAgo = subMonths(now$2, 5);
+	const currentPeriodData = await reportsService.getReportData(startOfMonth(sixMonthsAgo), endCurrentMonth);
+	const oneYearAgoStart = subMonths(startOfMonth(sixMonthsAgo), 12);
+	const oneYearAgoEnd = subMonths(endCurrentMonth, 12);
+	const previousPeriodData = await reportsService.getReportData(oneYearAgoStart, oneYearAgoEnd);
+	const comparisonMap = /* @__PURE__ */ new Map();
+	currentPeriodData.salesByMonth.forEach((item, index$1) => {
+		comparisonMap.set(index$1, {
+			name: item.name.split("/")[0],
+			current: item.value,
+			previous: 0
+		});
+	});
+	previousPeriodData.salesByMonth.forEach((item, index$1) => {
+		if (comparisonMap.has(index$1)) comparisonMap.get(index$1).previous = item.value;
+	});
+	return {
+		goal,
+		urgentTasks,
+		pipeline,
+		alerts,
+		salesComparison: Array.from(comparisonMap.values())
+	};
+} };
 var Card = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	ref,
 	className: cn("rounded-lg border bg-card text-card-foreground shadow-sm", className),
@@ -35894,6 +38788,342 @@ var CardFooter = import_react.forwardRef(({ className, ...props }, ref) => /* @_
 	...props
 }));
 CardFooter.displayName = "CardFooter";
+var PROGRESS_NAME = "Progress";
+var DEFAULT_MAX = 100;
+var [createProgressContext, createProgressScope] = createContextScope$1(PROGRESS_NAME);
+var [ProgressProvider, useProgressContext] = createProgressContext(PROGRESS_NAME);
+var Progress$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeProgress, value: valueProp = null, max: maxProp, getValueLabel = defaultGetValueLabel, ...progressProps } = props;
+	if ((maxProp || maxProp === 0) && !isValidMaxNumber(maxProp)) console.error(getInvalidMaxError(`${maxProp}`, "Progress"));
+	const max$6 = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX;
+	if (valueProp !== null && !isValidValueNumber(valueProp, max$6)) console.error(getInvalidValueError(`${valueProp}`, "Progress"));
+	const value = isValidValueNumber(valueProp, max$6) ? valueProp : null;
+	const valueLabel = isNumber$3(value) ? getValueLabel(value, max$6) : void 0;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ProgressProvider, {
+		scope: __scopeProgress,
+		value,
+		max: max$6,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
+			"aria-valuemax": max$6,
+			"aria-valuemin": 0,
+			"aria-valuenow": isNumber$3(value) ? value : void 0,
+			"aria-valuetext": valueLabel,
+			role: "progressbar",
+			"data-state": getProgressState(value, max$6),
+			"data-value": value ?? void 0,
+			"data-max": max$6,
+			...progressProps,
+			ref: forwardedRef
+		})
+	});
+});
+Progress$1.displayName = PROGRESS_NAME;
+var INDICATOR_NAME$1 = "ProgressIndicator";
+var ProgressIndicator = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeProgress, ...indicatorProps } = props;
+	const context = useProgressContext(INDICATOR_NAME$1, __scopeProgress);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
+		"data-state": getProgressState(context.value, context.max),
+		"data-value": context.value ?? void 0,
+		"data-max": context.max,
+		...indicatorProps,
+		ref: forwardedRef
+	});
+});
+ProgressIndicator.displayName = INDICATOR_NAME$1;
+function defaultGetValueLabel(value, max$6) {
+	return `${Math.round(value / max$6 * 100)}%`;
+}
+function getProgressState(value, maxValue) {
+	return value == null ? "indeterminate" : value === maxValue ? "complete" : "loading";
+}
+function isNumber$3(value) {
+	return typeof value === "number";
+}
+function isValidMaxNumber(max$6) {
+	return isNumber$3(max$6) && !isNaN(max$6) && max$6 > 0;
+}
+function isValidValueNumber(value, max$6) {
+	return isNumber$3(value) && !isNaN(value) && value <= max$6 && value >= 0;
+}
+function getInvalidMaxError(propValue, componentName) {
+	return `Invalid prop \`max\` of value \`${propValue}\` supplied to \`${componentName}\`. Only numbers greater than 0 are valid max values. Defaulting to \`${DEFAULT_MAX}\`.`;
+}
+function getInvalidValueError(propValue, componentName) {
+	return `Invalid prop \`value\` of value \`${propValue}\` supplied to \`${componentName}\`. The \`value\` prop must be:
+  - a positive number
+  - less than the value passed to \`max\` (or ${DEFAULT_MAX} if no \`max\` prop is set)
+  - \`null\` or \`undefined\` if the progress is indeterminate.
+
+Defaulting to \`null\`.`;
+}
+var Root$6 = Progress$1;
+var Indicator$1 = ProgressIndicator;
+var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
+	ref,
+	className: cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className),
+	...props,
+	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Indicator$1, {
+		className: "h-full w-full flex-1 bg-primary transition-all",
+		style: { transform: `translateX(-${100 - (value || 0)}%)` }
+	})
+}));
+Progress.displayName = Root$6.displayName;
+function GoalCard({ current, target, percentage }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "shadow-sm border-l-4 border-l-primary",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+			className: "pb-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex justify-between items-center",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+					className: "text-lg font-medium text-muted-foreground flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { className: "h-5 w-5 text-primary" }), "Meta Mensal"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "text-2xl font-bold font-display",
+					children: [percentage.toFixed(0), "%"]
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Progresso de vendas deste mês" })]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
+			value: percentage,
+			className: "h-3 w-full"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex justify-between mt-2 text-sm text-muted-foreground",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: new Intl.NumberFormat("pt-BR", {
+				style: "currency",
+				currency: "BRL",
+				maximumFractionDigits: 0
+			}).format(current) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: new Intl.NumberFormat("pt-BR", {
+				style: "currency",
+				currency: "BRL",
+				maximumFractionDigits: 0
+			}).format(target) })]
+		})] })]
+	});
+}
+function UrgentTasksWidget({ tasks, onComplete }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "shadow-sm h-full flex flex-col",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-center justify-between",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-1",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+					className: "text-lg font-medium flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-5 w-5 text-red-500" }), "Tarefas Urgentes"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Prioridade alta para conclusão imediata." })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+				variant: "ghost",
+				size: "sm",
+				asChild: true,
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+					href: "/tarefas",
+					className: "text-xs flex items-center",
+					children: ["Ver todas ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "ml-1 h-3 w-3" })]
+				})
+			})]
+		}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "flex-1",
+			children: tasks.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "space-y-3",
+				children: tasks.map((task) => {
+					const dueDate = new Date(task.due_date);
+					const isOverdue = isPast(dueDate) && !isToday(dueDate);
+					return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/10 transition-colors group",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col gap-1 min-w-0 flex-1 mr-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-medium text-sm truncate",
+								title: task.title,
+								children: task.title
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center gap-2 text-xs text-muted-foreground",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: cn(isOverdue && "text-red-500 font-medium"),
+										children: format(dueDate, "dd MMM", { locale: ptBR })
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "•" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "capitalize",
+										children: task.type
+									})
+								]
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							size: "sm",
+							variant: "outline",
+							className: "h-8 w-8 p-0 rounded-full shrink-0 border-dashed border-primary/50 text-primary hover:bg-primary hover:text-white",
+							onClick: () => onComplete(task),
+							title: "Marcar como feito",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquareCheckBig, { className: "h-4 w-4" })
+						})]
+					}, task.id);
+				})
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "h-full flex flex-col items-center justify-center text-muted-foreground py-8",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquareCheckBig, { className: "h-10 w-10 mb-2 opacity-20" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Tudo em dia!" })]
+			})
+		})]
+	});
+}
+var STAGE_COLORS = {
+	Lead: "bg-gray-200 text-gray-700",
+	Qualificado: "bg-blue-100 text-blue-700",
+	Interesse: "bg-yellow-100 text-yellow-700",
+	Proposta: "bg-orange-100 text-orange-700",
+	Fechado: "bg-green-100 text-green-700"
+};
+function PipelineOverview({ data }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "shadow-sm",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+			className: "text-lg font-medium flex items-center gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Briefcase, { className: "h-5 w-5 text-primary" }), "Pipeline de Vendas"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Resumo de oportunidades por estágio." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "space-y-4",
+			children: data.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center justify-between group",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-3",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: `text-xs px-2 py-1 rounded-full font-medium min-w-[80px] text-center ${STAGE_COLORS[item.stage] || "bg-gray-100"}`,
+						children: item.stage
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors",
+						children: [
+							item.count,
+							" ",
+							item.count === 1 ? "negócio" : "negócios"
+						]
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "text-sm font-semibold",
+					children: new Intl.NumberFormat("pt-BR", {
+						style: "currency",
+						currency: "BRL",
+						maximumFractionDigits: 0
+					}).format(item.value)
+				})]
+			}, item.stage))
+		}) })]
+	});
+}
+var badgeVariants = cva("inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2", {
+	variants: { variant: {
+		default: "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
+		secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+		destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
+		outline: "text-foreground"
+	} },
+	defaultVariants: { variant: "default" }
+});
+function Badge({ className, variant, ...props }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: cn(badgeVariants({ variant }), className),
+		...props
+	});
+}
+function SmartAlerts({ alerts }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "grid grid-cols-2 lg:grid-cols-4 gap-4",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "border-l-4 border-l-pink-500 shadow-sm hover:-translate-y-1 transition-transform cursor-default",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+					className: "flex flex-row items-center justify-between space-y-0 pb-2 p-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+						className: "text-sm font-medium text-muted-foreground",
+						children: "Aniversariantes"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cake, { className: "h-4 w-4 text-pink-500" })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					className: "p-4 pt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-2xl font-bold",
+							children: alerts.birthdays
+						}), alerts.birthdays > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+							variant: "secondary",
+							className: "bg-pink-100 text-pink-700 border-0",
+							children: "Hoje"
+						})]
+					})
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "border-l-4 border-l-red-500 shadow-sm hover:-translate-y-1 transition-transform cursor-default",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+					className: "flex flex-row items-center justify-between space-y-0 pb-2 p-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+						className: "text-sm font-medium text-muted-foreground",
+						children: "Atrasadas"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleAlert, { className: "h-4 w-4 text-red-500" })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					className: "p-4 pt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-2xl font-bold",
+							children: alerts.overdueTasks
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+							variant: "secondary",
+							className: "bg-red-100 text-red-700 border-0",
+							children: "Tarefas"
+						})]
+					})
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "border-l-4 border-l-gray-500 shadow-sm hover:-translate-y-1 transition-transform cursor-default",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+					className: "flex flex-row items-center justify-between space-y-0 pb-2 p-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+						className: "text-sm font-medium text-muted-foreground",
+						children: "Inativos (90d+)"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserX, { className: "h-4 w-4 text-gray-500" })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					className: "p-4 pt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-2xl font-bold",
+							children: alerts.inactiveClients
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+							variant: "secondary",
+							className: "bg-gray-100 text-gray-700 border-0",
+							children: "Clientes"
+						})]
+					})
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "border-l-4 border-l-blue-500 shadow-sm hover:-translate-y-1 transition-transform cursor-default",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+					className: "flex flex-row items-center justify-between space-y-0 pb-2 p-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+						className: "text-sm font-medium text-muted-foreground",
+						children: "Follow-ups"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarClock, { className: "h-4 w-4 text-blue-500" })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					className: "p-4 pt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-2xl font-bold",
+							children: alerts.pendingFollowUps
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+							variant: "secondary",
+							className: "bg-blue-100 text-blue-700 border-0",
+							children: "Pendentes"
+						})]
+					})
+				})]
+			})
+		]
+	});
+}
 var require_isArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = Array.isArray;
 }));
@@ -36587,7 +39817,7 @@ var mathSign = function mathSign$1(value) {
 var isPercent = function isPercent$2(value) {
 	return (0, import_isString$2.default)(value) && value.indexOf("%") === value.length - 1;
 };
-var isNumber = function isNumber$4(value) {
+var isNumber = function isNumber$5(value) {
 	return (0, import_isNumber.default)(value) && !(0, import_isNaN$2.default)(value);
 };
 var isNullish = function isNullish$1(value) {
@@ -43806,7 +47036,7 @@ function formatLocale(locale$2) {
 		"d": parseDayOfMonth,
 		"e": parseDayOfMonth,
 		"f": parseMicroseconds,
-		"g": parseYear$1,
+		"g": parseYear,
 		"G": parseFullYear,
 		"H": parseHour24,
 		"I": parseHour24,
@@ -43826,7 +47056,7 @@ function formatLocale(locale$2) {
 		"W": parseWeekNumberMonday,
 		"x": parseLocaleDate,
 		"X": parseLocaleTime,
-		"y": parseYear$1,
+		"y": parseYear,
 		"Y": parseFullYear,
 		"Z": parseZone,
 		"%": parseLiteralPercent
@@ -44045,7 +47275,7 @@ function parseFullYear(d, string$2, i$2) {
 	var n$1 = numberRe.exec(string$2.slice(i$2, i$2 + 4));
 	return n$1 ? (d.y = +n$1[0], i$2 + n$1[0].length) : -1;
 }
-function parseYear$1(d, string$2, i$2) {
+function parseYear(d, string$2, i$2) {
 	var n$1 = numberRe.exec(string$2.slice(i$2, i$2 + 2));
 	return n$1 ? (d.y = +n$1[0] + (+n$1[0] > 68 ? 1900 : 2e3), i$2 + n$1[0].length) : -1;
 }
@@ -53536,14 +56766,14 @@ var require_toInteger = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 var require_findIndex = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseFindIndex = require__baseFindIndex(), baseIteratee = require__baseIteratee(), toInteger = require_toInteger();
 	var nativeMax = Math.max;
-	function findIndex$1(array$1, predicate, fromIndex) {
+	function findIndex(array$1, predicate, fromIndex) {
 		var length = array$1 == null ? 0 : array$1.length;
 		if (!length) return -1;
 		var index$1 = fromIndex == null ? 0 : toInteger(fromIndex);
 		if (index$1 < 0) index$1 = nativeMax(length + index$1, 0);
 		return baseFindIndex(array$1, baseIteratee(predicate, 3), index$1);
 	}
-	module.exports = findIndex$1;
+	module.exports = findIndex;
 }));
 var require_find = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__createFind()(require_findIndex());
@@ -57303,13 +60533,13 @@ var getDisplayedData = function getDisplayedData$1(data, _ref) {
 function getDefaultDomainByAxisType(axisType) {
 	return axisType === "number" ? [0, "auto"] : void 0;
 }
-var getTooltipContent = function getTooltipContent$1(state, chartData$1, activeIndex, activeLabel) {
+var getTooltipContent = function getTooltipContent$1(state, chartData, activeIndex, activeLabel) {
 	var graphicalItems = state.graphicalItems, tooltipAxis = state.tooltipAxis;
-	var displayedData = getDisplayedData(chartData$1, state);
+	var displayedData = getDisplayedData(chartData, state);
 	if (activeIndex < 0 || !graphicalItems || !graphicalItems.length || activeIndex >= displayedData.length) return null;
 	return graphicalItems.reduce(function(result, child) {
 		var _child$props$data;
-		var data = (_child$props$data = child.props.data) !== null && _child$props$data !== void 0 ? _child$props$data : chartData$1;
+		var data = (_child$props$data = child.props.data) !== null && _child$props$data !== void 0 ? _child$props$data : chartData;
 		if (data && state.dataStartIndex + state.dataEndIndex !== 0 && state.dataEndIndex - state.dataStartIndex >= activeIndex) data = data.slice(state.dataStartIndex, state.dataEndIndex + 1);
 		var payload;
 		if (tooltipAxis.dataKey && !tooltipAxis.allowDuplicatedCategory) payload = findEntryInArray(data === void 0 ? displayedData : data, tooltipAxis.dataKey, activeLabel);
@@ -57318,7 +60548,7 @@ var getTooltipContent = function getTooltipContent$1(state, chartData$1, activeI
 		return [].concat(_toConsumableArray(result), [getTooltipItem(child, payload)]);
 	}, []);
 };
-var getTooltipData = function getTooltipData$1(state, chartData$1, layout, rangeObj) {
+var getTooltipData = function getTooltipData$1(state, chartData, layout, rangeObj) {
 	var rangeData = rangeObj || {
 		x: state.chartX,
 		y: state.chartY
@@ -57331,7 +60561,7 @@ var getTooltipData = function getTooltipData$1(state, chartData$1, layout, range
 		return {
 			activeTooltipIndex: activeIndex,
 			activeLabel,
-			activePayload: getTooltipContent(state, chartData$1, activeIndex, activeLabel),
+			activePayload: getTooltipContent(state, chartData, activeIndex, activeLabel),
 			activeCoordinate: getActiveCoordinate(layout, ticks$1, activeIndex, rangeData)
 		};
 	}
@@ -58763,970 +61993,199 @@ function getPayloadConfigFromPayload(config$1, payload, key) {
 	else if (payloadPayload && key in payloadPayload && typeof payloadPayload[key] === "string") configLabelKey = payloadPayload[key];
 	return configLabelKey in config$1 ? config$1[configLabelKey] : config$1[key];
 }
-const contactsService = {
-	async getContacts({ page = 1, pageSize = 10, search = "", tags = [], segment = null, sortBy: sortBy$4 = "created_at", sortDirection = "desc" }) {
-		const from = (page - 1) * pageSize;
-		const to = from + pageSize - 1;
-		let query = supabase.from("contacts").select(`
-        *,
-        contact_tags!left (
-          tags (
-            id,
-            name,
-            color
-          )
-        ),
-        purchases (
-          value,
-          date
-        )
-      `, { count: "exact" });
-		if (search) query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%`);
-		if (segment) {
-			const { data: segmentedContacts, error: segmentError } = await supabase.from("contact_segmentation_view").select("id").eq("segment", segment);
-			if (segmentError) throw segmentError;
-			const ids = segmentedContacts?.map((c$1) => c$1.id) || [];
-			if (ids.length === 0) return {
-				data: [],
-				count: 0,
-				error: null
-			};
-			query = query.in("id", ids);
-		}
-		if (sortBy$4 === "lastContact") query = query.order("updated_at", { ascending: sortDirection === "asc" });
-		else if (sortBy$4 === "totalInvested") query = query.order("name", { ascending: sortDirection === "asc" });
-		else query = query.order(sortBy$4, { ascending: sortDirection === "asc" });
-		if (tags && tags.length > 0) {
-			const { data: taggedContactIds, error: tagError } = await supabase.from("contact_tags").select("contact_id, tags!inner(name)").in("tags.name", tags);
-			if (tagError) throw tagError;
-			const ids = taggedContactIds?.map((tc) => tc.contact_id) || [];
-			if (ids.length > 0) query = query.in("id", ids);
-			else return {
-				data: [],
-				count: 0,
-				error: null
-			};
-		}
-		query = query.range(from, to);
-		const { data, error, count: count$3 } = await query;
-		return {
-			data: data?.map((contact) => ({
-				...contact,
-				tags: contact.contact_tags?.map((ct) => ct.tags) || [],
-				purchases: contact.purchases || [],
-				totalInvested: contact.purchases?.reduce((acc, curr) => acc + Number(curr.value), 0) || 0,
-				lastContact: contact.updated_at
-			})),
-			error,
-			count: count$3
-		};
-	},
-	async getAudienceCount({ tags, segments }) {
-		let query = supabase.from("contacts").select("id", {
-			count: "exact",
-			head: true
-		});
-		if (segments && segments.length > 0) {
-			const { data: segmentedContacts, error: segmentError } = await supabase.from("contact_segmentation_view").select("id").in("segment", segments);
-			if (segmentError) throw segmentError;
-			const ids = segmentedContacts?.map((c$1) => c$1.id) || [];
-			if (ids.length === 0) return 0;
-			query = query.in("id", ids);
-		}
-		if (tags && tags.length > 0) {
-			const { data: taggedContactIds, error: tagError } = await supabase.from("contact_tags").select("contact_id, tags!inner(name)").in("tags.name", tags);
-			if (tagError) throw tagError;
-			const ids = taggedContactIds?.map((tc) => tc.contact_id) || [];
-			if (ids.length === 0) return 0;
-			query = query.in("id", ids);
-		}
-		const { count: count$3, error } = await query;
-		if (error) throw error;
-		return count$3 || 0;
-	},
-	async getSegmentationStats() {
-		const { data, error } = await supabase.from("contact_segmentation_view").select("segment");
-		if (error) throw error;
-		const total = data.length;
-		const statsMap = data.reduce((acc, curr) => {
-			acc[curr.segment] = (acc[curr.segment] || 0) + 1;
-			return acc;
-		}, {});
-		return Object.keys(statsMap).filter((key) => key !== "Sem Segmento").map((segment) => ({
-			segment,
-			count: statsMap[segment],
-			percentage: total > 0 ? statsMap[segment] / total * 100 : 0
-		})).sort((a$2, b$1) => b$1.count - a$2.count);
-	},
-	async getContactById(id) {
-		const { data, error } = await supabase.from("contacts").select(`
-        *,
-        contact_tags (
-          tags (
-            id,
-            name,
-            color
-          )
-        ),
-        purchases (
-          id,
-          value,
-          date,
-          lot_number,
-          auction_id,
-          description
-        ),
-        contact_interactions (
-           id,
-           deal_id,
-           type,
-           description,
-           date,
-           created_at,
-           status,
-           metadata
-        )
-      `).eq("id", id).single();
-		if (error) throw error;
-		return {
-			...data,
-			tags: data.contact_tags?.map((ct) => ct.tags) || [],
-			purchases: data.purchases || [],
-			interactions: data.contact_interactions || []
-		};
-	},
-	async getPurchasesByContactId(contactId) {
-		const { data, error } = await supabase.from("purchases").select("*").eq("contact_id", contactId).order("date", { ascending: false });
-		if (error) throw error;
-		return data;
-	},
-	async getBidsByContactId(contactId) {
-		const { data, error } = await supabase.from("bids").select("*").eq("contact_id", contactId).order("date", { ascending: false });
-		if (error) throw error;
-		return data;
-	},
-	async getContactInteractions(contactId) {
-		const { data, error } = await supabase.from("contact_interactions").select("*").eq("contact_id", contactId).order("date", { ascending: false });
-		if (error) throw error;
-		return data;
-	},
-	async getDealInteractions(dealId) {
-		const { data, error } = await supabase.from("contact_interactions").select("*").eq("deal_id", dealId).order("date", { ascending: false });
-		if (error) throw error;
-		return data;
-	},
-	async addInteraction(interaction) {
-		const { data, error } = await supabase.from("contact_interactions").insert(interaction).select().single();
-		if (error) throw error;
-		return data;
-	},
-	async sendEmail(contactId, to, subject, html, attachments) {
-		const { data, error } = await supabase.functions.invoke("send-contact-email", { body: {
-			to: [to],
-			subject,
-			html,
-			attachments
-		} });
-		if (error) throw error;
-		await this.addInteraction({
-			contact_id: contactId,
-			type: "email",
-			description: subject,
-			date: (/* @__PURE__ */ new Date()).toISOString(),
-			status: "sent",
-			metadata: {
-				resend_id: data?.id,
-				subject,
-				body_snippet: html.substring(0, 100) + "..."
-			}
-		});
-		return data;
-	},
-	async createContact(contactData) {
-		const { tags: tagNames, ...data } = contactData;
-		const dbData = {
-			name: data.name,
-			email: data.email,
-			phone: data.phone,
-			whatsapp: data.whatsapp,
-			birth_date: data.birthDate,
-			cpf: data.cpf,
-			address: data.address,
-			preferences: {
-				breeds: data.favoriteBreeds,
-				valueRange: data.preferredValueRange,
-				modalities: data.modalities
-			},
-			origin: data.origin,
-			notes: data.notes
-		};
-		const { data: newContact, error } = await supabase.from("contacts").insert(dbData).select().single();
-		if (error) throw error;
-		if (tagNames && tagNames.length > 0) {
-			const { data: existingTags } = await supabase.from("tags").select("id, name").in("name", tagNames);
-			if (existingTags) {
-				const contactTags = existingTags.map((tag) => ({
-					contact_id: newContact.id,
-					tag_id: tag.id
-				}));
-				await supabase.from("contact_tags").insert(contactTags);
-			}
-		}
-		return newContact;
-	},
-	async getTags() {
-		const { data, error } = await supabase.from("tags").select("*");
-		if (error) throw error;
-		return data;
-	},
-	async addTagToContact(contactId, tagId) {
-		const { error } = await supabase.from("contact_tags").insert({
-			contact_id: contactId,
-			tag_id: tagId
-		});
-		if (error) throw error;
-	},
-	async removeTagFromContact(contactId, tagId) {
-		const { error } = await supabase.from("contact_tags").delete().eq("contact_id", contactId).eq("tag_id", tagId);
-		if (error) throw error;
-	}
-};
-var chartData = [
-	{
-		month: "Janeiro",
-		vendas: 12e4,
-		leads: 45
-	},
-	{
-		month: "Fevereiro",
-		vendas: 18e4,
-		leads: 52
-	},
-	{
-		month: "Março",
-		vendas: 15e4,
-		leads: 48
-	},
-	{
-		month: "Abril",
-		vendas: 24e4,
-		leads: 61
-	},
-	{
-		month: "Maio",
-		vendas: 32e4,
-		leads: 75
-	},
-	{
-		month: "Junho",
-		vendas: 45e4,
-		leads: 90
-	}
-];
 var chartConfig$4 = {
-	vendas: {
-		label: "Vendas (R$)",
+	current: {
+		label: "Este Ano",
 		color: "hsl(var(--primary))"
 	},
-	leads: {
-		label: "Novos Leads",
-		color: "hsl(var(--secondary))"
+	previous: {
+		label: "Ano Anterior",
+		color: "hsl(var(--muted-foreground))"
 	}
 };
-var segmentColors = {
-	VIP: "#EAB308",
-	Frequentes: "#2563EB",
-	Ativos: "#16A34A",
-	Inativos: "#6B7280",
-	"Novos Leads": "#9333EA",
-	"Sem Segmento": "#E5E7EB"
-};
-var recentContacts = [
-	{
-		id: 1,
-		name: "Roberto Almeida",
-		role: "Criador",
-		date: "Hoje, 10:30",
-		avatar: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=10"
-	},
-	{
-		id: 2,
-		name: "Fernanda Lima",
-		role: "Comprador",
-		date: "Ontem, 16:45",
-		avatar: "https://img.usecurling.com/ppl/thumbnail?gender=female&seed=12"
-	},
-	{
-		id: 3,
-		name: "Carlos Venturini",
-		role: "Veterinário",
-		date: "02 Fev, 09:15",
-		avatar: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=15"
-	},
-	{
-		id: 4,
-		name: "Haras Pôr do Sol",
-		role: "Parceiro",
-		date: "01 Fev, 14:20",
-		avatar: null
-	},
-	{
-		id: 5,
-		name: "Juliana Paes",
-		role: "Investidora",
-		date: "30 Jan, 11:00",
-		avatar: "https://img.usecurling.com/ppl/thumbnail?gender=female&seed=22"
-	}
-];
-function Index() {
-	const [segmentStats, setSegmentStats] = (0, import_react.useState)([]);
-	const currentDate = (/* @__PURE__ */ new Date()).toLocaleDateString("pt-BR", {
-		weekday: "long",
-		year: "numeric",
-		month: "long",
-		day: "numeric"
-	});
-	(0, import_react.useEffect)(() => {
-		contactsService.getSegmentationStats().then(setSegmentStats).catch((err) => console.error("Failed to load segmentation stats", err));
-	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-8 animate-fade-in",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col gap-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-					className: "text-3xl font-bold font-display text-primary",
-					children: "Bem-vindo ao CRM Milan Horses"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-muted-foreground capitalize",
-					children: currentDate
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid gap-6 md:grid-cols-2 lg:grid-cols-4",
+function SalesComparisonChart({ data }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "shadow-sm",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+			className: "text-xl font-display text-primary flex items-center gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-5 w-5" }), "Evolução de Vendas"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Comparativo dos últimos 6 meses com o ano anterior." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+			config: chartConfig$4,
+			className: "h-[300px] w-full",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
+				data,
+				margin: {
+					top: 10,
+					right: 10,
+					left: 0,
+					bottom: 0
+				},
 				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "border-l-4 border-l-primary shadow-subtle hover:-translate-y-1 hover:shadow-elevation transition-all duration-300",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-							className: "flex flex-row items-center justify-between space-y-0 pb-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-								className: "text-sm font-medium text-muted-foreground",
-								children: "Total de Contatos"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "h-4 w-4 text-primary" })]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-2xl font-bold font-display",
-							children: "1,248"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-							className: "text-xs text-muted-foreground mt-1 flex items-center",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "text-green-600 flex items-center mr-1",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowUp, { className: "h-3 w-3 mr-0.5" }), " +12%"]
-								}),
-								" ",
-								"mês passado"
-							]
-						})] })]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "border-l-4 border-l-secondary shadow-subtle hover:-translate-y-1 hover:shadow-elevation transition-all duration-300",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-							className: "flex flex-row items-center justify-between space-y-0 pb-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-								className: "text-sm font-medium text-muted-foreground",
-								children: "Cavalos Vendidos"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, { className: "h-4 w-4 text-secondary" })]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-2xl font-bold font-display",
-							children: "24"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-							className: "text-xs text-muted-foreground mt-1 flex items-center",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "text-green-600 flex items-center mr-1",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowUp, { className: "h-3 w-3 mr-0.5" }), " +4"]
-								}),
-								" ",
-								"mês passado"
-							]
-						})] })]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "border-l-4 border-l-primary shadow-subtle hover:-translate-y-1 hover:shadow-elevation transition-all duration-300",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-							className: "flex flex-row items-center justify-between space-y-0 pb-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-								className: "text-sm font-medium text-muted-foreground",
-								children: "Faturamento (Mês)"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-4 w-4 text-primary" })]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-2xl font-bold font-display",
-							children: "R$ 450k"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-							className: "text-xs text-muted-foreground mt-1 flex items-center",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "text-green-600 flex items-center mr-1",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowUp, { className: "h-3 w-3 mr-0.5" }), " +18.2%"]
-								}),
-								" ",
-								"mês passado"
-							]
-						})] })]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "border-l-4 border-l-secondary shadow-subtle hover:-translate-y-1 hover:shadow-elevation transition-all duration-300",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-							className: "flex flex-row items-center justify-between space-y-0 pb-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-								className: "text-sm font-medium text-muted-foreground",
-								children: "Taxa de Conversão"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-4 w-4 text-secondary" })]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-2xl font-bold font-display",
-							children: "4.5%"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-							className: "text-xs text-muted-foreground mt-1 flex items-center",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "text-red-500 flex items-center mr-1",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowDown, { className: "h-3 w-3 mr-0.5" }), " -0.5%"]
-								}),
-								" ",
-								"mês passado"
-							]
-						})] })]
-					})
-				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid gap-6 md:grid-cols-7",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "col-span-7 lg:col-span-4 shadow-sm",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-							className: "text-xl font-display text-primary",
-							children: "Desempenho de Vendas"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Resumo de vendas e novos leads no primeiro semestre." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-							className: "pl-2",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-								config: chartConfig$4,
-								className: "h-[300px] w-full",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
-									data: chartData,
-									margin: {
-										top: 10,
-										right: 30,
-										left: 0,
-										bottom: 0
-									},
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("defs", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
-											id: "fillVendas",
-											x1: "0",
-											y1: "0",
-											x2: "0",
-											y2: "1",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-												offset: "5%",
-												stopColor: "var(--color-vendas)",
-												stopOpacity: .8
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-												offset: "95%",
-												stopColor: "var(--color-vendas)",
-												stopOpacity: .1
-											})]
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
-											id: "fillLeads",
-											x1: "0",
-											y1: "0",
-											x2: "0",
-											y2: "1",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-												offset: "5%",
-												stopColor: "var(--color-leads)",
-												stopOpacity: .8
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-												offset: "95%",
-												stopColor: "var(--color-leads)",
-												stopOpacity: .1
-											})]
-										})] }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
-											vertical: false,
-											strokeDasharray: "3 3",
-											className: "stroke-muted"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
-											dataKey: "month",
-											tickLine: false,
-											axisLine: false,
-											tickMargin: 8,
-											className: "text-xs text-muted-foreground"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
-											tickLine: false,
-											axisLine: false,
-											className: "text-xs text-muted-foreground",
-											tickFormatter: (value) => `R$${value / 1e3}k`
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
-											type: "monotone",
-											dataKey: "vendas",
-											stroke: "var(--color-vendas)",
-											fillOpacity: 1,
-											fill: "url(#fillVendas)",
-											strokeWidth: 2
-										})
-									]
-								})
-							})
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("defs", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+						id: "fillCurrent",
+						x1: "0",
+						y1: "0",
+						x2: "0",
+						y2: "1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "5%",
+							stopColor: "var(--color-current)",
+							stopOpacity: .8
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "95%",
+							stopColor: "var(--color-current)",
+							stopOpacity: .1
 						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+						id: "fillPrevious",
+						x1: "0",
+						y1: "0",
+						x2: "0",
+						y2: "1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "5%",
+							stopColor: "var(--color-previous)",
+							stopOpacity: .3
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "95%",
+							stopColor: "var(--color-previous)",
+							stopOpacity: .05
+						})]
+					})] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+						vertical: false,
+						strokeDasharray: "3 3",
+						className: "stroke-muted/50"
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "col-span-7 lg:col-span-3 shadow-sm",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-							className: "text-xl font-display text-primary flex items-center gap-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartPie, { className: "h-5 w-5" }), "Distribuição por Segmento"]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Classificação automática da base de contatos." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: segmentStats.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-							config: Object.keys(segmentColors).reduce((acc, key) => {
-								acc[key] = {
-									label: key,
-									color: segmentColors[key]
-								};
-								return acc;
-							}, {}),
-							className: "h-[300px] w-full mx-auto",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PieChart, { children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pie, {
-									data: segmentStats,
-									dataKey: "count",
-									nameKey: "segment",
-									cx: "50%",
-									cy: "50%",
-									innerRadius: 60,
-									outerRadius: 100,
-									paddingAngle: 2,
-									children: segmentStats.map((entry, index$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
-										fill: segmentColors[entry.segment] || segmentColors["Sem Segmento"],
-										strokeWidth: 0
-									}, `cell-${index$1}`))
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
-									content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, { hideLabel: true }),
-									formatter: (value, name, item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "flex gap-2 min-w-[150px]",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-											className: "font-medium",
-											children: [item.payload.segment, ":"]
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-											className: "ml-auto",
-											children: [
-												value,
-												" (",
-												item.payload.percentage.toFixed(1),
-												"%)"
-											]
-										})]
-									})
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, {
-									content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}),
-									className: "flex-wrap gap-2 text-[10px]"
-								})
-							] })
-						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "h-[300px] flex items-center justify-center text-muted-foreground",
-							children: "Carregando dados..."
-						}) })]
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+						dataKey: "name",
+						tickLine: false,
+						axisLine: false,
+						tickMargin: 8,
+						className: "text-xs text-muted-foreground"
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "col-span-7 shadow-sm",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-							className: "text-xl font-display text-primary",
-							children: "Contatos Recentes"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Últimos contatos adicionados à plataforma." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "space-y-6",
-							children: recentContacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex items-center justify-between group cursor-pointer",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center space-x-4",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
-										className: "h-10 w-10 border border-muted transition-transform group-hover:scale-105",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: contact.avatar || void 0 }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, {
-											className: "bg-primary/10 text-primary",
-											children: contact.name.substring(0, 2).toUpperCase()
-										})]
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "space-y-1",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-sm font-medium leading-none group-hover:text-primary transition-colors",
-											children: contact.name
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-xs text-muted-foreground",
-											children: contact.role
-										})]
-									})]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "text-xs text-muted-foreground text-right",
-									children: contact.date
-								})]
-							}, contact.id))
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "mt-6 pt-4 border-t text-center",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-								href: "/contatos",
-								className: "text-sm font-medium text-primary hover:underline hover:text-primary/80",
-								children: "Ver todos os contatos"
-							})
-						})] })]
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+						tickLine: false,
+						axisLine: false,
+						className: "text-xs text-muted-foreground",
+						tickFormatter: (value) => `R$${value / 1e3}k`
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
+						type: "monotone",
+						dataKey: "previous",
+						stroke: "var(--color-previous)",
+						strokeDasharray: "4 4",
+						fillOpacity: 1,
+						fill: "url(#fillPrevious)",
+						strokeWidth: 2
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
+						type: "monotone",
+						dataKey: "current",
+						stroke: "var(--color-current)",
+						fillOpacity: 1,
+						fill: "url(#fillCurrent)",
+						strokeWidth: 2
 					})
 				]
 			})
-		]
+		}) })]
 	});
 }
-var Table = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-	className: "relative w-full overflow-auto",
-	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("table", {
-		ref,
-		className: cn("w-full caption-bottom text-sm", className),
-		...props
-	})
-}));
-Table.displayName = "Table";
-var TableHeader = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", {
-	ref,
-	className: cn("[&_tr]:border-b", className),
-	...props
-}));
-TableHeader.displayName = "TableHeader";
-var TableBody = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", {
-	ref,
-	className: cn("[&_tr:last-child]:border-0", className),
-	...props
-}));
-TableBody.displayName = "TableBody";
-var TableFooter = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tfoot", {
-	ref,
-	className: cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className),
-	...props
-}));
-TableFooter.displayName = "TableFooter";
-var TableRow = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tr", {
-	ref,
-	className: cn("border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted", className),
-	...props
-}));
-TableRow.displayName = "TableRow";
-var TableHead = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
-	ref,
-	className: cn("h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0", className),
-	...props
-}));
-TableHead.displayName = "TableHead";
-var TableCell = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
-	ref,
-	className: cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className),
-	...props
-}));
-TableCell.displayName = "TableCell";
-var TableCaption = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("caption", {
-	ref,
-	className: cn("mt-4 text-sm text-muted-foreground", className),
-	...props
-}));
-TableCaption.displayName = "TableCaption";
-var badgeVariants = cva("inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2", {
-	variants: { variant: {
-		default: "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-		secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-		destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-		outline: "text-foreground"
-	} },
-	defaultVariants: { variant: "default" }
-});
-function Badge({ className, variant, ...props }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: cn(badgeVariants({ variant }), className),
-		...props
+function QuickActions({ onAction }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+		className: "shadow-sm border-t-4 border-t-gray-400",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+			className: "p-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+				className: "text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider",
+				children: "Ações Rápidas"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "grid grid-cols-2 lg:grid-cols-4 gap-3",
+				children: [
+					{
+						id: "contact",
+						label: "Cadastrar Contato",
+						icon: UserPlus,
+						color: "bg-blue-100 text-blue-700 hover:bg-blue-200"
+					},
+					{
+						id: "deal",
+						label: "Criar Negócio",
+						icon: Briefcase,
+						color: "bg-emerald-100 text-emerald-700 hover:bg-emerald-200"
+					},
+					{
+						id: "task",
+						label: "Adicionar Tarefa",
+						icon: SquareCheckBig,
+						color: "bg-amber-100 text-amber-700 hover:bg-amber-200"
+					},
+					{
+						id: "campaign",
+						label: "Enviar Campanha",
+						icon: Megaphone,
+						color: "bg-purple-100 text-purple-700 hover:bg-purple-200"
+					}
+				].map((action) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					variant: "outline",
+					className: `h-14 justify-start gap-3 border-0 ${action.color} transition-all duration-200 shadow-sm`,
+					onClick: () => onAction(action.id),
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(action.icon, { className: "h-5 w-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "font-semibold",
+						children: action.label
+					})]
+				}, action.id))
+			})]
+		})
 	});
 }
-var Pagination = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
-	role: "navigation",
-	"aria-label": "pagination",
-	className: cn("mx-auto flex w-full justify-center", className),
-	...props
-});
-Pagination.displayName = "Pagination";
-var PaginationContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+var Dialog = Root$9;
+var DialogTrigger = Trigger$5;
+var DialogPortal = Portal$4;
+var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
 	ref,
-	className: cn("flex flex-row items-center gap-1", className),
+	className: cn("fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
 	...props
 }));
-PaginationContent.displayName = "PaginationContent";
-var PaginationItem = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
+DialogOverlay.displayName = Overlay.displayName;
+var DialogContent = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$2, {
 	ref,
-	className: cn("", className),
-	...props
-}));
-PaginationItem.displayName = "PaginationItem";
-var PaginationLink = ({ className, isActive, size: size$3 = "icon", ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-	"aria-current": isActive ? "page" : void 0,
-	className: cn(buttonVariants({
-		variant: isActive ? "outline" : "ghost",
-		size: size$3
-	}), className),
-	...props
-});
-PaginationLink.displayName = "PaginationLink";
-var PaginationPrevious = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PaginationLink, {
-	"aria-label": "Go to previous page",
-	size: "default",
-	className: cn("gap-1 pl-2.5", className),
+	className: cn("fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg overflow-y-auto max-h-screen", className),
 	...props,
-	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronLeft, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Previous" })]
-});
-PaginationPrevious.displayName = "PaginationPrevious";
-var PaginationNext = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PaginationLink, {
-	"aria-label": "Go to next page",
-	size: "default",
-	className: cn("gap-1 pr-2.5", className),
-	...props,
-	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Next" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronRight, { className: "h-4 w-4" })]
-});
-PaginationNext.displayName = "PaginationNext";
-var PaginationEllipsis = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-	"aria-hidden": true,
-	className: cn("flex h-9 w-9 items-center justify-center", className),
-	...props,
-	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ellipsis, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-		className: "sr-only",
-		children: "More pages"
+	children: [children, /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Close, {
+		className: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+			className: "sr-only",
+			children: "Close"
+		})]
 	})]
+})] }));
+DialogContent.displayName = Content$2.displayName;
+var DialogHeader = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	className: cn("flex flex-col space-y-1.5 text-center sm:text-left", className),
+	...props
 });
-PaginationEllipsis.displayName = "PaginationEllipsis";
-var NAME$1 = "Toggle";
-var Toggle$1 = import_react.forwardRef((props, forwardedRef) => {
-	const { pressed: pressedProp, defaultPressed, onPressedChange, ...buttonProps } = props;
-	const [pressed, setPressed] = useControllableState({
-		prop: pressedProp,
-		onChange: onPressedChange,
-		defaultProp: defaultPressed ?? false,
-		caller: NAME$1
-	});
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
-		type: "button",
-		"aria-pressed": pressed,
-		"data-state": pressed ? "on" : "off",
-		"data-disabled": props.disabled ? "" : void 0,
-		...buttonProps,
-		ref: forwardedRef,
-		onClick: composeEventHandlers(props.onClick, () => {
-			if (!props.disabled) setPressed(!pressed);
-		})
-	});
+DialogHeader.displayName = "DialogHeader";
+var DialogFooter = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	className: cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className),
+	...props
 });
-Toggle$1.displayName = NAME$1;
-var Root$5 = Toggle$1;
-var TOGGLE_GROUP_NAME = "ToggleGroup";
-var [createToggleGroupContext, createToggleGroupScope] = createContextScope(TOGGLE_GROUP_NAME, [createRovingFocusGroupScope]);
-var useRovingFocusGroupScope$2 = createRovingFocusGroupScope();
-var ToggleGroup$1 = import_react.forwardRef((props, forwardedRef) => {
-	const { type, ...toggleGroupProps } = props;
-	if (type === "single") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImplSingle, {
-		...toggleGroupProps,
-		ref: forwardedRef
-	});
-	if (type === "multiple") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImplMultiple, {
-		...toggleGroupProps,
-		ref: forwardedRef
-	});
-	throw new Error(`Missing prop \`type\` expected on \`${TOGGLE_GROUP_NAME}\``);
-});
-ToggleGroup$1.displayName = TOGGLE_GROUP_NAME;
-var [ToggleGroupValueProvider, useToggleGroupValueContext] = createToggleGroupContext(TOGGLE_GROUP_NAME);
-var ToggleGroupImplSingle = import_react.forwardRef((props, forwardedRef) => {
-	const { value: valueProp, defaultValue, onValueChange = () => {}, ...toggleGroupSingleProps } = props;
-	const [value, setValue] = useControllableState({
-		prop: valueProp,
-		defaultProp: defaultValue ?? "",
-		onChange: onValueChange,
-		caller: TOGGLE_GROUP_NAME
-	});
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupValueProvider, {
-		scope: props.__scopeToggleGroup,
-		type: "single",
-		value: import_react.useMemo(() => value ? [value] : [], [value]),
-		onItemActivate: setValue,
-		onItemDeactivate: import_react.useCallback(() => setValue(""), [setValue]),
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImpl, {
-			...toggleGroupSingleProps,
-			ref: forwardedRef
-		})
-	});
-});
-var ToggleGroupImplMultiple = import_react.forwardRef((props, forwardedRef) => {
-	const { value: valueProp, defaultValue, onValueChange = () => {}, ...toggleGroupMultipleProps } = props;
-	const [value, setValue] = useControllableState({
-		prop: valueProp,
-		defaultProp: defaultValue ?? [],
-		onChange: onValueChange,
-		caller: TOGGLE_GROUP_NAME
-	});
-	const handleButtonActivate = import_react.useCallback((itemValue) => setValue((prevValue = []) => [...prevValue, itemValue]), [setValue]);
-	const handleButtonDeactivate = import_react.useCallback((itemValue) => setValue((prevValue = []) => prevValue.filter((value2) => value2 !== itemValue)), [setValue]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupValueProvider, {
-		scope: props.__scopeToggleGroup,
-		type: "multiple",
-		value,
-		onItemActivate: handleButtonActivate,
-		onItemDeactivate: handleButtonDeactivate,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImpl, {
-			...toggleGroupMultipleProps,
-			ref: forwardedRef
-		})
-	});
-});
-ToggleGroup$1.displayName = TOGGLE_GROUP_NAME;
-var [ToggleGroupContext$1, useToggleGroupContext] = createToggleGroupContext(TOGGLE_GROUP_NAME);
-var ToggleGroupImpl = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeToggleGroup, disabled = false, rovingFocus = true, orientation, dir, loop = true, ...toggleGroupProps } = props;
-	const rovingFocusGroupScope = useRovingFocusGroupScope$2(__scopeToggleGroup);
-	const direction = useDirection(dir);
-	const commonProps = {
-		role: "group",
-		dir: direction,
-		...toggleGroupProps
-	};
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupContext$1, {
-		scope: __scopeToggleGroup,
-		rovingFocus,
-		disabled,
-		children: rovingFocus ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
-			asChild: true,
-			...rovingFocusGroupScope,
-			orientation,
-			dir: direction,
-			loop,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
-				...commonProps,
-				ref: forwardedRef
-			})
-		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
-			...commonProps,
-			ref: forwardedRef
-		})
-	});
-});
-var ITEM_NAME$3 = "ToggleGroupItem";
-var ToggleGroupItem$1 = import_react.forwardRef((props, forwardedRef) => {
-	const valueContext = useToggleGroupValueContext(ITEM_NAME$3, props.__scopeToggleGroup);
-	const context = useToggleGroupContext(ITEM_NAME$3, props.__scopeToggleGroup);
-	const rovingFocusGroupScope = useRovingFocusGroupScope$2(props.__scopeToggleGroup);
-	const pressed = valueContext.value.includes(props.value);
-	const disabled = context.disabled || props.disabled;
-	const commonProps = {
-		...props,
-		pressed,
-		disabled
-	};
-	const ref = import_react.useRef(null);
-	return context.rovingFocus ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item$2, {
-		asChild: true,
-		...rovingFocusGroupScope,
-		focusable: !disabled,
-		active: pressed,
-		ref,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItemImpl, {
-			...commonProps,
-			ref: forwardedRef
-		})
-	}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItemImpl, {
-		...commonProps,
-		ref: forwardedRef
-	});
-});
-ToggleGroupItem$1.displayName = ITEM_NAME$3;
-var ToggleGroupItemImpl = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeToggleGroup, value, ...itemProps } = props;
-	const valueContext = useToggleGroupValueContext(ITEM_NAME$3, __scopeToggleGroup);
-	const singleProps = {
-		role: "radio",
-		"aria-checked": props.pressed,
-		"aria-pressed": void 0
-	};
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Toggle$1, {
-		...valueContext.type === "single" ? singleProps : void 0,
-		...itemProps,
-		ref: forwardedRef,
-		onPressedChange: (pressed) => {
-			if (pressed) valueContext.onItemActivate(value);
-			else valueContext.onItemDeactivate(value);
-		}
-	});
-});
-var Root2$6 = ToggleGroup$1;
-var Item2$1 = ToggleGroupItem$1;
-var toggleVariants = cva("inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 gap-2", {
-	variants: {
-		variant: {
-			default: "bg-transparent",
-			outline: "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground"
-		},
-		size: {
-			default: "h-10 px-3 min-w-10",
-			sm: "h-9 px-2.5 min-w-9",
-			lg: "h-11 px-5 min-w-11"
-		}
-	},
-	defaultVariants: {
-		variant: "default",
-		size: "default"
-	}
-});
-var Toggle = import_react.forwardRef(({ className, variant, size: size$3, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
+DialogFooter.displayName = "DialogFooter";
+var DialogTitle = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Title, {
 	ref,
-	className: cn(toggleVariants({
-		variant,
-		size: size$3,
-		className
-	})),
+	className: cn("text-lg font-semibold leading-none tracking-tight", className),
 	...props
 }));
-Toggle.displayName = Root$5.displayName;
-var ToggleGroupContext = import_react.createContext({
-	size: "default",
-	variant: "default"
-});
-var ToggleGroup = import_react.forwardRef(({ className, variant, size: size$3, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$6, {
+DialogTitle.displayName = Title.displayName;
+var DialogDescription = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Description, {
 	ref,
-	className: cn("flex items-center justify-center gap-1", className),
-	...props,
-	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupContext.Provider, {
-		value: {
-			variant,
-			size: size$3
-		},
-		children
-	})
+	className: cn("text-sm text-muted-foreground", className),
+	...props
 }));
-ToggleGroup.displayName = Root2$6.displayName;
-var ToggleGroupItem = import_react.forwardRef(({ className, children, variant, size: size$3, ...props }, ref) => {
-	const context = import_react.useContext(ToggleGroupContext);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$1, {
-		ref,
-		className: cn(toggleVariants({
-			variant: context.variant || variant,
-			size: context.size || size$3
-		}), className),
-		...props,
-		children
-	});
-});
-ToggleGroupItem.displayName = Item2$1.displayName;
+DialogDescription.displayName = Description.displayName;
 var isCheckBoxInput = (element) => element.type === "checkbox";
 var isDateObject = (value) => value instanceof Date;
 var isNullOrUndefined = (value) => value == null;
@@ -60506,14 +62965,14 @@ var validateField = async (field, disabledFieldNames, formValues, validateAllFie
 	setCustomValidity(true);
 	return error;
 };
-var defaultOptions$1 = {
+var defaultOptions = {
 	mode: VALIDATION_MODE.onSubmit,
 	reValidateMode: VALIDATION_MODE.onChange,
 	shouldFocusError: true
 };
 function createFormControl(props = {}) {
 	let _options = {
-		...defaultOptions$1,
+		...defaultOptions,
 		...props
 	};
 	let _formState = {
@@ -65254,1654 +67713,6 @@ function superRefine(fn) {
 function number(params) {
 	return /* @__PURE__ */ _coercedNumber(ZodNumber, params);
 }
-const daysInYear = 365.2425;
-Math.pow(10, 8) * 24 * 60 * 60 * 1e3;
-const millisecondsInWeek = 6048e5;
-const millisecondsInDay = 864e5;
-const millisecondsInMinute = 6e4;
-const millisecondsInHour = 36e5;
-const secondsInDay = 3600 * 24;
-secondsInDay * 7;
-secondsInDay * daysInYear / 12 * 3;
-const constructFromSymbol$1 = Symbol.for("constructDateFrom");
-function constructFrom(date$4, value) {
-	if (typeof date$4 === "function") return date$4(value);
-	if (date$4 && typeof date$4 === "object" && constructFromSymbol$1 in date$4) return date$4[constructFromSymbol$1](value);
-	if (date$4 instanceof Date) return new date$4.constructor(value);
-	return new Date(value);
-}
-function toDate(argument, context) {
-	return constructFrom(context || argument, argument);
-}
-function addDays(date$4, amount, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	if (isNaN(amount)) return constructFrom(options$1?.in || date$4, NaN);
-	if (!amount) return _date$1;
-	_date$1.setDate(_date$1.getDate() + amount);
-	return _date$1;
-}
-function addMonths(date$4, amount, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	if (isNaN(amount)) return constructFrom(options$1?.in || date$4, NaN);
-	if (!amount) return _date$1;
-	const dayOfMonth = _date$1.getDate();
-	const endOfDesiredMonth = constructFrom(options$1?.in || date$4, _date$1.getTime());
-	endOfDesiredMonth.setMonth(_date$1.getMonth() + amount + 1, 0);
-	if (dayOfMonth >= endOfDesiredMonth.getDate()) return endOfDesiredMonth;
-	else {
-		_date$1.setFullYear(endOfDesiredMonth.getFullYear(), endOfDesiredMonth.getMonth(), dayOfMonth);
-		return _date$1;
-	}
-}
-var defaultOptions = {};
-function getDefaultOptions() {
-	return defaultOptions;
-}
-function startOfWeek(date$4, options$1) {
-	const defaultOptions$2 = getDefaultOptions();
-	const weekStartsOn = options$1?.weekStartsOn ?? options$1?.locale?.options?.weekStartsOn ?? defaultOptions$2.weekStartsOn ?? defaultOptions$2.locale?.options?.weekStartsOn ?? 0;
-	const _date$1 = toDate(date$4, options$1?.in);
-	const day = _date$1.getDay();
-	const diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn;
-	_date$1.setDate(_date$1.getDate() - diff);
-	_date$1.setHours(0, 0, 0, 0);
-	return _date$1;
-}
-function startOfISOWeek(date$4, options$1) {
-	return startOfWeek(date$4, {
-		...options$1,
-		weekStartsOn: 1
-	});
-}
-function getISOWeekYear(date$4, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	const year = _date$1.getFullYear();
-	const fourthOfJanuaryOfNextYear = constructFrom(_date$1, 0);
-	fourthOfJanuaryOfNextYear.setFullYear(year + 1, 0, 4);
-	fourthOfJanuaryOfNextYear.setHours(0, 0, 0, 0);
-	const startOfNextYear = startOfISOWeek(fourthOfJanuaryOfNextYear);
-	const fourthOfJanuaryOfThisYear = constructFrom(_date$1, 0);
-	fourthOfJanuaryOfThisYear.setFullYear(year, 0, 4);
-	fourthOfJanuaryOfThisYear.setHours(0, 0, 0, 0);
-	const startOfThisYear = startOfISOWeek(fourthOfJanuaryOfThisYear);
-	if (_date$1.getTime() >= startOfNextYear.getTime()) return year + 1;
-	else if (_date$1.getTime() >= startOfThisYear.getTime()) return year;
-	else return year - 1;
-}
-function getTimezoneOffsetInMilliseconds(date$4) {
-	const _date$1 = toDate(date$4);
-	const utcDate$1 = new Date(Date.UTC(_date$1.getFullYear(), _date$1.getMonth(), _date$1.getDate(), _date$1.getHours(), _date$1.getMinutes(), _date$1.getSeconds(), _date$1.getMilliseconds()));
-	utcDate$1.setUTCFullYear(_date$1.getFullYear());
-	return +date$4 - +utcDate$1;
-}
-function normalizeDates(context, ...dates) {
-	const normalize$1 = constructFrom.bind(null, context || dates.find((date$4) => typeof date$4 === "object"));
-	return dates.map(normalize$1);
-}
-function startOfDay(date$4, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	_date$1.setHours(0, 0, 0, 0);
-	return _date$1;
-}
-function differenceInCalendarDays(laterDate, earlierDate, options$1) {
-	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
-	const laterStartOfDay = startOfDay(laterDate_);
-	const earlierStartOfDay = startOfDay(earlierDate_);
-	const laterTimestamp = +laterStartOfDay - getTimezoneOffsetInMilliseconds(laterStartOfDay);
-	const earlierTimestamp = +earlierStartOfDay - getTimezoneOffsetInMilliseconds(earlierStartOfDay);
-	return Math.round((laterTimestamp - earlierTimestamp) / millisecondsInDay);
-}
-function startOfISOWeekYear(date$4, options$1) {
-	const year = getISOWeekYear(date$4, options$1);
-	const fourthOfJanuary = constructFrom(options$1?.in || date$4, 0);
-	fourthOfJanuary.setFullYear(year, 0, 4);
-	fourthOfJanuary.setHours(0, 0, 0, 0);
-	return startOfISOWeek(fourthOfJanuary);
-}
-function addWeeks(date$4, amount, options$1) {
-	return addDays(date$4, amount * 7, options$1);
-}
-function addYears(date$4, amount, options$1) {
-	return addMonths(date$4, amount * 12, options$1);
-}
-function max(dates, options$1) {
-	let result;
-	let context = options$1?.in;
-	dates.forEach((date$4) => {
-		if (!context && typeof date$4 === "object") context = constructFrom.bind(null, date$4);
-		const date_ = toDate(date$4, context);
-		if (!result || result < date_ || isNaN(+date_)) result = date_;
-	});
-	return constructFrom(context, result || NaN);
-}
-function min(dates, options$1) {
-	let result;
-	let context = options$1?.in;
-	dates.forEach((date$4) => {
-		if (!context && typeof date$4 === "object") context = constructFrom.bind(null, date$4);
-		const date_ = toDate(date$4, context);
-		if (!result || result > date_ || isNaN(+date_)) result = date_;
-	});
-	return constructFrom(context, result || NaN);
-}
-function constructNow(date$4) {
-	return constructFrom(date$4, Date.now());
-}
-function isSameDay(laterDate, earlierDate, options$1) {
-	const [dateLeft_, dateRight_] = normalizeDates(options$1?.in, laterDate, earlierDate);
-	return +startOfDay(dateLeft_) === +startOfDay(dateRight_);
-}
-function isDate(value) {
-	return value instanceof Date || typeof value === "object" && Object.prototype.toString.call(value) === "[object Date]";
-}
-function isValid(date$4) {
-	return !(!isDate(date$4) && typeof date$4 !== "number" || isNaN(+toDate(date$4)));
-}
-function differenceInCalendarMonths(laterDate, earlierDate, options$1) {
-	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
-	const yearsDiff = laterDate_.getFullYear() - earlierDate_.getFullYear();
-	const monthsDiff = laterDate_.getMonth() - earlierDate_.getMonth();
-	return yearsDiff * 12 + monthsDiff;
-}
-function differenceInDays(laterDate, earlierDate, options$1) {
-	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
-	const sign$1 = compareLocalAsc(laterDate_, earlierDate_);
-	const difference = Math.abs(differenceInCalendarDays(laterDate_, earlierDate_));
-	laterDate_.setDate(laterDate_.getDate() - sign$1 * difference);
-	const result = sign$1 * (difference - Number(compareLocalAsc(laterDate_, earlierDate_) === -sign$1));
-	return result === 0 ? 0 : result;
-}
-function compareLocalAsc(laterDate, earlierDate) {
-	const diff = laterDate.getFullYear() - earlierDate.getFullYear() || laterDate.getMonth() - earlierDate.getMonth() || laterDate.getDate() - earlierDate.getDate() || laterDate.getHours() - earlierDate.getHours() || laterDate.getMinutes() - earlierDate.getMinutes() || laterDate.getSeconds() - earlierDate.getSeconds() || laterDate.getMilliseconds() - earlierDate.getMilliseconds();
-	if (diff < 0) return -1;
-	if (diff > 0) return 1;
-	return diff;
-}
-function endOfDay(date$4, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	_date$1.setHours(23, 59, 59, 999);
-	return _date$1;
-}
-function endOfMonth(date$4, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	const month = _date$1.getMonth();
-	_date$1.setFullYear(_date$1.getFullYear(), month + 1, 0);
-	_date$1.setHours(23, 59, 59, 999);
-	return _date$1;
-}
-function normalizeInterval(context, interval) {
-	const [start, end] = normalizeDates(context, interval.start, interval.end);
-	return {
-		start,
-		end
-	};
-}
-function eachDayOfInterval(interval, options$1) {
-	const { start, end } = normalizeInterval(options$1?.in, interval);
-	let reversed = +start > +end;
-	const endTime = reversed ? +start : +end;
-	const date$4 = reversed ? end : start;
-	date$4.setHours(0, 0, 0, 0);
-	let step = options$1?.step ?? 1;
-	if (!step) return [];
-	if (step < 0) {
-		step = -step;
-		reversed = !reversed;
-	}
-	const dates = [];
-	while (+date$4 <= endTime) {
-		dates.push(constructFrom(start, date$4));
-		date$4.setDate(date$4.getDate() + step);
-		date$4.setHours(0, 0, 0, 0);
-	}
-	return reversed ? dates.reverse() : dates;
-}
-function eachMonthOfInterval(interval, options$1) {
-	const { start, end } = normalizeInterval(options$1?.in, interval);
-	let reversed = +start > +end;
-	const endTime = reversed ? +start : +end;
-	const date$4 = reversed ? end : start;
-	date$4.setHours(0, 0, 0, 0);
-	date$4.setDate(1);
-	let step = options$1?.step ?? 1;
-	if (!step) return [];
-	if (step < 0) {
-		step = -step;
-		reversed = !reversed;
-	}
-	const dates = [];
-	while (+date$4 <= endTime) {
-		dates.push(constructFrom(start, date$4));
-		date$4.setMonth(date$4.getMonth() + step);
-	}
-	return reversed ? dates.reverse() : dates;
-}
-function startOfMonth(date$4, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	_date$1.setDate(1);
-	_date$1.setHours(0, 0, 0, 0);
-	return _date$1;
-}
-function endOfYear(date$4, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	const year = _date$1.getFullYear();
-	_date$1.setFullYear(year + 1, 0, 0);
-	_date$1.setHours(23, 59, 59, 999);
-	return _date$1;
-}
-function startOfYear(date$4, options$1) {
-	const date_ = toDate(date$4, options$1?.in);
-	date_.setFullYear(date_.getFullYear(), 0, 1);
-	date_.setHours(0, 0, 0, 0);
-	return date_;
-}
-function eachYearOfInterval(interval, options$1) {
-	const { start, end } = normalizeInterval(options$1?.in, interval);
-	let reversed = +start > +end;
-	const endTime = reversed ? +start : +end;
-	const date$4 = reversed ? end : start;
-	date$4.setHours(0, 0, 0, 0);
-	date$4.setMonth(0, 1);
-	let step = options$1?.step ?? 1;
-	if (!step) return [];
-	if (step < 0) {
-		step = -step;
-		reversed = !reversed;
-	}
-	const dates = [];
-	while (+date$4 <= endTime) {
-		dates.push(constructFrom(start, date$4));
-		date$4.setFullYear(date$4.getFullYear() + step);
-	}
-	return reversed ? dates.reverse() : dates;
-}
-function endOfWeek(date$4, options$1) {
-	const defaultOptions$2 = getDefaultOptions();
-	const weekStartsOn = options$1?.weekStartsOn ?? options$1?.locale?.options?.weekStartsOn ?? defaultOptions$2.weekStartsOn ?? defaultOptions$2.locale?.options?.weekStartsOn ?? 0;
-	const _date$1 = toDate(date$4, options$1?.in);
-	const day = _date$1.getDay();
-	const diff = (day < weekStartsOn ? -7 : 0) + 6 - (day - weekStartsOn);
-	_date$1.setDate(_date$1.getDate() + diff);
-	_date$1.setHours(23, 59, 59, 999);
-	return _date$1;
-}
-function endOfISOWeek(date$4, options$1) {
-	return endOfWeek(date$4, {
-		...options$1,
-		weekStartsOn: 1
-	});
-}
-var formatDistanceLocale$1 = {
-	lessThanXSeconds: {
-		one: "less than a second",
-		other: "less than {{count}} seconds"
-	},
-	xSeconds: {
-		one: "1 second",
-		other: "{{count}} seconds"
-	},
-	halfAMinute: "half a minute",
-	lessThanXMinutes: {
-		one: "less than a minute",
-		other: "less than {{count}} minutes"
-	},
-	xMinutes: {
-		one: "1 minute",
-		other: "{{count}} minutes"
-	},
-	aboutXHours: {
-		one: "about 1 hour",
-		other: "about {{count}} hours"
-	},
-	xHours: {
-		one: "1 hour",
-		other: "{{count}} hours"
-	},
-	xDays: {
-		one: "1 day",
-		other: "{{count}} days"
-	},
-	aboutXWeeks: {
-		one: "about 1 week",
-		other: "about {{count}} weeks"
-	},
-	xWeeks: {
-		one: "1 week",
-		other: "{{count}} weeks"
-	},
-	aboutXMonths: {
-		one: "about 1 month",
-		other: "about {{count}} months"
-	},
-	xMonths: {
-		one: "1 month",
-		other: "{{count}} months"
-	},
-	aboutXYears: {
-		one: "about 1 year",
-		other: "about {{count}} years"
-	},
-	xYears: {
-		one: "1 year",
-		other: "{{count}} years"
-	},
-	overXYears: {
-		one: "over 1 year",
-		other: "over {{count}} years"
-	},
-	almostXYears: {
-		one: "almost 1 year",
-		other: "almost {{count}} years"
-	}
-};
-const formatDistance$1 = (token, count$3, options$1) => {
-	let result;
-	const tokenValue = formatDistanceLocale$1[token];
-	if (typeof tokenValue === "string") result = tokenValue;
-	else if (count$3 === 1) result = tokenValue.one;
-	else result = tokenValue.other.replace("{{count}}", count$3.toString());
-	if (options$1?.addSuffix) if (options$1.comparison && options$1.comparison > 0) return "in " + result;
-	else return result + " ago";
-	return result;
-};
-function buildFormatLongFn(args) {
-	return (options$1 = {}) => {
-		const width = options$1.width ? String(options$1.width) : args.defaultWidth;
-		return args.formats[width] || args.formats[args.defaultWidth];
-	};
-}
-const formatLong$1 = {
-	date: buildFormatLongFn({
-		formats: {
-			full: "EEEE, MMMM do, y",
-			long: "MMMM do, y",
-			medium: "MMM d, y",
-			short: "MM/dd/yyyy"
-		},
-		defaultWidth: "full"
-	}),
-	time: buildFormatLongFn({
-		formats: {
-			full: "h:mm:ss a zzzz",
-			long: "h:mm:ss a z",
-			medium: "h:mm:ss a",
-			short: "h:mm a"
-		},
-		defaultWidth: "full"
-	}),
-	dateTime: buildFormatLongFn({
-		formats: {
-			full: "{{date}} 'at' {{time}}",
-			long: "{{date}} 'at' {{time}}",
-			medium: "{{date}}, {{time}}",
-			short: "{{date}}, {{time}}"
-		},
-		defaultWidth: "full"
-	})
-};
-var formatRelativeLocale$1 = {
-	lastWeek: "'last' eeee 'at' p",
-	yesterday: "'yesterday at' p",
-	today: "'today at' p",
-	tomorrow: "'tomorrow at' p",
-	nextWeek: "eeee 'at' p",
-	other: "P"
-};
-const formatRelative$1 = (token, _date$1, _baseDate, _options) => formatRelativeLocale$1[token];
-function buildLocalizeFn(args) {
-	return (value, options$1) => {
-		const context = options$1?.context ? String(options$1.context) : "standalone";
-		let valuesArray;
-		if (context === "formatting" && args.formattingValues) {
-			const defaultWidth = args.defaultFormattingWidth || args.defaultWidth;
-			const width = options$1?.width ? String(options$1.width) : defaultWidth;
-			valuesArray = args.formattingValues[width] || args.formattingValues[defaultWidth];
-		} else {
-			const defaultWidth = args.defaultWidth;
-			const width = options$1?.width ? String(options$1.width) : args.defaultWidth;
-			valuesArray = args.values[width] || args.values[defaultWidth];
-		}
-		const index$1 = args.argumentCallback ? args.argumentCallback(value) : value;
-		return valuesArray[index$1];
-	};
-}
-var eraValues$1 = {
-	narrow: ["B", "A"],
-	abbreviated: ["BC", "AD"],
-	wide: ["Before Christ", "Anno Domini"]
-};
-var quarterValues$1 = {
-	narrow: [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	abbreviated: [
-		"Q1",
-		"Q2",
-		"Q3",
-		"Q4"
-	],
-	wide: [
-		"1st quarter",
-		"2nd quarter",
-		"3rd quarter",
-		"4th quarter"
-	]
-};
-var monthValues$1 = {
-	narrow: [
-		"J",
-		"F",
-		"M",
-		"A",
-		"M",
-		"J",
-		"J",
-		"A",
-		"S",
-		"O",
-		"N",
-		"D"
-	],
-	abbreviated: [
-		"Jan",
-		"Feb",
-		"Mar",
-		"Apr",
-		"May",
-		"Jun",
-		"Jul",
-		"Aug",
-		"Sep",
-		"Oct",
-		"Nov",
-		"Dec"
-	],
-	wide: [
-		"January",
-		"February",
-		"March",
-		"April",
-		"May",
-		"June",
-		"July",
-		"August",
-		"September",
-		"October",
-		"November",
-		"December"
-	]
-};
-var dayValues$1 = {
-	narrow: [
-		"S",
-		"M",
-		"T",
-		"W",
-		"T",
-		"F",
-		"S"
-	],
-	short: [
-		"Su",
-		"Mo",
-		"Tu",
-		"We",
-		"Th",
-		"Fr",
-		"Sa"
-	],
-	abbreviated: [
-		"Sun",
-		"Mon",
-		"Tue",
-		"Wed",
-		"Thu",
-		"Fri",
-		"Sat"
-	],
-	wide: [
-		"Sunday",
-		"Monday",
-		"Tuesday",
-		"Wednesday",
-		"Thursday",
-		"Friday",
-		"Saturday"
-	]
-};
-var dayPeriodValues$1 = {
-	narrow: {
-		am: "a",
-		pm: "p",
-		midnight: "mi",
-		noon: "n",
-		morning: "morning",
-		afternoon: "afternoon",
-		evening: "evening",
-		night: "night"
-	},
-	abbreviated: {
-		am: "AM",
-		pm: "PM",
-		midnight: "midnight",
-		noon: "noon",
-		morning: "morning",
-		afternoon: "afternoon",
-		evening: "evening",
-		night: "night"
-	},
-	wide: {
-		am: "a.m.",
-		pm: "p.m.",
-		midnight: "midnight",
-		noon: "noon",
-		morning: "morning",
-		afternoon: "afternoon",
-		evening: "evening",
-		night: "night"
-	}
-};
-var formattingDayPeriodValues$1 = {
-	narrow: {
-		am: "a",
-		pm: "p",
-		midnight: "mi",
-		noon: "n",
-		morning: "in the morning",
-		afternoon: "in the afternoon",
-		evening: "in the evening",
-		night: "at night"
-	},
-	abbreviated: {
-		am: "AM",
-		pm: "PM",
-		midnight: "midnight",
-		noon: "noon",
-		morning: "in the morning",
-		afternoon: "in the afternoon",
-		evening: "in the evening",
-		night: "at night"
-	},
-	wide: {
-		am: "a.m.",
-		pm: "p.m.",
-		midnight: "midnight",
-		noon: "noon",
-		morning: "in the morning",
-		afternoon: "in the afternoon",
-		evening: "in the evening",
-		night: "at night"
-	}
-};
-var ordinalNumber$1 = (dirtyNumber, _options) => {
-	const number$5 = Number(dirtyNumber);
-	const rem100 = number$5 % 100;
-	if (rem100 > 20 || rem100 < 10) switch (rem100 % 10) {
-		case 1: return number$5 + "st";
-		case 2: return number$5 + "nd";
-		case 3: return number$5 + "rd";
-	}
-	return number$5 + "th";
-};
-const localize$1 = {
-	ordinalNumber: ordinalNumber$1,
-	era: buildLocalizeFn({
-		values: eraValues$1,
-		defaultWidth: "wide"
-	}),
-	quarter: buildLocalizeFn({
-		values: quarterValues$1,
-		defaultWidth: "wide",
-		argumentCallback: (quarter) => quarter - 1
-	}),
-	month: buildLocalizeFn({
-		values: monthValues$1,
-		defaultWidth: "wide"
-	}),
-	day: buildLocalizeFn({
-		values: dayValues$1,
-		defaultWidth: "wide"
-	}),
-	dayPeriod: buildLocalizeFn({
-		values: dayPeriodValues$1,
-		defaultWidth: "wide",
-		formattingValues: formattingDayPeriodValues$1,
-		defaultFormattingWidth: "wide"
-	})
-};
-function buildMatchFn(args) {
-	return (string$2, options$1 = {}) => {
-		const width = options$1.width;
-		const matchPattern = width && args.matchPatterns[width] || args.matchPatterns[args.defaultMatchWidth];
-		const matchResult = string$2.match(matchPattern);
-		if (!matchResult) return null;
-		const matchedString = matchResult[0];
-		const parsePatterns = width && args.parsePatterns[width] || args.parsePatterns[args.defaultParseWidth];
-		const key = Array.isArray(parsePatterns) ? findIndex(parsePatterns, (pattern) => pattern.test(matchedString)) : findKey(parsePatterns, (pattern) => pattern.test(matchedString));
-		let value;
-		value = args.valueCallback ? args.valueCallback(key) : key;
-		value = options$1.valueCallback ? options$1.valueCallback(value) : value;
-		const rest = string$2.slice(matchedString.length);
-		return {
-			value,
-			rest
-		};
-	};
-}
-function findKey(object$1, predicate) {
-	for (const key in object$1) if (Object.prototype.hasOwnProperty.call(object$1, key) && predicate(object$1[key])) return key;
-}
-function findIndex(array$1, predicate) {
-	for (let key = 0; key < array$1.length; key++) if (predicate(array$1[key])) return key;
-}
-function buildMatchPatternFn(args) {
-	return (string$2, options$1 = {}) => {
-		const matchResult = string$2.match(args.matchPattern);
-		if (!matchResult) return null;
-		const matchedString = matchResult[0];
-		const parseResult = string$2.match(args.parsePattern);
-		if (!parseResult) return null;
-		let value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
-		value = options$1.valueCallback ? options$1.valueCallback(value) : value;
-		const rest = string$2.slice(matchedString.length);
-		return {
-			value,
-			rest
-		};
-	};
-}
-const enUS$1 = {
-	code: "en-US",
-	formatDistance: formatDistance$1,
-	formatLong: formatLong$1,
-	formatRelative: formatRelative$1,
-	localize: localize$1,
-	match: {
-		ordinalNumber: buildMatchPatternFn({
-			matchPattern: /^(\d+)(th|st|nd|rd)?/i,
-			parsePattern: /\d+/i,
-			valueCallback: (value) => parseInt(value, 10)
-		}),
-		era: buildMatchFn({
-			matchPatterns: {
-				narrow: /^(b|a)/i,
-				abbreviated: /^(b\.?\s?c\.?|b\.?\s?c\.?\s?e\.?|a\.?\s?d\.?|c\.?\s?e\.?)/i,
-				wide: /^(before christ|before common era|anno domini|common era)/i
-			},
-			defaultMatchWidth: "wide",
-			parsePatterns: { any: [/^b/i, /^(a|c)/i] },
-			defaultParseWidth: "any"
-		}),
-		quarter: buildMatchFn({
-			matchPatterns: {
-				narrow: /^[1234]/i,
-				abbreviated: /^q[1234]/i,
-				wide: /^[1234](th|st|nd|rd)? quarter/i
-			},
-			defaultMatchWidth: "wide",
-			parsePatterns: { any: [
-				/1/i,
-				/2/i,
-				/3/i,
-				/4/i
-			] },
-			defaultParseWidth: "any",
-			valueCallback: (index$1) => index$1 + 1
-		}),
-		month: buildMatchFn({
-			matchPatterns: {
-				narrow: /^[jfmasond]/i,
-				abbreviated: /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i,
-				wide: /^(january|february|march|april|may|june|july|august|september|october|november|december)/i
-			},
-			defaultMatchWidth: "wide",
-			parsePatterns: {
-				narrow: [
-					/^j/i,
-					/^f/i,
-					/^m/i,
-					/^a/i,
-					/^m/i,
-					/^j/i,
-					/^j/i,
-					/^a/i,
-					/^s/i,
-					/^o/i,
-					/^n/i,
-					/^d/i
-				],
-				any: [
-					/^ja/i,
-					/^f/i,
-					/^mar/i,
-					/^ap/i,
-					/^may/i,
-					/^jun/i,
-					/^jul/i,
-					/^au/i,
-					/^s/i,
-					/^o/i,
-					/^n/i,
-					/^d/i
-				]
-			},
-			defaultParseWidth: "any"
-		}),
-		day: buildMatchFn({
-			matchPatterns: {
-				narrow: /^[smtwf]/i,
-				short: /^(su|mo|tu|we|th|fr|sa)/i,
-				abbreviated: /^(sun|mon|tue|wed|thu|fri|sat)/i,
-				wide: /^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i
-			},
-			defaultMatchWidth: "wide",
-			parsePatterns: {
-				narrow: [
-					/^s/i,
-					/^m/i,
-					/^t/i,
-					/^w/i,
-					/^t/i,
-					/^f/i,
-					/^s/i
-				],
-				any: [
-					/^su/i,
-					/^m/i,
-					/^tu/i,
-					/^w/i,
-					/^th/i,
-					/^f/i,
-					/^sa/i
-				]
-			},
-			defaultParseWidth: "any"
-		}),
-		dayPeriod: buildMatchFn({
-			matchPatterns: {
-				narrow: /^(a|p|mi|n|(in the|at) (morning|afternoon|evening|night))/i,
-				any: /^([ap]\.?\s?m\.?|midnight|noon|(in the|at) (morning|afternoon|evening|night))/i
-			},
-			defaultMatchWidth: "any",
-			parsePatterns: { any: {
-				am: /^a/i,
-				pm: /^p/i,
-				midnight: /^mi/i,
-				noon: /^no/i,
-				morning: /morning/i,
-				afternoon: /afternoon/i,
-				evening: /evening/i,
-				night: /night/i
-			} },
-			defaultParseWidth: "any"
-		})
-	},
-	options: {
-		weekStartsOn: 0,
-		firstWeekContainsDate: 1
-	}
-};
-function getDayOfYear(date$4, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	return differenceInCalendarDays(_date$1, startOfYear(_date$1)) + 1;
-}
-function getISOWeek(date$4, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	const diff = +startOfISOWeek(_date$1) - +startOfISOWeekYear(_date$1);
-	return Math.round(diff / millisecondsInWeek) + 1;
-}
-function getWeekYear(date$4, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	const year = _date$1.getFullYear();
-	const defaultOptions$2 = getDefaultOptions();
-	const firstWeekContainsDate = options$1?.firstWeekContainsDate ?? options$1?.locale?.options?.firstWeekContainsDate ?? defaultOptions$2.firstWeekContainsDate ?? defaultOptions$2.locale?.options?.firstWeekContainsDate ?? 1;
-	const firstWeekOfNextYear = constructFrom(options$1?.in || date$4, 0);
-	firstWeekOfNextYear.setFullYear(year + 1, 0, firstWeekContainsDate);
-	firstWeekOfNextYear.setHours(0, 0, 0, 0);
-	const startOfNextYear = startOfWeek(firstWeekOfNextYear, options$1);
-	const firstWeekOfThisYear = constructFrom(options$1?.in || date$4, 0);
-	firstWeekOfThisYear.setFullYear(year, 0, firstWeekContainsDate);
-	firstWeekOfThisYear.setHours(0, 0, 0, 0);
-	const startOfThisYear = startOfWeek(firstWeekOfThisYear, options$1);
-	if (+_date$1 >= +startOfNextYear) return year + 1;
-	else if (+_date$1 >= +startOfThisYear) return year;
-	else return year - 1;
-}
-function startOfWeekYear(date$4, options$1) {
-	const defaultOptions$2 = getDefaultOptions();
-	const firstWeekContainsDate = options$1?.firstWeekContainsDate ?? options$1?.locale?.options?.firstWeekContainsDate ?? defaultOptions$2.firstWeekContainsDate ?? defaultOptions$2.locale?.options?.firstWeekContainsDate ?? 1;
-	const year = getWeekYear(date$4, options$1);
-	const firstWeek = constructFrom(options$1?.in || date$4, 0);
-	firstWeek.setFullYear(year, 0, firstWeekContainsDate);
-	firstWeek.setHours(0, 0, 0, 0);
-	return startOfWeek(firstWeek, options$1);
-}
-function getWeek(date$4, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	const diff = +startOfWeek(_date$1, options$1) - +startOfWeekYear(_date$1, options$1);
-	return Math.round(diff / millisecondsInWeek) + 1;
-}
-function addLeadingZeros(number$5, targetLength) {
-	return (number$5 < 0 ? "-" : "") + Math.abs(number$5).toString().padStart(targetLength, "0");
-}
-const lightFormatters = {
-	y(date$4, token) {
-		const signedYear = date$4.getFullYear();
-		const year = signedYear > 0 ? signedYear : 1 - signedYear;
-		return addLeadingZeros(token === "yy" ? year % 100 : year, token.length);
-	},
-	M(date$4, token) {
-		const month = date$4.getMonth();
-		return token === "M" ? String(month + 1) : addLeadingZeros(month + 1, 2);
-	},
-	d(date$4, token) {
-		return addLeadingZeros(date$4.getDate(), token.length);
-	},
-	a(date$4, token) {
-		const dayPeriodEnumValue = date$4.getHours() / 12 >= 1 ? "pm" : "am";
-		switch (token) {
-			case "a":
-			case "aa": return dayPeriodEnumValue.toUpperCase();
-			case "aaa": return dayPeriodEnumValue;
-			case "aaaaa": return dayPeriodEnumValue[0];
-			case "aaaa":
-			default: return dayPeriodEnumValue === "am" ? "a.m." : "p.m.";
-		}
-	},
-	h(date$4, token) {
-		return addLeadingZeros(date$4.getHours() % 12 || 12, token.length);
-	},
-	H(date$4, token) {
-		return addLeadingZeros(date$4.getHours(), token.length);
-	},
-	m(date$4, token) {
-		return addLeadingZeros(date$4.getMinutes(), token.length);
-	},
-	s(date$4, token) {
-		return addLeadingZeros(date$4.getSeconds(), token.length);
-	},
-	S(date$4, token) {
-		const numberOfDigits = token.length;
-		const milliseconds$1 = date$4.getMilliseconds();
-		return addLeadingZeros(Math.trunc(milliseconds$1 * Math.pow(10, numberOfDigits - 3)), token.length);
-	}
-};
-var dayPeriodEnum = {
-	am: "am",
-	pm: "pm",
-	midnight: "midnight",
-	noon: "noon",
-	morning: "morning",
-	afternoon: "afternoon",
-	evening: "evening",
-	night: "night"
-};
-const formatters = {
-	G: function(date$4, token, localize$2) {
-		const era = date$4.getFullYear() > 0 ? 1 : 0;
-		switch (token) {
-			case "G":
-			case "GG":
-			case "GGG": return localize$2.era(era, { width: "abbreviated" });
-			case "GGGGG": return localize$2.era(era, { width: "narrow" });
-			case "GGGG":
-			default: return localize$2.era(era, { width: "wide" });
-		}
-	},
-	y: function(date$4, token, localize$2) {
-		if (token === "yo") {
-			const signedYear = date$4.getFullYear();
-			const year = signedYear > 0 ? signedYear : 1 - signedYear;
-			return localize$2.ordinalNumber(year, { unit: "year" });
-		}
-		return lightFormatters.y(date$4, token);
-	},
-	Y: function(date$4, token, localize$2, options$1) {
-		const signedWeekYear = getWeekYear(date$4, options$1);
-		const weekYear = signedWeekYear > 0 ? signedWeekYear : 1 - signedWeekYear;
-		if (token === "YY") return addLeadingZeros(weekYear % 100, 2);
-		if (token === "Yo") return localize$2.ordinalNumber(weekYear, { unit: "year" });
-		return addLeadingZeros(weekYear, token.length);
-	},
-	R: function(date$4, token) {
-		return addLeadingZeros(getISOWeekYear(date$4), token.length);
-	},
-	u: function(date$4, token) {
-		return addLeadingZeros(date$4.getFullYear(), token.length);
-	},
-	Q: function(date$4, token, localize$2) {
-		const quarter = Math.ceil((date$4.getMonth() + 1) / 3);
-		switch (token) {
-			case "Q": return String(quarter);
-			case "QQ": return addLeadingZeros(quarter, 2);
-			case "Qo": return localize$2.ordinalNumber(quarter, { unit: "quarter" });
-			case "QQQ": return localize$2.quarter(quarter, {
-				width: "abbreviated",
-				context: "formatting"
-			});
-			case "QQQQQ": return localize$2.quarter(quarter, {
-				width: "narrow",
-				context: "formatting"
-			});
-			case "QQQQ":
-			default: return localize$2.quarter(quarter, {
-				width: "wide",
-				context: "formatting"
-			});
-		}
-	},
-	q: function(date$4, token, localize$2) {
-		const quarter = Math.ceil((date$4.getMonth() + 1) / 3);
-		switch (token) {
-			case "q": return String(quarter);
-			case "qq": return addLeadingZeros(quarter, 2);
-			case "qo": return localize$2.ordinalNumber(quarter, { unit: "quarter" });
-			case "qqq": return localize$2.quarter(quarter, {
-				width: "abbreviated",
-				context: "standalone"
-			});
-			case "qqqqq": return localize$2.quarter(quarter, {
-				width: "narrow",
-				context: "standalone"
-			});
-			case "qqqq":
-			default: return localize$2.quarter(quarter, {
-				width: "wide",
-				context: "standalone"
-			});
-		}
-	},
-	M: function(date$4, token, localize$2) {
-		const month = date$4.getMonth();
-		switch (token) {
-			case "M":
-			case "MM": return lightFormatters.M(date$4, token);
-			case "Mo": return localize$2.ordinalNumber(month + 1, { unit: "month" });
-			case "MMM": return localize$2.month(month, {
-				width: "abbreviated",
-				context: "formatting"
-			});
-			case "MMMMM": return localize$2.month(month, {
-				width: "narrow",
-				context: "formatting"
-			});
-			case "MMMM":
-			default: return localize$2.month(month, {
-				width: "wide",
-				context: "formatting"
-			});
-		}
-	},
-	L: function(date$4, token, localize$2) {
-		const month = date$4.getMonth();
-		switch (token) {
-			case "L": return String(month + 1);
-			case "LL": return addLeadingZeros(month + 1, 2);
-			case "Lo": return localize$2.ordinalNumber(month + 1, { unit: "month" });
-			case "LLL": return localize$2.month(month, {
-				width: "abbreviated",
-				context: "standalone"
-			});
-			case "LLLLL": return localize$2.month(month, {
-				width: "narrow",
-				context: "standalone"
-			});
-			case "LLLL":
-			default: return localize$2.month(month, {
-				width: "wide",
-				context: "standalone"
-			});
-		}
-	},
-	w: function(date$4, token, localize$2, options$1) {
-		const week = getWeek(date$4, options$1);
-		if (token === "wo") return localize$2.ordinalNumber(week, { unit: "week" });
-		return addLeadingZeros(week, token.length);
-	},
-	I: function(date$4, token, localize$2) {
-		const isoWeek = getISOWeek(date$4);
-		if (token === "Io") return localize$2.ordinalNumber(isoWeek, { unit: "week" });
-		return addLeadingZeros(isoWeek, token.length);
-	},
-	d: function(date$4, token, localize$2) {
-		if (token === "do") return localize$2.ordinalNumber(date$4.getDate(), { unit: "date" });
-		return lightFormatters.d(date$4, token);
-	},
-	D: function(date$4, token, localize$2) {
-		const dayOfYear = getDayOfYear(date$4);
-		if (token === "Do") return localize$2.ordinalNumber(dayOfYear, { unit: "dayOfYear" });
-		return addLeadingZeros(dayOfYear, token.length);
-	},
-	E: function(date$4, token, localize$2) {
-		const dayOfWeek = date$4.getDay();
-		switch (token) {
-			case "E":
-			case "EE":
-			case "EEE": return localize$2.day(dayOfWeek, {
-				width: "abbreviated",
-				context: "formatting"
-			});
-			case "EEEEE": return localize$2.day(dayOfWeek, {
-				width: "narrow",
-				context: "formatting"
-			});
-			case "EEEEEE": return localize$2.day(dayOfWeek, {
-				width: "short",
-				context: "formatting"
-			});
-			case "EEEE":
-			default: return localize$2.day(dayOfWeek, {
-				width: "wide",
-				context: "formatting"
-			});
-		}
-	},
-	e: function(date$4, token, localize$2, options$1) {
-		const dayOfWeek = date$4.getDay();
-		const localDayOfWeek = (dayOfWeek - options$1.weekStartsOn + 8) % 7 || 7;
-		switch (token) {
-			case "e": return String(localDayOfWeek);
-			case "ee": return addLeadingZeros(localDayOfWeek, 2);
-			case "eo": return localize$2.ordinalNumber(localDayOfWeek, { unit: "day" });
-			case "eee": return localize$2.day(dayOfWeek, {
-				width: "abbreviated",
-				context: "formatting"
-			});
-			case "eeeee": return localize$2.day(dayOfWeek, {
-				width: "narrow",
-				context: "formatting"
-			});
-			case "eeeeee": return localize$2.day(dayOfWeek, {
-				width: "short",
-				context: "formatting"
-			});
-			case "eeee":
-			default: return localize$2.day(dayOfWeek, {
-				width: "wide",
-				context: "formatting"
-			});
-		}
-	},
-	c: function(date$4, token, localize$2, options$1) {
-		const dayOfWeek = date$4.getDay();
-		const localDayOfWeek = (dayOfWeek - options$1.weekStartsOn + 8) % 7 || 7;
-		switch (token) {
-			case "c": return String(localDayOfWeek);
-			case "cc": return addLeadingZeros(localDayOfWeek, token.length);
-			case "co": return localize$2.ordinalNumber(localDayOfWeek, { unit: "day" });
-			case "ccc": return localize$2.day(dayOfWeek, {
-				width: "abbreviated",
-				context: "standalone"
-			});
-			case "ccccc": return localize$2.day(dayOfWeek, {
-				width: "narrow",
-				context: "standalone"
-			});
-			case "cccccc": return localize$2.day(dayOfWeek, {
-				width: "short",
-				context: "standalone"
-			});
-			case "cccc":
-			default: return localize$2.day(dayOfWeek, {
-				width: "wide",
-				context: "standalone"
-			});
-		}
-	},
-	i: function(date$4, token, localize$2) {
-		const dayOfWeek = date$4.getDay();
-		const isoDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
-		switch (token) {
-			case "i": return String(isoDayOfWeek);
-			case "ii": return addLeadingZeros(isoDayOfWeek, token.length);
-			case "io": return localize$2.ordinalNumber(isoDayOfWeek, { unit: "day" });
-			case "iii": return localize$2.day(dayOfWeek, {
-				width: "abbreviated",
-				context: "formatting"
-			});
-			case "iiiii": return localize$2.day(dayOfWeek, {
-				width: "narrow",
-				context: "formatting"
-			});
-			case "iiiiii": return localize$2.day(dayOfWeek, {
-				width: "short",
-				context: "formatting"
-			});
-			case "iiii":
-			default: return localize$2.day(dayOfWeek, {
-				width: "wide",
-				context: "formatting"
-			});
-		}
-	},
-	a: function(date$4, token, localize$2) {
-		const dayPeriodEnumValue = date$4.getHours() / 12 >= 1 ? "pm" : "am";
-		switch (token) {
-			case "a":
-			case "aa": return localize$2.dayPeriod(dayPeriodEnumValue, {
-				width: "abbreviated",
-				context: "formatting"
-			});
-			case "aaa": return localize$2.dayPeriod(dayPeriodEnumValue, {
-				width: "abbreviated",
-				context: "formatting"
-			}).toLowerCase();
-			case "aaaaa": return localize$2.dayPeriod(dayPeriodEnumValue, {
-				width: "narrow",
-				context: "formatting"
-			});
-			case "aaaa":
-			default: return localize$2.dayPeriod(dayPeriodEnumValue, {
-				width: "wide",
-				context: "formatting"
-			});
-		}
-	},
-	b: function(date$4, token, localize$2) {
-		const hours = date$4.getHours();
-		let dayPeriodEnumValue;
-		if (hours === 12) dayPeriodEnumValue = dayPeriodEnum.noon;
-		else if (hours === 0) dayPeriodEnumValue = dayPeriodEnum.midnight;
-		else dayPeriodEnumValue = hours / 12 >= 1 ? "pm" : "am";
-		switch (token) {
-			case "b":
-			case "bb": return localize$2.dayPeriod(dayPeriodEnumValue, {
-				width: "abbreviated",
-				context: "formatting"
-			});
-			case "bbb": return localize$2.dayPeriod(dayPeriodEnumValue, {
-				width: "abbreviated",
-				context: "formatting"
-			}).toLowerCase();
-			case "bbbbb": return localize$2.dayPeriod(dayPeriodEnumValue, {
-				width: "narrow",
-				context: "formatting"
-			});
-			case "bbbb":
-			default: return localize$2.dayPeriod(dayPeriodEnumValue, {
-				width: "wide",
-				context: "formatting"
-			});
-		}
-	},
-	B: function(date$4, token, localize$2) {
-		const hours = date$4.getHours();
-		let dayPeriodEnumValue;
-		if (hours >= 17) dayPeriodEnumValue = dayPeriodEnum.evening;
-		else if (hours >= 12) dayPeriodEnumValue = dayPeriodEnum.afternoon;
-		else if (hours >= 4) dayPeriodEnumValue = dayPeriodEnum.morning;
-		else dayPeriodEnumValue = dayPeriodEnum.night;
-		switch (token) {
-			case "B":
-			case "BB":
-			case "BBB": return localize$2.dayPeriod(dayPeriodEnumValue, {
-				width: "abbreviated",
-				context: "formatting"
-			});
-			case "BBBBB": return localize$2.dayPeriod(dayPeriodEnumValue, {
-				width: "narrow",
-				context: "formatting"
-			});
-			case "BBBB":
-			default: return localize$2.dayPeriod(dayPeriodEnumValue, {
-				width: "wide",
-				context: "formatting"
-			});
-		}
-	},
-	h: function(date$4, token, localize$2) {
-		if (token === "ho") {
-			let hours = date$4.getHours() % 12;
-			if (hours === 0) hours = 12;
-			return localize$2.ordinalNumber(hours, { unit: "hour" });
-		}
-		return lightFormatters.h(date$4, token);
-	},
-	H: function(date$4, token, localize$2) {
-		if (token === "Ho") return localize$2.ordinalNumber(date$4.getHours(), { unit: "hour" });
-		return lightFormatters.H(date$4, token);
-	},
-	K: function(date$4, token, localize$2) {
-		const hours = date$4.getHours() % 12;
-		if (token === "Ko") return localize$2.ordinalNumber(hours, { unit: "hour" });
-		return addLeadingZeros(hours, token.length);
-	},
-	k: function(date$4, token, localize$2) {
-		let hours = date$4.getHours();
-		if (hours === 0) hours = 24;
-		if (token === "ko") return localize$2.ordinalNumber(hours, { unit: "hour" });
-		return addLeadingZeros(hours, token.length);
-	},
-	m: function(date$4, token, localize$2) {
-		if (token === "mo") return localize$2.ordinalNumber(date$4.getMinutes(), { unit: "minute" });
-		return lightFormatters.m(date$4, token);
-	},
-	s: function(date$4, token, localize$2) {
-		if (token === "so") return localize$2.ordinalNumber(date$4.getSeconds(), { unit: "second" });
-		return lightFormatters.s(date$4, token);
-	},
-	S: function(date$4, token) {
-		return lightFormatters.S(date$4, token);
-	},
-	X: function(date$4, token, _localize) {
-		const timezoneOffset = date$4.getTimezoneOffset();
-		if (timezoneOffset === 0) return "Z";
-		switch (token) {
-			case "X": return formatTimezoneWithOptionalMinutes(timezoneOffset);
-			case "XXXX":
-			case "XX": return formatTimezone(timezoneOffset);
-			case "XXXXX":
-			case "XXX":
-			default: return formatTimezone(timezoneOffset, ":");
-		}
-	},
-	x: function(date$4, token, _localize) {
-		const timezoneOffset = date$4.getTimezoneOffset();
-		switch (token) {
-			case "x": return formatTimezoneWithOptionalMinutes(timezoneOffset);
-			case "xxxx":
-			case "xx": return formatTimezone(timezoneOffset);
-			case "xxxxx":
-			case "xxx":
-			default: return formatTimezone(timezoneOffset, ":");
-		}
-	},
-	O: function(date$4, token, _localize) {
-		const timezoneOffset = date$4.getTimezoneOffset();
-		switch (token) {
-			case "O":
-			case "OO":
-			case "OOO": return "GMT" + formatTimezoneShort(timezoneOffset, ":");
-			case "OOOO":
-			default: return "GMT" + formatTimezone(timezoneOffset, ":");
-		}
-	},
-	z: function(date$4, token, _localize) {
-		const timezoneOffset = date$4.getTimezoneOffset();
-		switch (token) {
-			case "z":
-			case "zz":
-			case "zzz": return "GMT" + formatTimezoneShort(timezoneOffset, ":");
-			case "zzzz":
-			default: return "GMT" + formatTimezone(timezoneOffset, ":");
-		}
-	},
-	t: function(date$4, token, _localize) {
-		return addLeadingZeros(Math.trunc(+date$4 / 1e3), token.length);
-	},
-	T: function(date$4, token, _localize) {
-		return addLeadingZeros(+date$4, token.length);
-	}
-};
-function formatTimezoneShort(offset$3, delimiter = "") {
-	const sign$1 = offset$3 > 0 ? "-" : "+";
-	const absOffset = Math.abs(offset$3);
-	const hours = Math.trunc(absOffset / 60);
-	const minutes = absOffset % 60;
-	if (minutes === 0) return sign$1 + String(hours);
-	return sign$1 + String(hours) + delimiter + addLeadingZeros(minutes, 2);
-}
-function formatTimezoneWithOptionalMinutes(offset$3, delimiter) {
-	if (offset$3 % 60 === 0) return (offset$3 > 0 ? "-" : "+") + addLeadingZeros(Math.abs(offset$3) / 60, 2);
-	return formatTimezone(offset$3, delimiter);
-}
-function formatTimezone(offset$3, delimiter = "") {
-	const sign$1 = offset$3 > 0 ? "-" : "+";
-	const absOffset = Math.abs(offset$3);
-	const hours = addLeadingZeros(Math.trunc(absOffset / 60), 2);
-	const minutes = addLeadingZeros(absOffset % 60, 2);
-	return sign$1 + hours + delimiter + minutes;
-}
-var dateLongFormatter = (pattern, formatLong$2) => {
-	switch (pattern) {
-		case "P": return formatLong$2.date({ width: "short" });
-		case "PP": return formatLong$2.date({ width: "medium" });
-		case "PPP": return formatLong$2.date({ width: "long" });
-		case "PPPP":
-		default: return formatLong$2.date({ width: "full" });
-	}
-};
-var timeLongFormatter = (pattern, formatLong$2) => {
-	switch (pattern) {
-		case "p": return formatLong$2.time({ width: "short" });
-		case "pp": return formatLong$2.time({ width: "medium" });
-		case "ppp": return formatLong$2.time({ width: "long" });
-		case "pppp":
-		default: return formatLong$2.time({ width: "full" });
-	}
-};
-var dateTimeLongFormatter = (pattern, formatLong$2) => {
-	const matchResult = pattern.match(/(P+)(p+)?/) || [];
-	const datePattern = matchResult[1];
-	const timePattern = matchResult[2];
-	if (!timePattern) return dateLongFormatter(pattern, formatLong$2);
-	let dateTimeFormat;
-	switch (datePattern) {
-		case "P":
-			dateTimeFormat = formatLong$2.dateTime({ width: "short" });
-			break;
-		case "PP":
-			dateTimeFormat = formatLong$2.dateTime({ width: "medium" });
-			break;
-		case "PPP":
-			dateTimeFormat = formatLong$2.dateTime({ width: "long" });
-			break;
-		case "PPPP":
-		default:
-			dateTimeFormat = formatLong$2.dateTime({ width: "full" });
-			break;
-	}
-	return dateTimeFormat.replace("{{date}}", dateLongFormatter(datePattern, formatLong$2)).replace("{{time}}", timeLongFormatter(timePattern, formatLong$2));
-};
-const longFormatters = {
-	p: timeLongFormatter,
-	P: dateTimeLongFormatter
-};
-var dayOfYearTokenRE = /^D+$/;
-var weekYearTokenRE = /^Y+$/;
-var throwTokens = [
-	"D",
-	"DD",
-	"YY",
-	"YYYY"
-];
-function isProtectedDayOfYearToken(token) {
-	return dayOfYearTokenRE.test(token);
-}
-function isProtectedWeekYearToken(token) {
-	return weekYearTokenRE.test(token);
-}
-function warnOrThrowProtectedError(token, format$2, input) {
-	const _message = message(token, format$2, input);
-	console.warn(_message);
-	if (throwTokens.includes(token)) throw new RangeError(_message);
-}
-function message(token, format$2, input) {
-	const subject = token[0] === "Y" ? "years" : "days of the month";
-	return `Use \`${token.toLowerCase()}\` instead of \`${token}\` (in \`${format$2}\`) for formatting ${subject} to the input \`${input}\`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md`;
-}
-var formattingTokensRegExp = /[yYQqMLwIdDecihHKkms]o|(\w)\1*|''|'(''|[^'])+('|$)|./g;
-var longFormattingTokensRegExp = /P+p+|P+|p+|''|'(''|[^'])+('|$)|./g;
-var escapedStringRegExp = /^'([^]*?)'?$/;
-var doubleQuoteRegExp = /''/g;
-var unescapedLatinCharacterRegExp = /[a-zA-Z]/;
-function format(date$4, formatStr, options$1) {
-	const defaultOptions$2 = getDefaultOptions();
-	const locale$2 = options$1?.locale ?? defaultOptions$2.locale ?? enUS$1;
-	const firstWeekContainsDate = options$1?.firstWeekContainsDate ?? options$1?.locale?.options?.firstWeekContainsDate ?? defaultOptions$2.firstWeekContainsDate ?? defaultOptions$2.locale?.options?.firstWeekContainsDate ?? 1;
-	const weekStartsOn = options$1?.weekStartsOn ?? options$1?.locale?.options?.weekStartsOn ?? defaultOptions$2.weekStartsOn ?? defaultOptions$2.locale?.options?.weekStartsOn ?? 0;
-	const originalDate = toDate(date$4, options$1?.in);
-	if (!isValid(originalDate)) throw new RangeError("Invalid time value");
-	let parts = formatStr.match(longFormattingTokensRegExp).map((substring) => {
-		const firstCharacter = substring[0];
-		if (firstCharacter === "p" || firstCharacter === "P") {
-			const longFormatter = longFormatters[firstCharacter];
-			return longFormatter(substring, locale$2.formatLong);
-		}
-		return substring;
-	}).join("").match(formattingTokensRegExp).map((substring) => {
-		if (substring === "''") return {
-			isToken: false,
-			value: "'"
-		};
-		const firstCharacter = substring[0];
-		if (firstCharacter === "'") return {
-			isToken: false,
-			value: cleanEscapedString(substring)
-		};
-		if (formatters[firstCharacter]) return {
-			isToken: true,
-			value: substring
-		};
-		if (firstCharacter.match(unescapedLatinCharacterRegExp)) throw new RangeError("Format string contains an unescaped latin alphabet character `" + firstCharacter + "`");
-		return {
-			isToken: false,
-			value: substring
-		};
-	});
-	if (locale$2.localize.preprocessor) parts = locale$2.localize.preprocessor(originalDate, parts);
-	const formatterOptions = {
-		firstWeekContainsDate,
-		weekStartsOn,
-		locale: locale$2
-	};
-	return parts.map((part) => {
-		if (!part.isToken) return part.value;
-		const token = part.value;
-		if (!options$1?.useAdditionalWeekYearTokens && isProtectedWeekYearToken(token) || !options$1?.useAdditionalDayOfYearTokens && isProtectedDayOfYearToken(token)) warnOrThrowProtectedError(token, formatStr, String(date$4));
-		const formatter = formatters[token[0]];
-		return formatter(originalDate, token, locale$2.localize, formatterOptions);
-	}).join("");
-}
-function cleanEscapedString(input) {
-	const matched = input.match(escapedStringRegExp);
-	if (!matched) return input;
-	return matched[1].replace(doubleQuoteRegExp, "'");
-}
-function getDay(date$4, options$1) {
-	return toDate(date$4, options$1?.in).getDay();
-}
-function getDaysInMonth(date$4, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	const year = _date$1.getFullYear();
-	const monthIndex = _date$1.getMonth();
-	const lastDayOfMonth = constructFrom(_date$1, 0);
-	lastDayOfMonth.setFullYear(year, monthIndex + 1, 0);
-	lastDayOfMonth.setHours(0, 0, 0, 0);
-	return lastDayOfMonth.getDate();
-}
-function getHours(date$4, options$1) {
-	return toDate(date$4, options$1?.in).getHours();
-}
-function getMonth(date$4, options$1) {
-	return toDate(date$4, options$1?.in).getMonth();
-}
-function getYear(date$4, options$1) {
-	return toDate(date$4, options$1?.in).getFullYear();
-}
-function isAfter(date$4, dateToCompare) {
-	return +toDate(date$4) > +toDate(dateToCompare);
-}
-function isBefore(date$4, dateToCompare) {
-	return +toDate(date$4) < +toDate(dateToCompare);
-}
-function isPast(date$4) {
-	return +toDate(date$4) < Date.now();
-}
-function isSameMonth(laterDate, earlierDate, options$1) {
-	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
-	return laterDate_.getFullYear() === earlierDate_.getFullYear() && laterDate_.getMonth() === earlierDate_.getMonth();
-}
-function isSameYear(laterDate, earlierDate, options$1) {
-	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
-	return laterDate_.getFullYear() === earlierDate_.getFullYear();
-}
-function isToday(date$4, options$1) {
-	return isSameDay(constructFrom(options$1?.in || date$4, date$4), constructNow(options$1?.in || date$4));
-}
-function parseISO(argument, options$1) {
-	const invalidDate = () => constructFrom(options$1?.in, NaN);
-	const additionalDigits = options$1?.additionalDigits ?? 2;
-	const dateStrings = splitDateString(argument);
-	let date$4;
-	if (dateStrings.date) {
-		const parseYearResult = parseYear(dateStrings.date, additionalDigits);
-		date$4 = parseDate(parseYearResult.restDateString, parseYearResult.year);
-	}
-	if (!date$4 || isNaN(+date$4)) return invalidDate();
-	const timestamp = +date$4;
-	let time$3 = 0;
-	let offset$3;
-	if (dateStrings.time) {
-		time$3 = parseTime(dateStrings.time);
-		if (isNaN(time$3)) return invalidDate();
-	}
-	if (dateStrings.timezone) {
-		offset$3 = parseTimezone(dateStrings.timezone);
-		if (isNaN(offset$3)) return invalidDate();
-	} else {
-		const tmpDate = new Date(timestamp + time$3);
-		const result = toDate(0, options$1?.in);
-		result.setFullYear(tmpDate.getUTCFullYear(), tmpDate.getUTCMonth(), tmpDate.getUTCDate());
-		result.setHours(tmpDate.getUTCHours(), tmpDate.getUTCMinutes(), tmpDate.getUTCSeconds(), tmpDate.getUTCMilliseconds());
-		return result;
-	}
-	return toDate(timestamp + time$3 + offset$3, options$1?.in);
-}
-var patterns = {
-	dateTimeDelimiter: /[T ]/,
-	timeZoneDelimiter: /[Z ]/i,
-	timezone: /([Z+-].*)$/
-};
-var dateRegex = /^-?(?:(\d{3})|(\d{2})(?:-?(\d{2}))?|W(\d{2})(?:-?(\d{1}))?|)$/;
-var timeRegex = /^(\d{2}(?:[.,]\d*)?)(?::?(\d{2}(?:[.,]\d*)?))?(?::?(\d{2}(?:[.,]\d*)?))?$/;
-var timezoneRegex = /^([+-])(\d{2})(?::?(\d{2}))?$/;
-function splitDateString(dateString) {
-	const dateStrings = {};
-	const array$1 = dateString.split(patterns.dateTimeDelimiter);
-	let timeString;
-	if (array$1.length > 2) return dateStrings;
-	if (/:/.test(array$1[0])) timeString = array$1[0];
-	else {
-		dateStrings.date = array$1[0];
-		timeString = array$1[1];
-		if (patterns.timeZoneDelimiter.test(dateStrings.date)) {
-			dateStrings.date = dateString.split(patterns.timeZoneDelimiter)[0];
-			timeString = dateString.substr(dateStrings.date.length, dateString.length);
-		}
-	}
-	if (timeString) {
-		const token = patterns.timezone.exec(timeString);
-		if (token) {
-			dateStrings.time = timeString.replace(token[1], "");
-			dateStrings.timezone = token[1];
-		} else dateStrings.time = timeString;
-	}
-	return dateStrings;
-}
-function parseYear(dateString, additionalDigits) {
-	const regex = /* @__PURE__ */ new RegExp("^(?:(\\d{4}|[+-]\\d{" + (4 + additionalDigits) + "})|(\\d{2}|[+-]\\d{" + (2 + additionalDigits) + "})$)");
-	const captures = dateString.match(regex);
-	if (!captures) return {
-		year: NaN,
-		restDateString: ""
-	};
-	const year = captures[1] ? parseInt(captures[1]) : null;
-	const century = captures[2] ? parseInt(captures[2]) : null;
-	return {
-		year: century === null ? year : century * 100,
-		restDateString: dateString.slice((captures[1] || captures[2]).length)
-	};
-}
-function parseDate(dateString, year) {
-	if (year === null) return /* @__PURE__ */ new Date(NaN);
-	const captures = dateString.match(dateRegex);
-	if (!captures) return /* @__PURE__ */ new Date(NaN);
-	const isWeekDate = !!captures[4];
-	const dayOfYear = parseDateUnit(captures[1]);
-	const month = parseDateUnit(captures[2]) - 1;
-	const day = parseDateUnit(captures[3]);
-	const week = parseDateUnit(captures[4]);
-	const dayOfWeek = parseDateUnit(captures[5]) - 1;
-	if (isWeekDate) {
-		if (!validateWeekDate(year, week, dayOfWeek)) return /* @__PURE__ */ new Date(NaN);
-		return dayOfISOWeekYear(year, week, dayOfWeek);
-	} else {
-		const date$4 = /* @__PURE__ */ new Date(0);
-		if (!validateDate(year, month, day) || !validateDayOfYearDate(year, dayOfYear)) return /* @__PURE__ */ new Date(NaN);
-		date$4.setUTCFullYear(year, month, Math.max(dayOfYear, day));
-		return date$4;
-	}
-}
-function parseDateUnit(value) {
-	return value ? parseInt(value) : 1;
-}
-function parseTime(timeString) {
-	const captures = timeString.match(timeRegex);
-	if (!captures) return NaN;
-	const hours = parseTimeUnit(captures[1]);
-	const minutes = parseTimeUnit(captures[2]);
-	const seconds$1 = parseTimeUnit(captures[3]);
-	if (!validateTime(hours, minutes, seconds$1)) return NaN;
-	return hours * millisecondsInHour + minutes * millisecondsInMinute + seconds$1 * 1e3;
-}
-function parseTimeUnit(value) {
-	return value && parseFloat(value.replace(",", ".")) || 0;
-}
-function parseTimezone(timezoneString) {
-	if (timezoneString === "Z") return 0;
-	const captures = timezoneString.match(timezoneRegex);
-	if (!captures) return 0;
-	const sign$1 = captures[1] === "+" ? -1 : 1;
-	const hours = parseInt(captures[2]);
-	const minutes = captures[3] && parseInt(captures[3]) || 0;
-	if (!validateTimezone(hours, minutes)) return NaN;
-	return sign$1 * (hours * millisecondsInHour + minutes * millisecondsInMinute);
-}
-function dayOfISOWeekYear(isoWeekYear, week, day) {
-	const date$4 = /* @__PURE__ */ new Date(0);
-	date$4.setUTCFullYear(isoWeekYear, 0, 4);
-	const fourthOfJanuaryDay = date$4.getUTCDay() || 7;
-	const diff = (week - 1) * 7 + day + 1 - fourthOfJanuaryDay;
-	date$4.setUTCDate(date$4.getUTCDate() + diff);
-	return date$4;
-}
-var daysInMonths = [
-	31,
-	null,
-	31,
-	30,
-	31,
-	30,
-	31,
-	31,
-	30,
-	31,
-	30,
-	31
-];
-function isLeapYearIndex(year) {
-	return year % 400 === 0 || year % 4 === 0 && year % 100 !== 0;
-}
-function validateDate(year, month, date$4) {
-	return month >= 0 && month <= 11 && date$4 >= 1 && date$4 <= (daysInMonths[month] || (isLeapYearIndex(year) ? 29 : 28));
-}
-function validateDayOfYearDate(year, dayOfYear) {
-	return dayOfYear >= 1 && dayOfYear <= (isLeapYearIndex(year) ? 366 : 365);
-}
-function validateWeekDate(_year, week, day) {
-	return week >= 1 && week <= 53 && day >= 0 && day <= 6;
-}
-function validateTime(hours, minutes, seconds$1) {
-	if (hours === 24) return minutes === 0 && seconds$1 === 0;
-	return seconds$1 >= 0 && seconds$1 < 60 && minutes >= 0 && minutes < 60 && hours >= 0 && hours < 25;
-}
-function validateTimezone(_hours, minutes) {
-	return minutes >= 0 && minutes <= 59;
-}
-function setMonth(date$4, month, options$1) {
-	const _date$1 = toDate(date$4, options$1?.in);
-	const year = _date$1.getFullYear();
-	const day = _date$1.getDate();
-	const midMonth = constructFrom(options$1?.in || date$4, 0);
-	midMonth.setFullYear(year, month, 15);
-	midMonth.setHours(0, 0, 0, 0);
-	const daysInMonth = getDaysInMonth(midMonth);
-	_date$1.setMonth(month, Math.min(day, daysInMonth));
-	return _date$1;
-}
-function setYear(date$4, year, options$1) {
-	const date_ = toDate(date$4, options$1?.in);
-	if (isNaN(+date_)) return constructFrom(options$1?.in || date$4, NaN);
-	date_.setFullYear(year);
-	return date_;
-}
-function subMonths(date$4, amount, options$1) {
-	return addMonths(date$4, -amount, options$1);
-}
 var Textarea = import_react.forwardRef(({ className, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", {
 		className: cn("flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm", className),
@@ -66910,7 +67721,7 @@ var Textarea = import_react.forwardRef(({ className, ...props }, ref) => {
 	});
 });
 Textarea.displayName = "Textarea";
-var NAME = "Label";
+var NAME$1 = "Label";
 var Label$2 = import_react.forwardRef((props, forwardedRef) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.label, {
 		...props,
@@ -66922,15 +67733,15 @@ var Label$2 = import_react.forwardRef((props, forwardedRef) => {
 		}
 	});
 });
-Label$2.displayName = NAME;
-var Root$4 = Label$2;
+Label$2.displayName = NAME$1;
+var Root$5 = Label$2;
 var labelVariants = cva("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
-var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
+var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
 	ref,
 	className: cn(labelVariants(), className),
 	...props
 }));
-Label.displayName = Root$4.displayName;
+Label.displayName = Root$5.displayName;
 var Form = FormProvider;
 var FormFieldContext = import_react.createContext({});
 var FormField = ({ ...props }) => {
@@ -67664,12 +68475,12 @@ var SelectLabel$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 SelectLabel$1.displayName = LABEL_NAME;
-var ITEM_NAME$2 = "SelectItem";
-var [SelectItemContextProvider, useSelectItemContext] = createSelectContext(ITEM_NAME$2);
+var ITEM_NAME$3 = "SelectItem";
+var [SelectItemContextProvider, useSelectItemContext] = createSelectContext(ITEM_NAME$3);
 var SelectItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, value, disabled = false, textValue: textValueProp, ...itemProps } = props;
-	const context = useSelectContext(ITEM_NAME$2, __scopeSelect);
-	const contentContext = useSelectContentContext(ITEM_NAME$2, __scopeSelect);
+	const context = useSelectContext(ITEM_NAME$3, __scopeSelect);
+	const contentContext = useSelectContentContext(ITEM_NAME$3, __scopeSelect);
 	const isSelected = context.value === value;
 	const [textValue, setTextValue] = import_react.useState(textValueProp ?? "");
 	const [isFocused, setIsFocused] = import_react.useState(false);
@@ -67736,7 +68547,7 @@ var SelectItem$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-SelectItem$1.displayName = ITEM_NAME$2;
+SelectItem$1.displayName = ITEM_NAME$3;
 var ITEM_TEXT_NAME = "SelectItemText";
 var SelectItemText = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, className, style, ...itemTextProps } = props;
@@ -67964,7 +68775,7 @@ function findNextItem(items, search, currentItem) {
 function wrapArray(array$1, startIndex) {
 	return array$1.map((_$1, index$1) => array$1[(startIndex + index$1) % array$1.length]);
 }
-var Root2$5 = Select$2;
+var Root2$6 = Select$2;
 var Trigger$3 = SelectTrigger$1;
 var Value = SelectValue$1;
 var Icon = SelectIcon;
@@ -67978,7 +68789,7 @@ var ItemIndicator = SelectItemIndicator;
 var ScrollUpButton = SelectScrollUpButton$1;
 var ScrollDownButton = SelectScrollDownButton$1;
 var Separator$1 = SelectSeparator$1;
-var Select = Root2$5;
+var Select = Root2$6;
 var SelectValue = Value;
 var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Trigger$3, {
 	ref,
@@ -68275,11 +69086,11 @@ PopoverArrow.displayName = ARROW_NAME;
 function getState$4(open) {
 	return open ? "open" : "closed";
 }
-var Root2$4 = Popover$1;
+var Root2$5 = Popover$1;
 var Trigger$2 = PopoverTrigger$1;
 var Portal$1 = PopoverPortal;
 var Content2$2 = PopoverContent$1;
-var Popover = Root2$4;
+var Popover = Root2$5;
 var PopoverTrigger = Trigger$2;
 var PopoverContent = import_react.forwardRef(({ className, align = "center", sideOffset = 4, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$1, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2$2, {
 	ref,
@@ -68494,468 +69305,6 @@ function endOfBroadcastWeek(date$4, dateLib) {
 	const numberOfWeeks = getBroadcastWeeksInMonth(date$4, dateLib);
 	return dateLib.addDays(startDate, numberOfWeeks * 7 - 1);
 }
-var formatDistanceLocale = {
-	lessThanXSeconds: {
-		one: "menos de um segundo",
-		other: "menos de {{count}} segundos"
-	},
-	xSeconds: {
-		one: "1 segundo",
-		other: "{{count}} segundos"
-	},
-	halfAMinute: "meio minuto",
-	lessThanXMinutes: {
-		one: "menos de um minuto",
-		other: "menos de {{count}} minutos"
-	},
-	xMinutes: {
-		one: "1 minuto",
-		other: "{{count}} minutos"
-	},
-	aboutXHours: {
-		one: "cerca de 1 hora",
-		other: "cerca de {{count}} horas"
-	},
-	xHours: {
-		one: "1 hora",
-		other: "{{count}} horas"
-	},
-	xDays: {
-		one: "1 dia",
-		other: "{{count}} dias"
-	},
-	aboutXWeeks: {
-		one: "cerca de 1 semana",
-		other: "cerca de {{count}} semanas"
-	},
-	xWeeks: {
-		one: "1 semana",
-		other: "{{count}} semanas"
-	},
-	aboutXMonths: {
-		one: "cerca de 1 mês",
-		other: "cerca de {{count}} meses"
-	},
-	xMonths: {
-		one: "1 mês",
-		other: "{{count}} meses"
-	},
-	aboutXYears: {
-		one: "cerca de 1 ano",
-		other: "cerca de {{count}} anos"
-	},
-	xYears: {
-		one: "1 ano",
-		other: "{{count}} anos"
-	},
-	overXYears: {
-		one: "mais de 1 ano",
-		other: "mais de {{count}} anos"
-	},
-	almostXYears: {
-		one: "quase 1 ano",
-		other: "quase {{count}} anos"
-	}
-};
-const formatDistance = (token, count$3, options$1) => {
-	let result;
-	const tokenValue = formatDistanceLocale[token];
-	if (typeof tokenValue === "string") result = tokenValue;
-	else if (count$3 === 1) result = tokenValue.one;
-	else result = tokenValue.other.replace("{{count}}", String(count$3));
-	if (options$1?.addSuffix) if (options$1.comparison && options$1.comparison > 0) return "em " + result;
-	else return "há " + result;
-	return result;
-};
-const formatLong = {
-	date: buildFormatLongFn({
-		formats: {
-			full: "EEEE, d 'de' MMMM 'de' y",
-			long: "d 'de' MMMM 'de' y",
-			medium: "d MMM y",
-			short: "dd/MM/yyyy"
-		},
-		defaultWidth: "full"
-	}),
-	time: buildFormatLongFn({
-		formats: {
-			full: "HH:mm:ss zzzz",
-			long: "HH:mm:ss z",
-			medium: "HH:mm:ss",
-			short: "HH:mm"
-		},
-		defaultWidth: "full"
-	}),
-	dateTime: buildFormatLongFn({
-		formats: {
-			full: "{{date}} 'às' {{time}}",
-			long: "{{date}} 'às' {{time}}",
-			medium: "{{date}}, {{time}}",
-			short: "{{date}}, {{time}}"
-		},
-		defaultWidth: "full"
-	})
-};
-var formatRelativeLocale = {
-	lastWeek: (date$4) => {
-		const weekday = date$4.getDay();
-		return "'" + (weekday === 0 || weekday === 6 ? "último" : "última") + "' eeee 'às' p";
-	},
-	yesterday: "'ontem às' p",
-	today: "'hoje às' p",
-	tomorrow: "'amanhã às' p",
-	nextWeek: "eeee 'às' p",
-	other: "P"
-};
-const formatRelative = (token, date$4, _baseDate, _options) => {
-	const format$2 = formatRelativeLocale[token];
-	if (typeof format$2 === "function") return format$2(date$4);
-	return format$2;
-};
-var eraValues = {
-	narrow: ["AC", "DC"],
-	abbreviated: ["AC", "DC"],
-	wide: ["antes de cristo", "depois de cristo"]
-};
-var quarterValues = {
-	narrow: [
-		"1",
-		"2",
-		"3",
-		"4"
-	],
-	abbreviated: [
-		"T1",
-		"T2",
-		"T3",
-		"T4"
-	],
-	wide: [
-		"1º trimestre",
-		"2º trimestre",
-		"3º trimestre",
-		"4º trimestre"
-	]
-};
-var monthValues = {
-	narrow: [
-		"j",
-		"f",
-		"m",
-		"a",
-		"m",
-		"j",
-		"j",
-		"a",
-		"s",
-		"o",
-		"n",
-		"d"
-	],
-	abbreviated: [
-		"jan",
-		"fev",
-		"mar",
-		"abr",
-		"mai",
-		"jun",
-		"jul",
-		"ago",
-		"set",
-		"out",
-		"nov",
-		"dez"
-	],
-	wide: [
-		"janeiro",
-		"fevereiro",
-		"março",
-		"abril",
-		"maio",
-		"junho",
-		"julho",
-		"agosto",
-		"setembro",
-		"outubro",
-		"novembro",
-		"dezembro"
-	]
-};
-var dayValues = {
-	narrow: [
-		"D",
-		"S",
-		"T",
-		"Q",
-		"Q",
-		"S",
-		"S"
-	],
-	short: [
-		"dom",
-		"seg",
-		"ter",
-		"qua",
-		"qui",
-		"sex",
-		"sab"
-	],
-	abbreviated: [
-		"domingo",
-		"segunda",
-		"terça",
-		"quarta",
-		"quinta",
-		"sexta",
-		"sábado"
-	],
-	wide: [
-		"domingo",
-		"segunda-feira",
-		"terça-feira",
-		"quarta-feira",
-		"quinta-feira",
-		"sexta-feira",
-		"sábado"
-	]
-};
-var dayPeriodValues = {
-	narrow: {
-		am: "a",
-		pm: "p",
-		midnight: "mn",
-		noon: "md",
-		morning: "manhã",
-		afternoon: "tarde",
-		evening: "tarde",
-		night: "noite"
-	},
-	abbreviated: {
-		am: "AM",
-		pm: "PM",
-		midnight: "meia-noite",
-		noon: "meio-dia",
-		morning: "manhã",
-		afternoon: "tarde",
-		evening: "tarde",
-		night: "noite"
-	},
-	wide: {
-		am: "a.m.",
-		pm: "p.m.",
-		midnight: "meia-noite",
-		noon: "meio-dia",
-		morning: "manhã",
-		afternoon: "tarde",
-		evening: "tarde",
-		night: "noite"
-	}
-};
-var formattingDayPeriodValues = {
-	narrow: {
-		am: "a",
-		pm: "p",
-		midnight: "mn",
-		noon: "md",
-		morning: "da manhã",
-		afternoon: "da tarde",
-		evening: "da tarde",
-		night: "da noite"
-	},
-	abbreviated: {
-		am: "AM",
-		pm: "PM",
-		midnight: "meia-noite",
-		noon: "meio-dia",
-		morning: "da manhã",
-		afternoon: "da tarde",
-		evening: "da tarde",
-		night: "da noite"
-	},
-	wide: {
-		am: "a.m.",
-		pm: "p.m.",
-		midnight: "meia-noite",
-		noon: "meio-dia",
-		morning: "da manhã",
-		afternoon: "da tarde",
-		evening: "da tarde",
-		night: "da noite"
-	}
-};
-var ordinalNumber = (dirtyNumber, options$1) => {
-	const number$5 = Number(dirtyNumber);
-	if (options$1?.unit === "week") return number$5 + "ª";
-	return number$5 + "º";
-};
-const ptBR = {
-	code: "pt-BR",
-	formatDistance,
-	formatLong,
-	formatRelative,
-	localize: {
-		ordinalNumber,
-		era: buildLocalizeFn({
-			values: eraValues,
-			defaultWidth: "wide"
-		}),
-		quarter: buildLocalizeFn({
-			values: quarterValues,
-			defaultWidth: "wide",
-			argumentCallback: (quarter) => quarter - 1
-		}),
-		month: buildLocalizeFn({
-			values: monthValues,
-			defaultWidth: "wide"
-		}),
-		day: buildLocalizeFn({
-			values: dayValues,
-			defaultWidth: "wide"
-		}),
-		dayPeriod: buildLocalizeFn({
-			values: dayPeriodValues,
-			defaultWidth: "wide",
-			formattingValues: formattingDayPeriodValues,
-			defaultFormattingWidth: "wide"
-		})
-	},
-	match: {
-		ordinalNumber: buildMatchPatternFn({
-			matchPattern: /^(\d+)[ºªo]?/i,
-			parsePattern: /\d+/i,
-			valueCallback: (value) => parseInt(value, 10)
-		}),
-		era: buildMatchFn({
-			matchPatterns: {
-				narrow: /^(ac|dc|a|d)/i,
-				abbreviated: /^(a\.?\s?c\.?|d\.?\s?c\.?)/i,
-				wide: /^(antes de cristo|depois de cristo)/i
-			},
-			defaultMatchWidth: "wide",
-			parsePatterns: {
-				any: [/^ac/i, /^dc/i],
-				wide: [/^antes de cristo/i, /^depois de cristo/i]
-			},
-			defaultParseWidth: "any"
-		}),
-		quarter: buildMatchFn({
-			matchPatterns: {
-				narrow: /^[1234]/i,
-				abbreviated: /^T[1234]/i,
-				wide: /^[1234](º)? trimestre/i
-			},
-			defaultMatchWidth: "wide",
-			parsePatterns: { any: [
-				/1/i,
-				/2/i,
-				/3/i,
-				/4/i
-			] },
-			defaultParseWidth: "any",
-			valueCallback: (index$1) => index$1 + 1
-		}),
-		month: buildMatchFn({
-			matchPatterns: {
-				narrow: /^[jfmajsond]/i,
-				abbreviated: /^(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/i,
-				wide: /^(janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)/i
-			},
-			defaultMatchWidth: "wide",
-			parsePatterns: {
-				narrow: [
-					/^j/i,
-					/^f/i,
-					/^m/i,
-					/^a/i,
-					/^m/i,
-					/^j/i,
-					/^j/i,
-					/^a/i,
-					/^s/i,
-					/^o/i,
-					/^n/i,
-					/^d/i
-				],
-				any: [
-					/^ja/i,
-					/^fev/i,
-					/^mar/i,
-					/^abr/i,
-					/^mai/i,
-					/^jun/i,
-					/^jul/i,
-					/^ago/i,
-					/^set/i,
-					/^out/i,
-					/^nov/i,
-					/^dez/i
-				]
-			},
-			defaultParseWidth: "any"
-		}),
-		day: buildMatchFn({
-			matchPatterns: {
-				narrow: /^(dom|[23456]ª?|s[aá]b)/i,
-				short: /^(dom|[23456]ª?|s[aá]b)/i,
-				abbreviated: /^(dom|seg|ter|qua|qui|sex|s[aá]b)/i,
-				wide: /^(domingo|(segunda|ter[cç]a|quarta|quinta|sexta)([- ]feira)?|s[aá]bado)/i
-			},
-			defaultMatchWidth: "wide",
-			parsePatterns: {
-				short: [
-					/^d/i,
-					/^2/i,
-					/^3/i,
-					/^4/i,
-					/^5/i,
-					/^6/i,
-					/^s[aá]/i
-				],
-				narrow: [
-					/^d/i,
-					/^2/i,
-					/^3/i,
-					/^4/i,
-					/^5/i,
-					/^6/i,
-					/^s[aá]/i
-				],
-				any: [
-					/^d/i,
-					/^seg/i,
-					/^t/i,
-					/^qua/i,
-					/^qui/i,
-					/^sex/i,
-					/^s[aá]b/i
-				]
-			},
-			defaultParseWidth: "any"
-		}),
-		dayPeriod: buildMatchFn({
-			matchPatterns: {
-				narrow: /^(a|p|mn|md|(da) (manhã|tarde|noite))/i,
-				any: /^([ap]\.?\s?m\.?|meia[-\s]noite|meio[-\s]dia|(da) (manhã|tarde|noite))/i
-			},
-			defaultMatchWidth: "any",
-			parsePatterns: { any: {
-				am: /^a/i,
-				pm: /^p/i,
-				midnight: /^mn|^meia[-\s]noite/i,
-				noon: /^md|^meio[-\s]dia/i,
-				morning: /manhã/i,
-				afternoon: /tarde/i,
-				evening: /tarde/i,
-				night: /noite/i
-			} },
-			defaultParseWidth: "any"
-		})
-	},
-	options: {
-		weekStartsOn: 0,
-		firstWeekContainsDate: 1
-	}
-};
 const enUS = {
 	...enUS$1,
 	labels: {
@@ -69399,7 +69748,7 @@ function PreviousMonthButton(props) {
 	const { components } = useDayPicker();
 	return import_react.createElement(components.Button, { ...props });
 }
-function Root$3(props) {
+function Root$4(props) {
 	const { rootRef, ...rest } = props;
 	return import_react.createElement("div", {
 		...rest,
@@ -69451,7 +69800,7 @@ var custom_components_exports = /* @__PURE__ */ __export({
 	NextMonthButton: () => NextMonthButton,
 	Option: () => Option,
 	PreviousMonthButton: () => PreviousMonthButton,
-	Root: () => Root$3,
+	Root: () => Root$4,
 	Select: () => Select$1,
 	Week: () => Week,
 	WeekNumber: () => WeekNumber,
@@ -71370,7 +71719,7 @@ var N = "[cmdk-group=\"\"]", Y = "[cmdk-group-items=\"\"]", be = "[cmdk-group-he
 	}, m$1)));
 }), xe = import_react.forwardRef((r$2, o$1) => {
 	let { open: n$1, onOpenChange: u$1, overlayClassName: c$1, contentClassName: d, container: f, ...p$1 } = r$2;
-	return import_react.createElement(Root$8, {
+	return import_react.createElement(Root$9, {
 		open: n$1,
 		onOpenChange: u$1
 	}, import_react.createElement(Portal$4, { container: f }, import_react.createElement(Overlay, {
@@ -71480,50 +71829,6 @@ var Te = {
 	whiteSpace: "nowrap",
 	borderWidth: "0"
 };
-var Dialog = Root$8;
-var DialogTrigger = Trigger$5;
-var DialogPortal = Portal$4;
-var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
-	ref,
-	className: cn("fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
-	...props
-}));
-DialogOverlay.displayName = Overlay.displayName;
-var DialogContent = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$2, {
-	ref,
-	className: cn("fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg overflow-y-auto max-h-screen", className),
-	...props,
-	children: [children, /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Close, {
-		className: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-			className: "sr-only",
-			children: "Close"
-		})]
-	})]
-})] }));
-DialogContent.displayName = Content$2.displayName;
-var DialogHeader = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-	className: cn("flex flex-col space-y-1.5 text-center sm:text-left", className),
-	...props
-});
-DialogHeader.displayName = "DialogHeader";
-var DialogFooter = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-	className: cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className),
-	...props
-});
-DialogFooter.displayName = "DialogFooter";
-var DialogTitle = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Title, {
-	ref,
-	className: cn("text-lg font-semibold leading-none tracking-tight", className),
-	...props
-}));
-DialogTitle.displayName = Title.displayName;
-var DialogDescription = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Description, {
-	ref,
-	className: cn("text-sm text-muted-foreground", className),
-	...props
-}));
-DialogDescription.displayName = Description.displayName;
 var Command = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(_e, {
 	ref,
 	className: cn("flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground", className),
@@ -72039,6 +72344,1066 @@ function ContactForm({ onSuccess }) {
 		})
 	});
 }
+var formSchema$3 = object({
+	contact_id: string({ required_error: "Selecione um contato." }),
+	title: string().min(3, "O título deve ter pelo menos 3 caracteres."),
+	stage: _enum([
+		"Lead",
+		"Qualificado",
+		"Interesse",
+		"Proposta",
+		"Fechado"
+	]),
+	value: number().min(0, "O valor não pode ser negativo."),
+	probability: number().min(0).max(100, "Probabilidade entre 0 e 100."),
+	expected_close_date: date().optional()
+});
+var STAGES = [
+	"Lead",
+	"Qualificado",
+	"Interesse",
+	"Proposta",
+	"Fechado"
+];
+function DealForm({ onSuccess, onCancel }) {
+	const { toast: toast$2 } = useToast();
+	const [loading, setLoading] = (0, import_react.useState)(false);
+	const [contacts, setContacts] = (0, import_react.useState)([]);
+	const [contactsLoading, setContactsLoading] = (0, import_react.useState)(false);
+	const [openCombobox, setOpenCombobox] = (0, import_react.useState)(false);
+	const form = useForm({
+		resolver: a(formSchema$3),
+		defaultValues: {
+			title: "",
+			stage: "Lead",
+			value: 0,
+			probability: 10
+		}
+	});
+	(0, import_react.useEffect)(() => {
+		setContactsLoading(true);
+		contactsService.getContacts({ pageSize: 100 }).then((res) => setContacts(res.data)).catch((err) => console.error(err)).finally(() => setContactsLoading(false));
+	}, []);
+	async function onSubmit(values) {
+		setLoading(true);
+		try {
+			const dealData = {
+				...values,
+				expected_close_date: values.expected_close_date ? values.expected_close_date.toISOString() : null
+			};
+			await dealsService.createDeal(dealData);
+			toast$2({
+				title: "Negócio criado!",
+				description: "Oportunidade adicionada ao pipeline com sucesso."
+			});
+			form.reset();
+			onSuccess?.();
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				variant: "destructive",
+				title: "Erro ao criar",
+				description: error.message || "Não foi possível salvar o negócio."
+			});
+		} finally {
+			setLoading(false);
+		}
+	}
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Form, {
+		...form,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+			onSubmit: form.handleSubmit(onSubmit),
+			className: "space-y-4",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+					control: form.control,
+					name: "contact_id",
+					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+						className: "flex flex-col",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Contato" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, {
+								open: openCombobox,
+								onOpenChange: setOpenCombobox,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+									asChild: true,
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+										variant: "outline",
+										role: "combobox",
+										"aria-expanded": openCombobox,
+										className: cn("w-full justify-between", !field.value && "text-muted-foreground"),
+										children: [field.value ? contacts.find((contact) => contact.id === field.value)?.name : "Selecione um contato...", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronsUpDown, { className: "ml-2 h-4 w-4 shrink-0 opacity-50" })]
+									}) })
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
+									className: "w-[300px] p-0",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Command, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandInput, { placeholder: "Buscar contato..." }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CommandList, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandEmpty, { children: "Nenhum contato encontrado." }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandGroup, { children: contacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CommandItem, {
+										value: contact.name,
+										onSelect: () => {
+											form.setValue("contact_id", contact.id);
+											setOpenCombobox(false);
+										},
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: cn("mr-2 h-4 w-4", contact.id === field.value ? "opacity-100" : "opacity-0") }), contact.name]
+									}, contact.id)) })] })] })
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						]
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+					control: form.control,
+					name: "title",
+					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Título / Lote" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							placeholder: "Ex: Lote 10 - Cavalo Lusitano",
+							...field
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+					] })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "value",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Valor Estimado (R$)" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								step: "0.01",
+								...field
+							}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						] })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "probability",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Probabilidade (%)" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								min: "0",
+								max: "100",
+								...field
+							}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						] })
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "stage",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Estágio Inicial" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+								onValueChange: field.onChange,
+								defaultValue: field.value,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione..." }) }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: STAGES.map((stage) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: stage,
+									children: stage
+								}, stage)) })]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						] })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "expected_close_date",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+							className: "flex flex-col",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Data Prevista" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+									asChild: true,
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+										variant: "outline",
+										className: cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground"),
+										children: [field.value ? format(field.value, "dd/MM/yyyy") : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Selecione uma data" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "ml-auto h-4 w-4 opacity-50" })]
+									}) })
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
+									className: "w-auto p-0",
+									align: "start",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar$1, {
+										mode: "single",
+										selected: field.value,
+										onSelect: field.onChange,
+										initialFocus: true
+									})
+								})] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+							]
+						})
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex justify-end gap-3 pt-4",
+					children: [onCancel && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						type: "button",
+						variant: "outline",
+						onClick: onCancel,
+						children: "Cancelar"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						type: "submit",
+						disabled: loading,
+						children: [loading && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }), "Criar Negócio"]
+					})]
+				})
+			]
+		})
+	});
+}
+var SWITCH_NAME = "Switch";
+var [createSwitchContext, createSwitchScope] = createContextScope(SWITCH_NAME);
+var [SwitchProvider, useSwitchContext] = createSwitchContext(SWITCH_NAME);
+var Switch$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeSwitch, name, checked: checkedProp, defaultChecked, required: required$1, disabled, value = "on", onCheckedChange, form, ...switchProps } = props;
+	const [button, setButton] = import_react.useState(null);
+	const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node));
+	const hasConsumerStoppedPropagationRef = import_react.useRef(false);
+	const isFormControl = button ? form || !!button.closest("form") : true;
+	const [checked, setChecked] = useControllableState({
+		prop: checkedProp,
+		defaultProp: defaultChecked ?? false,
+		onChange: onCheckedChange,
+		caller: SWITCH_NAME
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SwitchProvider, {
+		scope: __scopeSwitch,
+		checked,
+		disabled,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
+			type: "button",
+			role: "switch",
+			"aria-checked": checked,
+			"aria-required": required$1,
+			"data-state": getState$3(checked),
+			"data-disabled": disabled ? "" : void 0,
+			disabled,
+			value,
+			...switchProps,
+			ref: composedRefs,
+			onClick: composeEventHandlers(props.onClick, (event) => {
+				setChecked((prevChecked) => !prevChecked);
+				if (isFormControl) {
+					hasConsumerStoppedPropagationRef.current = event.isPropagationStopped();
+					if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation();
+				}
+			})
+		}), isFormControl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SwitchBubbleInput, {
+			control: button,
+			bubbles: !hasConsumerStoppedPropagationRef.current,
+			name,
+			value,
+			checked,
+			required: required$1,
+			disabled,
+			form,
+			style: { transform: "translateX(-100%)" }
+		})]
+	});
+});
+Switch$1.displayName = SWITCH_NAME;
+var THUMB_NAME$1 = "SwitchThumb";
+var SwitchThumb = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeSwitch, ...thumbProps } = props;
+	const context = useSwitchContext(THUMB_NAME$1, __scopeSwitch);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
+		"data-state": getState$3(context.checked),
+		"data-disabled": context.disabled ? "" : void 0,
+		...thumbProps,
+		ref: forwardedRef
+	});
+});
+SwitchThumb.displayName = THUMB_NAME$1;
+var BUBBLE_INPUT_NAME$1 = "SwitchBubbleInput";
+var SwitchBubbleInput = import_react.forwardRef(({ __scopeSwitch, control, checked, bubbles = true, ...props }, forwardedRef) => {
+	const ref = import_react.useRef(null);
+	const composedRefs = useComposedRefs(ref, forwardedRef);
+	const prevChecked = usePrevious(checked);
+	const controlSize = useSize(control);
+	import_react.useEffect(() => {
+		const input = ref.current;
+		if (!input) return;
+		const inputProto = window.HTMLInputElement.prototype;
+		const setChecked = Object.getOwnPropertyDescriptor(inputProto, "checked").set;
+		if (prevChecked !== checked && setChecked) {
+			const event = new Event("click", { bubbles });
+			setChecked.call(input, checked);
+			input.dispatchEvent(event);
+		}
+	}, [
+		prevChecked,
+		checked,
+		bubbles
+	]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+		type: "checkbox",
+		"aria-hidden": true,
+		defaultChecked: checked,
+		...props,
+		tabIndex: -1,
+		ref: composedRefs,
+		style: {
+			...props.style,
+			...controlSize,
+			position: "absolute",
+			pointerEvents: "none",
+			opacity: 0,
+			margin: 0
+		}
+	});
+});
+SwitchBubbleInput.displayName = BUBBLE_INPUT_NAME$1;
+function getState$3(checked) {
+	return checked ? "checked" : "unchecked";
+}
+var Root$3 = Switch$1;
+var Thumb = SwitchThumb;
+var Switch = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$3, {
+	className: cn("peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input", className),
+	...props,
+	ref,
+	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Thumb, { className: cn("pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0") })
+}));
+Switch.displayName = Root$3.displayName;
+var taskTypes = [
+	"Ligação",
+	"E-mail",
+	"WhatsApp",
+	"Outro"
+];
+var formSchema$2 = object({
+	title: string().min(1, "O título é obrigatório"),
+	description: string().optional(),
+	type: _enum([
+		"Ligação",
+		"E-mail",
+		"WhatsApp",
+		"Outro"
+	]),
+	contact_id: string().optional(),
+	date: date({ required_error: "A data é obrigatória" }),
+	time: string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Formato de hora inválido"),
+	has_reminder: boolean().default(false)
+});
+function TaskForm({ onSuccess, onCancel }) {
+	const [contacts, setContacts] = (0, import_react.useState)([]);
+	const [openCombobox, setOpenCombobox] = (0, import_react.useState)(false);
+	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
+	const { toast: toast$2 } = useToast();
+	const form = useForm({
+		resolver: a(formSchema$2),
+		defaultValues: {
+			title: "",
+			description: "",
+			type: "Ligação",
+			contact_id: "",
+			has_reminder: false,
+			date: /* @__PURE__ */ new Date(),
+			time: format(/* @__PURE__ */ new Date(), "HH:mm")
+		}
+	});
+	(0, import_react.useEffect)(() => {
+		const loadContacts = async () => {
+			try {
+				const { data } = await contactsService.getContacts({ pageSize: 100 });
+				setContacts(data || []);
+			} catch (error) {
+				console.error("Failed to load contacts", error);
+			}
+		};
+		loadContacts();
+	}, []);
+	const onSubmit = async (values) => {
+		setIsLoading(true);
+		try {
+			const dateTime = new Date(values.date);
+			const [hours, minutes] = values.time.split(":").map(Number);
+			dateTime.setHours(hours, minutes);
+			const newTask = {
+				title: values.title,
+				description: values.description,
+				type: values.type,
+				contact_id: values.contact_id || null,
+				due_date: dateTime.toISOString(),
+				has_reminder: values.has_reminder,
+				is_completed: false
+			};
+			await tasksService.createTask(newTask);
+			toast$2({ title: "Tarefa criada com sucesso!" });
+			onSuccess();
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro ao criar tarefa",
+				description: "Ocorreu um erro inesperado. Tente novamente.",
+				variant: "destructive"
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Form, {
+		...form,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+			onSubmit: form.handleSubmit(onSubmit),
+			className: "space-y-4",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+					control: form.control,
+					name: "title",
+					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Título" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							placeholder: "Ex: Ligar para confirmar visita",
+							...field
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+					] })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "type",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Tipo" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+								onValueChange: field.onChange,
+								defaultValue: field.value,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o tipo" }) }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: taskTypes.map((type) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: type,
+									children: type
+								}, type)) })]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						] })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "contact_id",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+							className: "flex flex-col",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, {
+									className: "mb-1",
+									children: "Contato Vinculado"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, {
+									open: openCombobox,
+									onOpenChange: setOpenCombobox,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+										asChild: true,
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+											variant: "outline",
+											role: "combobox",
+											className: cn("w-full justify-between pl-3 text-left font-normal", !field.value && "text-muted-foreground"),
+											children: [field.value ? contacts.find((contact) => contact.id === field.value)?.name : "Selecione um contato", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "ml-2 h-4 w-4 opacity-50 rotate-90" })]
+										}) })
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
+										className: "w-[300px] p-0",
+										align: "start",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Command, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandInput, { placeholder: "Buscar contato..." }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CommandList, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandEmpty, { children: "Nenhum contato encontrado." }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandGroup, { children: contacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CommandItem, {
+											value: contact.name,
+											onSelect: () => {
+												form.setValue("contact_id", contact.id);
+												setOpenCombobox(false);
+											},
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: cn("mr-2 h-4 w-4", contact.id === field.value ? "opacity-100" : "opacity-0") }), contact.name]
+										}, contact.id)) })] })] })
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+							]
+						})
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "date",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+							className: "flex flex-col",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Data" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+									asChild: true,
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+										variant: "outline",
+										className: cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground"),
+										children: [field.value ? format(field.value, "PPP", { locale: ptBR }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Selecione a data" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "ml-auto h-4 w-4 opacity-50" })]
+									}) })
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
+									className: "w-auto p-0",
+									align: "start",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar$1, {
+										mode: "single",
+										selected: field.value,
+										onSelect: field.onChange,
+										initialFocus: true
+									})
+								})] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+							]
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "time",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Hora" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "time",
+								...field
+							}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						] })
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+					control: form.control,
+					name: "description",
+					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Descrição" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+							placeholder: "Detalhes adicionais sobre a tarefa...",
+							...field
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+					] })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+					control: form.control,
+					name: "has_reminder",
+					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+						className: "flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-0.5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Lembrete" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Receber notificação sobre esta tarefa" })]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+							checked: field.value,
+							onCheckedChange: field.onChange
+						}) })]
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex justify-end gap-2 pt-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						type: "button",
+						variant: "outline",
+						onClick: onCancel,
+						children: "Cancelar"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						type: "submit",
+						disabled: isLoading,
+						children: [isLoading && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }), "Salvar Tarefa"]
+					})]
+				})
+			]
+		})
+	});
+}
+var NAME = "Toggle";
+var Toggle$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { pressed: pressedProp, defaultPressed, onPressedChange, ...buttonProps } = props;
+	const [pressed, setPressed] = useControllableState({
+		prop: pressedProp,
+		onChange: onPressedChange,
+		defaultProp: defaultPressed ?? false,
+		caller: NAME
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
+		type: "button",
+		"aria-pressed": pressed,
+		"data-state": pressed ? "on" : "off",
+		"data-disabled": props.disabled ? "" : void 0,
+		...buttonProps,
+		ref: forwardedRef,
+		onClick: composeEventHandlers(props.onClick, () => {
+			if (!props.disabled) setPressed(!pressed);
+		})
+	});
+});
+Toggle$1.displayName = NAME;
+var Root$2 = Toggle$1;
+var TOGGLE_GROUP_NAME = "ToggleGroup";
+var [createToggleGroupContext, createToggleGroupScope] = createContextScope(TOGGLE_GROUP_NAME, [createRovingFocusGroupScope]);
+var useRovingFocusGroupScope$2 = createRovingFocusGroupScope();
+var ToggleGroup$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { type, ...toggleGroupProps } = props;
+	if (type === "single") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImplSingle, {
+		...toggleGroupProps,
+		ref: forwardedRef
+	});
+	if (type === "multiple") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImplMultiple, {
+		...toggleGroupProps,
+		ref: forwardedRef
+	});
+	throw new Error(`Missing prop \`type\` expected on \`${TOGGLE_GROUP_NAME}\``);
+});
+ToggleGroup$1.displayName = TOGGLE_GROUP_NAME;
+var [ToggleGroupValueProvider, useToggleGroupValueContext] = createToggleGroupContext(TOGGLE_GROUP_NAME);
+var ToggleGroupImplSingle = import_react.forwardRef((props, forwardedRef) => {
+	const { value: valueProp, defaultValue, onValueChange = () => {}, ...toggleGroupSingleProps } = props;
+	const [value, setValue] = useControllableState({
+		prop: valueProp,
+		defaultProp: defaultValue ?? "",
+		onChange: onValueChange,
+		caller: TOGGLE_GROUP_NAME
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupValueProvider, {
+		scope: props.__scopeToggleGroup,
+		type: "single",
+		value: import_react.useMemo(() => value ? [value] : [], [value]),
+		onItemActivate: setValue,
+		onItemDeactivate: import_react.useCallback(() => setValue(""), [setValue]),
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImpl, {
+			...toggleGroupSingleProps,
+			ref: forwardedRef
+		})
+	});
+});
+var ToggleGroupImplMultiple = import_react.forwardRef((props, forwardedRef) => {
+	const { value: valueProp, defaultValue, onValueChange = () => {}, ...toggleGroupMultipleProps } = props;
+	const [value, setValue] = useControllableState({
+		prop: valueProp,
+		defaultProp: defaultValue ?? [],
+		onChange: onValueChange,
+		caller: TOGGLE_GROUP_NAME
+	});
+	const handleButtonActivate = import_react.useCallback((itemValue) => setValue((prevValue = []) => [...prevValue, itemValue]), [setValue]);
+	const handleButtonDeactivate = import_react.useCallback((itemValue) => setValue((prevValue = []) => prevValue.filter((value2) => value2 !== itemValue)), [setValue]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupValueProvider, {
+		scope: props.__scopeToggleGroup,
+		type: "multiple",
+		value,
+		onItemActivate: handleButtonActivate,
+		onItemDeactivate: handleButtonDeactivate,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImpl, {
+			...toggleGroupMultipleProps,
+			ref: forwardedRef
+		})
+	});
+});
+ToggleGroup$1.displayName = TOGGLE_GROUP_NAME;
+var [ToggleGroupContext$1, useToggleGroupContext] = createToggleGroupContext(TOGGLE_GROUP_NAME);
+var ToggleGroupImpl = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeToggleGroup, disabled = false, rovingFocus = true, orientation, dir, loop = true, ...toggleGroupProps } = props;
+	const rovingFocusGroupScope = useRovingFocusGroupScope$2(__scopeToggleGroup);
+	const direction = useDirection(dir);
+	const commonProps = {
+		role: "group",
+		dir: direction,
+		...toggleGroupProps
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupContext$1, {
+		scope: __scopeToggleGroup,
+		rovingFocus,
+		disabled,
+		children: rovingFocus ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
+			asChild: true,
+			...rovingFocusGroupScope,
+			orientation,
+			dir: direction,
+			loop,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
+				...commonProps,
+				ref: forwardedRef
+			})
+		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
+			...commonProps,
+			ref: forwardedRef
+		})
+	});
+});
+var ITEM_NAME$2 = "ToggleGroupItem";
+var ToggleGroupItem$1 = import_react.forwardRef((props, forwardedRef) => {
+	const valueContext = useToggleGroupValueContext(ITEM_NAME$2, props.__scopeToggleGroup);
+	const context = useToggleGroupContext(ITEM_NAME$2, props.__scopeToggleGroup);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$2(props.__scopeToggleGroup);
+	const pressed = valueContext.value.includes(props.value);
+	const disabled = context.disabled || props.disabled;
+	const commonProps = {
+		...props,
+		pressed,
+		disabled
+	};
+	const ref = import_react.useRef(null);
+	return context.rovingFocus ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item$2, {
+		asChild: true,
+		...rovingFocusGroupScope,
+		focusable: !disabled,
+		active: pressed,
+		ref,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItemImpl, {
+			...commonProps,
+			ref: forwardedRef
+		})
+	}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItemImpl, {
+		...commonProps,
+		ref: forwardedRef
+	});
+});
+ToggleGroupItem$1.displayName = ITEM_NAME$2;
+var ToggleGroupItemImpl = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeToggleGroup, value, ...itemProps } = props;
+	const valueContext = useToggleGroupValueContext(ITEM_NAME$2, __scopeToggleGroup);
+	const singleProps = {
+		role: "radio",
+		"aria-checked": props.pressed,
+		"aria-pressed": void 0
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Toggle$1, {
+		...valueContext.type === "single" ? singleProps : void 0,
+		...itemProps,
+		ref: forwardedRef,
+		onPressedChange: (pressed) => {
+			if (pressed) valueContext.onItemActivate(value);
+			else valueContext.onItemDeactivate(value);
+		}
+	});
+});
+var Root2$4 = ToggleGroup$1;
+var Item2$1 = ToggleGroupItem$1;
+var toggleVariants = cva("inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 gap-2", {
+	variants: {
+		variant: {
+			default: "bg-transparent",
+			outline: "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground"
+		},
+		size: {
+			default: "h-10 px-3 min-w-10",
+			sm: "h-9 px-2.5 min-w-9",
+			lg: "h-11 px-5 min-w-11"
+		}
+	},
+	defaultVariants: {
+		variant: "default",
+		size: "default"
+	}
+});
+var Toggle = import_react.forwardRef(({ className, variant, size: size$3, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$2, {
+	ref,
+	className: cn(toggleVariants({
+		variant,
+		size: size$3,
+		className
+	})),
+	...props
+}));
+Toggle.displayName = Root$2.displayName;
+var ToggleGroupContext = import_react.createContext({
+	size: "default",
+	variant: "default"
+});
+var ToggleGroup = import_react.forwardRef(({ className, variant, size: size$3, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
+	ref,
+	className: cn("flex items-center justify-center gap-1", className),
+	...props,
+	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupContext.Provider, {
+		value: {
+			variant,
+			size: size$3
+		},
+		children
+	})
+}));
+ToggleGroup.displayName = Root2$4.displayName;
+var ToggleGroupItem = import_react.forwardRef(({ className, children, variant, size: size$3, ...props }, ref) => {
+	const context = import_react.useContext(ToggleGroupContext);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$1, {
+		ref,
+		className: cn(toggleVariants({
+			variant: context.variant || variant,
+			size: context.size || size$3
+		}), className),
+		...props,
+		children
+	});
+});
+ToggleGroupItem.displayName = Item2$1.displayName;
+var localCampaigns = [...[{
+	id: "mock-1",
+	name: "Campanha de Verão 2026",
+	objective: "Aumentar vendas da coleção de verão",
+	description: "Campanha focada em roupas de banho e acessórios de praia com desconto progressivo.",
+	start_date: (/* @__PURE__ */ new Date()).toISOString(),
+	end_date: new Date(Date.now() + 720 * 60 * 60 * 1e3).toISOString(),
+	status: "Em Andamento",
+	audience_filters: {
+		tags: ["Vip", "Recorrente"],
+		segments: ["Mulheres", "Jovens"]
+	},
+	channels: ["email", "whatsapp"],
+	created_at: (/* @__PURE__ */ new Date(Date.now() - 10080 * 60 * 1e3)).toISOString(),
+	updated_at: (/* @__PURE__ */ new Date()).toISOString(),
+	stats: {
+		total_sends: 1250,
+		emails_sent: 800,
+		emails_opened: 450,
+		emails_clicked: 120,
+		whatsapp_sent: 450,
+		whatsapp_pending: 0,
+		open_rate: 56.2,
+		click_rate: 15
+	},
+	schedules: [{
+		id: "sch-1",
+		campaign_id: "mock-1",
+		channel_type: "email",
+		scheduled_at: (/* @__PURE__ */ new Date(Date.now() - 1440 * 60 * 1e3)).toISOString(),
+		content: "Confira nossa nova coleção de verão!",
+		status: "Processado",
+		created_at: (/* @__PURE__ */ new Date(Date.now() - 2880 * 60 * 1e3)).toISOString()
+	}]
+}, {
+	id: "mock-2",
+	name: "Black Friday Antecipada",
+	objective: "Aquecimento para Black Friday",
+	description: "Ofertas exclusivas para lista VIP antes do lançamento oficial.",
+	start_date: new Date(Date.now() + 1440 * 60 * 60 * 1e3).toISOString(),
+	end_date: new Date(Date.now() + 1560 * 60 * 60 * 1e3).toISOString(),
+	status: "Agendada",
+	audience_filters: {
+		tags: ["Lead"],
+		segments: ["Interessados"]
+	},
+	channels: ["email"],
+	created_at: (/* @__PURE__ */ new Date()).toISOString(),
+	updated_at: (/* @__PURE__ */ new Date()).toISOString(),
+	stats: {
+		total_sends: 0,
+		emails_sent: 0,
+		emails_opened: 0,
+		emails_clicked: 0,
+		whatsapp_sent: 0,
+		whatsapp_pending: 0,
+		open_rate: 0,
+		click_rate: 0
+	},
+	schedules: []
+}]];
+const campaignsService = {
+	async getCampaigns() {
+		try {
+			const { data, error } = await supabase.from("campaigns").select(`
+        *,
+        schedules:campaign_schedules(*)
+      `).order("created_at", { ascending: false });
+			if (error) {
+				console.warn("Backend unavailable or table missing, using mock data:", error.message);
+				return localCampaigns;
+			}
+			return (data || []).map((campaign) => ({
+				...campaign,
+				objective: campaign.description || campaign.objective || null
+			}));
+		} catch (error) {
+			console.warn("Exception fetching campaigns, using mock data:", error);
+			return localCampaigns;
+		}
+	},
+	async getCampaignById(id) {
+		try {
+			const { data, error } = await supabase.from("campaigns").select(`
+        *,
+        schedules:campaign_schedules(*)
+      `).eq("id", id).single();
+			if (error) {
+				const local = localCampaigns.find((c$1) => c$1.id === id);
+				if (local) return local;
+				throw error;
+			}
+			const campaign = {
+				...data,
+				objective: data.description || data.objective || null
+			};
+			campaign.stats = await this.getCampaignStats(id);
+			return campaign;
+		} catch (error) {
+			console.warn("Exception in getCampaignById, using mock data", error);
+			const local = localCampaigns.find((c$1) => c$1.id === id);
+			if (local) return local;
+			throw error;
+		}
+	},
+	async createCampaign(campaign, schedules) {
+		try {
+			const dbCampaign = {
+				name: campaign.name,
+				description: campaign.objective || campaign.description,
+				start_date: campaign.start_date,
+				end_date: campaign.end_date,
+				status: campaign.status || "Agendada",
+				audience_filters: campaign.audience_filters,
+				channels: campaign.channels,
+				company_id: campaign.company_id
+			};
+			const { data: newCampaign, error: campaignError } = await supabase.from("campaigns").insert(dbCampaign).select().single();
+			if (campaignError) throw campaignError;
+			if (schedules.length > 0) {
+				const schedulesToInsert = schedules.map((send) => ({
+					campaign_id: newCampaign.id,
+					channel_type: send.channel_type,
+					scheduled_at: send.scheduled_at,
+					content: send.content,
+					template_id: send.template_id,
+					status: "Pendente"
+				}));
+				const { error: schedulesError } = await supabase.from("campaign_schedules").insert(schedulesToInsert);
+				if (schedulesError) {
+					console.error("Error creating campaign schedules:", schedulesError);
+					throw schedulesError;
+				}
+			}
+			return {
+				...newCampaign,
+				objective: newCampaign.description
+			};
+		} catch (error) {
+			console.warn("Using mock creation due to error:", error);
+			const newId = `mock-${Date.now()}`;
+			const mockCampaign = {
+				id: newId,
+				name: campaign.name,
+				objective: campaign.objective || null,
+				description: campaign.description || campaign.objective || null,
+				start_date: campaign.start_date,
+				end_date: campaign.end_date,
+				status: campaign.status || "Agendada",
+				audience_filters: campaign.audience_filters,
+				channels: campaign.channels,
+				company_id: campaign.company_id || null,
+				created_at: (/* @__PURE__ */ new Date()).toISOString(),
+				updated_at: (/* @__PURE__ */ new Date()).toISOString(),
+				stats: {
+					total_sends: 0,
+					emails_sent: 0,
+					emails_opened: 0,
+					emails_clicked: 0,
+					whatsapp_sent: 0,
+					whatsapp_pending: 0,
+					open_rate: 0,
+					click_rate: 0
+				},
+				schedules: schedules.map((s$3, idx) => ({
+					id: `sch-${newId}-${idx}`,
+					campaign_id: newId,
+					channel_type: s$3.channel_type,
+					scheduled_at: s$3.scheduled_at,
+					content: s$3.content,
+					status: "Pendente",
+					template_id: s$3.template_id,
+					created_at: (/* @__PURE__ */ new Date()).toISOString()
+				}))
+			};
+			localCampaigns.unshift(mockCampaign);
+			return mockCampaign;
+		}
+	},
+	async getCampaignStats(campaignId) {
+		try {
+			const mock = localCampaigns.find((c$1) => c$1.id === campaignId);
+			if (mock && mock.id.startsWith("mock-") && mock.stats) return mock.stats;
+			const { data, error } = await supabase.from("campaign_sends").select("channel, status").eq("campaign_id", campaignId);
+			if (error) throw error;
+			const stats = data.reduce((acc, log$1) => {
+				acc.total_sends++;
+				if (log$1.channel === "email") {
+					acc.emails_sent++;
+					if (["opened", "clicked"].includes(log$1.status)) acc.emails_opened++;
+					if (log$1.status === "clicked") acc.emails_clicked++;
+				} else if (log$1.channel === "whatsapp") {
+					if (log$1.status === "sent") acc.whatsapp_sent++;
+					if (log$1.status === "pending") acc.whatsapp_pending++;
+				}
+				return acc;
+			}, {
+				total_sends: 0,
+				emails_sent: 0,
+				emails_opened: 0,
+				emails_clicked: 0,
+				whatsapp_sent: 0,
+				whatsapp_pending: 0
+			});
+			return {
+				...stats,
+				open_rate: stats.emails_sent > 0 ? stats.emails_opened / stats.emails_sent * 100 : 0,
+				click_rate: stats.emails_sent > 0 ? stats.emails_clicked / stats.emails_sent * 100 : 0
+			};
+		} catch (error) {
+			console.warn("Error fetching stats, using mock stats:", error);
+			return {
+				total_sends: 0,
+				emails_sent: 0,
+				emails_opened: 0,
+				emails_clicked: 0,
+				whatsapp_sent: 0,
+				whatsapp_pending: 0,
+				open_rate: 0,
+				click_rate: 0
+			};
+		}
+	},
+	async getWhatsAppQueue(campaignId) {
+		try {
+			const { data, error } = await supabase.from("campaign_sends").select(`
+        *,
+        contact:contacts(name, phone, whatsapp, email)
+      `).eq("campaign_id", campaignId).eq("channel", "whatsapp").eq("status", "pending").order("created_at", { ascending: true });
+			if (error) throw error;
+			return data;
+		} catch (error) {
+			console.warn("Error fetching queue, returning empty mock:", error);
+			return [];
+		}
+	},
+	async markAsSent(logId) {
+		try {
+			const { error } = await supabase.from("campaign_sends").update({
+				status: "sent",
+				sent_at: (/* @__PURE__ */ new Date()).toISOString()
+			}).eq("id", logId);
+			if (error) throw error;
+		} catch (error) {
+			console.warn("Mock markAsSent due to error:", error);
+			return;
+		}
+	},
+	async triggerProcessing() {
+		try {
+			const { data, error } = await supabase.functions.invoke("process-campaigns");
+			if (error) throw error;
+			return data;
+		} catch (error) {
+			console.warn("Mock triggerProcessing:", error);
+			return {
+				success: true,
+				message: "Mock processing triggered"
+			};
+		}
+	}
+};
+function DatePicker({ date: date$4, setDate, className, placeholder = "Selecione uma data" }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+		asChild: true,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+			variant: "outline",
+			className: cn("w-full justify-start text-left font-normal", !date$4 && "text-muted-foreground", className),
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "mr-2 h-4 w-4" }), date$4 ? format(date$4, "PPP", { locale: ptBR }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: placeholder })]
+		})
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
+		className: "w-auto p-0",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar$1, {
+			mode: "single",
+			selected: date$4,
+			onSelect: setDate,
+			initialFocus: true,
+			locale: ptBR
+		})
+	})] });
+}
 const tagsService = {
 	async getTags() {
 		const { data, error } = await supabase.from("tags").select("*").order("name");
@@ -72060,6 +73425,718 @@ const tagsService = {
 		if (error) throw error;
 	}
 };
+var SEGMENT_OPTIONS = [
+	{
+		label: "VIP",
+		value: "VIP"
+	},
+	{
+		label: "Frequentes",
+		value: "Frequentes"
+	},
+	{
+		label: "Ativos",
+		value: "Ativos"
+	},
+	{
+		label: "Novos Leads",
+		value: "Novos Leads"
+	},
+	{
+		label: "Inativos",
+		value: "Inativos"
+	}
+];
+function AudienceSelector({ selectedTags, selectedSegments, onTagsChange, onSegmentsChange }) {
+	const [tagOptions, setTagOptions] = (0, import_react.useState)([]);
+	const [audienceCount, setAudienceCount] = (0, import_react.useState)(null);
+	const [loadingCount, setLoadingCount] = (0, import_react.useState)(false);
+	(0, import_react.useEffect)(() => {
+		tagsService.getTags().then((tags) => {
+			setTagOptions(tags.map((t$1) => ({
+				label: t$1.name,
+				value: t$1.name
+			})));
+		}).catch(console.error);
+	}, []);
+	(0, import_react.useEffect)(() => {
+		const calculate = async () => {
+			setLoadingCount(true);
+			try {
+				setAudienceCount(await contactsService.getAudienceCount({
+					tags: selectedTags,
+					segments: selectedSegments
+				}));
+			} catch (error) {
+				console.error("Failed to count audience", error);
+			} finally {
+				setLoadingCount(false);
+			}
+		};
+		calculate();
+	}, [selectedTags, selectedSegments]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-4 rounded-lg border p-4 bg-muted/20",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center justify-between",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+					className: "font-semibold flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "h-4 w-4 text-primary" }), "Definição de Público"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "text-sm font-medium",
+					children: loadingCount ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "flex items-center text-muted-foreground",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-3 w-3 animate-spin" }), " Calculando..."]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: audienceCount === 0 ? "text-destructive" : "text-primary",
+						children: [audienceCount, " destinatários encontrados"]
+					})
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-4 md:grid-cols-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Segmentos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MultiSelect, {
+						options: SEGMENT_OPTIONS,
+						selected: selectedSegments,
+						onChange: onSegmentsChange,
+						placeholder: "Selecione segmentos..."
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tags" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MultiSelect, {
+						options: tagOptions,
+						selected: selectedTags,
+						onChange: onTagsChange,
+						placeholder: "Selecione tags..."
+					})]
+				})]
+			}),
+			audienceCount === 0 && (selectedTags.length > 0 || selectedSegments.length > 0) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-xs text-destructive mt-2",
+				children: "Atenção: Nenhum contato corresponde aos filtros selecionados. A campanha não terá destinatários."
+			})
+		]
+	});
+}
+function CampaignScheduler({ schedules, setSchedules, allowedChannels }) {
+	const [newDate$1, setNewDate] = (0, import_react.useState)("");
+	const [newTime, setNewTime] = (0, import_react.useState)("09:00");
+	const [newChannel, setNewChannel] = (0, import_react.useState)("email");
+	const [newContent, setNewContent] = (0, import_react.useState)("");
+	const handleAdd = () => {
+		if (!newDate$1 || !newTime || !newContent) return;
+		const newItem = {
+			id: Math.random().toString(36).substring(7),
+			date: newDate$1,
+			time: newTime,
+			channel: newChannel,
+			content: newContent
+		};
+		setSchedules([...schedules, newItem].sort((a$2, b$1) => {
+			return (/* @__PURE__ */ new Date(`${a$2.date}T${a$2.time}`)).getTime() - (/* @__PURE__ */ new Date(`${b$1.date}T${b$1.time}`)).getTime();
+		}));
+		setNewContent("");
+	};
+	const handleRemove = (id) => {
+		setSchedules(schedules.filter((s$3) => s$3.id !== id));
+	};
+	const isAddDisabled = !newDate$1 || !newTime || !newContent || !allowedChannels.includes(newChannel);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-4",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center justify-between",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+					className: "font-semibold text-sm",
+					children: "Cronograma de Envios"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+					variant: "outline",
+					children: [schedules.length, " envios programados"]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-4 p-4 border rounded-md bg-muted/10",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 md:grid-cols-4 gap-4",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Data" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "date",
+								value: newDate$1,
+								onChange: (e) => setNewDate(e.target.value),
+								min: (/* @__PURE__ */ new Date()).toISOString().split("T")[0]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Horário" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "time",
+								value: newTime,
+								onChange: (e) => setNewTime(e.target.value)
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Canal" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+								value: newChannel,
+								onValueChange: (v) => setNewChannel(v),
+								disabled: allowedChannels.length === 0,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "email",
+									disabled: !allowedChannels.includes("email"),
+									children: "E-mail"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "whatsapp",
+									disabled: !allowedChannels.includes("whatsapp"),
+									children: "WhatsApp"
+								})] })]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex items-end",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								className: "w-full",
+								onClick: handleAdd,
+								disabled: isAddDisabled,
+								type: "button",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "mr-2 h-4 w-4" }), " Adicionar"]
+							})
+						})
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Conteúdo da Mensagem" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+						placeholder: "Digite o conteúdo ou selecione um template...",
+						value: newContent,
+						onChange: (e) => setNewContent(e.target.value),
+						rows: 2
+					})]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "space-y-3",
+				children: schedules.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-sm text-muted-foreground text-center py-4 italic",
+					children: "Nenhum envio programado. Adicione eventos acima."
+				}) : schedules.map((schedule) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+					className: "relative overflow-hidden group",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "p-4 flex flex-col md:flex-row gap-4 items-start md:items-center",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: `p-2 rounded-full shrink-0 ${schedule.channel === "email" ? "bg-blue-100 text-blue-600" : "bg-green-100 text-green-600"}`,
+								children: schedule.channel === "email" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-5 w-5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageSquare, { className: "h-5 w-5" })
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex-1 min-w-0",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-2 mb-1",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-semibold text-sm capitalize",
+										children: schedule.channel
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "text-xs text-muted-foreground flex items-center gap-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3 w-3" }), format(/* @__PURE__ */ new Date(`${schedule.date}T${schedule.time}`), "dd 'de' MMMM 'às' HH:mm", { locale: ptBR })]
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-sm text-muted-foreground truncate",
+									children: schedule.content
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								variant: "ghost",
+								size: "icon",
+								className: "shrink-0 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity",
+								onClick: () => handleRemove(schedule.id),
+								type: "button",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
+							})
+						]
+					})
+				}, schedule.id))
+			})
+		]
+	});
+}
+var campaignSchema = object({
+	name: string().min(3, "O nome deve ter pelo menos 3 caracteres"),
+	objective: string().optional(),
+	dates: object({
+		start: date({ required_error: "Data de início obrigatória" }),
+		end: date({ required_error: "Data de fim obrigatória" })
+	}).refine((data) => data.end >= data.start, {
+		message: "A data de fim deve ser posterior à data de início",
+		path: ["end"]
+	}),
+	channels: array(string()).min(1, "Selecione pelo menos um canal"),
+	filters: object({
+		tags: array(string()),
+		segments: array(string())
+	})
+});
+function CampaignForm({ onSuccess, onCancel }) {
+	const [schedules, setSchedules] = (0, import_react.useState)([]);
+	const [isSubmitting, setIsSubmitting] = (0, import_react.useState)(false);
+	const { toast: toast$2 } = useToast();
+	const form = useForm({
+		resolver: a(campaignSchema),
+		defaultValues: {
+			name: "",
+			objective: "",
+			channels: ["email"],
+			filters: {
+				tags: [],
+				segments: []
+			}
+		}
+	});
+	const selectedChannels = form.watch("channels");
+	const filters = form.watch("filters");
+	const onSubmit = async (values) => {
+		if (values.filters.tags.length === 0 && values.filters.segments.length === 0) toast$2({
+			title: "Atenção",
+			description: "Você não selecionou nenhum filtro de público. Isso pode resultar em 0 destinatários.",
+			variant: "destructive"
+		});
+		if (schedules.length === 0) {
+			toast$2({
+				title: "Erro",
+				description: "Adicione pelo menos um envio ao cronograma.",
+				variant: "destructive"
+			});
+			return;
+		}
+		setIsSubmitting(true);
+		try {
+			await campaignsService.createCampaign({
+				name: values.name,
+				objective: values.objective,
+				start_date: values.dates.start.toISOString(),
+				end_date: values.dates.end.toISOString(),
+				status: "Agendada",
+				audience_filters: values.filters,
+				channels: values.channels
+			}, schedules.map((s$3) => ({
+				channel_type: s$3.channel,
+				scheduled_at: (/* @__PURE__ */ new Date(`${s$3.date}T${s$3.time}`)).toISOString(),
+				content: s$3.content
+			})));
+			toast$2({
+				title: "Sucesso",
+				description: "Campanha criada e agendada com sucesso!"
+			});
+			onSuccess();
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro ao criar campanha",
+				description: "Ocorreu um erro inesperado. Tente novamente.",
+				variant: "destructive"
+			});
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Form, {
+		...form,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+			onSubmit: form.handleSubmit(onSubmit),
+			className: "space-y-8 py-4",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-4",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+							className: "text-lg font-semibold border-b pb-2",
+							children: "Informações Básicas"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+							control: form.control,
+							name: "name",
+							render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Nome da Campanha" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									placeholder: "Ex: Leilão de Primavera",
+									...field
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+							] })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+							control: form.control,
+							name: "objective",
+							render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Objetivo" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+									placeholder: "Qual o objetivo desta campanha?",
+									...field
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+							] })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-2 gap-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+								control: form.control,
+								name: "dates.start",
+								render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+									className: "flex flex-col",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Início" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DatePicker, {
+											date: field.value,
+											setDate: field.onChange
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+									]
+								})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+								control: form.control,
+								name: "dates.end",
+								render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
+									className: "flex flex-col",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Fim" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DatePicker, {
+											date: field.value,
+											setDate: field.onChange
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+									]
+								})
+							})]
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "space-y-4",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AudienceSelector, {
+						selectedTags: filters.tags,
+						selectedSegments: filters.segments,
+						onTagsChange: (tags) => form.setValue("filters.tags", tags),
+						onSegmentsChange: (segs) => form.setValue("filters.segments", segs)
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						className: "text-lg font-semibold border-b pb-2",
+						children: "Canais de Comunicação"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+						control: form.control,
+						name: "channels",
+						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, {
+								className: "block mb-2",
+								children: "Selecione os canais"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ToggleGroup, {
+								type: "multiple",
+								variant: "outline",
+								value: field.value,
+								onValueChange: (val) => {
+									if (val.length > 0) field.onChange(val);
+								},
+								className: "justify-start",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItem, {
+									value: "email",
+									"aria-label": "Toggle email",
+									children: "E-mail"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItem, {
+									value: "whatsapp",
+									"aria-label": "Toggle whatsapp",
+									children: "WhatsApp"
+								})]
+							}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Escolha por onde deseja enviar as mensagens." }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+						] })
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						className: "text-lg font-semibold border-b pb-2",
+						children: "Cronograma"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CampaignScheduler, {
+						schedules,
+						setSchedules,
+						allowedChannels: selectedChannels
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex justify-end gap-2 pt-4 border-t",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						type: "button",
+						variant: "outline",
+						onClick: onCancel,
+						children: "Cancelar"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						type: "submit",
+						disabled: isSubmitting,
+						className: "bg-primary",
+						children: [isSubmitting ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "mr-2 h-4 w-4" }), "Criar Campanha"]
+					})]
+				})
+			]
+		})
+	});
+}
+function Index() {
+	const [data, setData] = (0, import_react.useState)(null);
+	const [loading, setLoading] = (0, import_react.useState)(true);
+	const [activeDialog, setActiveDialog] = (0, import_react.useState)(null);
+	const { toast: toast$2 } = useToast();
+	const currentDate = (/* @__PURE__ */ new Date()).toLocaleDateString("pt-BR", {
+		weekday: "long",
+		year: "numeric",
+		month: "long",
+		day: "numeric"
+	});
+	const fetchData = async () => {
+		try {
+			setData(await dashboardService.getDashboardData());
+		} catch (error) {
+			console.error("Failed to load dashboard data", error);
+			toast$2({
+				title: "Erro de carregamento",
+				description: "Não foi possível atualizar o dashboard.",
+				variant: "destructive"
+			});
+		} finally {
+			setLoading(false);
+		}
+	};
+	(0, import_react.useEffect)(() => {
+		fetchData();
+	}, []);
+	const handleTaskComplete = async (task) => {
+		try {
+			if (data) setData({
+				...data,
+				urgentTasks: data.urgentTasks.filter((t$1) => t$1.id !== task.id)
+			});
+			await tasksService.toggleTaskCompletion(task.id, true);
+			toast$2({
+				title: "Tarefa concluída",
+				description: "A tarefa foi marcada como feita."
+			});
+			fetchData();
+		} catch (error) {
+			console.error(error);
+			toast$2({
+				title: "Erro",
+				description: "Não foi possível concluir a tarefa.",
+				variant: "destructive"
+			});
+			fetchData();
+		}
+	};
+	const handleQuickAction = (action) => {
+		setActiveDialog(action);
+	};
+	const closeDialog = () => {
+		setActiveDialog(null);
+		fetchData();
+	};
+	if (loading) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "flex items-center justify-center h-full min-h-[500px]",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 animate-spin text-primary" })
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in pb-10",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+					className: "text-3xl font-bold font-display text-primary",
+					children: "Bem-vindo ao CRM Milan Horses"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground capitalize",
+					children: currentDate
+				})]
+			}),
+			data && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SmartAlerts, { alerts: data.alerts }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-6 md:grid-cols-2",
+				children: [data && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GoalCard, {
+					current: data.goal.current,
+					target: data.goal.target,
+					percentage: data.goal.percentage
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QuickActions, { onAction: handleQuickAction })]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-6 md:grid-cols-7 lg:grid-cols-7",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "col-span-7 lg:col-span-4",
+					children: data && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SalesComparisonChart, { data: data.salesComparison })
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "col-span-7 lg:col-span-3 space-y-6 flex flex-col",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "flex-1",
+						children: data && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PipelineOverview, { data: data.pipeline })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "flex-1",
+						children: data && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(UrgentTasksWidget, {
+							tasks: data.urgentTasks,
+							onComplete: handleTaskComplete
+						})
+					})]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sheet, {
+				open: activeDialog === "contact",
+				onOpenChange: (open) => !open && closeDialog(),
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetContent, {
+					className: "w-[400px] sm:w-[540px] overflow-y-auto",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetTitle, { children: "Novo Contato" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetDescription, { children: "Adicione um novo cliente ou lead." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactForm, { onSuccess: closeDialog })]
+				})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Dialog, {
+				open: activeDialog === "deal",
+				onOpenChange: (open) => !open && closeDialog(),
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+					className: "sm:max-w-[500px]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Novo Negócio" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DealForm, {
+						onSuccess: closeDialog,
+						onCancel: closeDialog
+					})]
+				})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Dialog, {
+				open: activeDialog === "task",
+				onOpenChange: (open) => !open && closeDialog(),
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+					className: "sm:max-w-[500px]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Nova Tarefa" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TaskForm, {
+						onSuccess: closeDialog,
+						onCancel: closeDialog
+					})]
+				})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Dialog, {
+				open: activeDialog === "campaign",
+				onOpenChange: (open) => !open && closeDialog(),
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+					className: "max-w-4xl max-h-[90vh] overflow-y-auto",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Nova Campanha" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CampaignForm, {
+						onSuccess: closeDialog,
+						onCancel: closeDialog
+					})]
+				})
+			})
+		]
+	});
+}
+var Table = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	className: "relative w-full overflow-auto",
+	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("table", {
+		ref,
+		className: cn("w-full caption-bottom text-sm", className),
+		...props
+	})
+}));
+Table.displayName = "Table";
+var TableHeader = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", {
+	ref,
+	className: cn("[&_tr]:border-b", className),
+	...props
+}));
+TableHeader.displayName = "TableHeader";
+var TableBody = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", {
+	ref,
+	className: cn("[&_tr:last-child]:border-0", className),
+	...props
+}));
+TableBody.displayName = "TableBody";
+var TableFooter = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tfoot", {
+	ref,
+	className: cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className),
+	...props
+}));
+TableFooter.displayName = "TableFooter";
+var TableRow = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tr", {
+	ref,
+	className: cn("border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted", className),
+	...props
+}));
+TableRow.displayName = "TableRow";
+var TableHead = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+	ref,
+	className: cn("h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0", className),
+	...props
+}));
+TableHead.displayName = "TableHead";
+var TableCell = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+	ref,
+	className: cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className),
+	...props
+}));
+TableCell.displayName = "TableCell";
+var TableCaption = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("caption", {
+	ref,
+	className: cn("mt-4 text-sm text-muted-foreground", className),
+	...props
+}));
+TableCaption.displayName = "TableCaption";
+var Pagination = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
+	role: "navigation",
+	"aria-label": "pagination",
+	className: cn("mx-auto flex w-full justify-center", className),
+	...props
+});
+Pagination.displayName = "Pagination";
+var PaginationContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+	ref,
+	className: cn("flex flex-row items-center gap-1", className),
+	...props
+}));
+PaginationContent.displayName = "PaginationContent";
+var PaginationItem = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
+	ref,
+	className: cn("", className),
+	...props
+}));
+PaginationItem.displayName = "PaginationItem";
+var PaginationLink = ({ className, isActive, size: size$3 = "icon", ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+	"aria-current": isActive ? "page" : void 0,
+	className: cn(buttonVariants({
+		variant: isActive ? "outline" : "ghost",
+		size: size$3
+	}), className),
+	...props
+});
+PaginationLink.displayName = "PaginationLink";
+var PaginationPrevious = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PaginationLink, {
+	"aria-label": "Go to previous page",
+	size: "default",
+	className: cn("gap-1 pl-2.5", className),
+	...props,
+	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronLeft, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Previous" })]
+});
+PaginationPrevious.displayName = "PaginationPrevious";
+var PaginationNext = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PaginationLink, {
+	"aria-label": "Go to next page",
+	size: "default",
+	className: cn("gap-1 pr-2.5", className),
+	...props,
+	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Next" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronRight, { className: "h-4 w-4" })]
+});
+PaginationNext.displayName = "PaginationNext";
+var PaginationEllipsis = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+	"aria-hidden": true,
+	className: cn("flex h-9 w-9 items-center justify-center", className),
+	...props,
+	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ellipsis, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+		className: "sr-only",
+		children: "More pages"
+	})]
+});
+PaginationEllipsis.displayName = "PaginationEllipsis";
 function TagSelector({ contactId, currentTags, onTagChange, variant = "icon" }) {
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const [availableTags, setAvailableTags] = (0, import_react.useState)([]);
@@ -73227,7 +75304,7 @@ var TabsList$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, loop = true, ...listProps } = props;
 	const context = useTabsContext(TAB_LIST_NAME, __scopeTabs);
 	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeTabs);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
 		asChild: true,
 		...rovingFocusGroupScope,
 		orientation: context.orientation,
@@ -73361,70 +75438,6 @@ const templatesService = {
 	},
 	async deleteTemplate(id) {
 		const { error } = await supabase.from("message_templates").delete().eq("id", id);
-		if (error) throw error;
-	}
-};
-const dealsService = {
-	async getDeals() {
-		const { data, error } = await supabase.from("deals").select(`
-        *,
-        contact:contacts(*)
-      `).order("created_at", { ascending: false });
-		if (error) throw error;
-		return data;
-	},
-	async getDealById(id) {
-		const { data, error } = await supabase.from("deals").select(`
-        *,
-        contact:contacts(*)
-      `).eq("id", id).single();
-		if (error) throw error;
-		return data;
-	},
-	async getDealsByContactId(contactId) {
-		const { data, error } = await supabase.from("deals").select("*").eq("contact_id", contactId).order("created_at", { ascending: false });
-		if (error) throw error;
-		return data;
-	},
-	async createDeal(deal) {
-		const { data, error } = await supabase.from("deals").insert(deal).select().single();
-		if (error) throw error;
-		return data;
-	},
-	async updateDeal(id, updates) {
-		const { data, error } = await supabase.from("deals").update(updates).eq("id", id).select().single();
-		if (error) throw error;
-		return data;
-	},
-	async updateDealStage(id, stage) {
-		const { data, error } = await supabase.from("deals").update({ stage }).eq("id", id).select().single();
-		if (error) throw error;
-		return data;
-	},
-	async deleteDeal(id) {
-		const { error } = await supabase.from("deals").delete().eq("id", id);
-		if (error) throw error;
-	},
-	async getDealTasks(dealId) {
-		const { data, error } = await supabase.from("deal_tasks").select("*").eq("deal_id", dealId).order("created_at", { ascending: true });
-		if (error) throw error;
-		return data;
-	},
-	async addDealTask(dealId, description) {
-		const { data, error } = await supabase.from("deal_tasks").insert({
-			deal_id: dealId,
-			description
-		}).select().single();
-		if (error) throw error;
-		return data;
-	},
-	async updateDealTask(id, updates) {
-		const { data, error } = await supabase.from("deal_tasks").update(updates).eq("id", id).select().single();
-		if (error) throw error;
-		return data;
-	},
-	async deleteDealTask(id) {
-		const { error } = await supabase.from("deal_tasks").delete().eq("id", id);
 		if (error) throw error;
 	}
 };
@@ -74803,10 +76816,10 @@ var ScrollAreaScrollbarImpl = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-var THUMB_NAME$1 = "ScrollAreaThumb";
+var THUMB_NAME = "ScrollAreaThumb";
 var ScrollAreaThumb = import_react.forwardRef((props, forwardedRef) => {
 	const { forceMount, ...thumbProps } = props;
-	const scrollbarContext = useScrollbarContext(THUMB_NAME$1, props.__scopeScrollArea);
+	const scrollbarContext = useScrollbarContext(THUMB_NAME, props.__scopeScrollArea);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
 		present: forceMount || scrollbarContext.hasThumb,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollAreaThumbImpl, {
@@ -74817,8 +76830,8 @@ var ScrollAreaThumb = import_react.forwardRef((props, forwardedRef) => {
 });
 var ScrollAreaThumbImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeScrollArea, style, ...thumbProps } = props;
-	const scrollAreaContext = useScrollAreaContext(THUMB_NAME$1, __scopeScrollArea);
-	const scrollbarContext = useScrollbarContext(THUMB_NAME$1, __scopeScrollArea);
+	const scrollAreaContext = useScrollAreaContext(THUMB_NAME, __scopeScrollArea);
+	const scrollbarContext = useScrollbarContext(THUMB_NAME, __scopeScrollArea);
 	const { onThumbPositionChange } = scrollbarContext;
 	const composedRef = useComposedRefs(forwardedRef, (node) => scrollbarContext.onThumbChange(node));
 	const removeUnlinkedScrollListenerRef = import_react.useRef(void 0);
@@ -74868,7 +76881,7 @@ var ScrollAreaThumbImpl = import_react.forwardRef((props, forwardedRef) => {
 		onPointerUp: composeEventHandlers(props.onPointerUp, scrollbarContext.onThumbPointerUp)
 	});
 });
-ScrollAreaThumb.displayName = THUMB_NAME$1;
+ScrollAreaThumb.displayName = THUMB_NAME;
 var CORNER_NAME = "ScrollAreaCorner";
 var ScrollAreaCorner = import_react.forwardRef((props, forwardedRef) => {
 	const context = useScrollAreaContext(CORNER_NAME, props.__scopeScrollArea);
@@ -74997,10 +77010,10 @@ function useResizeObserver(element, onResize) {
 		}
 	}, [element, handleResize]);
 }
-var Root$2 = ScrollArea$1;
+var Root$1 = ScrollArea$1;
 var Viewport = ScrollAreaViewport;
 var Corner = ScrollAreaCorner;
-var ScrollArea = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Root$2, {
+var ScrollArea = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Root$1, {
 	ref,
 	className: cn("relative overflow-hidden", className),
 	...props,
@@ -75013,7 +77026,7 @@ var ScrollArea = import_react.forwardRef(({ className, children, ...props }, ref
 		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Corner, {})
 	]
 }));
-ScrollArea.displayName = Root$2.displayName;
+ScrollArea.displayName = Root$1.displayName;
 var ScrollBar = import_react.forwardRef(({ className, orientation = "vertical", ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollAreaScrollbar, {
 	ref,
 	orientation,
@@ -75192,216 +77205,6 @@ function KanbanBoard({ refreshTrigger = 0 }) {
 				}, column.id);
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollBar, { orientation: "horizontal" })]
-	});
-}
-var formSchema$3 = object({
-	contact_id: string({ required_error: "Selecione um contato." }),
-	title: string().min(3, "O título deve ter pelo menos 3 caracteres."),
-	stage: _enum([
-		"Lead",
-		"Qualificado",
-		"Interesse",
-		"Proposta",
-		"Fechado"
-	]),
-	value: number().min(0, "O valor não pode ser negativo."),
-	probability: number().min(0).max(100, "Probabilidade entre 0 e 100."),
-	expected_close_date: date().optional()
-});
-var STAGES = [
-	"Lead",
-	"Qualificado",
-	"Interesse",
-	"Proposta",
-	"Fechado"
-];
-function DealForm({ onSuccess, onCancel }) {
-	const { toast: toast$2 } = useToast();
-	const [loading, setLoading] = (0, import_react.useState)(false);
-	const [contacts, setContacts] = (0, import_react.useState)([]);
-	const [contactsLoading, setContactsLoading] = (0, import_react.useState)(false);
-	const [openCombobox, setOpenCombobox] = (0, import_react.useState)(false);
-	const form = useForm({
-		resolver: a(formSchema$3),
-		defaultValues: {
-			title: "",
-			stage: "Lead",
-			value: 0,
-			probability: 10
-		}
-	});
-	(0, import_react.useEffect)(() => {
-		setContactsLoading(true);
-		contactsService.getContacts({ pageSize: 100 }).then((res) => setContacts(res.data)).catch((err) => console.error(err)).finally(() => setContactsLoading(false));
-	}, []);
-	async function onSubmit(values) {
-		setLoading(true);
-		try {
-			const dealData = {
-				...values,
-				expected_close_date: values.expected_close_date ? values.expected_close_date.toISOString() : null
-			};
-			await dealsService.createDeal(dealData);
-			toast$2({
-				title: "Negócio criado!",
-				description: "Oportunidade adicionada ao pipeline com sucesso."
-			});
-			form.reset();
-			onSuccess?.();
-		} catch (error) {
-			console.error(error);
-			toast$2({
-				variant: "destructive",
-				title: "Erro ao criar",
-				description: error.message || "Não foi possível salvar o negócio."
-			});
-		} finally {
-			setLoading(false);
-		}
-	}
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Form, {
-		...form,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
-			onSubmit: form.handleSubmit(onSubmit),
-			className: "space-y-4",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-					control: form.control,
-					name: "contact_id",
-					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
-						className: "flex flex-col",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Contato" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, {
-								open: openCombobox,
-								onOpenChange: setOpenCombobox,
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
-									asChild: true,
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-										variant: "outline",
-										role: "combobox",
-										"aria-expanded": openCombobox,
-										className: cn("w-full justify-between", !field.value && "text-muted-foreground"),
-										children: [field.value ? contacts.find((contact) => contact.id === field.value)?.name : "Selecione um contato...", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronsUpDown, { className: "ml-2 h-4 w-4 shrink-0 opacity-50" })]
-									}) })
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
-									className: "w-[300px] p-0",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Command, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandInput, { placeholder: "Buscar contato..." }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CommandList, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandEmpty, { children: "Nenhum contato encontrado." }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandGroup, { children: contacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CommandItem, {
-										value: contact.name,
-										onSelect: () => {
-											form.setValue("contact_id", contact.id);
-											setOpenCombobox(false);
-										},
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: cn("mr-2 h-4 w-4", contact.id === field.value ? "opacity-100" : "opacity-0") }), contact.name]
-									}, contact.id)) })] })] })
-								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-						]
-					})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-					control: form.control,
-					name: "title",
-					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Título / Lote" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-							placeholder: "Ex: Lote 10 - Cavalo Lusitano",
-							...field
-						}) }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-					] })
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "grid grid-cols-2 gap-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-						control: form.control,
-						name: "value",
-						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Valor Estimado (R$)" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-								type: "number",
-								step: "0.01",
-								...field
-							}) }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-						] })
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-						control: form.control,
-						name: "probability",
-						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Probabilidade (%)" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-								type: "number",
-								min: "0",
-								max: "100",
-								...field
-							}) }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-						] })
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "grid grid-cols-2 gap-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-						control: form.control,
-						name: "stage",
-						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Estágio Inicial" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-								onValueChange: field.onChange,
-								defaultValue: field.value,
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione..." }) }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: STAGES.map((stage) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-									value: stage,
-									children: stage
-								}, stage)) })]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-						] })
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-						control: form.control,
-						name: "expected_close_date",
-						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
-							className: "flex flex-col",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Data Prevista" }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
-									asChild: true,
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-										variant: "outline",
-										className: cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground"),
-										children: [field.value ? format(field.value, "dd/MM/yyyy") : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Selecione uma data" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "ml-auto h-4 w-4 opacity-50" })]
-									}) })
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
-									className: "w-auto p-0",
-									align: "start",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar$1, {
-										mode: "single",
-										selected: field.value,
-										onSelect: field.onChange,
-										initialFocus: true
-									})
-								})] }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-							]
-						})
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex justify-end gap-3 pt-4",
-					children: [onCancel && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-						type: "button",
-						variant: "outline",
-						onClick: onCancel,
-						children: "Cancelar"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						type: "submit",
-						disabled: loading,
-						children: [loading && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }), "Criar Negócio"]
-					})]
-				})
-			]
-		})
 	});
 }
 function Negocios() {
@@ -76015,748 +77818,6 @@ function DealDetails() {
 		]
 	});
 }
-var localCampaigns = [...[{
-	id: "mock-1",
-	name: "Campanha de Verão 2026",
-	objective: "Aumentar vendas da coleção de verão",
-	description: "Campanha focada em roupas de banho e acessórios de praia com desconto progressivo.",
-	start_date: (/* @__PURE__ */ new Date()).toISOString(),
-	end_date: new Date(Date.now() + 720 * 60 * 60 * 1e3).toISOString(),
-	status: "Em Andamento",
-	audience_filters: {
-		tags: ["Vip", "Recorrente"],
-		segments: ["Mulheres", "Jovens"]
-	},
-	channels: ["email", "whatsapp"],
-	created_at: (/* @__PURE__ */ new Date(Date.now() - 10080 * 60 * 1e3)).toISOString(),
-	updated_at: (/* @__PURE__ */ new Date()).toISOString(),
-	stats: {
-		total_sends: 1250,
-		emails_sent: 800,
-		emails_opened: 450,
-		emails_clicked: 120,
-		whatsapp_sent: 450,
-		whatsapp_pending: 0,
-		open_rate: 56.2,
-		click_rate: 15
-	},
-	schedules: [{
-		id: "sch-1",
-		campaign_id: "mock-1",
-		channel_type: "email",
-		scheduled_at: (/* @__PURE__ */ new Date(Date.now() - 1440 * 60 * 1e3)).toISOString(),
-		content: "Confira nossa nova coleção de verão!",
-		status: "Processado",
-		created_at: (/* @__PURE__ */ new Date(Date.now() - 2880 * 60 * 1e3)).toISOString()
-	}]
-}, {
-	id: "mock-2",
-	name: "Black Friday Antecipada",
-	objective: "Aquecimento para Black Friday",
-	description: "Ofertas exclusivas para lista VIP antes do lançamento oficial.",
-	start_date: new Date(Date.now() + 1440 * 60 * 60 * 1e3).toISOString(),
-	end_date: new Date(Date.now() + 1560 * 60 * 60 * 1e3).toISOString(),
-	status: "Agendada",
-	audience_filters: {
-		tags: ["Lead"],
-		segments: ["Interessados"]
-	},
-	channels: ["email"],
-	created_at: (/* @__PURE__ */ new Date()).toISOString(),
-	updated_at: (/* @__PURE__ */ new Date()).toISOString(),
-	stats: {
-		total_sends: 0,
-		emails_sent: 0,
-		emails_opened: 0,
-		emails_clicked: 0,
-		whatsapp_sent: 0,
-		whatsapp_pending: 0,
-		open_rate: 0,
-		click_rate: 0
-	},
-	schedules: []
-}]];
-const campaignsService = {
-	async getCampaigns() {
-		try {
-			const { data, error } = await supabase.from("campaigns").select(`
-        *,
-        schedules:campaign_schedules(*)
-      `).order("created_at", { ascending: false });
-			if (error) {
-				console.warn("Backend unavailable or table missing, using mock data:", error.message);
-				return localCampaigns;
-			}
-			return (data || []).map((campaign) => ({
-				...campaign,
-				objective: campaign.description || campaign.objective || null
-			}));
-		} catch (error) {
-			console.warn("Exception fetching campaigns, using mock data:", error);
-			return localCampaigns;
-		}
-	},
-	async getCampaignById(id) {
-		try {
-			const { data, error } = await supabase.from("campaigns").select(`
-        *,
-        schedules:campaign_schedules(*)
-      `).eq("id", id).single();
-			if (error) {
-				const local = localCampaigns.find((c$1) => c$1.id === id);
-				if (local) return local;
-				throw error;
-			}
-			const campaign = {
-				...data,
-				objective: data.description || data.objective || null
-			};
-			campaign.stats = await this.getCampaignStats(id);
-			return campaign;
-		} catch (error) {
-			console.warn("Exception in getCampaignById, using mock data", error);
-			const local = localCampaigns.find((c$1) => c$1.id === id);
-			if (local) return local;
-			throw error;
-		}
-	},
-	async createCampaign(campaign, schedules) {
-		try {
-			const dbCampaign = {
-				name: campaign.name,
-				description: campaign.objective || campaign.description,
-				start_date: campaign.start_date,
-				end_date: campaign.end_date,
-				status: campaign.status || "Agendada",
-				audience_filters: campaign.audience_filters,
-				channels: campaign.channels,
-				company_id: campaign.company_id
-			};
-			const { data: newCampaign, error: campaignError } = await supabase.from("campaigns").insert(dbCampaign).select().single();
-			if (campaignError) throw campaignError;
-			if (schedules.length > 0) {
-				const schedulesToInsert = schedules.map((send) => ({
-					campaign_id: newCampaign.id,
-					channel_type: send.channel_type,
-					scheduled_at: send.scheduled_at,
-					content: send.content,
-					template_id: send.template_id,
-					status: "Pendente"
-				}));
-				const { error: schedulesError } = await supabase.from("campaign_schedules").insert(schedulesToInsert);
-				if (schedulesError) {
-					console.error("Error creating campaign schedules:", schedulesError);
-					throw schedulesError;
-				}
-			}
-			return {
-				...newCampaign,
-				objective: newCampaign.description
-			};
-		} catch (error) {
-			console.warn("Using mock creation due to error:", error);
-			const newId = `mock-${Date.now()}`;
-			const mockCampaign = {
-				id: newId,
-				name: campaign.name,
-				objective: campaign.objective || null,
-				description: campaign.description || campaign.objective || null,
-				start_date: campaign.start_date,
-				end_date: campaign.end_date,
-				status: campaign.status || "Agendada",
-				audience_filters: campaign.audience_filters,
-				channels: campaign.channels,
-				company_id: campaign.company_id || null,
-				created_at: (/* @__PURE__ */ new Date()).toISOString(),
-				updated_at: (/* @__PURE__ */ new Date()).toISOString(),
-				stats: {
-					total_sends: 0,
-					emails_sent: 0,
-					emails_opened: 0,
-					emails_clicked: 0,
-					whatsapp_sent: 0,
-					whatsapp_pending: 0,
-					open_rate: 0,
-					click_rate: 0
-				},
-				schedules: schedules.map((s$3, idx) => ({
-					id: `sch-${newId}-${idx}`,
-					campaign_id: newId,
-					channel_type: s$3.channel_type,
-					scheduled_at: s$3.scheduled_at,
-					content: s$3.content,
-					status: "Pendente",
-					template_id: s$3.template_id,
-					created_at: (/* @__PURE__ */ new Date()).toISOString()
-				}))
-			};
-			localCampaigns.unshift(mockCampaign);
-			return mockCampaign;
-		}
-	},
-	async getCampaignStats(campaignId) {
-		try {
-			const mock = localCampaigns.find((c$1) => c$1.id === campaignId);
-			if (mock && mock.id.startsWith("mock-") && mock.stats) return mock.stats;
-			const { data, error } = await supabase.from("campaign_sends").select("channel, status").eq("campaign_id", campaignId);
-			if (error) throw error;
-			const stats = data.reduce((acc, log$1) => {
-				acc.total_sends++;
-				if (log$1.channel === "email") {
-					acc.emails_sent++;
-					if (["opened", "clicked"].includes(log$1.status)) acc.emails_opened++;
-					if (log$1.status === "clicked") acc.emails_clicked++;
-				} else if (log$1.channel === "whatsapp") {
-					if (log$1.status === "sent") acc.whatsapp_sent++;
-					if (log$1.status === "pending") acc.whatsapp_pending++;
-				}
-				return acc;
-			}, {
-				total_sends: 0,
-				emails_sent: 0,
-				emails_opened: 0,
-				emails_clicked: 0,
-				whatsapp_sent: 0,
-				whatsapp_pending: 0
-			});
-			return {
-				...stats,
-				open_rate: stats.emails_sent > 0 ? stats.emails_opened / stats.emails_sent * 100 : 0,
-				click_rate: stats.emails_sent > 0 ? stats.emails_clicked / stats.emails_sent * 100 : 0
-			};
-		} catch (error) {
-			console.warn("Error fetching stats, using mock stats:", error);
-			return {
-				total_sends: 0,
-				emails_sent: 0,
-				emails_opened: 0,
-				emails_clicked: 0,
-				whatsapp_sent: 0,
-				whatsapp_pending: 0,
-				open_rate: 0,
-				click_rate: 0
-			};
-		}
-	},
-	async getWhatsAppQueue(campaignId) {
-		try {
-			const { data, error } = await supabase.from("campaign_sends").select(`
-        *,
-        contact:contacts(name, phone, whatsapp, email)
-      `).eq("campaign_id", campaignId).eq("channel", "whatsapp").eq("status", "pending").order("created_at", { ascending: true });
-			if (error) throw error;
-			return data;
-		} catch (error) {
-			console.warn("Error fetching queue, returning empty mock:", error);
-			return [];
-		}
-	},
-	async markAsSent(logId) {
-		try {
-			const { error } = await supabase.from("campaign_sends").update({
-				status: "sent",
-				sent_at: (/* @__PURE__ */ new Date()).toISOString()
-			}).eq("id", logId);
-			if (error) throw error;
-		} catch (error) {
-			console.warn("Mock markAsSent due to error:", error);
-			return;
-		}
-	},
-	async triggerProcessing() {
-		try {
-			const { data, error } = await supabase.functions.invoke("process-campaigns");
-			if (error) throw error;
-			return data;
-		} catch (error) {
-			console.warn("Mock triggerProcessing:", error);
-			return {
-				success: true,
-				message: "Mock processing triggered"
-			};
-		}
-	}
-};
-function DatePicker({ date: date$4, setDate, className, placeholder = "Selecione uma data" }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
-		asChild: true,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-			variant: "outline",
-			className: cn("w-full justify-start text-left font-normal", !date$4 && "text-muted-foreground", className),
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "mr-2 h-4 w-4" }), date$4 ? format(date$4, "PPP", { locale: ptBR }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: placeholder })]
-		})
-	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
-		className: "w-auto p-0",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar$1, {
-			mode: "single",
-			selected: date$4,
-			onSelect: setDate,
-			initialFocus: true,
-			locale: ptBR
-		})
-	})] });
-}
-var SEGMENT_OPTIONS = [
-	{
-		label: "VIP",
-		value: "VIP"
-	},
-	{
-		label: "Frequentes",
-		value: "Frequentes"
-	},
-	{
-		label: "Ativos",
-		value: "Ativos"
-	},
-	{
-		label: "Novos Leads",
-		value: "Novos Leads"
-	},
-	{
-		label: "Inativos",
-		value: "Inativos"
-	}
-];
-function AudienceSelector({ selectedTags, selectedSegments, onTagsChange, onSegmentsChange }) {
-	const [tagOptions, setTagOptions] = (0, import_react.useState)([]);
-	const [audienceCount, setAudienceCount] = (0, import_react.useState)(null);
-	const [loadingCount, setLoadingCount] = (0, import_react.useState)(false);
-	(0, import_react.useEffect)(() => {
-		tagsService.getTags().then((tags) => {
-			setTagOptions(tags.map((t$1) => ({
-				label: t$1.name,
-				value: t$1.name
-			})));
-		}).catch(console.error);
-	}, []);
-	(0, import_react.useEffect)(() => {
-		const calculate = async () => {
-			setLoadingCount(true);
-			try {
-				setAudienceCount(await contactsService.getAudienceCount({
-					tags: selectedTags,
-					segments: selectedSegments
-				}));
-			} catch (error) {
-				console.error("Failed to count audience", error);
-			} finally {
-				setLoadingCount(false);
-			}
-		};
-		calculate();
-	}, [selectedTags, selectedSegments]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-4 rounded-lg border p-4 bg-muted/20",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center justify-between",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
-					className: "font-semibold flex items-center gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "h-4 w-4 text-primary" }), "Definição de Público"]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "text-sm font-medium",
-					children: loadingCount ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-						className: "flex items-center text-muted-foreground",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-3 w-3 animate-spin" }), " Calculando..."]
-					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-						className: audienceCount === 0 ? "text-destructive" : "text-primary",
-						children: [audienceCount, " destinatários encontrados"]
-					})
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid gap-4 md:grid-cols-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "space-y-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Segmentos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MultiSelect, {
-						options: SEGMENT_OPTIONS,
-						selected: selectedSegments,
-						onChange: onSegmentsChange,
-						placeholder: "Selecione segmentos..."
-					})]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "space-y-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tags" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MultiSelect, {
-						options: tagOptions,
-						selected: selectedTags,
-						onChange: onTagsChange,
-						placeholder: "Selecione tags..."
-					})]
-				})]
-			}),
-			audienceCount === 0 && (selectedTags.length > 0 || selectedSegments.length > 0) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-xs text-destructive mt-2",
-				children: "Atenção: Nenhum contato corresponde aos filtros selecionados. A campanha não terá destinatários."
-			})
-		]
-	});
-}
-function CampaignScheduler({ schedules, setSchedules, allowedChannels }) {
-	const [newDate$1, setNewDate] = (0, import_react.useState)("");
-	const [newTime, setNewTime] = (0, import_react.useState)("09:00");
-	const [newChannel, setNewChannel] = (0, import_react.useState)("email");
-	const [newContent, setNewContent] = (0, import_react.useState)("");
-	const handleAdd = () => {
-		if (!newDate$1 || !newTime || !newContent) return;
-		const newItem = {
-			id: Math.random().toString(36).substring(7),
-			date: newDate$1,
-			time: newTime,
-			channel: newChannel,
-			content: newContent
-		};
-		setSchedules([...schedules, newItem].sort((a$2, b$1) => {
-			return (/* @__PURE__ */ new Date(`${a$2.date}T${a$2.time}`)).getTime() - (/* @__PURE__ */ new Date(`${b$1.date}T${b$1.time}`)).getTime();
-		}));
-		setNewContent("");
-	};
-	const handleRemove = (id) => {
-		setSchedules(schedules.filter((s$3) => s$3.id !== id));
-	};
-	const isAddDisabled = !newDate$1 || !newTime || !newContent || !allowedChannels.includes(newChannel);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-4",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center justify-between",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-					className: "font-semibold text-sm",
-					children: "Cronograma de Envios"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
-					variant: "outline",
-					children: [schedules.length, " envios programados"]
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid gap-4 p-4 border rounded-md bg-muted/10",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "grid grid-cols-2 md:grid-cols-4 gap-4",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Data" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-								type: "date",
-								value: newDate$1,
-								onChange: (e) => setNewDate(e.target.value),
-								min: (/* @__PURE__ */ new Date()).toISOString().split("T")[0]
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Horário" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-								type: "time",
-								value: newTime,
-								onChange: (e) => setNewTime(e.target.value)
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Canal" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-								value: newChannel,
-								onValueChange: (v) => setNewChannel(v),
-								disabled: allowedChannels.length === 0,
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-									value: "email",
-									disabled: !allowedChannels.includes("email"),
-									children: "E-mail"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-									value: "whatsapp",
-									disabled: !allowedChannels.includes("whatsapp"),
-									children: "WhatsApp"
-								})] })]
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "flex items-end",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-								className: "w-full",
-								onClick: handleAdd,
-								disabled: isAddDisabled,
-								type: "button",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "mr-2 h-4 w-4" }), " Adicionar"]
-							})
-						})
-					]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "space-y-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Conteúdo da Mensagem" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
-						placeholder: "Digite o conteúdo ou selecione um template...",
-						value: newContent,
-						onChange: (e) => setNewContent(e.target.value),
-						rows: 2
-					})]
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "space-y-3",
-				children: schedules.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-sm text-muted-foreground text-center py-4 italic",
-					children: "Nenhum envio programado. Adicione eventos acima."
-				}) : schedules.map((schedule) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
-					className: "relative overflow-hidden group",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-						className: "p-4 flex flex-col md:flex-row gap-4 items-start md:items-center",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: `p-2 rounded-full shrink-0 ${schedule.channel === "email" ? "bg-blue-100 text-blue-600" : "bg-green-100 text-green-600"}`,
-								children: schedule.channel === "email" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-5 w-5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageSquare, { className: "h-5 w-5" })
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex-1 min-w-0",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center gap-2 mb-1",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-semibold text-sm capitalize",
-										children: schedule.channel
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-										className: "text-xs text-muted-foreground flex items-center gap-1",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3 w-3" }), format(/* @__PURE__ */ new Date(`${schedule.date}T${schedule.time}`), "dd 'de' MMMM 'às' HH:mm", { locale: ptBR })]
-									})]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "text-sm text-muted-foreground truncate",
-									children: schedule.content
-								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-								variant: "ghost",
-								size: "icon",
-								className: "shrink-0 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity",
-								onClick: () => handleRemove(schedule.id),
-								type: "button",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
-							})
-						]
-					})
-				}, schedule.id))
-			})
-		]
-	});
-}
-var campaignSchema = object({
-	name: string().min(3, "O nome deve ter pelo menos 3 caracteres"),
-	objective: string().optional(),
-	dates: object({
-		start: date({ required_error: "Data de início obrigatória" }),
-		end: date({ required_error: "Data de fim obrigatória" })
-	}).refine((data) => data.end >= data.start, {
-		message: "A data de fim deve ser posterior à data de início",
-		path: ["end"]
-	}),
-	channels: array(string()).min(1, "Selecione pelo menos um canal"),
-	filters: object({
-		tags: array(string()),
-		segments: array(string())
-	})
-});
-function CampaignForm({ onSuccess, onCancel }) {
-	const [schedules, setSchedules] = (0, import_react.useState)([]);
-	const [isSubmitting, setIsSubmitting] = (0, import_react.useState)(false);
-	const { toast: toast$2 } = useToast();
-	const form = useForm({
-		resolver: a(campaignSchema),
-		defaultValues: {
-			name: "",
-			objective: "",
-			channels: ["email"],
-			filters: {
-				tags: [],
-				segments: []
-			}
-		}
-	});
-	const selectedChannels = form.watch("channels");
-	const filters = form.watch("filters");
-	const onSubmit = async (values) => {
-		if (values.filters.tags.length === 0 && values.filters.segments.length === 0) toast$2({
-			title: "Atenção",
-			description: "Você não selecionou nenhum filtro de público. Isso pode resultar em 0 destinatários.",
-			variant: "destructive"
-		});
-		if (schedules.length === 0) {
-			toast$2({
-				title: "Erro",
-				description: "Adicione pelo menos um envio ao cronograma.",
-				variant: "destructive"
-			});
-			return;
-		}
-		setIsSubmitting(true);
-		try {
-			await campaignsService.createCampaign({
-				name: values.name,
-				objective: values.objective,
-				start_date: values.dates.start.toISOString(),
-				end_date: values.dates.end.toISOString(),
-				status: "Agendada",
-				audience_filters: values.filters,
-				channels: values.channels
-			}, schedules.map((s$3) => ({
-				channel_type: s$3.channel,
-				scheduled_at: (/* @__PURE__ */ new Date(`${s$3.date}T${s$3.time}`)).toISOString(),
-				content: s$3.content
-			})));
-			toast$2({
-				title: "Sucesso",
-				description: "Campanha criada e agendada com sucesso!"
-			});
-			onSuccess();
-		} catch (error) {
-			console.error(error);
-			toast$2({
-				title: "Erro ao criar campanha",
-				description: "Ocorreu um erro inesperado. Tente novamente.",
-				variant: "destructive"
-			});
-		} finally {
-			setIsSubmitting(false);
-		}
-	};
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Form, {
-		...form,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
-			onSubmit: form.handleSubmit(onSubmit),
-			className: "space-y-8 py-4",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "space-y-4",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-							className: "text-lg font-semibold border-b pb-2",
-							children: "Informações Básicas"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-							control: form.control,
-							name: "name",
-							render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Nome da Campanha" }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-									placeholder: "Ex: Leilão de Primavera",
-									...field
-								}) }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-							] })
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-							control: form.control,
-							name: "objective",
-							render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Objetivo" }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
-									placeholder: "Qual o objetivo desta campanha?",
-									...field
-								}) }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-							] })
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "grid grid-cols-2 gap-4",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-								control: form.control,
-								name: "dates.start",
-								render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
-									className: "flex flex-col",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Início" }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DatePicker, {
-											date: field.value,
-											setDate: field.onChange
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-									]
-								})
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-								control: form.control,
-								name: "dates.end",
-								render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
-									className: "flex flex-col",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Fim" }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DatePicker, {
-											date: field.value,
-											setDate: field.onChange
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-									]
-								})
-							})]
-						})
-					]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "space-y-4",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AudienceSelector, {
-						selectedTags: filters.tags,
-						selectedSegments: filters.segments,
-						onTagsChange: (tags) => form.setValue("filters.tags", tags),
-						onSegmentsChange: (segs) => form.setValue("filters.segments", segs)
-					})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "space-y-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-						className: "text-lg font-semibold border-b pb-2",
-						children: "Canais de Comunicação"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-						control: form.control,
-						name: "channels",
-						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, {
-								className: "block mb-2",
-								children: "Selecione os canais"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ToggleGroup, {
-								type: "multiple",
-								variant: "outline",
-								value: field.value,
-								onValueChange: (val) => {
-									if (val.length > 0) field.onChange(val);
-								},
-								className: "justify-start",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItem, {
-									value: "email",
-									"aria-label": "Toggle email",
-									children: "E-mail"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItem, {
-									value: "whatsapp",
-									"aria-label": "Toggle whatsapp",
-									children: "WhatsApp"
-								})]
-							}) }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Escolha por onde deseja enviar as mensagens." }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-						] })
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "space-y-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-						className: "text-lg font-semibold border-b pb-2",
-						children: "Cronograma"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CampaignScheduler, {
-						schedules,
-						setSchedules,
-						allowedChannels: selectedChannels
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex justify-end gap-2 pt-4 border-t",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-						type: "button",
-						variant: "outline",
-						onClick: onCancel,
-						children: "Cancelar"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						type: "submit",
-						disabled: isSubmitting,
-						className: "bg-primary",
-						children: [isSubmitting ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "mr-2 h-4 w-4" }), "Criar Campanha"]
-					})]
-				})
-			]
-		})
-	});
-}
 function Campanhas() {
 	const [campaigns, setCampaigns] = (0, import_react.useState)([]);
 	const [loading, setLoading] = (0, import_react.useState)(true);
@@ -77112,7 +78173,7 @@ function CampaignDetails() {
 		open_rate: 0,
 		click_rate: 0
 	};
-	const chartData$1 = [
+	const chartData = [
 		{
 			name: "Enviados",
 			value: stats.emails_sent,
@@ -77288,7 +78349,7 @@ function CampaignDetails() {
 								} },
 								className: "h-[300px] w-full",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
-									data: chartData$1,
+									data: chartData,
 									margin: {
 										top: 20,
 										right: 30,
@@ -77390,120 +78451,6 @@ function CampaignDetails() {
 		]
 	});
 }
-var SWITCH_NAME = "Switch";
-var [createSwitchContext, createSwitchScope] = createContextScope(SWITCH_NAME);
-var [SwitchProvider, useSwitchContext] = createSwitchContext(SWITCH_NAME);
-var Switch$1 = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeSwitch, name, checked: checkedProp, defaultChecked, required: required$1, disabled, value = "on", onCheckedChange, form, ...switchProps } = props;
-	const [button, setButton] = import_react.useState(null);
-	const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node));
-	const hasConsumerStoppedPropagationRef = import_react.useRef(false);
-	const isFormControl = button ? form || !!button.closest("form") : true;
-	const [checked, setChecked] = useControllableState({
-		prop: checkedProp,
-		defaultProp: defaultChecked ?? false,
-		onChange: onCheckedChange,
-		caller: SWITCH_NAME
-	});
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SwitchProvider, {
-		scope: __scopeSwitch,
-		checked,
-		disabled,
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
-			type: "button",
-			role: "switch",
-			"aria-checked": checked,
-			"aria-required": required$1,
-			"data-state": getState$3(checked),
-			"data-disabled": disabled ? "" : void 0,
-			disabled,
-			value,
-			...switchProps,
-			ref: composedRefs,
-			onClick: composeEventHandlers(props.onClick, (event) => {
-				setChecked((prevChecked) => !prevChecked);
-				if (isFormControl) {
-					hasConsumerStoppedPropagationRef.current = event.isPropagationStopped();
-					if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation();
-				}
-			})
-		}), isFormControl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SwitchBubbleInput, {
-			control: button,
-			bubbles: !hasConsumerStoppedPropagationRef.current,
-			name,
-			value,
-			checked,
-			required: required$1,
-			disabled,
-			form,
-			style: { transform: "translateX(-100%)" }
-		})]
-	});
-});
-Switch$1.displayName = SWITCH_NAME;
-var THUMB_NAME = "SwitchThumb";
-var SwitchThumb = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeSwitch, ...thumbProps } = props;
-	const context = useSwitchContext(THUMB_NAME, __scopeSwitch);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
-		"data-state": getState$3(context.checked),
-		"data-disabled": context.disabled ? "" : void 0,
-		...thumbProps,
-		ref: forwardedRef
-	});
-});
-SwitchThumb.displayName = THUMB_NAME;
-var BUBBLE_INPUT_NAME$1 = "SwitchBubbleInput";
-var SwitchBubbleInput = import_react.forwardRef(({ __scopeSwitch, control, checked, bubbles = true, ...props }, forwardedRef) => {
-	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs(ref, forwardedRef);
-	const prevChecked = usePrevious(checked);
-	const controlSize = useSize(control);
-	import_react.useEffect(() => {
-		const input = ref.current;
-		if (!input) return;
-		const inputProto = window.HTMLInputElement.prototype;
-		const setChecked = Object.getOwnPropertyDescriptor(inputProto, "checked").set;
-		if (prevChecked !== checked && setChecked) {
-			const event = new Event("click", { bubbles });
-			setChecked.call(input, checked);
-			input.dispatchEvent(event);
-		}
-	}, [
-		prevChecked,
-		checked,
-		bubbles
-	]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-		type: "checkbox",
-		"aria-hidden": true,
-		defaultChecked: checked,
-		...props,
-		tabIndex: -1,
-		ref: composedRefs,
-		style: {
-			...props.style,
-			...controlSize,
-			position: "absolute",
-			pointerEvents: "none",
-			opacity: 0,
-			margin: 0
-		}
-	});
-});
-SwitchBubbleInput.displayName = BUBBLE_INPUT_NAME$1;
-function getState$3(checked) {
-	return checked ? "checked" : "unchecked";
-}
-var Root$1 = Switch$1;
-var Thumb = SwitchThumb;
-var Switch = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$1, {
-	className: cn("peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input", className),
-	...props,
-	ref,
-	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Thumb, { className: cn("pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0") })
-}));
-Switch.displayName = Root$1.displayName;
 const automationsService = {
 	async getSettings() {
 		const { data, error } = await supabase.from("automation_settings").select("*").order("name", { ascending: true });
@@ -77655,272 +78602,6 @@ function Automacoes() {
 				children: "Nenhuma configuração encontrada. Verifique se as migrações foram executadas."
 			})]
 		})]
-	});
-}
-const tasksService = {
-	async getTasks() {
-		const { data, error } = await supabase.from("tasks").select(`
-        *,
-        contact:contacts(*),
-        deal:deals(id, title)
-      `).order("due_date", { ascending: true });
-		if (error) throw error;
-		return data;
-	},
-	async createTask(task) {
-		const { data, error } = await supabase.from("tasks").insert(task).select().single();
-		if (error) throw error;
-		return data;
-	},
-	async updateTask(id, updates) {
-		const { data, error } = await supabase.from("tasks").update(updates).eq("id", id).select().single();
-		if (error) throw error;
-		return data;
-	},
-	async deleteTask(id) {
-		const { error } = await supabase.from("tasks").delete().eq("id", id);
-		if (error) throw error;
-	},
-	async toggleTaskCompletion(id, is_completed) {
-		const { data, error } = await supabase.from("tasks").update({ is_completed }).eq("id", id).select().single();
-		if (error) throw error;
-		return data;
-	}
-};
-var taskTypes = [
-	"Ligação",
-	"E-mail",
-	"WhatsApp",
-	"Outro"
-];
-var formSchema$2 = object({
-	title: string().min(1, "O título é obrigatório"),
-	description: string().optional(),
-	type: _enum([
-		"Ligação",
-		"E-mail",
-		"WhatsApp",
-		"Outro"
-	]),
-	contact_id: string().optional(),
-	date: date({ required_error: "A data é obrigatória" }),
-	time: string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Formato de hora inválido"),
-	has_reminder: boolean().default(false)
-});
-function TaskForm({ onSuccess, onCancel }) {
-	const [contacts, setContacts] = (0, import_react.useState)([]);
-	const [openCombobox, setOpenCombobox] = (0, import_react.useState)(false);
-	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
-	const { toast: toast$2 } = useToast();
-	const form = useForm({
-		resolver: a(formSchema$2),
-		defaultValues: {
-			title: "",
-			description: "",
-			type: "Ligação",
-			contact_id: "",
-			has_reminder: false,
-			date: /* @__PURE__ */ new Date(),
-			time: format(/* @__PURE__ */ new Date(), "HH:mm")
-		}
-	});
-	(0, import_react.useEffect)(() => {
-		const loadContacts = async () => {
-			try {
-				const { data } = await contactsService.getContacts({ pageSize: 100 });
-				setContacts(data || []);
-			} catch (error) {
-				console.error("Failed to load contacts", error);
-			}
-		};
-		loadContacts();
-	}, []);
-	const onSubmit = async (values) => {
-		setIsLoading(true);
-		try {
-			const dateTime = new Date(values.date);
-			const [hours, minutes] = values.time.split(":").map(Number);
-			dateTime.setHours(hours, minutes);
-			const newTask = {
-				title: values.title,
-				description: values.description,
-				type: values.type,
-				contact_id: values.contact_id || null,
-				due_date: dateTime.toISOString(),
-				has_reminder: values.has_reminder,
-				is_completed: false
-			};
-			await tasksService.createTask(newTask);
-			toast$2({ title: "Tarefa criada com sucesso!" });
-			onSuccess();
-		} catch (error) {
-			console.error(error);
-			toast$2({
-				title: "Erro ao criar tarefa",
-				description: "Ocorreu um erro inesperado. Tente novamente.",
-				variant: "destructive"
-			});
-		} finally {
-			setIsLoading(false);
-		}
-	};
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Form, {
-		...form,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
-			onSubmit: form.handleSubmit(onSubmit),
-			className: "space-y-4",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-					control: form.control,
-					name: "title",
-					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Título" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-							placeholder: "Ex: Ligar para confirmar visita",
-							...field
-						}) }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-					] })
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "grid grid-cols-2 gap-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-						control: form.control,
-						name: "type",
-						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Tipo" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-								onValueChange: field.onChange,
-								defaultValue: field.value,
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o tipo" }) }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: taskTypes.map((type) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-									value: type,
-									children: type
-								}, type)) })]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-						] })
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-						control: form.control,
-						name: "contact_id",
-						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
-							className: "flex flex-col",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, {
-									className: "mb-1",
-									children: "Contato Vinculado"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, {
-									open: openCombobox,
-									onOpenChange: setOpenCombobox,
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
-										asChild: true,
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-											variant: "outline",
-											role: "combobox",
-											className: cn("w-full justify-between pl-3 text-left font-normal", !field.value && "text-muted-foreground"),
-											children: [field.value ? contacts.find((contact) => contact.id === field.value)?.name : "Selecione um contato", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "ml-2 h-4 w-4 opacity-50 rotate-90" })]
-										}) })
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
-										className: "w-[300px] p-0",
-										align: "start",
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Command, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandInput, { placeholder: "Buscar contato..." }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CommandList, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandEmpty, { children: "Nenhum contato encontrado." }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommandGroup, { children: contacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CommandItem, {
-											value: contact.name,
-											onSelect: () => {
-												form.setValue("contact_id", contact.id);
-												setOpenCombobox(false);
-											},
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: cn("mr-2 h-4 w-4", contact.id === field.value ? "opacity-100" : "opacity-0") }), contact.name]
-										}, contact.id)) })] })] })
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-							]
-						})
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "grid grid-cols-2 gap-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-						control: form.control,
-						name: "date",
-						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
-							className: "flex flex-col",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Data" }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
-									asChild: true,
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-										variant: "outline",
-										className: cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground"),
-										children: [field.value ? format(field.value, "PPP", { locale: ptBR }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Selecione a data" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "ml-auto h-4 w-4 opacity-50" })]
-									}) })
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
-									className: "w-auto p-0",
-									align: "start",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar$1, {
-										mode: "single",
-										selected: field.value,
-										onSelect: field.onChange,
-										initialFocus: true
-									})
-								})] }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-							]
-						})
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-						control: form.control,
-						name: "time",
-						render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Hora" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-								type: "time",
-								...field
-							}) }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-						] })
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-					control: form.control,
-					name: "description",
-					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Descrição" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
-							placeholder: "Detalhes adicionais sobre a tarefa...",
-							...field
-						}) }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
-					] })
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
-					control: form.control,
-					name: "has_reminder",
-					render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, {
-						className: "flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-0.5",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Lembrete" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Receber notificação sobre esta tarefa" })]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
-							checked: field.value,
-							onCheckedChange: field.onChange
-						}) })]
-					})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex justify-end gap-2 pt-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-						type: "button",
-						variant: "outline",
-						onClick: onCancel,
-						children: "Cancelar"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						type: "submit",
-						disabled: isLoading,
-						children: [isLoading && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }), "Salvar Tarefa"]
-					})]
-				})
-			]
-		})
 	});
 }
 function TaskCard({ task, onComplete, onDelete }) {
@@ -78984,245 +79665,6 @@ function NewContactsChart({ data }) {
 		}) })]
 	});
 }
-const reportsService = {
-	async getReportData(startDate, endDate) {
-		const startStr = startDate.toISOString().split("T")[0];
-		const endStr = endDate.toISOString().split("T")[0];
-		const { data: purchases, error: purchError } = await supabase.from("purchases").select("*, contacts(name)").gte("date", startStr).lte("date", endStr);
-		if (purchError) throw purchError;
-		const { count: totalContacts, error: countError } = await supabase.from("contacts").select("id", {
-			count: "exact",
-			head: true
-		});
-		if (countError) throw countError;
-		const salesMap = /* @__PURE__ */ new Map();
-		eachMonthOfInterval({
-			start: startDate,
-			end: endDate
-		}).forEach((date$4) => {
-			const key = format(date$4, "MMM/yy", { locale: ptBR });
-			const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
-			salesMap.set(formattedKey, {
-				value: 0,
-				count: 0
-			});
-		});
-		purchases?.forEach((p$1) => {
-			const date$4 = parseISO(p$1.date);
-			if (date$4 >= startDate && date$4 <= endDate) {
-				const key = format(date$4, "MMM/yy", { locale: ptBR });
-				const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
-				const current = salesMap.get(formattedKey) || {
-					value: 0,
-					count: 0
-				};
-				salesMap.set(formattedKey, {
-					value: current.value + Number(p$1.value),
-					count: current.count + 1
-				});
-			}
-		});
-		const salesByMonth = Array.from(salesMap.entries()).map(([name, data]) => ({
-			name,
-			value: data.value,
-			count: data.count,
-			average: data.count > 0 ? data.value / data.count : 0
-		}));
-		const sortedByValue = [...salesByMonth].sort((a$2, b$1) => b$1.value - a$2.value);
-		const peakMonth = sortedByValue[0]?.name || "-";
-		const lowMonth = sortedByValue[sortedByValue.length - 1]?.name || "-";
-		const analysis = `O período apresentou pico de vendas em ${peakMonth}, enquanto ${lowMonth} teve o menor desempenho.`;
-		const customerMap = /* @__PURE__ */ new Map();
-		purchases?.forEach((p$1) => {
-			if (p$1.contact_id) {
-				const current = customerMap.get(p$1.contact_id) || {
-					name: p$1.contacts?.name || "Desconhecido",
-					total: 0,
-					count: 0
-				};
-				customerMap.set(p$1.contact_id, {
-					name: current.name,
-					total: current.total + Number(p$1.value),
-					count: current.count + 1
-				});
-			}
-		});
-		const topCustomers = Array.from(customerMap.entries()).map(([id, data]) => ({
-			id,
-			...data
-		})).sort((a$2, b$1) => b$1.total - a$2.total).slice(0, 10);
-		const breedMap = /* @__PURE__ */ new Map();
-		purchases?.forEach((p$1) => {
-			const desc = (p$1.description || "").toLowerCase();
-			let breed = "Outros";
-			if (desc.includes("lusitano")) breed = "Lusitano";
-			else if (desc.includes("quarto de milha")) breed = "Quarto de Milha";
-			else if (desc.includes("árabe") || desc.includes("arabe")) breed = "Árabe";
-			else if (desc.includes("mangalarga")) breed = "Mangalarga";
-			else if (desc.includes("crioulo")) breed = "Crioulo";
-			else if (desc.includes("campolina")) breed = "Campolina";
-			else if (desc.includes("holandês")) breed = "Holandês";
-			else if (desc.includes("pampa")) breed = "Pampa";
-			breedMap.set(breed, (breedMap.get(breed) || 0) + Number(p$1.value));
-		});
-		const salesByBreed = Array.from(breedMap.entries()).map(([name, value]) => ({
-			name,
-			value
-		})).sort((a$2, b$1) => b$1.value - a$2.value);
-		const totalRevenue = purchases?.reduce((acc, p$1) => acc + Number(p$1.value), 0) || 0;
-		const totalSales = purchases?.length || 0;
-		const avgTicket = totalSales > 0 ? totalRevenue / totalSales : 0;
-		const uniqueCustomers = customerMap.size;
-		const conversionRate = totalContacts ? uniqueCustomers / totalContacts * 100 : 0;
-		return {
-			salesByMonth,
-			topCustomers,
-			salesByBreed,
-			metrics: {
-				totalRevenue,
-				totalSales,
-				avgTicket,
-				totalLeads: totalContacts || 0,
-				totalCustomers: uniqueCustomers,
-				conversionRate
-			},
-			seasonality: {
-				peakMonth,
-				lowMonth,
-				analysis
-			}
-		};
-	},
-	async getActivityReportData(startDate, endDate, teamMemberId) {
-		const startStr = startDate.toISOString();
-		const endStr = endDate.toISOString();
-		const { data: interactions } = await supabase.from("contact_interactions").select("type, date, created_at, status").gte("date", startStr).lte("date", endStr);
-		const interactionsMap = /* @__PURE__ */ new Map();
-		eachDayOfInterval({
-			start: startDate,
-			end: endDate
-		}).forEach((day) => {
-			const key = format(day, "dd/MM");
-			interactionsMap.set(key, {
-				email: 0,
-				whatsapp: 0,
-				phone: 0,
-				note: 0
-			});
-		});
-		interactions?.forEach((interaction) => {
-			const date$4 = parseISO(interaction.date);
-			if (date$4 >= startOfDay(startDate) && date$4 <= endDate) {
-				const key = format(date$4, "dd/MM");
-				const current = interactionsMap.get(key);
-				if (current) {
-					const type = interaction.type.toLowerCase();
-					if (current[type] !== void 0) current[type]++;
-					else if (type.includes("ligação") || type.includes("call") || type.includes("telefone")) current.phone++;
-					else if (type.includes("nota") || type.includes("note")) current.note++;
-				}
-			}
-		});
-		const interactionsOverTime = Array.from(interactionsMap.entries()).map(([date$4, counts]) => ({
-			date: date$4,
-			...counts
-		}));
-		const emailResponseRate = interactions?.filter((i$2) => i$2.type.toLowerCase().includes("email")).length ? 22.5 : 0;
-		const { data: campaignSends } = await supabase.from("campaign_sends").select("created_at, scheduled_at, status").eq("channel_type", "email").or("status.eq.opened,status.eq.clicked");
-		const heatmapData = [];
-		for (let d = 0; d < 7; d++) for (let h = 0; h < 24; h++) heatmapData.push({
-			day: d,
-			hour: h,
-			value: 0
-		});
-		if (campaignSends && campaignSends.length > 0) campaignSends.forEach((send) => {
-			const date$4 = parseISO(send.scheduled_at || send.created_at);
-			const day = getDay(date$4);
-			const hour = getHours(date$4);
-			const entry = heatmapData.find((h) => h.day === day && h.hour === hour);
-			if (entry) entry.value++;
-		});
-		else heatmapData.forEach((d) => {
-			if (d.hour >= 9 && d.hour <= 18 && d.day > 0 && d.day < 6) d.value = Math.floor(Math.random() * 50);
-		});
-		const { data: campaigns } = await supabase.from("campaigns").select("*").order("created_at", { ascending: false }).limit(10);
-		const campaignPerformance = await Promise.all((campaigns || []).map(async (c$1) => {
-			const { count: sent } = await supabase.from("campaign_sends").select("id", {
-				count: "exact",
-				head: true
-			}).eq("campaign_id", c$1.id);
-			const recipients = sent || 0;
-			const openRate = recipients > 0 ? Math.random() * 40 + 20 : 0;
-			const clickRate = recipients > 0 ? openRate * (Math.random() * .3) : 0;
-			const conversions = Math.floor(recipients * (clickRate / 100) * .1);
-			return {
-				id: c$1.id,
-				name: c$1.name,
-				recipients,
-				openRate: Number(openRate.toFixed(1)),
-				clickRate: Number(clickRate.toFixed(1)),
-				conversions,
-				status: c$1.status
-			};
-		}));
-		const topTemplates = [
-			{
-				id: "1",
-				name: "Boas-vindas Padrão",
-				count: 145
-			},
-			{
-				id: "2",
-				name: "Novo Leilão - Convite",
-				count: 89
-			},
-			{
-				id: "3",
-				name: "Follow-up de Venda",
-				count: 64
-			},
-			{
-				id: "4",
-				name: "Aniversário",
-				count: 42
-			},
-			{
-				id: "5",
-				name: "Reativação de Cliente",
-				count: 21
-			}
-		];
-		const contactsMap = /* @__PURE__ */ new Map();
-		eachMonthOfInterval({
-			start: startDate,
-			end: endDate
-		}).forEach((m$1) => {
-			const key = format(m$1, "MMM/yy", { locale: ptBR });
-			const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
-			contactsMap.set(formattedKey, 0);
-		});
-		const { data: newContacts } = await supabase.from("contacts").select("created_at").gte("created_at", startStr).lte("created_at", endStr);
-		newContacts?.forEach((c$1) => {
-			const date$4 = parseISO(c$1.created_at);
-			if (date$4 >= startDate && date$4 <= endDate) {
-				const key = format(date$4, "MMM/yy", { locale: ptBR });
-				const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
-				contactsMap.set(formattedKey, (contactsMap.get(formattedKey) || 0) + 1);
-			}
-		});
-		return {
-			interactionsOverTime,
-			emailResponseRate,
-			emailOpenHeatmap: heatmapData,
-			campaignPerformance,
-			topTemplates,
-			newContactsGrowth: Array.from(contactsMap.entries()).map(([date$4, value]) => ({
-				date: date$4,
-				value
-			}))
-		};
-	}
-};
 function Relatorios() {
 	const [date$4, setDate] = (0, import_react.useState)({
 		from: subMonths(/* @__PURE__ */ new Date(), 12),
@@ -79390,7 +79832,7 @@ var useDialogScope = createDialogScope();
 var AlertDialog$1 = (props) => {
 	const { __scopeAlertDialog, ...alertDialogProps } = props;
 	const dialogScope = useDialogScope(__scopeAlertDialog);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
 		...dialogScope,
 		...alertDialogProps,
 		modal: true
@@ -80341,7 +80783,7 @@ var RadioGroup$1 = import_react.forwardRef((props, forwardedRef) => {
 		disabled,
 		value,
 		onValueChange: setValue,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
 			asChild: true,
 			...rovingFocusGroupScope,
 			orientation,
@@ -80880,51 +81322,6 @@ function Modelos() {
 		]
 	});
 }
-const defaultSettings = {
-	company_name: "Minha Empresa",
-	logo_url: null,
-	primary_color: "#000000",
-	secondary_color: "#ffffff",
-	contact_email: "",
-	contact_phone: "",
-	contact_whatsapp: "",
-	website: "",
-	address: "",
-	email_signature: "",
-	alerts_overdue_tasks: true,
-	alerts_new_leads: true,
-	alerts_birthdays: true,
-	monthly_sales_goal: 0,
-	monthly_new_contacts_goal: 0,
-	conversion_rate_goal: 0,
-	auction_default_location: "",
-	auction_default_time: "",
-	auction_default_fees: ""
-};
-const settingsService = {
-	async getSettings() {
-		const { data, error } = await supabase.from("company_settings").select("*").limit(1).maybeSingle();
-		if (error) {
-			console.error("Error fetching settings:", error);
-			return defaultSettings;
-		}
-		return data || defaultSettings;
-	},
-	async updateSettings(settings) {
-		const { data: existing } = await supabase.from("company_settings").select("id").limit(1).maybeSingle();
-		let result;
-		if (existing?.id) result = await supabase.from("company_settings").update({
-			...settings,
-			updated_at: (/* @__PURE__ */ new Date()).toISOString()
-		}).eq("id", existing.id).select().single();
-		else result = await supabase.from("company_settings").insert({
-			...settings,
-			updated_at: (/* @__PURE__ */ new Date()).toISOString()
-		}).select().single();
-		if (result.error) throw result.error;
-		return result.data;
-	}
-};
 var formSchema = object({
 	company_name: string().min(2, "Nome da empresa é obrigatório"),
 	logo_url: string().url("URL inválida").optional().or(literal("")),
@@ -81691,4 +82088,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-p9bft_o8.js.map
+//# sourceMappingURL=index-B-c1lYFF.js.map
