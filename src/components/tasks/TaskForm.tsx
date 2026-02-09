@@ -122,15 +122,16 @@ export function TaskForm({ onSuccess, onCancel }: TaskFormProps) {
       await tasksService.createTask(newTask)
 
       toast({
+        variant: 'success',
         title: 'Tarefa criada com sucesso!',
       })
       onSuccess()
     } catch (error) {
       console.error(error)
       toast({
+        variant: 'destructive',
         title: 'Erro ao criar tarefa',
         description: 'Ocorreu um erro inesperado. Tente novamente.',
-        variant: 'destructive',
       })
     } finally {
       setIsLoading(false)
@@ -348,7 +349,7 @@ export function TaskForm({ onSuccess, onCancel }: TaskFormProps) {
           </Button>
           <Button type="submit" disabled={isLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Salvar Tarefa
+            {isLoading ? 'Salvando...' : 'Salvar Tarefa'}
           </Button>
         </div>
       </form>

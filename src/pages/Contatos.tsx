@@ -37,6 +37,22 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
   Search,
   Plus,
   MoreHorizontal,
@@ -47,6 +63,8 @@ import {
   FileDown,
   Loader2,
   X,
+  Info,
+  Trash2,
 } from 'lucide-react'
 import { cn, getContrastColor } from '@/lib/utils'
 import { ContactForm } from '@/components/contacts/ContactForm'
@@ -79,6 +97,12 @@ export default function Contatos() {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
+
+  // Delete Dialog State
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [contactToDelete, setContactToDelete] = useState<Contact | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
+
   const itemsPerPage = 10
   const { toast } = useToast()
 
@@ -111,9 +135,9 @@ export default function Contatos() {
     } catch (error) {
       console.error(error)
       toast({
+        variant: 'destructive',
         title: 'Erro',
         description: 'Falha ao carregar contatos.',
-        variant: 'destructive',
       })
     } finally {
       setLoading(false)
@@ -145,10 +169,40 @@ export default function Contatos() {
     } catch (error) {
       console.error(error)
       toast({
+        variant: 'destructive',
         title: 'Erro',
         description: 'Não foi possível remover a tag.',
-        variant: 'destructive',
       })
+    }
+  }
+
+  const confirmDelete = (contact: Contact) => {
+    setContactToDelete(contact)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleDeleteContact = async () => {
+    if (!contactToDelete) return
+    setIsDeleting(true)
+    try {
+      await contactsService.deleteContact(contactToDelete.id)
+      toast({
+        variant: 'success',
+        title: 'Contato excluído',
+        description: `O contato ${contactToDelete.name} foi removido.`,
+      })
+      fetchContacts()
+    } catch (error) {
+      console.error(error)
+      toast({
+        variant: 'destructive',
+        title: 'Erro',
+        description: 'Não foi possível excluir o contato.',
+      })
+    } finally {
+      setIsDeleting(false)
+      setDeleteDialogOpen(false)
+      setContactToDelete(null)
     }
   }
 
@@ -275,7 +329,7 @@ export default function Contatos() {
         </CardHeader>
 
         <CardContent>
-          <div className="rounded-md border">
+          <div className="rounded-md border overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50 hover:bg-muted/50">
@@ -293,14 +347,26 @@ export default function Contatos() {
                   <TableHead>Telefone</TableHead>
                   <TableHead>Tags</TableHead>
                   <TableHead>
-                    <Button
-                      variant="ghost"
-                      className="p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1"
-                      onClick={() => handleSort('totalInvested')}
-                    >
-                      Valor Investido
-                      <ArrowUpDown className="h-3 w-3" />
-                    </Button>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="ghost"
+                        className="p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1"
+                        onClick={() => handleSort('totalInvested')}
+                      >
+                        Valor Investido
+                        <ArrowUpDown className="h-3 w-3" />
+                      </Button>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Info className="h-3 w-3 text-muted-foreground" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Soma total de todas as compras realizadas</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
                   </TableHead>
                   <TableHead>
                     <Button
@@ -443,8 +509,12 @@ export default function Contatos() {
                               <DropdownMenuLabel>Ações</DropdownMenuLabel>
                               <DropdownMenuItem>Enviar E-mail</DropdownMenuItem>
                               <DropdownMenuSeparator />
-                              <DropdownMenuItem className="text-destructive">
-                                Excluir Contato
+                              <DropdownMenuItem
+                                className="text-destructive focus:text-destructive"
+                                onClick={() => confirmDelete(contact)}
+                              >
+                                <Trash2 className="mr-2 h-4 w-4" /> Excluir
+                                Contato
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -529,6 +599,31 @@ export default function Contatos() {
           )}
         </CardContent>
       </Card>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Tem certeza que deseja excluir?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita. Isso excluirá permanentemente o
+              contato
+              <span className="font-semibold"> {contactToDelete?.name} </span>e
+              todos os dados associados.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteContact}
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+              disabled={isDeleting}
+            >
+              {isDeleting ? 'Excluindo...' : 'Sim, excluir'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

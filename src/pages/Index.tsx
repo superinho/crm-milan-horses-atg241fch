@@ -77,6 +77,7 @@ export default function Index() {
       await tasksService.toggleTaskCompletion(task.id, true)
 
       toast({
+        variant: 'success',
         title: 'Tarefa concluída',
         description: 'A tarefa foi marcada como feita.',
       })
@@ -126,7 +127,7 @@ export default function Index() {
       {data && <SmartAlerts alerts={data.alerts} />}
 
       {/* Goal & Quick Actions Row */}
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
         {data && (
           <GoalCard
             current={data.goal.current}
@@ -138,14 +139,14 @@ export default function Index() {
       </div>
 
       {/* Main Grid: Comparison, Pipeline, Urgent Tasks */}
-      <div className="grid gap-6 md:grid-cols-7 lg:grid-cols-7">
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-7">
         {/* Sales Chart */}
-        <div className="col-span-7 lg:col-span-4">
+        <div className="col-span-1 lg:col-span-4">
           {data && <SalesComparisonChart data={data.salesComparison} />}
         </div>
 
         {/* Pipeline & Tasks Column */}
-        <div className="col-span-7 lg:col-span-3 space-y-6 flex flex-col">
+        <div className="col-span-1 lg:col-span-3 space-y-6 flex flex-col">
           <div className="flex-1">
             {data && <PipelineOverview data={data.pipeline} />}
           </div>

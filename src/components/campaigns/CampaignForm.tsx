@@ -76,18 +76,18 @@ export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
       values.filters.segments.length === 0
     ) {
       toast({
+        variant: 'info',
         title: 'Atenção',
         description:
           'Você não selecionou nenhum filtro de público. Isso pode resultar em 0 destinatários.',
-        variant: 'destructive',
       })
     }
 
     if (schedules.length === 0) {
       toast({
+        variant: 'destructive',
         title: 'Erro',
         description: 'Adicione pelo menos um envio ao cronograma.',
-        variant: 'destructive',
       })
       return
     }
@@ -112,6 +112,7 @@ export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
       )
 
       toast({
+        variant: 'success',
         title: 'Sucesso',
         description: 'Campanha criada e agendada com sucesso!',
       })
@@ -119,9 +120,9 @@ export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
     } catch (error) {
       console.error(error)
       toast({
+        variant: 'destructive',
         title: 'Erro ao criar campanha',
         description: 'Ocorreu um erro inesperado. Tente novamente.',
-        variant: 'destructive',
       })
     } finally {
       setIsSubmitting(false)
@@ -267,7 +268,7 @@ export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
             ) : (
               <Save className="mr-2 h-4 w-4" />
             )}
-            Criar Campanha
+            {isSubmitting ? 'Criando...' : 'Criar Campanha'}
           </Button>
         </div>
       </form>

@@ -131,8 +131,9 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
     try {
       await contactsService.createContact(values)
       toast({
-        title: 'Contato cadastrado!',
-        description: `${values.name} foi adicionado com sucesso.`,
+        variant: 'success',
+        title: 'Sucesso!',
+        description: `${values.name} foi cadastrado com sucesso.`,
       })
       form.reset()
       onSuccess?.()
@@ -455,7 +456,7 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
             className="w-full md:w-auto min-w-[150px]"
           >
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Cadastrar Contato
+            {loading ? 'Salvando...' : 'Cadastrar Contato'}
           </Button>
         </div>
       </form>

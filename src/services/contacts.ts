@@ -138,10 +138,6 @@ export const contactsService = {
 
     // Advanced Filtering - Breed
     if (breed) {
-      // Assuming preferences is stored as { "breeds": ["Lusitano", ...] }
-      // This is a loose check if the JSON string contains the breed name
-      // Ideally should use -> 'breeds' @> [breed] but Supabase JS syntax for that can be tricky with arrays inside json
-      // Using implicit cast to text for simple containment check
       query = query.textSearch('preferences', `'${breed}'`)
     }
 
@@ -154,7 +150,6 @@ export const contactsService = {
     }
 
     // Filtering via View (Segment & Investment)
-    // If we have filters that depend on the view (segment or investment), we fetch IDs from view first
     if (segment || minInvestment !== undefined || maxInvestment !== undefined) {
       let viewQuery = supabase.from('contact_segmentation_view').select('id')
 
@@ -193,7 +188,7 @@ export const contactsService = {
       if (tagError) throw tagError
 
       const ids = taggedContactIds?.map((tc) => tc.contact_id) || []
-      // If no contacts have these tags, return empty immediately
+
       if (ids.length === 0) {
         return { data: [], count: 0, error: null }
       }
@@ -203,8 +198,6 @@ export const contactsService = {
     // Status (Simulated via Tags)
     if (status) {
       const statusTag = status === 'active' ? 'Ativo' : 'Inativo'
-      // We need to find contacts that have this specific tag
-      // This logic is additive to the existing tags logic
       const { data: statusContactIds, error: statusError } = await supabase
         .from('contact_tags')
         .select('contact_id, tags!inner(name)')
@@ -224,7 +217,6 @@ export const contactsService = {
       query = query.order('updated_at', { ascending: sortDirection === 'asc' })
     } else if (sortBy === 'totalInvested') {
       query = query.order('name', { ascending: sortDirection === 'asc' })
-      // Note: Real totalInvested sort would require joining the view or sorting in memory
     } else {
       query = query.order(sortBy as any, { ascending: sortDirection === 'asc' })
     }
@@ -246,6 +238,11 @@ export const contactsService = {
     }))
 
     return { data: formattedData as Contact[], error, count }
+  },
+
+  async deleteContact(id: string) {
+    const { error } = await supabase.from('contacts').delete().eq('id', id)
+    if (error) throw error
   },
 
   async getAudienceCount({ tags, segments }: AudienceFilterParams) {

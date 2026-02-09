@@ -99,6 +99,7 @@ export function DealForm({ onSuccess, onCancel }: DealFormProps) {
       await dealsService.createDeal(dealData)
 
       toast({
+        variant: 'success',
         title: 'Negócio criado!',
         description: 'Oportunidade adicionada ao pipeline com sucesso.',
       })
@@ -303,7 +304,7 @@ export function DealForm({ onSuccess, onCancel }: DealFormProps) {
           )}
           <Button type="submit" disabled={loading}>
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Criar Negócio
+            {loading ? 'Salvando...' : 'Criar Negócio'}
           </Button>
         </div>
       </form>
