@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Outlet, useLocation, Link, useNavigate } from 'react-router-dom'
 import {
   Sidebar,
@@ -37,6 +37,8 @@ import {
   Settings,
   Keyboard,
   Menu,
+  Camera,
+  Loader2,
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
@@ -66,6 +68,8 @@ import {
 import { Button } from '@/components/ui/button'
 import logoImg from '@/assets/editedimage_1769630541473-88067.png'
 import { useAuth } from '@/hooks/use-auth'
+import { supabase } from '@/lib/supabase/client'
+import { useToast } from '@/hooks/use-toast'
 
 // Modals & Search
 import { GlobalSearch } from '@/components/search/GlobalSearch'
@@ -154,21 +158,30 @@ function AppSidebarContent({
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t border-sidebar-border">
-        <div className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center">
-          <Avatar className="h-9 w-9 border border-secondary">
+        <Link
+          to="/perfil"
+          className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center hover:bg-sidebar-accent rounded-md p-2 transition-colors overflow-hidden"
+          onClick={() => {
+            if (isMobile && closeMobileMenu) closeMobileMenu()
+          }}
+        >
+          <Avatar className="h-9 w-9 border border-secondary shrink-0">
             <AvatarImage
-              src={`https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}`}
+              src={
+                user?.user_metadata?.avatar_url ||
+                `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}`
+              }
             />
             <AvatarFallback>
               {user?.email?.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <div className="flex flex-col overflow-hidden group-data-[collapsible=icon]:hidden">
+          <div className="flex flex-col min-w-0 group-data-[collapsible=icon]:hidden">
             <span
               className="text-sm font-medium text-sidebar-foreground truncate"
-              title={user?.email}
+              title={user?.user_metadata?.full_name || user?.email}
             >
-              {user?.email?.split('@')[0]}
+              {user?.user_metadata?.full_name || user?.email?.split('@')[0]}
             </span>
             <span
               className="text-xs text-sidebar-foreground/60 truncate"
@@ -177,7 +190,7 @@ function AppSidebarContent({
               {user?.email}
             </span>
           </div>
-        </div>
+        </Link>
       </SidebarFooter>
     </>
   )
@@ -206,11 +219,64 @@ function TopHeader({
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+  const { toast } = useToast()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleLogout = async () => {
     await signOut()
     navigate('/login')
+  }
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    try {
+      const file = event.target.files?.[0]
+      if (!file) return
+
+      setUploading(true)
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${user?.id}-${Math.random()}.${fileExt}`
+      const filePath = `${fileName}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file)
+
+      if (uploadError) throw uploadError
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from('avatars').getPublicUrl(filePath)
+
+      const { error: updateError } = await supabase.auth.updateUser({
+        data: { avatar_url: publicUrl },
+      })
+
+      if (updateError) throw updateError
+
+      toast({
+        title: 'Foto atualizada',
+        variant: 'success',
+      })
+    } catch (error: any) {
+      console.error('Error uploading avatar:', error)
+      toast({
+        title: 'Erro no upload',
+        description:
+          'Falha ao atualizar foto. Verifique as permissões ou tente novamente.',
+        variant: 'destructive',
+      })
+    } finally {
+      setUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
   }
 
   // Breadcrumb logic
@@ -218,8 +284,11 @@ function TopHeader({
     const pathSegments = location.pathname.split('/').filter(Boolean)
     const breadcrumbs = pathSegments.map((segment, index) => {
       const path = `/${pathSegments.slice(0, index + 1).join('/')}`
-      const label =
+      let label =
         segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ')
+
+      // Manual overwrites for better UX
+      if (segment === 'perfil') label = 'Meu Perfil'
 
       // Try to match segment with known routes for better labels
       const matchedNavItem = NAV_ITEMS.find((item) => item.path === path)
@@ -331,22 +400,44 @@ function TopHeader({
           <span className="absolute -top-1 -right-1 flex h-2 w-2 rounded-full bg-secondary"></span>
         </div>
 
+        {/* Hidden File Input for Avatar Upload */}
+        <input
+          type="file"
+          ref={fileInputRef}
+          className="hidden"
+          accept="image/png, image/jpeg, image/jpg"
+          onChange={handleFileChange}
+        />
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="h-8 w-8 cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all">
               <AvatarImage
-                src={`https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}`}
+                src={
+                  user?.user_metadata?.avatar_url ||
+                  `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}`
+                }
               />
               <AvatarFallback>
                 {user?.email?.substring(0, 2).toUpperCase()}
               </AvatarFallback>
+              {uploading && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-full">
+                  <Loader2 className="h-4 w-4 text-white animate-spin" />
+                </div>
+              )}
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" /> Perfil
+            <DropdownMenuItem asChild>
+              <Link to="/perfil">
+                <User className="mr-2 h-4 w-4" /> Perfil
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleAvatarClick} disabled={uploading}>
+              <Camera className="mr-2 h-4 w-4" /> Alterar Foto
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link to="/configuracoes">
@@ -407,12 +498,12 @@ export default function Layout() {
     <SidebarProvider defaultOpen={true}>
       <div className="flex min-h-screen w-full bg-gray-50/50">
         <AppSidebar />
-        <div className="flex flex-1 flex-col overflow-hidden">
+        <div className="flex flex-1 flex-col overflow-hidden w-full">
           <TopHeader
             onSearchClick={() => setShowSearch(true)}
             onHelpClick={() => setShowHelp(true)}
           />
-          <main className="flex-1 overflow-y-auto p-4 md:p-8 animate-fade-in print:overflow-visible print:h-auto">
+          <main className="flex-1 overflow-y-auto p-4 md:p-8 animate-fade-in print:overflow-visible print:h-auto min-w-0">
             <Outlet />
           </main>
         </div>

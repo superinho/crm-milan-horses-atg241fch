@@ -442,19 +442,19 @@ video {
 :root {
     /* Milan Horses Brand Colors */
     --background: 210 20% 98%; /* #F8FAFC */
-    --foreground: 215 90% 15%; /* Deep Blue-Black text */
+    --foreground: 215 25% 27%; /* Softer Dark Blue-Black text for better readability */
 
     --card: 0 0% 100%;
-    --card-foreground: 215 90% 15%;
+    --card-foreground: 215 25% 27%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 90% 15%;
+    --popover-foreground: 215 25% 27%;
 
     /* Primary: Milan Dark Blue -> HSL(215, 90%, 22%) */
     --primary: 215 90% 22%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary: Equestrian Gold -> HSL(38, 34%, 48%) - Conserved for harmony */
+    /* Secondary: Equestrian Gold -> HSL(38, 34%, 48%) */
     --secondary: 38 34% 48%;
     --secondary-foreground: 0 0% 100%;
 
@@ -483,12 +483,19 @@ video {
     --sidebar-border: 214.3 31.8% 91.4%;
     --sidebar-ring: 215 90% 22%;
 
-    /* Chart Colors */
+    /* Chart Colors - Added specific HSL values for components using them */
     --chart-1: 215 90% 22%; /* Blue */
     --chart-2: 38 34% 48%; /* Gold */
     --chart-3: 209 100% 32%; /* Blue support */
     --chart-4: 42 100% 50%;
     --chart-5: 33 100% 50%;
+
+    /* Specific colors used in charts/components */
+    --blue-500: 217 91% 60%;
+    --green-500: 142 71% 45%;
+    --yellow-500: 45 93% 47%;
+    --orange-500: 24 95% 53%;
+    --purple-500: 262 83% 58%;
   }
 .dark {
     --background: 222.2 84% 4.9%;
@@ -524,10 +531,12 @@ video {
   border-color: hsl(var(--border));
 }
 body {
-    /* Apply font-sans globally, which now maps to Inter */
+    /* Apply font-sans globally, which now maps to Inter. Antialiased for crisp text */
     background-color: hsl(var(--background));
     font-family: Inter, sans-serif;
     color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 /* Headings also use Inter via font-display mapping in tailwind config */
 h1,
@@ -537,6 +546,12 @@ h1,
   h5,
   h6{
   font-family: Inter, sans-serif;
+  letter-spacing: -0.025em;
+  color: hsl(var(--foreground));
+}
+/* Ensure paragraphs have good readability */
+p{
+  line-height: 1.625;
 }
 .prose{
   color: var(--tw-prose-body);
@@ -1355,6 +1370,10 @@ h1,
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
 }
+.my-4{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
 .my-8{
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -1596,6 +1615,10 @@ h1,
 .h-auto{
   height: auto;
 }
+.h-fit{
+  height: -moz-fit-content;
+  height: fit-content;
+}
 .h-full{
   height: 100%;
 }
@@ -1697,6 +1720,9 @@ h1,
 }
 .w-3\/4{
   width: 75%;
+}
+.w-32{
+  width: 8rem;
 }
 .w-4{
   width: 1rem;
@@ -2445,6 +2471,12 @@ h1,
 .bg-background{
   background-color: hsl(var(--background));
 }
+.bg-black\/40{
+  background-color: rgb(0 0 0 / 0.4);
+}
+.bg-black\/50{
+  background-color: rgb(0 0 0 / 0.5);
+}
 .bg-black\/80{
   background-color: rgb(0 0 0 / 0.8);
 }
@@ -2671,6 +2703,10 @@ h1,
   -o-object-fit: contain;
      object-fit: contain;
 }
+.object-cover{
+  -o-object-fit: cover;
+     object-fit: cover;
+}
 .p-0{
   padding: 0px;
 }
@@ -2802,6 +2838,9 @@ h1,
 .pb-4{
   padding-bottom: 1rem;
 }
+.pb-6{
+  padding-bottom: 1.5rem;
+}
 .pl-10{
   padding-left: 2.5rem;
 }
@@ -2884,6 +2923,10 @@ h1,
 .text-3xl{
   font-size: 1.875rem;
   line-height: 2.25rem;
+}
+.text-4xl{
+  font-size: 2.25rem;
+  line-height: 2.5rem;
 }
 .text-9xl{
   font-size: 8rem;
@@ -3391,6 +3434,7 @@ h1,
   animation-timing-function: linear;
 }
 /* Custom Scrollbar for tables if needed */
+/* Text balance for better typography in headers */
 .\[--cell-size\:2rem\]{
   --cell-size: 2rem;
 }
@@ -4441,6 +4485,9 @@ h1,
 @media (min-width: 768px){
   .md\:absolute{
     position: absolute;
+  }
+  .md\:col-span-1{
+    grid-column: span 1 / span 1;
   }
   .md\:col-span-2{
     grid-column: span 2 / span 2;

@@ -19157,6 +19157,15 @@ var Calendar = createLucideIcon("calendar", [
 		key: "8toen8"
 	}]
 ]);
+var Camera = createLucideIcon("camera", [["path", {
+	d: "M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z",
+	key: "18u6gg"
+}], ["circle", {
+	cx: "12",
+	cy: "13",
+	r: "3",
+	key: "1vg3eu"
+}]]);
 var ChartColumn = createLucideIcon("chart-column", [
 	["path", {
 		d: "M3 3v16a2 2 0 0 0 2 2h16",
@@ -20003,6 +20012,20 @@ var Trophy = createLucideIcon("trophy", [
 	["path", {
 		d: "M6 9H4.5a1 1 0 0 1 0-5H6",
 		key: "tex48p"
+	}]
+]);
+var Upload = createLucideIcon("upload", [
+	["path", {
+		d: "M12 3v12",
+		key: "1x0j5s"
+	}],
+	["path", {
+		d: "m17 8-5-5-5 5",
+		key: "7q97r8"
+	}],
+	["path", {
+		d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4",
+		key: "ih7n3h"
 	}]
 ]);
 var UserPlus = createLucideIcon("user-plus", [
@@ -26786,7 +26809,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$42({ inst: {
+			cachedValue = useState$43({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26800,7 +26823,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$35(function() {
+			useEffect$36(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26823,7 +26846,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$68 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$42 = React$68.useState, useEffect$35 = React$68.useEffect, useLayoutEffect$2 = React$68.useLayoutEffect, useDebugValue = React$68.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$68 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$43 = React$68.useState, useEffect$36 = React$68.useEffect, useLayoutEffect$2 = React$68.useLayoutEffect, useDebugValue = React$68.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$68.useSyncExternalStore ? React$68.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -49758,17 +49781,21 @@ function AppSidebarContent({ isMobile = false, closeMobileMenu }) {
 		}),
 		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarFooter, {
 			className: "p-4 border-t border-sidebar-border",
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center gap-3 group-data-[collapsible=icon]:justify-center",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+				to: "/perfil",
+				className: "flex items-center gap-3 group-data-[collapsible=icon]:justify-center hover:bg-sidebar-accent rounded-md p-2 transition-colors overflow-hidden",
+				onClick: () => {
+					if (isMobile && closeMobileMenu) closeMobileMenu();
+				},
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
-					className: "h-9 w-9 border border-secondary",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: user?.email?.substring(0, 2).toUpperCase() })]
+					className: "h-9 w-9 border border-secondary shrink-0",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: user?.user_metadata?.avatar_url || `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: user?.email?.substring(0, 2).toUpperCase() })]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-col overflow-hidden group-data-[collapsible=icon]:hidden",
+					className: "flex flex-col min-w-0 group-data-[collapsible=icon]:hidden",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "text-sm font-medium text-sidebar-foreground truncate",
-						title: user?.email,
-						children: user?.email?.split("@")[0]
+						title: user?.user_metadata?.full_name || user?.email,
+						children: user?.user_metadata?.full_name || user?.email?.split("@")[0]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "text-xs text-sidebar-foreground/60 truncate",
 						title: user?.email,
@@ -49792,10 +49819,44 @@ function TopHeader({ onSearchClick, onHelpClick }) {
 	const { user, signOut } = useAuth();
 	const navigate = useNavigate();
 	const location = useLocation();
+	const { toast: toast$2 } = useToast();
 	const [mobileMenuOpen, setMobileMenuOpen] = (0, import_react.useState)(false);
+	const [uploading, setUploading] = (0, import_react.useState)(false);
+	const fileInputRef = (0, import_react.useRef)(null);
 	const handleLogout = async () => {
 		await signOut();
 		navigate("/login");
+	};
+	const handleAvatarClick = () => {
+		fileInputRef.current?.click();
+	};
+	const handleFileChange = async (event) => {
+		try {
+			const file = event.target.files?.[0];
+			if (!file) return;
+			setUploading(true);
+			const fileExt = file.name.split(".").pop();
+			const filePath = `${`${user?.id}-${Math.random()}.${fileExt}`}`;
+			const { error: uploadError } = await supabase.storage.from("avatars").upload(filePath, file);
+			if (uploadError) throw uploadError;
+			const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(filePath);
+			const { error: updateError } = await supabase.auth.updateUser({ data: { avatar_url: publicUrl } });
+			if (updateError) throw updateError;
+			toast$2({
+				title: "Foto atualizada",
+				variant: "success"
+			});
+		} catch (error) {
+			console.error("Error uploading avatar:", error);
+			toast$2({
+				title: "Erro no upload",
+				description: "Falha ao atualizar foto. Verifique as permissões ou tente novamente.",
+				variant: "destructive"
+			});
+		} finally {
+			setUploading(false);
+			if (fileInputRef.current) fileInputRef.current.value = "";
+		}
 	};
 	const getBreadcrumbs = () => {
 		const pathSegments = location.pathname.split("/").filter(Boolean);
@@ -49804,7 +49865,8 @@ function TopHeader({ onSearchClick, onHelpClick }) {
 			path: "/"
 		}, ...pathSegments.map((segment, index$1) => {
 			const path$1 = `/${pathSegments.slice(0, index$1 + 1).join("/")}`;
-			const label = segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, " ");
+			let label = segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, " ");
+			if (segment === "perfil") label = "Meu Perfil";
 			const matchedNavItem = NAV_ITEMS.find((item) => item.path === path$1);
 			return {
 				label: matchedNavItem ? matchedNavItem.label : label,
@@ -49906,11 +49968,25 @@ function TopHeader({ onSearchClick, onHelpClick }) {
 					className: "relative",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "h-5 w-5 text-muted-foreground hover:text-primary cursor-pointer transition-colors" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "absolute -top-1 -right-1 flex h-2 w-2 rounded-full bg-secondary" })]
 				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+					type: "file",
+					ref: fileInputRef,
+					className: "hidden",
+					accept: "image/png, image/jpeg, image/jpg",
+					onChange: handleFileChange
+				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
 					asChild: true,
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
 						className: "h-8 w-8 cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: user?.email?.substring(0, 2).toUpperCase() })]
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: user?.user_metadata?.avatar_url || `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}` }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: user?.email?.substring(0, 2).toUpperCase() }),
+							uploading && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "absolute inset-0 bg-black/50 flex items-center justify-center rounded-full",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-4 w-4 text-white animate-spin" })
+							})
+						]
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
 					align: "end",
@@ -49918,7 +49994,18 @@ function TopHeader({ onSearchClick, onHelpClick }) {
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuLabel, { children: "Minha Conta" }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(User, { className: "mr-2 h-4 w-4" }), " Perfil"] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, {
+							asChild: true,
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+								to: "/perfil",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(User, { className: "mr-2 h-4 w-4" }), " Perfil"]
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
+							onClick: handleAvatarClick,
+							disabled: uploading,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Camera, { className: "mr-2 h-4 w-4" }), " Alterar Foto"]
+						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuItem, {
 							asChild: true,
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
@@ -49976,12 +50063,12 @@ function Layout() {
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex min-h-screen w-full bg-gray-50/50",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AppSidebar, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-1 flex-col overflow-hidden",
+					className: "flex flex-1 flex-col overflow-hidden w-full",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TopHeader, {
 						onSearchClick: () => setShowSearch(true),
 						onHelpClick: () => setShowHelp(true)
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
-						className: "flex-1 overflow-y-auto p-4 md:p-8 animate-fade-in print:overflow-visible print:h-auto",
+						className: "flex-1 overflow-y-auto p-4 md:p-8 animate-fade-in print:overflow-visible print:h-auto min-w-0",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})
 					})]
 				})]
@@ -82827,6 +82914,228 @@ function Configuracoes() {
 		})]
 	});
 }
+var profileSchema = object({
+	full_name: string().min(2, "O nome deve ter pelo menos 2 caracteres"),
+	email: string().email("Email inválido"),
+	phone: string().optional(),
+	job_title: string().optional()
+});
+function Perfil() {
+	const { user } = useAuth();
+	const { toast: toast$2 } = useToast();
+	const [loading, setLoading] = (0, import_react.useState)(false);
+	const [uploading, setUploading] = (0, import_react.useState)(false);
+	const fileInputRef = (0, import_react.useRef)(null);
+	const form = useForm({
+		resolver: a(profileSchema),
+		defaultValues: {
+			full_name: "",
+			email: "",
+			phone: "",
+			job_title: ""
+		}
+	});
+	(0, import_react.useEffect)(() => {
+		if (user) form.reset({
+			full_name: user.user_metadata?.full_name || "",
+			email: user.email || "",
+			phone: user.user_metadata?.phone || "",
+			job_title: user.user_metadata?.job_title || ""
+		});
+	}, [user, form]);
+	const handleAvatarClick = () => {
+		fileInputRef.current?.click();
+	};
+	const handleFileChange = async (event) => {
+		try {
+			const file = event.target.files?.[0];
+			if (!file) return;
+			setUploading(true);
+			const fileExt = file.name.split(".").pop();
+			const filePath = `${`${user?.id}-${Math.random()}.${fileExt}`}`;
+			const { error: uploadError } = await supabase.storage.from("avatars").upload(filePath, file);
+			if (uploadError) throw uploadError;
+			const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(filePath);
+			const { error: updateError } = await supabase.auth.updateUser({ data: { avatar_url: publicUrl } });
+			if (updateError) throw updateError;
+			toast$2({
+				title: "Foto atualizada",
+				description: "Sua foto de perfil foi alterada com sucesso.",
+				variant: "success"
+			});
+		} catch (error) {
+			console.error("Error uploading avatar:", error);
+			toast$2({
+				title: "Erro no upload",
+				description: "Não foi possível atualizar sua foto. Verifique se o tamanho é aceitável ou tente novamente.",
+				variant: "destructive"
+			});
+		} finally {
+			setUploading(false);
+			if (fileInputRef.current) fileInputRef.current.value = "";
+		}
+	};
+	const onSubmit = async (values) => {
+		setLoading(true);
+		try {
+			const { error } = await supabase.auth.updateUser({
+				email: values.email,
+				data: {
+					full_name: values.full_name,
+					phone: values.phone,
+					job_title: values.job_title
+				}
+			});
+			if (error) throw error;
+			toast$2({
+				title: "Perfil atualizado",
+				description: "Suas informações foram salvas com sucesso.",
+				variant: "success"
+			});
+		} catch (error) {
+			console.error("Error updating profile:", error);
+			toast$2({
+				title: "Erro ao salvar",
+				description: error.message || "Não foi possível atualizar o perfil. Tente novamente.",
+				variant: "destructive"
+			});
+		} finally {
+			setLoading(false);
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in max-w-4xl mx-auto pb-10",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+			className: "text-3xl font-bold font-display text-primary",
+			children: "Meu Perfil"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "text-muted-foreground",
+			children: "Gerencie suas informações pessoais e foto de perfil."
+		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid grid-cols-1 md:grid-cols-3 gap-6",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "md:col-span-1 h-fit",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Foto de Perfil" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Clique na imagem para alterar sua foto." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+					className: "flex flex-col items-center justify-center pt-2 pb-6",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "relative group cursor-pointer",
+							onClick: handleAvatarClick,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
+								className: "h-32 w-32 border-4 border-background shadow-lg transition-transform group-hover:scale-105",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, {
+									src: user?.user_metadata?.avatar_url || `https://img.usecurling.com/ppl/medium?gender=male&seed=${user?.id}`,
+									className: "object-cover"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, {
+									className: "text-4xl bg-primary/10 text-primary",
+									children: user?.email?.substring(0, 2).toUpperCase()
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity",
+								children: uploading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-8 w-8 text-white animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Camera, { className: "h-8 w-8 text-white" })
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+							type: "file",
+							ref: fileInputRef,
+							className: "hidden",
+							accept: "image/png, image/jpeg, image/jpg",
+							onChange: handleFileChange
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "outline",
+							size: "sm",
+							className: "mt-4",
+							onClick: handleAvatarClick,
+							disabled: uploading,
+							children: uploading ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }), "Enviando..."] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Upload, { className: "mr-2 h-4 w-4" }), "Carregar Nova Foto"] })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs text-muted-foreground mt-2 text-center",
+							children: "Recomendado: 512x512px (PNG, JPG)"
+						})
+					]
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "md:col-span-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Informações Pessoais" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Atualize seus dados de cadastro e contato." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Form, {
+					...form,
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+						onSubmit: form.handleSubmit(onSubmit),
+						className: "space-y-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid grid-cols-1 gap-4",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+										control: form.control,
+										name: "full_name",
+										render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Nome Completo" }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												placeholder: "Seu nome",
+												...field
+											}) }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+										] })
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+										control: form.control,
+										name: "email",
+										render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "E-mail" }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												placeholder: "seu@email.com",
+												...field
+											}) }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormDescription, { children: "Alterar o email pode exigir confirmação." }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+										] })
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "grid grid-cols-1 sm:grid-cols-2 gap-4",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+											control: form.control,
+											name: "phone",
+											render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Telefone" }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+													placeholder: "(00) 00000-0000",
+													...field
+												}) }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+											] })
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormField, {
+											control: form.control,
+											name: "job_title",
+											render: ({ field }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(FormItem, { children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormLabel, { children: "Cargo / Função" }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormControl, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+													placeholder: "Ex: Gerente de Vendas",
+													...field
+												}) }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormMessage, {})
+											] })
+										})]
+									})
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, { className: "my-4" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex justify-end",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+									type: "submit",
+									disabled: loading,
+									children: [loading ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "mr-2 h-4 w-4" }), loading ? "Salvando..." : "Salvar Alterações"]
+								})
+							})
+						]
+					})
+				}) })]
+			})]
+		})]
+	});
+}
 var NotFound = () => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4",
@@ -83122,6 +83431,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 						path: "/configuracoes",
 						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Configuracoes, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+						path: "/perfil",
+						element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Perfil, {})
 					})
 				]
 			}),
@@ -83135,4 +83448,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-D3Yk70m0.js.map
+//# sourceMappingURL=index-DtCAprXT.js.map

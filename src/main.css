@@ -11,19 +11,19 @@
   :root {
     /* Milan Horses Brand Colors */
     --background: 210 20% 98%; /* #F8FAFC */
-    --foreground: 215 90% 15%; /* Deep Blue-Black text */
+    --foreground: 215 25% 27%; /* Softer Dark Blue-Black text for better readability */
 
     --card: 0 0% 100%;
-    --card-foreground: 215 90% 15%;
+    --card-foreground: 215 25% 27%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 90% 15%;
+    --popover-foreground: 215 25% 27%;
 
     /* Primary: Milan Dark Blue -> HSL(215, 90%, 22%) */
     --primary: 215 90% 22%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary: Equestrian Gold -> HSL(38, 34%, 48%) - Conserved for harmony */
+    /* Secondary: Equestrian Gold -> HSL(38, 34%, 48%) */
     --secondary: 38 34% 48%;
     --secondary-foreground: 0 0% 100%;
 
@@ -52,12 +52,19 @@
     --sidebar-border: 214.3 31.8% 91.4%;
     --sidebar-ring: 215 90% 22%;
 
-    /* Chart Colors */
+    /* Chart Colors - Added specific HSL values for components using them */
     --chart-1: 215 90% 22%; /* Blue */
     --chart-2: 38 34% 48%; /* Gold */
     --chart-3: 209 100% 32%; /* Blue support */
     --chart-4: 42 100% 50%;
     --chart-5: 33 100% 50%;
+
+    /* Specific colors used in charts/components */
+    --blue-500: 217 91% 60%;
+    --green-500: 142 71% 45%;
+    --yellow-500: 45 93% 47%;
+    --orange-500: 24 95% 53%;
+    --purple-500: 262 83% 58%;
   }
 
   .dark {
@@ -97,8 +104,8 @@
     @apply border-border;
   }
   body {
-    /* Apply font-sans globally, which now maps to Inter */
-    @apply bg-background text-foreground font-sans;
+    /* Apply font-sans globally, which now maps to Inter. Antialiased for crisp text */
+    @apply bg-background text-foreground font-sans antialiased;
   }
   /* Headings also use Inter via font-display mapping in tailwind config */
   h1,
@@ -107,7 +114,12 @@
   h4,
   h5,
   h6 {
-    @apply font-display;
+    @apply font-display text-foreground tracking-tight;
+  }
+
+  /* Ensure paragraphs have good readability */
+  p {
+    @apply leading-relaxed;
   }
 }
 
@@ -115,5 +127,10 @@
   /* Custom Scrollbar for tables if needed */
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Text balance for better typography in headers */
+  .text-balance {
+    text-wrap: balance;
   }
 }

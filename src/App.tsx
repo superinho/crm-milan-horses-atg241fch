@@ -18,6 +18,7 @@ import Relatorios from './pages/Relatorios'
 import Tags from './pages/Tags'
 import Modelos from './pages/Modelos'
 import Configuracoes from './pages/Configuracoes'
+import Perfil from './pages/Perfil'
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 
@@ -69,6 +70,7 @@ const App = () => (
             <Route path="/tags" element={<Tags />} />
             <Route path="/modelos" element={<Modelos />} />
             <Route path="/configuracoes" element={<Configuracoes />} />
+            <Route path="/perfil" element={<Perfil />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
