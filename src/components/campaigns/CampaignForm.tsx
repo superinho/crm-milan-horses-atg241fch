@@ -106,7 +106,7 @@ export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
         },
         schedules.map((s) => ({
           channel_type: s.channel,
-          scheduled_at: new Date(`${s.date}T${s.time}`).toISOString(),
+          scheduled_date: new Date(`${s.date}T${s.time}`).toISOString(), // Updated key
           content: s.content,
         })),
       )

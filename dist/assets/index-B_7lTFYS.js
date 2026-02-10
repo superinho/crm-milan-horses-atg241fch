@@ -36874,7 +36874,7 @@ var localCampaigns = [...[{
 		id: "sch-1",
 		campaign_id: "mock-1",
 		channel_type: "email",
-		scheduled_at: (/* @__PURE__ */ new Date(Date.now() - 1440 * 60 * 1e3)).toISOString(),
+		scheduled_date: (/* @__PURE__ */ new Date(Date.now() - 1440 * 60 * 1e3)).toISOString(),
 		content: "Confira nossa nova coleção de verão!",
 		status: "Processado",
 		created_at: (/* @__PURE__ */ new Date(Date.now() - 2880 * 60 * 1e3)).toISOString()
@@ -36968,7 +36968,7 @@ const campaignsService = {
 				const schedulesToInsert = schedules.map((send) => ({
 					campaign_id: newCampaign.id,
 					channel_type: send.channel_type,
-					scheduled_at: send.scheduled_at,
+					scheduled_date: send.scheduled_date,
 					content: send.content,
 					template_id: send.template_id,
 					status: "Pendente"
@@ -37013,7 +37013,7 @@ const campaignsService = {
 					id: `sch-${newId}-${idx}`,
 					campaign_id: newId,
 					channel_type: s$3.channel_type,
-					scheduled_at: s$3.scheduled_at,
+					scheduled_date: s$3.scheduled_date,
 					content: s$3.content,
 					status: "Pendente",
 					template_id: s$3.template_id,
@@ -74406,7 +74406,7 @@ function CampaignForm({ onSuccess, onCancel }) {
 				channels: values.channels
 			}, schedules.map((s$3) => ({
 				channel_type: s$3.channel,
-				scheduled_at: (/* @__PURE__ */ new Date(`${s$3.date}T${s$3.time}`)).toISOString(),
+				scheduled_date: (/* @__PURE__ */ new Date(`${s$3.date}T${s$3.time}`)).toISOString(),
 				content: s$3.content
 			})));
 			toast$2({
@@ -79735,7 +79735,7 @@ function CampaignDetails() {
 										className: "flex-1",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 											className: "font-semibold text-sm",
-											children: format(new Date(schedule.scheduled_at), "dd 'de' MMMM 'às' HH:mm", { locale: ptBR })
+											children: format(new Date(schedule.scheduled_date), "dd 'de' MMMM 'às' HH:mm", { locale: ptBR })
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 											className: "text-xs text-muted-foreground truncate max-w-md",
 											children: schedule.content
@@ -83448,4 +83448,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DtCAprXT.js.map
+//# sourceMappingURL=index-B_7lTFYS.js.map

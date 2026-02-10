@@ -371,7 +371,7 @@ export default function CampaignDetails() {
                     <div className="flex-1">
                       <p className="font-semibold text-sm">
                         {format(
-                          new Date(schedule.scheduled_at),
+                          new Date(schedule.scheduled_date),
                           "dd 'de' MMMM 'às' HH:mm",
                           { locale: ptBR },
                         )}

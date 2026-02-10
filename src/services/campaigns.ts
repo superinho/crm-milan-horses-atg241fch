@@ -16,7 +16,7 @@ export type CampaignSchedule = {
   id: string
   campaign_id: string
   channel_type: 'email' | 'whatsapp'
-  scheduled_at: string
+  scheduled_date: string // Renamed from scheduled_at
   template_id?: string | null
   content: string
   status: 'Pendente' | 'Processado' | 'Falha'
@@ -114,7 +114,9 @@ const MOCK_CAMPAIGNS: Campaign[] = [
         id: 'sch-1',
         campaign_id: 'mock-1',
         channel_type: 'email',
-        scheduled_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+        scheduled_date: new Date(
+          Date.now() - 24 * 60 * 60 * 1000,
+        ).toISOString(),
         content: 'Confira nossa nova coleção de verão!',
         status: 'Processado',
         created_at: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
@@ -256,7 +258,7 @@ export const campaignsService = {
         const schedulesToInsert = schedules.map((send) => ({
           campaign_id: newCampaign.id,
           channel_type: send.channel_type,
-          scheduled_at: send.scheduled_at,
+          scheduled_date: send.scheduled_date, // Renamed
           content: send.content,
           template_id: send.template_id,
           status: 'Pendente',
@@ -307,7 +309,7 @@ export const campaignsService = {
           id: `sch-${newId}-${idx}`,
           campaign_id: newId,
           channel_type: s.channel_type,
-          scheduled_at: s.scheduled_at,
+          scheduled_date: s.scheduled_date, // Renamed
           content: s.content,
           status: 'Pendente',
           template_id: s.template_id,
