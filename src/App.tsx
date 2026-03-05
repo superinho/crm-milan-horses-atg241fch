@@ -3,7 +3,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { Toaster as Sonner } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import Layout from './components/Layout'
-import { AuthProvider, useAuth } from '@/hooks/use-auth'
+import { AuthProvider } from '@/hooks/use-auth'
 
 import Index from './pages/Index'
 import Contatos from './pages/Contatos'
@@ -20,24 +20,6 @@ import Modelos from './pages/Modelos'
 import Configuracoes from './pages/Configuracoes'
 import Perfil from './pages/Perfil'
 import NotFound from './pages/NotFound'
-import Login from './pages/Login'
-
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { session, loading } = useAuth()
-
-  if (loading)
-    return (
-      <div className="h-screen w-full flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    )
-
-  if (!session) {
-    return <Navigate to="/login" replace />
-  }
-
-  return <>{children}</>
-}
 
 const App = () => (
   <AuthProvider>
@@ -48,15 +30,10 @@ const App = () => (
         <Toaster />
         <Sonner />
         <Routes>
-          <Route path="/login" element={<Login />} />
+          {/* Redirect /login directly to the admin dashboard */}
+          <Route path="/login" element={<Navigate to="/" replace />} />
 
-          <Route
-            element={
-              <ProtectedRoute>
-                <Layout />
-              </ProtectedRoute>
-            }
-          >
+          <Route element={<Layout />}>
             <Route path="/" element={<Index />} />
             <Route path="/contatos" element={<Contatos />} />
             <Route path="/contatos/:id" element={<ContatoDetalhes />} />

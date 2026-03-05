@@ -26809,7 +26809,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$43({ inst: {
+			cachedValue = useState$42({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26823,7 +26823,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$36(function() {
+			useEffect$35(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26846,7 +26846,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$68 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$43 = React$68.useState, useEffect$36 = React$68.useEffect, useLayoutEffect$2 = React$68.useLayoutEffect, useDebugValue = React$68.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$68 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$42 = React$68.useState, useEffect$35 = React$68.useEffect, useLayoutEffect$2 = React$68.useLayoutEffect, useDebugValue = React$68.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$68.useSyncExternalStore ? React$68.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -28288,6 +28288,47 @@ var DialogDescription = import_react.forwardRef(({ className, ...props }, ref) =
 }));
 DialogDescription.displayName = Description.displayName;
 var editedimage_1769630541473_88067_default = "/assets/editedimage_1769630541473-88067-DImnTPbz.png";
+var AuthContext = (0, import_react.createContext)(void 0);
+const useAuth = () => {
+	const context = (0, import_react.useContext)(AuthContext);
+	if (context === void 0) throw new Error("useAuth must be used within an AuthProvider");
+	return context;
+};
+var mockUser = {
+	id: "admin-user-id",
+	email: "admin@milanhorses.com",
+	user_metadata: { full_name: "Admin Milan" },
+	app_metadata: {},
+	aud: "authenticated",
+	created_at: (/* @__PURE__ */ new Date()).toISOString()
+};
+var mockSession = {
+	user: mockUser,
+	access_token: "mock-token",
+	refresh_token: "mock-refresh-token",
+	expires_in: 3600,
+	token_type: "bearer"
+};
+const AuthProvider = ({ children }) => {
+	const [user] = (0, import_react.useState)(mockUser);
+	const [session] = (0, import_react.useState)(mockSession);
+	const [loading] = (0, import_react.useState)(false);
+	const signUp = async () => ({ error: null });
+	const signIn = async () => ({ error: null });
+	const signOut = async () => ({ error: null });
+	const value = {
+		user,
+		session,
+		signUp,
+		signIn,
+		signOut,
+		loading
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthContext.Provider, {
+		value,
+		children
+	});
+};
 const resolveFetch$3 = (customFetch) => {
 	if (customFetch) return (...args) => customFetch(...args);
 	return (...args) => fetch(...args);
@@ -35894,62 +35935,6 @@ const supabase = createClient("https://hllvhxwcgqsksjaudsdn.supabase.co", "eyJhb
 	persistSession: true,
 	autoRefreshToken: true
 } });
-var AuthContext = (0, import_react.createContext)(void 0);
-const useAuth = () => {
-	const context = (0, import_react.useContext)(AuthContext);
-	if (context === void 0) throw new Error("useAuth must be used within an AuthProvider");
-	return context;
-};
-const AuthProvider = ({ children }) => {
-	const [user, setUser] = (0, import_react.useState)(null);
-	const [session, setSession] = (0, import_react.useState)(null);
-	const [loading, setLoading] = (0, import_react.useState)(true);
-	(0, import_react.useEffect)(() => {
-		const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session$1) => {
-			setSession(session$1);
-			setUser(session$1?.user ?? null);
-			setLoading(false);
-		});
-		supabase.auth.getSession().then(({ data: { session: session$1 } }) => {
-			setSession(session$1);
-			setUser(session$1?.user ?? null);
-			setLoading(false);
-		});
-		return () => subscription.unsubscribe();
-	}, []);
-	const signUp = async (email$1, password) => {
-		const redirectUrl = `${window.location.origin}/`;
-		const { error } = await supabase.auth.signUp({
-			email: email$1,
-			password,
-			options: { emailRedirectTo: redirectUrl }
-		});
-		return { error };
-	};
-	const signIn = async (email$1, password) => {
-		const { error } = await supabase.auth.signInWithPassword({
-			email: email$1,
-			password
-		});
-		return { error };
-	};
-	const signOut = async () => {
-		const { error } = await supabase.auth.signOut();
-		return { error };
-	};
-	const value = {
-		user,
-		session,
-		signUp,
-		signIn,
-		signOut,
-		loading
-	};
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthContext.Provider, {
-		value,
-		children
-	});
-};
 var U = 1, Y$1 = .9, H = .8, J = .17, p = .1, u = .999, $ = .9999;
 var k$2 = .99, m = /[\\\/_+.#"@\[\(\{&]/, B$1 = /[\\\/_+.#"@\[\(\{&]/g, K$1 = /[\s-]/, X$1 = /[\s-]/g;
 function G(_$1, C, h, P$1, A, f, O$1) {
@@ -83190,180 +83175,6 @@ var NotFound = () => {
 	});
 };
 var NotFound_default = NotFound;
-var alertVariants = cva("relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground", {
-	variants: { variant: {
-		default: "bg-background text-foreground",
-		destructive: "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive"
-	} },
-	defaultVariants: { variant: "default" }
-});
-var Alert = import_react.forwardRef(({ className, variant, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-	ref,
-	role: "alert",
-	className: cn(alertVariants({ variant }), className),
-	...props
-}));
-Alert.displayName = "Alert";
-var AlertTitle = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h5", {
-	ref,
-	className: cn("mb-1 font-medium leading-none tracking-tight", className),
-	...props
-}));
-AlertTitle.displayName = "AlertTitle";
-var AlertDescription = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-	ref,
-	className: cn("text-sm [&_p]:leading-relaxed", className),
-	...props
-}));
-AlertDescription.displayName = "AlertDescription";
-function Login() {
-	const [email$1, setEmail] = (0, import_react.useState)("");
-	const [password, setPassword] = (0, import_react.useState)("");
-	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
-	const [isSignUp, setIsSignUp] = (0, import_react.useState)(false);
-	const [authError, setAuthError] = (0, import_react.useState)(null);
-	const { signIn, signUp } = useAuth();
-	const navigate = useNavigate();
-	const { toast: toast$2 } = useToast();
-	const handleAuth = async (e) => {
-		e.preventDefault();
-		setIsLoading(true);
-		setAuthError(null);
-		try {
-			if (isSignUp) {
-				const { error } = await signUp(email$1, password);
-				if (error) throw error;
-				toast$2({
-					title: "Conta criada!",
-					description: "Verifique seu email para confirmar o cadastro."
-				});
-			} else {
-				const { error } = await signIn(email$1, password);
-				if (error) {
-					if (error.message?.includes("Email not confirmed")) throw new Error("Seu email ainda não foi confirmado. Por favor, verifique sua caixa de entrada e confirme o cadastro antes de fazer login.");
-					throw error;
-				}
-				navigate("/");
-				toast$2({
-					title: "Login realizado com sucesso",
-					description: "Bem-vindo ao CRM Milan Horses."
-				});
-			}
-		} catch (error) {
-			setAuthError(error.message || "Ocorreu um erro ao tentar entrar.");
-		} finally {
-			setIsLoading(false);
-		}
-	};
-	const toggleMode = () => {
-		setIsSignUp(!isSignUp);
-		setAuthError(null);
-	};
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: "min-h-screen flex items-center justify-center bg-gray-50/50 px-4",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "w-full max-w-md space-y-8",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col items-center justify-center text-center",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
-						src: editedimage_1769630541473_88067_default,
-						alt: "Milan Horses",
-						className: "h-24 w-auto object-contain mb-4"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-						className: "text-3xl font-bold tracking-tight text-primary font-display",
-						children: "CRM Milan Horses"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "text-muted-foreground mt-2",
-						children: "Entre para gerenciar seus contatos e negócios"
-					})
-				]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				className: "shadow-lg border-t-4 border-t-primary",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: isSignUp ? "Criar Conta" : "Login" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: isSignUp ? "Preencha os dados abaixo para criar sua conta." : "Digite seu email e senha para acessar." })] }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [authError && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Alert, {
-						variant: "destructive",
-						className: "mb-4",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleAlert, { className: "h-4 w-4" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlertTitle, { children: "Erro" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlertDescription, { children: authError })
-						]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
-						onSubmit: handleAuth,
-						className: "space-y-4",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "space-y-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-									htmlFor: "email",
-									children: "Email"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-									id: "email",
-									type: "email",
-									placeholder: "admin@milanhorses.com",
-									value: email$1,
-									onChange: (e) => {
-										setEmail(e.target.value);
-										if (authError) setAuthError(null);
-									},
-									required: true
-								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "space-y-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-									htmlFor: "password",
-									children: "Senha"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-									id: "password",
-									type: "password",
-									value: password,
-									onChange: (e) => {
-										setPassword(e.target.value);
-										if (authError) setAuthError(null);
-									},
-									required: true,
-									minLength: 6
-								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-								type: "submit",
-								className: "w-full",
-								disabled: isLoading,
-								children: isLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }), isSignUp ? "Criando..." : "Entrando..."] }) : isSignUp ? "Criar Conta" : "Entrar"
-							})
-						]
-					})] }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardFooter, {
-						className: "flex justify-center",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-							variant: "link",
-							onClick: toggleMode,
-							className: "text-sm text-muted-foreground",
-							children: isSignUp ? "Já tem uma conta? Faça login" : "Não tem uma conta? Cadastre-se"
-						})
-					})
-				]
-			})]
-		})
-	});
-}
-var ProtectedRoute = ({ children }) => {
-	const { session, loading } = useAuth();
-	if (loading) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: "h-screen w-full flex items-center justify-center",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "animate-spin rounded-full h-12 w-12 border-b-2 border-primary" })
-	});
-	if (!session) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Navigate, {
-		to: "/login",
-		replace: true
-	});
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_jsx_runtime.Fragment, { children });
-};
 var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 	future: {
 		v7_startTransition: false,
@@ -83375,10 +83186,13 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Routes, { children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 				path: "/login",
-				element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Login, {})
+				element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Navigate, {
+					to: "/",
+					replace: true
+				})
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Route, {
-				element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ProtectedRoute, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Layout, {}) }),
+				element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Layout, {}),
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 						path: "/",
@@ -83448,4 +83262,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-B_7lTFYS.js.map
+//# sourceMappingURL=index-BWSKRugo.js.map
