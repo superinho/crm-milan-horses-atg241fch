@@ -207,10 +207,7 @@ export default function Configuracoes() {
                             <FormLabel>URL do Logo</FormLabel>
                             <div className="flex gap-2">
                               <FormControl>
-                                <Input
-                                  placeholder="URL da logo"
-                                  {...field}
-                                />
+                                <Input placeholder="URL da logo" {...field} />
                               </FormControl>
                               {field.value && (
                                 <div className="h-10 w-10 shrink-0 overflow-hidden rounded-md border p-1">

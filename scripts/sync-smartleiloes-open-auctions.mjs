@@ -60,7 +60,11 @@ const valueOf = (record, keys) => {
   ])
 
   for (const key of keys) {
-    if (record?.[key] !== undefined && record[key] !== null && record[key] !== '') {
+    if (
+      record?.[key] !== undefined &&
+      record[key] !== null &&
+      record[key] !== ''
+    ) {
       return record[key]
     }
 
@@ -251,7 +255,10 @@ const main = async () => {
     'formato-resultado': '1',
     limite: '5000',
   })
-  const openEvents = await smartRequest(`/empresa/eventos?${eventParams}`, token)
+  const openEvents = await smartRequest(
+    `/empresa/eventos?${eventParams}`,
+    token,
+  )
 
   const auctionPayload = openEvents.map((event, index) => {
     const smartleiloesId = eventIdOf(event, index)
@@ -259,8 +266,9 @@ const main = async () => {
     return {
       smartleiloes_id: smartleiloesId,
       title:
-        asString(valueOf(event, ['nomeEvento', 'nome_evento', 'descricaoEvento'])) ||
-        `Leilão ${smartleiloesId}`,
+        asString(
+          valueOf(event, ['nomeEvento', 'nome_evento', 'descricaoEvento']),
+        ) || `Leilão ${smartleiloesId}`,
       status:
         asString(
           valueOf(event, [
@@ -331,12 +339,7 @@ const main = async () => {
           auction_smartleiloes_id: eventId,
           lot_number:
             asString(
-              valueOf(lot, [
-                'numeroLote',
-                'numero_lote',
-                'numero',
-                'lote',
-              ]),
+              valueOf(lot, ['numeroLote', 'numero_lote', 'numero', 'lote']),
             ) || null,
           title:
             asString(
@@ -387,7 +390,9 @@ const main = async () => {
           updated_at: new Date().toISOString(),
         }))
       } catch (error) {
-        console.warn(`Could not fetch lots for event ${eventId}: ${error.message}`)
+        console.warn(
+          `Could not fetch lots for event ${eventId}: ${error.message}`,
+        )
         return []
       }
     }),

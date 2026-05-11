@@ -107,7 +107,9 @@ export default function Contatos() {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
-  const [selectedContactId, setSelectedContactId] = useState<string | null>(null)
+  const [selectedContactId, setSelectedContactId] = useState<string | null>(
+    null,
+  )
   const [profileOpen, setProfileOpen] = useState(false)
   const [importingBirthdays, setImportingBirthdays] = useState(false)
   const birthdayFileInputRef = useRef<HTMLInputElement>(null)
@@ -195,13 +197,14 @@ export default function Contatos() {
 
     setSortConfig((current) => ({
       key,
-      direction: current.key === key
-        ? current.direction === 'asc'
-          ? 'desc'
-          : 'asc'
-        : defaultDescKeys.has(key)
-          ? 'desc'
-          : 'asc',
+      direction:
+        current.key === key
+          ? current.direction === 'asc'
+            ? 'desc'
+            : 'asc'
+          : defaultDescKeys.has(key)
+            ? 'desc'
+            : 'asc',
     }))
   }
 
@@ -632,7 +635,9 @@ export default function Contatos() {
                         <div className="flex items-center text-muted-foreground text-sm">
                           <MapPin className="mr-2 h-3 w-3 opacity-70" />
                           <span className="max-w-[160px] truncate">
-                            {[contact.city, contact.state].filter(Boolean).join(', ') ||
+                            {[contact.city, contact.state]
+                              .filter(Boolean)
+                              .join(', ') ||
                               contact.address ||
                               '-'}
                           </span>
@@ -642,10 +647,14 @@ export default function Contatos() {
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             {contact.segment && (
-                              <Badge variant="secondary">{contact.segment}</Badge>
+                              <Badge variant="secondary">
+                                {contact.segment}
+                              </Badge>
                             )}
                             {contact.rfmvScore ? (
-                              <Badge variant="outline">RFMV {contact.rfmvScore}</Badge>
+                              <Badge variant="outline">
+                                RFMV {contact.rfmvScore}
+                              </Badge>
                             ) : null}
                           </div>
                           <div
@@ -710,9 +719,9 @@ export default function Contatos() {
                       </TableCell>
                       <TableCell className="text-muted-foreground text-sm">
                         {contact.lastActivityDate
-                          ? new Date(contact.lastActivityDate).toLocaleDateString(
-                              'pt-BR',
-                            )
+                          ? new Date(
+                              contact.lastActivityDate,
+                            ).toLocaleDateString('pt-BR')
                           : contact.updated_at
                             ? new Date(contact.updated_at).toLocaleDateString(
                                 'pt-BR',

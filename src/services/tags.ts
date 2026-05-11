@@ -20,11 +20,7 @@ export const tagsService = {
   },
 
   async createTag(tag: Omit<Tag, 'id'>) {
-    const { data, error } = await db
-      .from('tags')
-      .insert(tag)
-      .select()
-      .single()
+    const { data, error } = await db.from('tags').insert(tag).select().single()
 
     if (error) throw error
     return data as Tag

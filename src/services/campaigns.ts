@@ -71,7 +71,9 @@ const statsFrom = (sends: any[] = []) => {
   const emailsOpened = emails.filter((send) =>
     ['opened', 'clicked'].includes(send.status),
   ).length
-  const emailsClicked = emails.filter((send) => send.status === 'clicked').length
+  const emailsClicked = emails.filter(
+    (send) => send.status === 'clicked',
+  ).length
   const whatsapps = sends.filter((send) => send.channel === 'whatsapp')
 
   return {
@@ -289,9 +291,12 @@ export const campaignsService = {
     campaignId: string,
     options: { limit?: number; mode?: 'pilot' | 'full' } = {},
   ) {
-    const { data, error } = await supabase.functions.invoke('process-campaigns', {
-      body: { campaignId, ...options },
-    })
+    const { data, error } = await supabase.functions.invoke(
+      'process-campaigns',
+      {
+        body: { campaignId, ...options },
+      },
+    )
     if (error) throw error
     return data
   },
@@ -308,11 +313,13 @@ export const campaignsService = {
     if (error) throw error
 
     const sampleRecipient =
-      campaign.campaign_recipients?.find((item: any) => item.channel === 'whatsapp') ||
-      campaign.campaign_recipients?.[0]
+      campaign.campaign_recipients?.find(
+        (item: any) => item.channel === 'whatsapp',
+      ) || campaign.campaign_recipients?.[0]
     const schedule =
-      campaign.campaign_schedules?.find((item: any) => item.channel_type === 'whatsapp') ||
-      campaign.campaign_schedules?.[0]
+      campaign.campaign_schedules?.find(
+        (item: any) => item.channel_type === 'whatsapp',
+      ) || campaign.campaign_schedules?.[0]
     const message =
       sampleRecipient?.message ||
       schedule?.content ||

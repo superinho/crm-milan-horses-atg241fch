@@ -26,7 +26,9 @@ function CustomerRow({ customer }: { customer: CustomerRfmv }) {
         </div>
       </div>
       <div className="text-right">
-        <div className="text-sm font-semibold">{money(customer.monetary_value)}</div>
+        <div className="text-sm font-semibold">
+          {money(customer.monetary_value)}
+        </div>
         <Badge variant="outline" className="mt-1">
           RFMV {customer.rfmv_score}
         </Badge>
@@ -97,11 +99,15 @@ export function MonetaryDashboard() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Valor em lances</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Valor em lances
+            </CardTitle>
             <Gavel className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{money(data.totalBidsValue)}</div>
+            <div className="text-2xl font-bold">
+              {money(data.totalBidsValue)}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -152,7 +158,9 @@ export function MonetaryDashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Alto potencial sem compra</CardTitle>
+            <CardTitle className="text-base">
+              Alto potencial sem compra
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {data.highPotential.length ? (

@@ -8,7 +8,8 @@ const BOTCONVERSA_WEBHOOK_SECRET = Deno.env.get('BOTCONVERSA_WEBHOOK_SECRET')
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
 Deno.serve(async (req) => {
-  if (req.method !== 'POST') return new Response('Method not allowed', { status: 405 })
+  if (req.method !== 'POST')
+    return new Response('Method not allowed', { status: 405 })
 
   try {
     if (BOTCONVERSA_WEBHOOK_SECRET) {
@@ -22,7 +23,11 @@ Deno.serve(async (req) => {
     const campaignId = payload.campaign_id || payload.campaignId || null
     const contactId = payload.contact_id || payload.contactId || null
     const providerMessageId =
-      payload.message_id || payload.messageId || payload.id || payload.provider_id || null
+      payload.message_id ||
+      payload.messageId ||
+      payload.id ||
+      payload.provider_id ||
+      null
     const eventType =
       payload.event ||
       payload.event_type ||
@@ -48,7 +53,13 @@ Deno.serve(async (req) => {
       payload,
     })
 
-    if (campaignId && contactId && ['responded', 'message_received', 'respondeu'].includes(String(eventType).toLowerCase())) {
+    if (
+      campaignId &&
+      contactId &&
+      ['responded', 'message_received', 'respondeu'].includes(
+        String(eventType).toLowerCase(),
+      )
+    ) {
       await supabase
         .from('campaign_sends')
         .update({

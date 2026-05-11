@@ -30,9 +30,13 @@ const normalizeKey = (key: string) =>
     .replace(/[^a-zA-Z0-9]/g, '')
     .toLowerCase()
 
-const digitsOnly = (value?: string | null) => String(value || '').replace(/\D/g, '')
+const digitsOnly = (value?: string | null) =>
+  String(value || '').replace(/\D/g, '')
 
-const cleanEmail = (value?: string | null) => String(value || '').trim().toLowerCase()
+const cleanEmail = (value?: string | null) =>
+  String(value || '')
+    .trim()
+    .toLowerCase()
 
 const parseCsvLine = (line: string) => {
   const values: string[] = []
@@ -106,7 +110,12 @@ const parseBirthDate = (value: string) => {
   const year = iso ? Number(match[1]) : Number(match[3])
   const month = iso ? Number(match[2]) : Number(match[2])
   const day = iso ? Number(match[3]) : Number(match[1])
-  const fullYear = !iso && match[3].length === 2 ? (year > 30 ? 1900 + year : 2000 + year) : year
+  const fullYear =
+    !iso && match[3].length === 2
+      ? year > 30
+        ? 1900 + year
+        : 2000 + year
+      : year
   const date = new Date(Date.UTC(fullYear, month - 1, day))
 
   if (
@@ -143,7 +152,11 @@ const fetchAllContacts = async () => {
   return contacts
 }
 
-const addToMap = (map: Map<string, ContactMatch>, key: string, contact: ContactMatch) => {
+const addToMap = (
+  map: Map<string, ContactMatch>,
+  key: string,
+  contact: ContactMatch,
+) => {
   if (key && !map.has(key)) map.set(key, contact)
 }
 
@@ -197,7 +210,9 @@ export const birthdaysImportService = {
       summary.parsedBirthdates += 1
 
       const contact =
-        bySmartId.get(firstValue(row, ['idCliente', 'smartleiloes_id', 'id cliente'])) ||
+        bySmartId.get(
+          firstValue(row, ['idCliente', 'smartleiloes_id', 'id cliente']),
+        ) ||
         byDocument.get(
           digitsOnly(
             firstValue(row, [

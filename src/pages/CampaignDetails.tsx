@@ -31,10 +31,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useToast } from '@/hooks/use-toast'
 import { campaignsService, Campaign } from '@/services/campaigns'
 import { WhatsAppSender } from '@/components/campaigns/WhatsAppSender'
-import {
-  ChartContainer,
-  ChartTooltipContent,
-} from '@/components/ui/chart'
+import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart'
 import { Bar, BarChart, XAxis, YAxis, Tooltip } from 'recharts'
 
 export default function CampaignDetails() {
@@ -45,9 +42,7 @@ export default function CampaignDetails() {
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [testPhone, setTestPhone] = useState('11999427752')
-  const [action, setAction] = useState<
-    'test' | 'pilot' | 'full' | null
-  >(null)
+  const [action, setAction] = useState<'test' | 'pilot' | 'full' | null>(null)
 
   const fetchCampaign = async () => {
     if (!id) return
@@ -99,7 +94,8 @@ export default function CampaignDetails() {
   const handlePilotProcessing = async () => {
     try {
       setAction('pilot')
-      if (id) await campaignsService.processCampaign(id, { limit: 10, mode: 'pilot' })
+      if (id)
+        await campaignsService.processCampaign(id, { limit: 10, mode: 'pilot' })
       toast({
         title: 'Piloto enviado',
         description: 'Até 10 destinatários foram processados para validação.',
@@ -258,7 +254,9 @@ export default function CampaignDetails() {
         </CardHeader>
         <CardContent className="grid gap-4 xl:grid-cols-[1.1fr_2fr]">
           <div className="space-y-2">
-            <div className="text-sm text-muted-foreground">Destinatários alvo</div>
+            <div className="text-sm text-muted-foreground">
+              Destinatários alvo
+            </div>
             <div className="text-3xl font-semibold text-primary">
               {audienceCount || 'Todos'}
             </div>
@@ -294,7 +292,8 @@ export default function CampaignDetails() {
             <div className="space-y-2 rounded-md border p-3">
               <div className="text-sm font-medium">2. Piloto real</div>
               <p className="min-h-10 text-xs text-muted-foreground">
-                Envia para até 10 contatos pendentes e mantém o restante em fila.
+                Envia para até 10 contatos pendentes e mantém o restante em
+                fila.
               </p>
               <Button
                 variant="outline"

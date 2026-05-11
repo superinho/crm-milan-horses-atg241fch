@@ -153,7 +153,11 @@ export function WhatsAppSender({ campaignId, onRefresh }: WhatsAppSenderProps) {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge variant={item.status === 'sent' ? 'default' : 'outline'}>
+                        <Badge
+                          variant={
+                            item.status === 'sent' ? 'default' : 'outline'
+                          }
+                        >
                           {item.status}
                         </Badge>
                         {item.status !== 'sent' ? (
@@ -195,8 +199,7 @@ export function WhatsAppSender({ campaignId, onRefresh }: WhatsAppSenderProps) {
             </p>
             <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
               <li>
-                Clique em "Abrir" para abrir a conversa no WhatsApp
-                Web/Desktop.
+                Clique em "Abrir" para abrir a conversa no WhatsApp Web/Desktop.
               </li>
               <li>A mensagem (se configurada) já estará digitada.</li>
               <li>Aperte Enter no WhatsApp para enviar.</li>

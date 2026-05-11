@@ -33,7 +33,8 @@ export const smartLeiloesService = {
           date: auction.event_date,
           start_date: auction.event_date,
           value: Number(auction.value || 0),
-          description: auction.payload?.descricaoEvento || auction.event_type || '',
+          description:
+            auction.payload?.descricaoEvento || auction.event_type || '',
           ...auction.payload,
         })),
         error: null,

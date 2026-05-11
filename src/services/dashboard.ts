@@ -98,7 +98,11 @@ export const dashboardService = {
     }
 
     // 5. Comparison from real Smart Leilões purchases
-    const comparisonStart = new Date(now.getFullYear() - 1, now.getMonth() - 5, 1)
+    const comparisonStart = new Date(
+      now.getFullYear() - 1,
+      now.getMonth() - 5,
+      1,
+    )
     const { data: purchases, error: purchasesError } = await db
       .from('purchases')
       .select('value,date')
@@ -108,7 +112,11 @@ export const dashboardService = {
 
     const monthFormatter = new Intl.DateTimeFormat('pt-BR', { month: 'short' })
     const salesComparison = Array.from({ length: 6 }, (_, index) => {
-      const monthDate = new Date(now.getFullYear(), now.getMonth() - 5 + index, 1)
+      const monthDate = new Date(
+        now.getFullYear(),
+        now.getMonth() - 5 + index,
+        1,
+      )
       const previousDate = new Date(
         monthDate.getFullYear() - 1,
         monthDate.getMonth(),
@@ -124,7 +132,10 @@ export const dashboardService = {
               purchaseDate.getMonth() === date.getMonth()
             )
           })
-          .reduce((sum: number, purchase: any) => sum + Number(purchase.value || 0), 0)
+          .reduce(
+            (sum: number, purchase: any) => sum + Number(purchase.value || 0),
+            0,
+          )
 
       return {
         name: monthFormatter.format(monthDate),

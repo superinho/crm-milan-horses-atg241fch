@@ -59,10 +59,7 @@ export const rfmvService = {
       rfmv_score: Number(row.rfmv_score || 0),
     })) as CustomerRfmv[]
 
-    const totalRevenue = rows.reduce(
-      (sum, row) => sum + row.monetary_value,
-      0,
-    )
+    const totalRevenue = rows.reduce((sum, row) => sum + row.monetary_value, 0)
     const buyers = rows.filter((row) => row.purchase_count > 0)
     const totalPurchases = buyers.reduce(
       (sum, row) => sum + row.purchase_count,

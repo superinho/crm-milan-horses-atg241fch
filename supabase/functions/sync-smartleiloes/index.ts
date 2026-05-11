@@ -129,9 +129,7 @@ const asDate = (value: unknown) => {
           ? 1900 + numericYear
           : 2000 + numericYear
         : numericYear
-    const date = new Date(
-      Date.UTC(fullYear, Number(month) - 1, Number(day)),
-    )
+    const date = new Date(Date.UTC(fullYear, Number(month) - 1, Number(day)))
 
     return Number.isNaN(date.getTime()) ? null : date.toISOString()
   }

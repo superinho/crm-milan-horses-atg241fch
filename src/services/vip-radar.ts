@@ -94,13 +94,16 @@ const daysSince = (value?: string | null) => {
   return Math.floor((Date.now() - date.getTime()) / 86_400_000)
 }
 
-const contactChannel = (row: RfmvRow): VipRadarRecommendation['recommendedChannel'] => {
+const contactChannel = (
+  row: RfmvRow,
+): VipRadarRecommendation['recommendedChannel'] => {
   if (row.whatsapp || row.phone) return 'whatsapp'
   if (row.email) return 'email'
   return 'manual'
 }
 
-const scoreClamp = (value: number) => Math.max(0, Math.min(100, Math.round(value)))
+const scoreClamp = (value: number) =>
+  Math.max(0, Math.min(100, Math.round(value)))
 
 const targetValueOf = (auction: VipRadarAuction | null) => {
   if (!auction) return 0
@@ -112,7 +115,8 @@ const valueFitScore = (row: RfmvRow, targetValue: number) => {
 
   const customerReference = Math.max(
     numberValue(row.avg_ticket),
-    numberValue(row.monetary_value) / Math.max(1, numberValue(row.purchase_count)),
+    numberValue(row.monetary_value) /
+      Math.max(1, numberValue(row.purchase_count)),
     numberValue(row.bid_value) / Math.max(1, numberValue(row.bid_count)),
   )
 
@@ -140,7 +144,8 @@ const segmentOf = (row: RfmvRow, inactiveDays: number): VipRadarSegment => {
   ) {
     return 'Underbidder premium'
   }
-  if (row.monetary_value >= 250_000 && inactiveDays > 180) return 'Reativação VIP'
+  if (row.monetary_value >= 250_000 && inactiveDays > 180)
+    return 'Reativação VIP'
   return 'Comprador compatível'
 }
 
@@ -214,11 +219,16 @@ const suggestedMessageFor = (
 }
 
 const mapAuction = (auction: any, lots: any[]): VipRadarAuction => {
-  const lotValues = lots.map((lot) => numberValue(lot.value)).filter((value) => value > 0)
+  const lotValues = lots
+    .map((lot) => numberValue(lot.value))
+    .filter((value) => value > 0)
   const categories = [
     ...new Set(
       lots
-        .map((lot) => lot.category || lot.payload?.categoria || lot.payload?.tipoLote)
+        .map(
+          (lot) =>
+            lot.category || lot.payload?.categoria || lot.payload?.tipoLote,
+        )
         .filter(Boolean)
         .map(String),
     ),
@@ -278,13 +288,13 @@ export const vipRadarService = {
       { data: auctionRows, error: auctionsError },
       { data: lotRows, error: lotsError },
     ] = await Promise.all([
-        db
-          .from('smartleiloes_auctions')
-          .select('*')
-          .order('event_date', { ascending: false })
-          .limit(200),
-        db.from('smartleiloes_lots').select('*'),
-      ])
+      db
+        .from('smartleiloes_auctions')
+        .select('*')
+        .order('event_date', { ascending: false })
+        .limit(200),
+      db.from('smartleiloes_lots').select('*'),
+    ])
 
     if (auctionsError) throw auctionsError
     if (lotsError) throw lotsError
@@ -350,7 +360,14 @@ export const vipRadarService = {
         const inactiveDays = daysSince(row.last_activity_date)
         const segment = segmentOf(row, inactiveDays)
         const channel = contactChannel(row)
-        const recency = inactiveDays <= 30 ? 14 : inactiveDays <= 90 ? 10 : inactiveDays <= 180 ? 6 : 2
+        const recency =
+          inactiveDays <= 30
+            ? 14
+            : inactiveDays <= 90
+              ? 10
+              : inactiveDays <= 180
+                ? 6
+                : 2
         const channelScore = channel === 'manual' ? 0 : 5
         const score = scoreClamp(
           row.rfmv_score * 2.2 +
@@ -384,7 +401,9 @@ export const vipRadarService = {
       .filter(
         (item) =>
           item.score >= 45 &&
-          (item.purchaseCount > 0 || item.bidCount > 0 || item.monetaryValue > 0),
+          (item.purchaseCount > 0 ||
+            item.bidCount > 0 ||
+            item.monetaryValue > 0),
       )
       .sort((a, b) => b.score - a.score)
       .slice(0, 200)
@@ -409,8 +428,12 @@ export const vipRadarService = {
       recommendations,
       summary: {
         total: recommendations.length,
-        whatsappReady: recommendations.filter((item) => item.recommendedChannel === 'whatsapp').length,
-        emailReady: recommendations.filter((item) => item.recommendedChannel === 'email').length,
+        whatsappReady: recommendations.filter(
+          (item) => item.recommendedChannel === 'whatsapp',
+        ).length,
+        emailReady: recommendations.filter(
+          (item) => item.recommendedChannel === 'email',
+        ).length,
         avgScore: recommendations.length
           ? Math.round(
               recommendations.reduce((sum, item) => sum + item.score, 0) /

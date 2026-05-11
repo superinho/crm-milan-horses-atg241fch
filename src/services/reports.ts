@@ -134,7 +134,8 @@ export const reportsService = {
       metrics: {
         totalRevenue,
         totalSales: purchaseRows.length,
-        avgTicket: purchaseRows.length > 0 ? totalRevenue / purchaseRows.length : 0,
+        avgTicket:
+          purchaseRows.length > 0 ? totalRevenue / purchaseRows.length : 0,
         totalLeads: deals.length,
         totalCustomers: customerMap.size,
         conversionRate:

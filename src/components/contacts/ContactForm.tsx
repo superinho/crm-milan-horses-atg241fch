@@ -169,7 +169,10 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
               <FormItem>
                 <FormLabel>Nome Completo *</FormLabel>
                 <FormControl>
-                  <Input placeholder="Nome completo ou razão social" {...field} />
+                  <Input
+                    placeholder="Nome completo ou razão social"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

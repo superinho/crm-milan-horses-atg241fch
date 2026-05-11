@@ -59,7 +59,11 @@ const valueOf = (record, keys) => {
   ])
 
   for (const key of keys) {
-    if (record?.[key] !== undefined && record[key] !== null && record[key] !== '') {
+    if (
+      record?.[key] !== undefined &&
+      record[key] !== null &&
+      record[key] !== ''
+    ) {
       return record[key]
     }
 

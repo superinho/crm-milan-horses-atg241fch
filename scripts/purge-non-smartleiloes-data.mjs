@@ -57,7 +57,9 @@ const selectAll = async (path, pageSize = 1000) => {
   const separator = path.includes('?') ? '&' : '?'
 
   for (let offset = 0; ; offset += pageSize) {
-    const page = await request(`${path}${separator}limit=${pageSize}&offset=${offset}`)
+    const page = await request(
+      `${path}${separator}limit=${pageSize}&offset=${offset}`,
+    )
     rows.push(...(page || []))
     if (!page || page.length < pageSize) break
   }
@@ -95,10 +97,14 @@ const nonSmartContactIds = nonSmartContacts.map((contact) => contact.id)
 
 const [deals, tasksByContact, interactionsByContact] = await Promise.all([
   nonSmartContactIds.length
-    ? selectAll(`deals?select=id,contact_id&contact_id=in.(${nonSmartContactIds.join(',')})`)
+    ? selectAll(
+        `deals?select=id,contact_id&contact_id=in.(${nonSmartContactIds.join(',')})`,
+      )
     : [],
   nonSmartContactIds.length
-    ? selectAll(`tasks?select=id,contact_id&contact_id=in.(${nonSmartContactIds.join(',')})`)
+    ? selectAll(
+        `tasks?select=id,contact_id&contact_id=in.(${nonSmartContactIds.join(',')})`,
+      )
     : [],
   nonSmartContactIds.length
     ? selectAll(

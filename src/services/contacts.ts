@@ -108,7 +108,8 @@ const mapContact = (contact: any): Contact => {
     auctionCount: Number(contact.auction_count || 0),
     bidValue: Number(contact.bid_value || 0),
     avgTicket: Number(contact.avg_ticket || 0),
-    lastActivityDate: contact.last_activity_date || contact.last_bid_date || null,
+    lastActivityDate:
+      contact.last_activity_date || contact.last_bid_date || null,
     segment: contact.segment || null,
     rfmvScore: Number(contact.rfmv_score || 0),
   }
@@ -183,9 +184,7 @@ export const contactsService = {
       const from = (page - 1) * pageSize
       const to = from + pageSize - 1
 
-      let query = db
-        .from('customer_rfmv_view')
-        .select('*', { count: 'exact' })
+      let query = db.from('customer_rfmv_view').select('*', { count: 'exact' })
 
       let candidateIds: string[] | null = null
       const applyCandidateIds = (ids: string[]) => {
@@ -241,20 +240,27 @@ export const contactsService = {
       }
 
       if (candidateIds !== null) {
-        if (candidateIds.length === 0) return { data: [], count: 0, error: null }
+        if (candidateIds.length === 0)
+          return { data: [], count: 0, error: null }
         query = query.in('id', candidateIds)
       }
 
       if (status === 'active') {
         const threshold = new Date()
         threshold.setDate(threshold.getDate() - 180)
-        query = query.gte('last_activity_date', threshold.toISOString().slice(0, 10))
+        query = query.gte(
+          'last_activity_date',
+          threshold.toISOString().slice(0, 10),
+        )
       }
 
       if (status === 'inactive') {
         const threshold = new Date()
         threshold.setDate(threshold.getDate() - 180)
-        query = query.lt('last_activity_date', threshold.toISOString().slice(0, 10))
+        query = query.lt(
+          'last_activity_date',
+          threshold.toISOString().slice(0, 10),
+        )
       }
 
       if (lastContactRange?.from) {
@@ -303,7 +309,11 @@ export const contactsService = {
         rfmvScore: 'rfmv_score',
       }
       const sortColumn = sortColumns[sortBy] || sortBy
-      const { data: rfmvRows, count, error } = await query
+      const {
+        data: rfmvRows,
+        count,
+        error,
+      } = await query
         .order(sortColumn, { ascending: sortDirection === 'asc' })
         .range(from, to)
 
@@ -328,7 +338,10 @@ export const contactsService = {
       if (contactsError) throw contactsError
 
       const contactsById = new Map(
-        (contactRows || []).map((contact: any) => [contact.id, mapContact(contact)]),
+        (contactRows || []).map((contact: any) => [
+          contact.id,
+          mapContact(contact),
+        ]),
       )
       const contacts = rows.map((row: any) =>
         mergeContactWithRfmv(contactsById.get(row.id) || mapContact(row), row),

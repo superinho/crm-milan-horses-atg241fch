@@ -67,18 +67,14 @@ const money = (value: number) =>
   }).format(Number(value || 0))
 
 const date = (value?: string | null) =>
-  value
-    ? value
-        .slice(0, 10)
-        .split('-')
-        .reverse()
-        .join('/')
-    : '-'
+  value ? value.slice(0, 10).split('-').reverse().join('/') : '-'
 
-const digitsOnly = (value?: string | null) => String(value || '').replace(/\D/g, '')
+const digitsOnly = (value?: string | null) =>
+  String(value || '').replace(/\D/g, '')
 
 const segmentClassName = (segment: VipRadarSegment) => {
-  if (segment === 'VIP ativo') return 'bg-amber-100 text-amber-900 border-amber-200'
+  if (segment === 'VIP ativo')
+    return 'bg-amber-100 text-amber-900 border-amber-200'
   if (segment === 'Underbidder premium')
     return 'bg-blue-100 text-blue-900 border-blue-200'
   if (segment === 'Alto potencial sem compra')
@@ -104,7 +100,9 @@ function StatCard({
       <CardContent className="flex items-center justify-between p-4">
         <div>
           <div className="text-sm text-muted-foreground">{label}</div>
-          <div className="mt-1 text-2xl font-semibold text-primary">{value}</div>
+          <div className="mt-1 text-2xl font-semibold text-primary">
+            {value}
+          </div>
         </div>
         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
           <Icon className="h-5 w-5 text-primary" />
@@ -146,13 +144,17 @@ function RecommendationRow({
           {item.name}
         </button>
         <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-          <span>{[item.city, item.state].filter(Boolean).join(', ') || 'Sem praça'}</span>
+          <span>
+            {[item.city, item.state].filter(Boolean).join(', ') || 'Sem praça'}
+          </span>
           <span>Última: {date(item.lastActivityDate)}</span>
         </div>
       </TableCell>
 
       <TableCell>
-        <Badge className={cn('border font-medium', segmentClassName(item.segment))}>
+        <Badge
+          className={cn('border font-medium', segmentClassName(item.segment))}
+        >
           {item.segment}
         </Badge>
       </TableCell>
@@ -185,7 +187,12 @@ function RecommendationRow({
       <TableCell className="min-w-[220px]">
         <div className="flex items-center gap-1">
           {whatsappUrl ? (
-            <Button variant="ghost" size="icon" asChild title="Chamar no WhatsApp">
+            <Button
+              variant="ghost"
+              size="icon"
+              asChild
+              title="Chamar no WhatsApp"
+            >
               <a href={whatsappUrl} target="_blank" rel="noreferrer">
                 <MessageCircle className="h-4 w-4" />
               </a>
@@ -243,9 +250,9 @@ export default function RadarVip() {
     'email' | 'whatsapp' | 'multi' | null
   >(null)
   const [selectedAuctionId, setSelectedAuctionId] = useState('')
-  const [selectedSegment, setSelectedSegment] = useState<VipRadarSegment | 'Todos'>(
-    'Todos',
-  )
+  const [selectedSegment, setSelectedSegment] = useState<
+    VipRadarSegment | 'Todos'
+  >('Todos')
   const [actions, setActions] = useState<ActionState>(() => {
     try {
       return JSON.parse(localStorage.getItem(ACTION_STORAGE_KEY) || '{}')
@@ -253,7 +260,9 @@ export default function RadarVip() {
       return {}
     }
   })
-  const [selectedContactId, setSelectedContactId] = useState<string | null>(null)
+  const [selectedContactId, setSelectedContactId] = useState<string | null>(
+    null,
+  )
   const [profileOpen, setProfileOpen] = useState(false)
   const { toast } = useToast()
 
@@ -313,7 +322,8 @@ export default function RadarVip() {
     if (!data?.selectedAuction) {
       toast({
         title: 'Selecione um leilão real',
-        description: 'O Radar precisa de um leilão aberto para criar a campanha.',
+        description:
+          'O Radar precisa de um leilão aberto para criar a campanha.',
         variant: 'destructive',
       })
       return
@@ -329,7 +339,11 @@ export default function RadarVip() {
     }
 
     const mode =
-      channels.length > 1 ? 'multi' : channels[0] === 'email' ? 'email' : 'whatsapp'
+      channels.length > 1
+        ? 'multi'
+        : channels[0] === 'email'
+          ? 'email'
+          : 'whatsapp'
     setCreatingCampaign(mode)
 
     try {
@@ -397,7 +411,11 @@ export default function RadarVip() {
             </SelectContent>
           </Select>
 
-          <Button variant="outline" onClick={() => loadRadar()} disabled={loading}>
+          <Button
+            variant="outline"
+            onClick={() => loadRadar()}
+            disabled={loading}
+          >
             {loading ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
@@ -436,7 +454,11 @@ export default function RadarVip() {
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                <StatCard label="Recomendados" value={data.summary.total} icon={Users} />
+                <StatCard
+                  label="Recomendados"
+                  value={data.summary.total}
+                  icon={Users}
+                />
                 <StatCard
                   label="Prontos p/ WhatsApp"
                   value={data.summary.whatsappReady}
@@ -447,7 +469,11 @@ export default function RadarVip() {
                   value={data.summary.avgScore}
                   icon={Target}
                 />
-                <StatCard label="Avisados" value={contactedCount} icon={UserCheck} />
+                <StatCard
+                  label="Avisados"
+                  value={contactedCount}
+                  icon={UserCheck}
+                />
               </div>
             </CardContent>
           </Card>

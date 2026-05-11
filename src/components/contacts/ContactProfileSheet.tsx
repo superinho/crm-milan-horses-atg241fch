@@ -57,7 +57,8 @@ const money = (value: number | null | undefined) =>
 const date = (value?: string | null) =>
   value ? new Date(value).toLocaleDateString('pt-BR') : '-'
 
-const digitsOnly = (value?: string | null) => String(value || '').replace(/\D/g, '')
+const digitsOnly = (value?: string | null) =>
+  String(value || '').replace(/\D/g, '')
 
 function EmptyLine({ children }: { children: React.ReactNode }) {
   return (
@@ -160,7 +161,9 @@ export function ContactProfileSheet({
     const preferences = contact?.preferences || {}
     return [
       preferences.farm ? `Fazenda: ${preferences.farm}` : null,
-      preferences.breeds?.length ? `Raças: ${preferences.breeds.join(', ')}` : null,
+      preferences.breeds?.length
+        ? `Raças: ${preferences.breeds.join(', ')}`
+        : null,
       preferences.modalities?.length
         ? `Modalidades: ${preferences.modalities.join(', ')}`
         : null,
@@ -190,9 +193,9 @@ export function ContactProfileSheet({
             ) : contact ? (
               <div className="space-y-5">
                 <SheetHeader className="pr-8">
-                    <div className="flex items-start gap-3">
-                      <Avatar className="h-12 w-12 border">
-                        <AvatarFallback className="bg-primary/10 text-primary">
+                  <div className="flex items-start gap-3">
+                    <Avatar className="h-12 w-12 border">
+                      <AvatarFallback className="bg-primary/10 text-primary">
                         {contact.name.substring(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
@@ -208,7 +211,9 @@ export function ContactProfileSheet({
                           <Badge variant="secondary">{contact.segment}</Badge>
                         )}
                         {contact.rfmvScore ? (
-                          <Badge variant="outline">RFMV {contact.rfmvScore}</Badge>
+                          <Badge variant="outline">
+                            RFMV {contact.rfmvScore}
+                          </Badge>
                         ) : null}
                       </div>
                     </div>
@@ -261,24 +266,32 @@ export function ContactProfileSheet({
 
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-base">Dados do cliente</CardTitle>
+                    <CardTitle className="text-base">
+                      Dados do cliente
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm">
                     <div className="grid gap-3 md:grid-cols-2">
                       <div>
-                        <div className="text-xs text-muted-foreground">E-mail</div>
+                        <div className="text-xs text-muted-foreground">
+                          E-mail
+                        </div>
                         <div className="truncate font-medium">
                           {contact.email || '-'}
                         </div>
                       </div>
                       <div>
-                        <div className="text-xs text-muted-foreground">Telefone</div>
+                        <div className="text-xs text-muted-foreground">
+                          Telefone
+                        </div>
                         <div className="font-medium">
                           {contact.whatsapp || contact.phone || '-'}
                         </div>
                       </div>
                       <div>
-                        <div className="text-xs text-muted-foreground">CPF/CNPJ</div>
+                        <div className="text-xs text-muted-foreground">
+                          CPF/CNPJ
+                        </div>
                         <div className="font-medium">
                           {contact.document || contact.cpf || '-'}
                         </div>
@@ -308,8 +321,9 @@ export function ContactProfileSheet({
                           <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
                           <div>
                             <div className="font-medium">
-                              {[contact.city, contact.state].filter(Boolean).join(', ') ||
-                                '-'}
+                              {[contact.city, contact.state]
+                                .filter(Boolean)
+                                .join(', ') || '-'}
                             </div>
                             {contact.address && (
                               <div className="text-muted-foreground">
@@ -338,7 +352,9 @@ export function ContactProfileSheet({
                       <>
                         <Separator />
                         <div>
-                          <div className="text-xs text-muted-foreground">Notas</div>
+                          <div className="text-xs text-muted-foreground">
+                            Notas
+                          </div>
                           <div className="mt-1 text-muted-foreground">
                             {contact.notes}
                           </div>
@@ -356,15 +372,20 @@ export function ContactProfileSheet({
 
                   <TabsContent value="compras" className="space-y-2">
                     {state.purchases.length ? (
-                      state.purchases.slice(0, 8).map((purchase) => (
-                        <ActivityItem
-                          key={purchase.id}
-                          icon={ShoppingBag}
-                          title={purchase.description || `Lote ${purchase.lot_number || '-'}`}
-                          subtitle={`${date(purchase.date)} · Lote ${purchase.lot_number || '-'}`}
-                          value={money(purchase.value)}
-                        />
-                      ))
+                      state.purchases
+                        .slice(0, 8)
+                        .map((purchase) => (
+                          <ActivityItem
+                            key={purchase.id}
+                            icon={ShoppingBag}
+                            title={
+                              purchase.description ||
+                              `Lote ${purchase.lot_number || '-'}`
+                            }
+                            subtitle={`${date(purchase.date)} · Lote ${purchase.lot_number || '-'}`}
+                            value={money(purchase.value)}
+                          />
+                        ))
                     ) : (
                       <EmptyLine>Nenhuma compra registrada.</EmptyLine>
                     )}
@@ -372,15 +393,19 @@ export function ContactProfileSheet({
 
                   <TabsContent value="lances" className="space-y-2">
                     {state.bids.length ? (
-                      state.bids.slice(0, 8).map((bid) => (
-                        <ActivityItem
-                          key={bid.id}
-                          icon={Gavel}
-                          title={bid.reason || `Lote ${bid.lot_number || '-'}`}
-                          subtitle={`${date(bid.date)} · Lote ${bid.lot_number || '-'}`}
-                          value={money(bid.value)}
-                        />
-                      ))
+                      state.bids
+                        .slice(0, 8)
+                        .map((bid) => (
+                          <ActivityItem
+                            key={bid.id}
+                            icon={Gavel}
+                            title={
+                              bid.reason || `Lote ${bid.lot_number || '-'}`
+                            }
+                            subtitle={`${date(bid.date)} · Lote ${bid.lot_number || '-'}`}
+                            value={money(bid.value)}
+                          />
+                        ))
                     ) : (
                       <EmptyLine>Nenhum lance registrado.</EmptyLine>
                     )}
