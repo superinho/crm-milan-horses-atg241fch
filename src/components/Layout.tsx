@@ -30,29 +30,16 @@ import {
   BarChart3,
   Search,
   Bell,
-  User,
-  LogOut,
   Tag as TagIcon,
   FileText,
   Settings,
   Keyboard,
   Menu,
-  Camera,
-  Loader2,
   Gavel,
   Radar,
 } from 'lucide-react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import {
   Sheet,
   SheetContent,
@@ -69,8 +56,6 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import logoImg from '@/assets/editedimage_1769630541473-88067.png'
-import { useAuth } from '@/hooks/use-auth'
-import supabase from '@/lib/supabase/client'
 import { useToast } from '@/hooks/use-toast'
 
 // Modals & Search
@@ -103,7 +88,6 @@ function AppSidebarContent({
   closeMobileMenu?: () => void
 }) {
   const location = useLocation()
-  const { user } = useAuth()
 
   return (
     <>
@@ -160,37 +144,6 @@ function AppSidebarContent({
           })}
         </SidebarMenu>
       </SidebarContent>
-
-      <SidebarFooter className="p-4 border-t border-sidebar-border">
-        <Link
-          to="/perfil"
-          className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center hover:bg-sidebar-accent rounded-md p-2 transition-colors overflow-hidden"
-          onClick={() => {
-            if (isMobile && closeMobileMenu) closeMobileMenu()
-          }}
-        >
-          <Avatar className="h-9 w-9 border border-secondary shrink-0">
-            {user?.avatar && <AvatarImage src={user.avatar} />}
-            <AvatarFallback>
-              {user?.email?.substring(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col min-w-0 group-data-[collapsible=icon]:hidden">
-            <span
-              className="text-sm font-medium text-sidebar-foreground truncate"
-              title={user?.name || user?.email}
-            >
-              {user?.name || user?.email?.split('@')[0]}
-            </span>
-            <span
-              className="text-xs text-sidebar-foreground/60 truncate"
-              title={user?.email}
-            >
-              {user?.email}
-            </span>
-          </div>
-        </Link>
-      </SidebarFooter>
     </>
   )
 }
@@ -215,64 +168,10 @@ function TopHeader({
   onSearchClick: () => void
   onHelpClick: () => void
 }) {
-  const { user, signOut } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const { toast } = useToast()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [uploading, setUploading] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const handleLogout = async () => {
-    await signOut()
-    navigate('/login')
-  }
-
-  const handleAvatarClick = () => {
-    fileInputRef.current?.click()
-  }
-
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    try {
-      const file = event.target.files?.[0]
-      if (!file) return
-      if (!user) return
-
-      setUploading(true)
-      const extension = file.name.split('.').pop() || 'jpg'
-      const path = `${user.id}/avatar.${extension}`
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(path, file, { upsert: true })
-
-      if (uploadError) throw uploadError
-
-      const { data } = supabase.storage.from('avatars').getPublicUrl(path)
-      const { error: updateError } = await supabase.auth.updateUser({
-        data: { avatar_url: data.publicUrl },
-      })
-
-      if (updateError) throw updateError
-
-      toast({
-        title: 'Foto atualizada',
-        variant: 'success',
-      })
-    } catch (error: any) {
-      console.error('Error uploading avatar:', error)
-      toast({
-        title: 'Erro no upload',
-        description:
-          'Falha ao atualizar foto. Verifique as permissões ou tente novamente.',
-        variant: 'destructive',
-      })
-    } finally {
-      setUploading(false)
-      if (fileInputRef.current) fileInputRef.current.value = ''
-    }
-  }
 
   // Breadcrumb logic
   const getBreadcrumbs = () => {
@@ -394,55 +293,6 @@ function TopHeader({
           <Bell className="h-5 w-5 text-muted-foreground hover:text-primary cursor-pointer transition-colors" />
           <span className="absolute -top-1 -right-1 flex h-2 w-2 rounded-full bg-secondary"></span>
         </div>
-
-        {/* Hidden File Input for Avatar Upload */}
-        <input
-          type="file"
-          ref={fileInputRef}
-          className="hidden"
-          accept="image/png, image/jpeg, image/jpg"
-          onChange={handleFileChange}
-        />
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Avatar className="h-8 w-8 cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all">
-              {user?.avatar && <AvatarImage src={user.avatar} />}
-              <AvatarFallback>
-                {user?.email?.substring(0, 2).toUpperCase()}
-              </AvatarFallback>
-              {uploading && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-full">
-                  <Loader2 className="h-4 w-4 text-white animate-spin" />
-                </div>
-              )}
-            </Avatar>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link to="/perfil">
-                <User className="mr-2 h-4 w-4" /> Perfil
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleAvatarClick} disabled={uploading}>
-              <Camera className="mr-2 h-4 w-4" /> Alterar Foto
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/configuracoes">
-                <Settings className="mr-2 h-4 w-4" /> Configurações
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="text-destructive"
-              onClick={handleLogout}
-            >
-              <LogOut className="mr-2 h-4 w-4" /> Sair
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
     </header>
   )

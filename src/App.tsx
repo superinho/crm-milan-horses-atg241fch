@@ -3,9 +3,6 @@ import { Toaster } from '@/components/ui/toaster'
 import { Toaster as Sonner } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import Layout from './components/Layout'
-import { AuthProvider } from '@/hooks/use-auth'
-import { ProtectedRoute } from '@/components/ProtectedRoute'
-import Login from './pages/Login'
 
 import Index from './pages/Index'
 import Contatos from './pages/Contatos'
@@ -26,44 +23,34 @@ import Perfil from './pages/Perfil'
 import NotFound from './pages/NotFound'
 
 const App = () => (
-  <AuthProvider>
-    <BrowserRouter>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <Routes>
-          <Route path="/login" element={<Login />} />
+  <BrowserRouter>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Index />} />
+          <Route path="/contatos" element={<Contatos />} />
+          <Route path="/contatos/:id" element={<ContatoDetalhes />} />
+          <Route path="/negocios" element={<Negocios />} />
+          <Route path="/negocios/:id" element={<DealDetails />} />
+          <Route path="/campanhas" element={<Campanhas />} />
+          <Route path="/campanhas/:id" element={<CampaignDetails />} />
+          <Route path="/automacoes" element={<Automacoes />} />
+          <Route path="/tarefas" element={<Tarefas />} />
+          <Route path="/relatorios" element={<Relatorios />} />
+          <Route path="/leiloes" element={<SmartLeiloes />} />
+          <Route path="/radar-vip" element={<RadarVip />} />
+          <Route path="/tags" element={<Tags />} />
+          <Route path="/modelos" element={<Modelos />} />
+          <Route path="/configuracoes" element={<Configuracoes />} />
+          <Route path="/perfil" element={<Perfil />} />
+        </Route>
 
-          <Route
-            element={
-              <ProtectedRoute>
-                <Layout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/" element={<Index />} />
-            <Route path="/contatos" element={<Contatos />} />
-            <Route path="/contatos/:id" element={<ContatoDetalhes />} />
-            <Route path="/negocios" element={<Negocios />} />
-            <Route path="/negocios/:id" element={<DealDetails />} />
-            <Route path="/campanhas" element={<Campanhas />} />
-            <Route path="/campanhas/:id" element={<CampaignDetails />} />
-            <Route path="/automacoes" element={<Automacoes />} />
-            <Route path="/tarefas" element={<Tarefas />} />
-            <Route path="/relatorios" element={<Relatorios />} />
-            <Route path="/leiloes" element={<SmartLeiloes />} />
-            <Route path="/radar-vip" element={<RadarVip />} />
-            <Route path="/tags" element={<Tags />} />
-            <Route path="/modelos" element={<Modelos />} />
-            <Route path="/configuracoes" element={<Configuracoes />} />
-            <Route path="/perfil" element={<Perfil />} />
-          </Route>
-
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </TooltipProvider>
-    </BrowserRouter>
-  </AuthProvider>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </TooltipProvider>
+  </BrowserRouter>
 )
 
 export default App
