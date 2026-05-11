@@ -1,11 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
+import { useState, useRef } from 'react'
 import { useAuth } from '@/hooks/use-auth'
-import { supabase } from '@/lib/supabase/client'
+import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Card,
   CardContent,
@@ -14,142 +12,33 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { useToast } from '@/hooks/use-toast'
-import { Loader2, Upload, User, Save, Camera } from 'lucide-react'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  FormDescription,
-} from '@/components/ui/form'
-import { Separator } from '@/components/ui/separator'
-
-const profileSchema = z.object({
-  full_name: z.string().min(2, 'O nome deve ter pelo menos 2 caracteres'),
-  email: z.string().email('Email inválido'),
-  phone: z.string().optional(),
-  job_title: z.string().optional(),
-})
+import { Loader2, Camera } from 'lucide-react'
+import pb from '@/lib/pocketbase/client'
 
 export default function Perfil() {
   const { user } = useAuth()
   const { toast } = useToast()
+  const [name, setName] = useState(user?.name || '')
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const form = useForm<z.infer<typeof profileSchema>>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      full_name: '',
-      email: '',
-      phone: '',
-      job_title: '',
-    },
-  })
-
-  // Load user data on mount
-  useEffect(() => {
-    if (user) {
-      form.reset({
-        full_name: user.user_metadata?.full_name || '',
-        email: user.email || '',
-        phone: user.user_metadata?.phone || '',
-        job_title: user.user_metadata?.job_title || '',
-      })
-    }
-  }, [user, form])
-
-  const handleAvatarClick = () => {
-    fileInputRef.current?.click()
-  }
-
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    try {
-      const file = event.target.files?.[0]
-      if (!file) return
-
-      setUploading(true)
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${user?.id}-${Math.random()}.${fileExt}`
-      const filePath = `${fileName}`
-
-      // Upload image
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, file)
-
-      if (uploadError) {
-        throw uploadError
-      }
-
-      // Get public URL
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from('avatars').getPublicUrl(filePath)
-
-      // Update user metadata with new avatar URL
-      const { error: updateError } = await supabase.auth.updateUser({
-        data: { avatar_url: publicUrl },
-      })
-
-      if (updateError) {
-        throw updateError
-      }
-
-      toast({
-        title: 'Foto atualizada',
-        description: 'Sua foto de perfil foi alterada com sucesso.',
-        variant: 'success',
-      })
-    } catch (error: any) {
-      console.error('Error uploading avatar:', error)
-      toast({
-        title: 'Erro no upload',
-        description:
-          'Não foi possível atualizar sua foto. Verifique se o tamanho é aceitável ou tente novamente.',
-        variant: 'destructive',
-      })
-    } finally {
-      setUploading(false)
-      // Clear input so same file can be selected again if needed
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ''
-      }
-    }
-  }
-
-  const onSubmit = async (values: z.infer<typeof profileSchema>) => {
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault()
     setLoading(true)
+
     try {
-      const { error } = await supabase.auth.updateUser({
-        email: values.email,
-        data: {
-          full_name: values.full_name,
-          phone: values.phone,
-          job_title: values.job_title,
-        },
+      if (!user) throw new Error('Usuário não encontrado')
+
+      await pb.collection('users').update(user.id, {
+        name,
       })
 
-      if (error) throw error
-
+      toast({ title: 'Perfil atualizado com sucesso!' })
+    } catch (err: any) {
       toast({
-        title: 'Perfil atualizado',
-        description: 'Suas informações foram salvas com sucesso.',
-        variant: 'success',
-      })
-    } catch (error: any) {
-      console.error('Error updating profile:', error)
-      toast({
-        title: 'Erro ao salvar',
-        description:
-          error.message ||
-          'Não foi possível atualizar o perfil. Tente novamente.',
+        title: 'Erro ao atualizar perfil',
+        description: err?.message || 'Verifique os dados e tente novamente.',
         variant: 'destructive',
       })
     } finally {
@@ -157,177 +46,118 @@ export default function Perfil() {
     }
   }
 
-  return (
-    <div className="space-y-6 animate-fade-in max-w-4xl mx-auto pb-10">
-      <div>
-        <h1 className="text-3xl font-bold font-display text-primary">
-          Meu Perfil
-        </h1>
-        <p className="text-muted-foreground">
-          Gerencie suas informações pessoais e foto de perfil.
-        </p>
-      </div>
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    try {
+      const file = event.target.files?.[0]
+      if (!file || !user) return
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Avatar Section */}
-        <Card className="md:col-span-1 h-fit">
-          <CardHeader>
-            <CardTitle>Foto de Perfil</CardTitle>
-            <CardDescription>
-              Clique na imagem para alterar sua foto.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center pt-2 pb-6">
-            <div
-              className="relative group cursor-pointer"
-              onClick={handleAvatarClick}
-            >
-              <Avatar className="h-32 w-32 border-4 border-background shadow-lg transition-transform group-hover:scale-105">
+      setUploading(true)
+      const formData = new FormData()
+      formData.append('avatar', file)
+
+      await pb.collection('users').update(user.id, formData)
+
+      toast({
+        title: 'Foto atualizada',
+      })
+    } catch (error: any) {
+      toast({
+        title: 'Erro no upload',
+        description: 'Falha ao atualizar foto. Tente novamente.',
+        variant: 'destructive',
+      })
+    } finally {
+      setUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+  }
+
+  return (
+    <div className="container max-w-2xl mx-auto py-10">
+      <Card>
+        <CardHeader>
+          <CardTitle>Meu Perfil</CardTitle>
+          <CardDescription>
+            Gerencie suas informações pessoais e de acesso.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="flex flex-col items-center gap-4">
+            <div className="relative group">
+              <Avatar className="h-24 w-24 border">
                 <AvatarImage
                   src={
-                    user?.user_metadata?.avatar_url ||
-                    `https://img.usecurling.com/ppl/medium?gender=male&seed=${user?.id}`
+                    (user?.avatar ? pb.files.getURL(user, user.avatar) : '') ||
+                    `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}`
                   }
-                  className="object-cover"
                 />
-                <AvatarFallback className="text-4xl bg-primary/10 text-primary">
+                <AvatarFallback>
                   {user?.email?.substring(0, 2).toUpperCase()}
                 </AvatarFallback>
-              </Avatar>
-              <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                {uploading ? (
-                  <Loader2 className="h-8 w-8 text-white animate-spin" />
-                ) : (
-                  <Camera className="h-8 w-8 text-white" />
-                )}
-              </div>
-            </div>
-            <input
-              type="file"
-              ref={fileInputRef}
-              className="hidden"
-              accept="image/png, image/jpeg, image/jpg"
-              onChange={handleFileChange}
-            />
-            <Button
-              variant="outline"
-              size="sm"
-              className="mt-4"
-              onClick={handleAvatarClick}
-              disabled={uploading}
-            >
-              {uploading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Enviando...
-                </>
-              ) : (
-                <>
-                  <Upload className="mr-2 h-4 w-4" />
-                  Carregar Nova Foto
-                </>
-              )}
-            </Button>
-            <p className="text-xs text-muted-foreground mt-2 text-center">
-              Recomendado: 512x512px (PNG, JPG)
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Form Section */}
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Informações Pessoais</CardTitle>
-            <CardDescription>
-              Atualize seus dados de cadastro e contato.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
-                <div className="grid grid-cols-1 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="full_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nome Completo</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Seu nome" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>E-mail</FormLabel>
-                        <FormControl>
-                          <Input placeholder="seu@email.com" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Alterar o email pode exigir confirmação.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Telefone</FormLabel>
-                          <FormControl>
-                            <Input placeholder="(00) 00000-0000" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="job_title"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Cargo / Função</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Ex: Gerente de Vendas"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                {uploading && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-full">
+                    <Loader2 className="h-6 w-6 text-white animate-spin" />
                   </div>
-                </div>
+                )}
+              </Avatar>
+              <Button
+                variant="secondary"
+                size="icon"
+                className="absolute bottom-0 right-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+              >
+                <Camera className="h-4 w-4" />
+              </Button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept="image/png, image/jpeg, image/jpg"
+                onChange={handleFileChange}
+              />
+            </div>
+            <div className="text-center">
+              <h3 className="font-medium text-lg">
+                {user?.name || user?.email?.split('@')[0]}
+              </h3>
+              <p className="text-sm text-muted-foreground">{user?.email}</p>
+            </div>
+          </div>
 
-                <Separator className="my-4" />
+          <form onSubmit={handleUpdateProfile} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">E-mail</Label>
+              <Input
+                id="email"
+                type="email"
+                value={user?.email || ''}
+                disabled
+              />
+              <p className="text-xs text-muted-foreground">
+                O e-mail não pode ser alterado por aqui.
+              </p>
+            </div>
 
-                <div className="flex justify-end">
-                  <Button type="submit" disabled={loading}>
-                    {loading ? (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : (
-                      <Save className="mr-2 h-4 w-4" />
-                    )}
-                    {loading ? 'Salvando...' : 'Salvar Alterações'}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      </div>
+            <div className="space-y-2">
+              <Label htmlFor="name">Nome de Exibição</Label>
+              <Input
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Seu nome completo"
+              />
+            </div>
+
+            <Button type="submit" disabled={loading}>
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Salvar Alterações
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   )
 }
