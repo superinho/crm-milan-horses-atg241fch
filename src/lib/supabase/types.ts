@@ -667,3 +667,10 @@ export const Constants = {
     Enums: {},
   },
 } as const
+
+// ====== DATABASE EXTENDED CONTEXT (auto-generated) ======
+// This section contains actual PostgreSQL column types, constraints, RLS policies,
+// functions, triggers, indexes and materialized views not present in the type definitions above.
+// IMPORTANT: The TypeScript types above map UUID, TEXT, VARCHAR all to "string".
+// Use the COLUMN TYPES section below to know the real PostgreSQL type for each column.
+// Always use the correct PostgreSQL type when writing SQL migrations.

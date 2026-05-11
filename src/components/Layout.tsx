@@ -39,6 +39,7 @@ import {
   Menu,
   Camera,
   Loader2,
+  Gavel,
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
@@ -86,6 +87,7 @@ const NAV_ITEMS = [
   { label: 'Automações', icon: Zap, path: '/automacoes' },
   { label: 'Tarefas', icon: CheckSquare, path: '/tarefas' },
   { label: 'Relatórios', icon: BarChart3, path: '/relatorios' },
+  { label: 'Smart Leilões', icon: Gavel, path: '/smartleiloes' },
   { label: 'Tags', icon: TagIcon, path: '/tags' },
   { label: 'Modelos', icon: FileText, path: '/modelos' },
   { label: 'Configurações', icon: Settings, path: '/configuracoes' },

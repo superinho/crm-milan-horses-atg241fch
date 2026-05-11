@@ -15,6 +15,7 @@ import CampaignDetails from './pages/CampaignDetails'
 import Automacoes from './pages/Automacoes'
 import Tarefas from './pages/Tarefas'
 import Relatorios from './pages/Relatorios'
+import SmartLeiloes from './pages/SmartLeiloes'
 import Tags from './pages/Tags'
 import Modelos from './pages/Modelos'
 import Configuracoes from './pages/Configuracoes'
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/automacoes" element={<Automacoes />} />
             <Route path="/tarefas" element={<Tarefas />} />
             <Route path="/relatorios" element={<Relatorios />} />
+            <Route path="/smartleiloes" element={<SmartLeiloes />} />
             <Route path="/tags" element={<Tags />} />
             <Route path="/modelos" element={<Modelos />} />
             <Route path="/configuracoes" element={<Configuracoes />} />
