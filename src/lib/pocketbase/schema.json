@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-11T16:22:05.779Z",
+  "generatedAt": "2026-05-11T16:28:52.058Z",
   "collections": [
     {
       "name": "users",
@@ -366,7 +366,7 @@
         {
           "name": "external_id",
           "type": "text",
-          "required": true,
+          "required": false,
           "system": false
         },
         {
@@ -392,6 +392,14 @@
           "type": "url",
           "required": false,
           "system": false
+        },
+        {
+          "name": "embedding",
+          "type": "vector",
+          "required": false,
+          "system": false,
+          "vectorDimensions": 1536,
+          "vectorDistance": "l2"
         },
         {
           "name": "created",
