@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -79,18 +79,23 @@ const ORIGINS = [
   'Outros',
 ]
 
-// Available tags hardcoded for now or fetchable
-const TAGS = [
-  { label: 'VIP', value: 'VIP' },
-  { label: 'Frequente', value: 'Frequente' },
-  { label: 'Ativo', value: 'Ativo' },
-  { label: 'Novo Lead', value: 'Novo Lead' },
-  { label: 'Inativo', value: 'Inativo' },
-]
+import { tagsService } from '@/services/tags'
 
 export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
+  const [availableTags, setAvailableTags] = useState<
+    { label: string; value: string }[]
+  >([])
+
+  useEffect(() => {
+    tagsService
+      .getTags()
+      .then((tags) => {
+        setAvailableTags(tags.map((t) => ({ label: t.name, value: t.name })))
+      })
+      .catch(console.error)
+  }, [])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -420,7 +425,7 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
                 <FormLabel>Tags Iniciais</FormLabel>
                 <FormControl>
                   <MultiSelect
-                    options={TAGS}
+                    options={availableTags}
                     selected={field.value}
                     onChange={field.onChange}
                     placeholder="Selecione tags..."

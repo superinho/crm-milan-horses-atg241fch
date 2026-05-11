@@ -8,21 +8,7 @@ export type Tag = {
 
 export const tagsService = {
   async getTags() {
-    const data = await pb.collection('tags').getFullList({ sort: 'name' })
-    return data as Tag[]
-  },
-
-  async createTag(tag: Omit<Tag, 'id'>) {
-    const data = await pb.collection('tags').create(tag)
-    return data as Tag
-  },
-
-  async updateTag(id: string, tag: Partial<Tag>) {
-    const data = await pb.collection('tags').update(id, tag)
-    return data as Tag
-  },
-
-  async deleteTag(id: string) {
-    await pb.collection('tags').delete(id)
+    const items = await pb.collection('tags').getFullList()
+    return items as unknown as Tag[]
   },
 }

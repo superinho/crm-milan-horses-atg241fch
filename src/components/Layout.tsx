@@ -87,7 +87,7 @@ const NAV_ITEMS = [
   { label: 'Automações', icon: Zap, path: '/automacoes' },
   { label: 'Tarefas', icon: CheckSquare, path: '/tarefas' },
   { label: 'Relatórios', icon: BarChart3, path: '/relatorios' },
-  { label: 'Smart Leilões', icon: Gavel, path: '/smartleiloes' },
+  { label: 'Leilões', icon: Gavel, path: '/leiloes' },
   { label: 'Tags', icon: TagIcon, path: '/tags' },
   { label: 'Modelos', icon: FileText, path: '/modelos' },
   { label: 'Configurações', icon: Settings, path: '/configuracoes' },

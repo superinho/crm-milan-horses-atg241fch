@@ -19,6 +19,15 @@ export const auctionsService = {
     return items as unknown as Auction[]
   },
 
+  async searchAuctions(query: string) {
+    const res = await pb.send('/backend/v1/search/auctions', {
+      method: 'POST',
+      body: JSON.stringify({ query, k: 10 }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    return res.items as unknown as Auction[]
+  },
+
   async saveAuction(data: Omit<Auction, 'id' | 'created' | 'updated'>) {
     // Upsert behavior based on external_id
     try {

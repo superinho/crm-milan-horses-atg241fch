@@ -56,11 +56,15 @@ const formSchema = z.object({
 interface DealFormProps {
   onSuccess?: () => void
   onCancel?: () => void
+  initialData?: {
+    title?: string
+    value?: number
+  }
 }
 
 const STAGES = ['Lead', 'Qualificado', 'Interesse', 'Proposta', 'Fechado']
 
-export function DealForm({ onSuccess, onCancel }: DealFormProps) {
+export function DealForm({ onSuccess, onCancel, initialData }: DealFormProps) {
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
   const [contacts, setContacts] = useState<Contact[]>([])
@@ -70,9 +74,9 @@ export function DealForm({ onSuccess, onCancel }: DealFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
+      title: initialData?.title || '',
       stage: 'Lead',
-      value: 0,
+      value: initialData?.value || 0,
       probability: 10,
     },
   })

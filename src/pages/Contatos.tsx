@@ -70,6 +70,7 @@ import { cn, getContrastColor } from '@/lib/utils'
 import { ContactForm } from '@/components/contacts/ContactForm'
 import { contactsService, type Contact, type Tag } from '@/services/contacts'
 import { useToast } from '@/hooks/use-toast'
+import { useRealtime } from '@/hooks/use-realtime'
 import { TagSelector } from '@/components/tags/TagSelector'
 import {
   AdvancedFilter,
@@ -151,6 +152,10 @@ export default function Contatos() {
     }, 500)
     return () => clearTimeout(timer)
   }, [currentPage, searchTerm, filters, sortConfig])
+
+  useRealtime('contacts', () => {
+    fetchContacts()
+  })
 
   const totalPages = Math.ceil(totalCount / itemsPerPage)
 

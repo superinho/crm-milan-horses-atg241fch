@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { smartLeiloesService, SmartLeilao } from '@/services/smartleiloes'
-import { auctionsService } from '@/services/auctions'
+import { auctionsService, Auction } from '@/services/auctions'
 import { useToast } from '@/hooks/use-toast'
+import { useRealtime } from '@/hooks/use-realtime'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -20,51 +21,110 @@ import {
 } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
-import { Download, RefreshCw, AlertCircle } from 'lucide-react'
+import {
+  Download,
+  RefreshCw,
+  AlertCircle,
+  Search,
+  PlusCircle,
+} from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Input } from '@/components/ui/input'
+import { DealForm } from '@/components/deals/DealForm'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 
 export default function SmartLeiloes() {
-  const [leiloes, setLeiloes] = useState<SmartLeilao[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [liveLeiloes, setLiveLeiloes] = useState<SmartLeilao[]>([])
+  const [savedAuctions, setSavedAuctions] = useState<Auction[]>([])
+
+  const [loadingLive, setLoadingLive] = useState(true)
+  const [loadingSaved, setLoadingSaved] = useState(true)
+  const [errorLive, setErrorLive] = useState<string | null>(null)
+
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isSearching, setIsSearching] = useState(false)
   const [importingId, setImportingId] = useState<string | number | null>(null)
+
+  const [dealAuction, setDealAuction] = useState<Auction | null>(null)
   const { toast } = useToast()
 
-  const fetchLeiloes = async () => {
+  const fetchLiveLeiloes = async () => {
     try {
-      setLoading(true)
-      setError(null)
+      setLoadingLive(true)
+      setErrorLive(null)
       const result = await smartLeiloesService.getLeiloes()
-      setLeiloes(result.data)
+      setLiveLeiloes(result.data)
       if (result.error) {
-        setError(result.error)
+        setErrorLive(result.error)
       }
     } catch (err: any) {
-      setError('Erro inesperado ao carregar dados.')
+      setErrorLive('Erro inesperado ao carregar dados.')
     } finally {
-      setLoading(false)
+      setLoadingLive(false)
+    }
+  }
+
+  const fetchSavedAuctions = async () => {
+    try {
+      setLoadingSaved(true)
+      const data = await auctionsService.getAuctions()
+      setSavedAuctions(data)
+    } catch (err: any) {
+      console.error(err)
+    } finally {
+      setLoadingSaved(false)
+    }
+  }
+
+  const handleSemanticSearch = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault()
+    if (!searchQuery.trim()) {
+      fetchSavedAuctions()
+      return
+    }
+    try {
+      setIsSearching(true)
+      const data = await auctionsService.searchAuctions(searchQuery)
+      setSavedAuctions(data || [])
+    } catch (err: any) {
+      toast({
+        title: 'Erro na busca',
+        description: 'Não foi possível realizar a busca semântica.',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsSearching(false)
     }
   }
 
   useEffect(() => {
-    fetchLeiloes()
+    fetchLiveLeiloes()
+    fetchSavedAuctions()
   }, [])
+
+  useRealtime('auctions', () => {
+    if (!searchQuery.trim()) {
+      fetchSavedAuctions()
+    }
+  })
 
   const handleImport = async (leilao: SmartLeilao) => {
     try {
       setImportingId(leilao.id)
       const name =
         leilao.title || leilao.name || `Leilão Importado ${leilao.id}`
-      const startDate =
-        leilao.date || leilao.start_date || new Date().toISOString()
-      const endDate = new Date(
-        new Date(startDate).getTime() + 30 * 24 * 60 * 60 * 1000,
-      ).toISOString()
+      const value = typeof leilao.value === 'number' ? leilao.value : 0
 
       await auctionsService.saveAuction({
         external_id: String(leilao.id),
         title: name,
-        value: leilao.value || 0,
+        value: value,
         status: leilao.status || 'Importado',
         source_url: 'https://api.smartleiloes.digital/',
       })
@@ -72,12 +132,12 @@ export default function SmartLeiloes() {
       toast({
         title: 'Leilão Salvo',
         description: `${name} foi importado com sucesso para o banco de dados.`,
+        variant: 'success',
       })
     } catch (err: any) {
       toast({
         title: 'Erro na Importação',
-        description:
-          err.message || 'Não foi possível converter o leilão em campanha.',
+        description: err.message || 'Não foi possível converter o leilão.',
         variant: 'destructive',
       })
     } finally {
@@ -85,113 +145,263 @@ export default function SmartLeiloes() {
     }
   }
 
+  const handleDealSuccess = () => {
+    setDealAuction(null)
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">
-            Integração SmartLeilões
+            Leilões (SmartLeilões)
           </h1>
           <p className="text-muted-foreground mt-1">
-            Visualize os eventos da API externa e importe-os como campanhas no
-            seu CRM.
+            Navegue pelos eventos externos e salve-os no seu CRM.
           </p>
         </div>
-        <Button onClick={fetchLeiloes} disabled={loading} variant="outline">
-          <RefreshCw
-            className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`}
-          />
-          Atualizar
-        </Button>
       </div>
 
-      {error && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Aviso de Integração</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
+      <Tabs defaultValue="live" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 max-w-md">
+          <TabsTrigger value="live">Leilões ao Vivo (API)</TabsTrigger>
+          <TabsTrigger value="saved">Leilões Salvos (CRM)</TabsTrigger>
+        </TabsList>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Leilões Disponíveis</CardTitle>
-          <CardDescription>
-            Eventos listados em api.smartleiloes.digital
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-            <div className="space-y-4">
-              <Skeleton className="h-12 w-full" />
-              <Skeleton className="h-12 w-full" />
-              <Skeleton className="h-12 w-full" />
-              <Skeleton className="h-12 w-full" />
-            </div>
-          ) : leiloes.length === 0 ? (
-            <div className="py-8 text-center text-muted-foreground">
-              Nenhum leilão encontrado na API no momento.
-            </div>
-          ) : (
-            <div className="rounded-md border overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Nome / Título</TableHead>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Ações</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {leiloes.map((leilao) => (
-                    <TableRow key={leilao.id}>
-                      <TableCell className="font-medium">
-                        {leilao.title || leilao.name || `Leilão #${leilao.id}`}
-                        {leilao.description && (
-                          <div className="text-xs text-muted-foreground truncate max-w-xs mt-1">
-                            {leilao.description}
-                          </div>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {leilao.date || leilao.start_date
-                          ? new Date(
-                              leilao.date || leilao.start_date!,
-                            ).toLocaleDateString('pt-BR')
-                          : 'N/A'}
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={
-                            leilao.status === 'Aberto' ? 'default' : 'secondary'
-                          }
-                        >
-                          {leilao.status || 'Desconhecido'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          size="sm"
-                          onClick={() => handleImport(leilao)}
-                          disabled={importingId === leilao.id}
-                        >
-                          {importingId === leilao.id ? (
-                            <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                          ) : (
-                            <Download className="mr-2 h-4 w-4" />
-                          )}
-                          Importar
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+        <TabsContent value="live" className="mt-4 space-y-4">
+          <div className="flex justify-end">
+            <Button
+              onClick={fetchLiveLeiloes}
+              disabled={loadingLive}
+              variant="outline"
+            >
+              <RefreshCw
+                className={`mr-2 h-4 w-4 ${loadingLive ? 'animate-spin' : ''}`}
+              />
+              Atualizar da API
+            </Button>
+          </div>
+
+          {errorLive && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Aviso de Integração</AlertTitle>
+              <AlertDescription>{errorLive}</AlertDescription>
+            </Alert>
           )}
-        </CardContent>
-      </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Leilões Disponíveis</CardTitle>
+              <CardDescription>
+                Eventos listados em api.smartleiloes.digital
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {loadingLive ? (
+                <div className="space-y-4">
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                </div>
+              ) : liveLeiloes.length === 0 ? (
+                <div className="py-8 text-center text-muted-foreground">
+                  Nenhum leilão encontrado na API no momento.
+                </div>
+              ) : (
+                <div className="rounded-md border overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Nome / Título</TableHead>
+                        <TableHead>Data</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Ações</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {liveLeiloes.map((leilao) => (
+                        <TableRow key={leilao.id}>
+                          <TableCell className="font-medium">
+                            {leilao.title ||
+                              leilao.name ||
+                              `Leilão #${leilao.id}`}
+                            {leilao.description && (
+                              <div className="text-xs text-muted-foreground truncate max-w-xs mt-1">
+                                {leilao.description}
+                              </div>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {leilao.date || leilao.start_date
+                              ? new Date(
+                                  leilao.date || leilao.start_date!,
+                                ).toLocaleDateString('pt-BR')
+                              : 'N/A'}
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={
+                                leilao.status === 'Aberto'
+                                  ? 'default'
+                                  : 'secondary'
+                              }
+                            >
+                              {leilao.status || 'Desconhecido'}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              size="sm"
+                              onClick={() => handleImport(leilao)}
+                              disabled={importingId === leilao.id}
+                            >
+                              {importingId === leilao.id ? (
+                                <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                              ) : (
+                                <Download className="mr-2 h-4 w-4" />
+                              )}
+                              Salvar no CRM
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="saved" className="mt-4 space-y-4">
+          <Card>
+            <CardHeader className="pb-3 space-y-4">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                  <CardTitle>Leilões Salvos</CardTitle>
+                  <CardDescription>
+                    Eventos já importados para sua base.
+                  </CardDescription>
+                </div>
+
+                <form
+                  onSubmit={handleSemanticSearch}
+                  className="flex items-center gap-2 w-full md:w-auto"
+                >
+                  <div className="relative w-full md:w-72">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Busca Semântica..."
+                      className="pl-9"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    disabled={isSearching}
+                    variant="secondary"
+                  >
+                    {isSearching ? (
+                      <RefreshCw className="h-4 w-4 animate-spin" />
+                    ) : (
+                      'Buscar'
+                    )}
+                  </Button>
+                </form>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {loadingSaved ? (
+                <div className="space-y-4">
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                </div>
+              ) : savedAuctions.length === 0 ? (
+                <div className="py-8 text-center text-muted-foreground">
+                  Nenhum leilão salvo encontrado.
+                </div>
+              ) : (
+                <div className="rounded-md border overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Título</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Valor</TableHead>
+                        <TableHead className="text-right">Ações</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {savedAuctions.map((auction) => (
+                        <TableRow key={auction.id}>
+                          <TableCell className="font-medium">
+                            {auction.title}
+                            {(auction as any)._distance !== undefined && (
+                              <Badge
+                                variant="outline"
+                                className="ml-2 text-[10px]"
+                              >
+                                Match:{' '}
+                                {Math.max(
+                                  0,
+                                  100 - (auction as any)._distance * 100,
+                                ).toFixed(1)}
+                                %
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline">{auction.status}</Badge>
+                          </TableCell>
+                          <TableCell>
+                            {new Intl.NumberFormat('pt-BR', {
+                              style: 'currency',
+                              currency: 'BRL',
+                            }).format(auction.value || 0)}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              size="sm"
+                              variant="default"
+                              onClick={() => setDealAuction(auction)}
+                            >
+                              <PlusCircle className="mr-2 h-4 w-4" />
+                              Criar Negócio
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+      <Dialog
+        open={!!dealAuction}
+        onOpenChange={(open) => !open && setDealAuction(null)}
+      >
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Criar Negócio: {dealAuction?.title}</DialogTitle>
+          </DialogHeader>
+          {dealAuction && (
+            <DealForm
+              onSuccess={handleDealSuccess}
+              onCancel={() => setDealAuction(null)}
+              initialData={{
+                title: dealAuction.title,
+                value: dealAuction.value,
+              }}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
