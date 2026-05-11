@@ -5,21 +5,46 @@ import {
   useState,
   ReactNode,
 } from 'react'
-import pb from '@/lib/pocketbase/client'
+import type { User } from '@supabase/supabase-js'
+import supabase from '@/lib/supabase/client'
+
+type CrmUser = User & {
+  name?: string
+  avatar?: string
+}
 
 interface AuthContextType {
-  user: any
+  user: CrmUser | null
   signUp: (
     email: string,
     password: string,
     name: string,
   ) => Promise<{ error: any }>
   signIn: (email: string, password: string) => Promise<{ error: any }>
-  signOut: () => void
+  signOut: () => Promise<void>
   loading: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const allowAnonTestMode = import.meta.env.VITE_ALLOW_ANON_TEST_MODE === 'true'
+const testUser = {
+  id: 'local-test-user',
+  email: 'teste@milanhorses.local',
+  name: 'Teste Milan Horses',
+  avatar: undefined,
+} as CrmUser
+
+const mapUser = (user: User | null): CrmUser | null => {
+  if (!user) return null
+  return {
+    ...user,
+    name:
+      (user.user_metadata?.name as string | undefined) ||
+      (user.user_metadata?.full_name as string | undefined) ||
+      user.email?.split('@')[0],
+    avatar: user.user_metadata?.avatar_url as string | undefined,
+  }
+}
 
 export const useAuth = () => {
   const context = useContext(AuthContext)
@@ -28,45 +53,64 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<any>(pb.authStore.record)
+  const [user, setUser] = useState<CrmUser | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = pb.authStore.onChange((_token, record) => {
-      setUser(record)
-    })
-    setLoading(false)
-    return () => {
-      unsubscribe()
+    if (allowAnonTestMode) {
+      setUser(testUser)
+      setLoading(false)
+      return
     }
+
+    supabase.auth.getSession().then(({ data }) => {
+      setUser(mapUser(data.session?.user || null))
+      setLoading(false)
+    })
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(mapUser(session?.user || null))
+      setLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
   const signUp = async (email: string, password: string, name: string) => {
-    try {
-      await pb.collection('users').create({
-        email,
-        password,
-        passwordConfirm: password,
-        name,
-      })
-      await pb.collection('users').authWithPassword(email, password)
-      return { error: null }
-    } catch (error) {
-      return { error }
-    }
+    if (allowAnonTestMode) return { error: null }
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { name },
+      },
+    })
+    return { error }
   }
 
   const signIn = async (email: string, password: string) => {
-    try {
-      await pb.collection('users').authWithPassword(email, password)
+    if (allowAnonTestMode) {
+      setUser(testUser)
       return { error: null }
-    } catch (error) {
-      return { error }
     }
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+    return { error }
   }
 
-  const signOut = () => {
-    pb.authStore.clear()
+  const signOut = async () => {
+    if (allowAnonTestMode) {
+      setUser(testUser)
+      return
+    }
+
+    await supabase.auth.signOut()
   }
 
   return (

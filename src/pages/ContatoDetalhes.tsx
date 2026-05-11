@@ -28,7 +28,7 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { useToast } from '@/hooks/use-toast'
@@ -207,9 +207,6 @@ export default function ContatoDetalhes() {
             <CardHeader className="pb-4">
               <div className="flex justify-center mb-4">
                 <Avatar className="h-24 w-24 border-4 border-background shadow-lg">
-                  <AvatarImage
-                    src={`https://img.usecurling.com/ppl/medium?gender=male&seed=${contact.id}`}
-                  />
                   <AvatarFallback className="text-2xl bg-primary/10 text-primary">
                     {contact.name.substring(0, 2).toUpperCase()}
                   </AvatarFallback>

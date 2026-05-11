@@ -5,208 +5,520 @@ import { corsHeaders } from '../_shared/cors.ts'
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
+const RESEND_FROM_EMAIL =
+  Deno.env.get('RESEND_FROM_EMAIL') ||
+  'Milan Horses <contato@milanhorses.com.br>'
+const RESEND_REPLY_TO_EMAIL = Deno.env.get('RESEND_REPLY_TO_EMAIL')
+const BOTCONVERSA_WEBHOOK_URL = Deno.env.get('BOTCONVERSA_WEBHOOK_URL')
+const BOTCONVERSA_API_KEY = Deno.env.get('BOTCONVERSA_API_KEY')
+const BOTCONVERSA_DEFAULT_FLOW_ID = Deno.env.get('BOTCONVERSA_DEFAULT_FLOW_ID')
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
-Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+type Contact = {
+  id: string
+  name: string
+  email: string | null
+  phone: string | null
+  whatsapp: string | null
+}
+
+type Recipient = {
+  id?: string
+  contact_id: string
+  channel: 'email' | 'whatsapp'
+  score?: number
+  segment?: string
+  email?: string | null
+  phone?: string | null
+  subject?: string | null
+  message: string
+  metadata?: Record<string, unknown>
+  contact?: Contact
+}
+
+const jsonResponse = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  })
+
+const renderTemplate = (
+  value: string,
+  contact: Contact | undefined,
+  campaign: any,
+) =>
+  String(value || '')
+    .replaceAll('{{nome}}', contact?.name || '')
+    .replaceAll('{{name}}', contact?.name || '')
+    .replaceAll('{{leilao}}', campaign?.metadata?.auction?.title || campaign?.name || '')
+    .replaceAll('{{auction}}', campaign?.metadata?.auction?.title || campaign?.name || '')
+
+const normalizePhone = (value?: string | null) => {
+  const digits = String(value || '').replace(/\D/g, '')
+  if (!digits) return ''
+  if (digits.startsWith('55')) return `+${digits}`
+  return `+55${digits}`
+}
+
+const shouldUseBotconversaAuthorization = () =>
+  Boolean(
+    BOTCONVERSA_API_KEY &&
+      BOTCONVERSA_WEBHOOK_URL &&
+      !BOTCONVERSA_WEBHOOK_URL.includes('/webhooks-automation/catch/'),
+  )
+
+const providerIdFrom = (payload: any) =>
+  payload?.id ||
+  payload?.message_id ||
+  payload?.data?.id ||
+  payload?.data?.message_id ||
+  payload?.data?.[0]?.id ||
+  null
+
+const insertEvent = async (
+  outboundMessageId: string | null,
+  campaignId: string,
+  contactId: string | null,
+  provider: string,
+  eventType: string,
+  payload: Record<string, unknown>,
+) => {
+  await supabase.from('message_events').insert({
+    outbound_message_id: outboundMessageId,
+    campaign_id: campaignId,
+    contact_id: contactId,
+    provider,
+    event_type: eventType,
+    payload,
+  })
+}
+
+const resolveAudienceFromFilters = async (
+  campaign: any,
+  channel: 'email' | 'whatsapp',
+  fallbackContent: string,
+  fallbackSubject: string | null,
+) => {
+  let query = supabase
+    .from('contacts')
+    .select('id, email, phone, whatsapp, name')
+    .limit(5000)
+
+  if (campaign.audience_filters?.contact_ids?.length) {
+    query = query.in('id', campaign.audience_filters.contact_ids)
   }
 
+  if (campaign.audience_filters?.tags?.length) {
+    const { data: taggedIds } = await supabase
+      .from('contact_tags')
+      .select('contact_id, tags!inner(name)')
+      .in('tags.name', campaign.audience_filters.tags)
+
+    const ids = taggedIds?.map((item: any) => item.contact_id) || []
+    if (!ids.length) return []
+    query = query.in('id', ids)
+  }
+
+  const { data: contacts, error } = await query
+  if (error) throw error
+
+  return ((contacts || []) as Contact[]).map((contact) => ({
+    contact_id: contact.id,
+    channel,
+    email: contact.email,
+    phone: contact.whatsapp || contact.phone,
+    subject: fallbackSubject,
+    message: renderTemplate(fallbackContent, contact, campaign),
+    contact,
+  }))
+}
+
+const resolveRecipients = async (campaign: any, schedule: any) => {
+  const channel = schedule.channel_type as 'email' | 'whatsapp'
+  const { data: queuedRecipients, error } = await supabase
+    .from('campaign_recipients')
+    .select('*, contact:contacts(id, name, email, phone, whatsapp)')
+    .eq('campaign_id', campaign.id)
+    .eq('channel', channel)
+    .is('opted_out_at', null)
+    .in('status', ['queued', 'failed'])
+    .limit(5000)
+
+  if (error) throw error
+  if (queuedRecipients?.length) return queuedRecipients as Recipient[]
+
+  return resolveAudienceFromFilters(
+    campaign,
+    channel,
+    schedule.content || '',
+    schedule.subject || null,
+  )
+}
+
+const insertOutbound = async (payload: Record<string, unknown>) => {
+  const { data, error } = await supabase
+    .from('outbound_messages')
+    .insert(payload)
+    .select()
+    .single()
+
+  if (error) throw error
+  return data
+}
+
+const updateRecipient = async (
+  campaignRecipientId: string | undefined,
+  status: string,
+) => {
+  if (!campaignRecipientId) return
+  await supabase
+    .from('campaign_recipients')
+    .update({ status, updated_at: new Date().toISOString() })
+    .eq('id', campaignRecipientId)
+}
+
+const sendEmail = async (campaign: any, schedule: any, recipient: Recipient) => {
+  const contact = recipient.contact
+  const to = recipient.email || contact?.email
+  if (!to) throw new Error('Contato sem e-mail válido.')
+  if (!RESEND_API_KEY) throw new Error('RESEND_API_KEY não configurada.')
+
+  const subject = renderTemplate(
+    recipient.subject || schedule.subject || `Curadoria Milan Horses: ${campaign.name}`,
+    contact,
+    campaign,
+  )
+  const html = renderTemplate(recipient.message || schedule.content, contact, campaign)
+  const payload: Record<string, unknown> = {
+    from: RESEND_FROM_EMAIL,
+    to: [to],
+    subject,
+    html,
+    tags: [
+      { name: 'campaign_id', value: campaign.id },
+      { name: 'recipient_id', value: recipient.contact_id },
+      { name: 'schedule_id', value: schedule.id },
+    ],
+  }
+
+  if (RESEND_REPLY_TO_EMAIL) payload.reply_to = RESEND_REPLY_TO_EMAIL
+
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+  const responsePayload = await response.json().catch(() => ({}))
+
+  if (!response.ok) {
+    throw new Error(
+      responsePayload?.message ||
+        responsePayload?.error ||
+        `Resend retornou status ${response.status}`,
+    )
+  }
+
+  return {
+    provider: 'resend',
+    to,
+    subject,
+    body: html,
+    requestPayload: payload,
+    responsePayload,
+    providerId: providerIdFrom(responsePayload),
+  }
+}
+
+const sendWhatsApp = async (
+  campaign: any,
+  schedule: any,
+  recipient: Recipient,
+) => {
+  const contact = recipient.contact
+  const phone = normalizePhone(recipient.phone || contact?.whatsapp || contact?.phone)
+  if (!phone) throw new Error('Contato sem WhatsApp válido.')
+  if (!BOTCONVERSA_WEBHOOK_URL) {
+    throw new Error('BOTCONVERSA_WEBHOOK_URL não configurada.')
+  }
+
+  const message = renderTemplate(recipient.message || schedule.content, contact, campaign)
+  const payload = {
+    phone,
+    telefone: phone,
+    name: contact?.name,
+    nome: contact?.name,
+    email: contact?.email,
+    message,
+    mensagem: message,
+    campaign_id: campaign.id,
+    contact_id: recipient.contact_id,
+    flow_id: BOTCONVERSA_DEFAULT_FLOW_ID || undefined,
+    metadata: {
+      source: 'milan-crm-radar-vip',
+      auction: campaign.metadata?.auction || null,
+      segment: recipient.segment || null,
+      score: recipient.score || null,
+    },
+  }
+
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  }
+  if (shouldUseBotconversaAuthorization()) {
+    headers.Authorization = `Bearer ${BOTCONVERSA_API_KEY}`
+  }
+
+  const response = await fetch(BOTCONVERSA_WEBHOOK_URL, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload),
+  })
+  const text = await response.text()
+  const responsePayload = text
+    ? (() => {
+        try {
+          return JSON.parse(text)
+        } catch {
+          return { raw: text }
+        }
+      })()
+    : {}
+
+  if (!response.ok) {
+    throw new Error(
+      responsePayload?.message ||
+        responsePayload?.error ||
+        `BotConversa retornou status ${response.status}`,
+    )
+  }
+
+  return {
+    provider: 'botconversa',
+    to: phone,
+    subject: null,
+    body: message,
+    requestPayload: payload,
+    responsePayload,
+    providerId: providerIdFrom(responsePayload),
+  }
+}
+
+const processRecipient = async (campaign: any, schedule: any, recipient: Recipient) => {
+  const channel = schedule.channel_type as 'email' | 'whatsapp'
+  const now = new Date().toISOString()
+  const { data: sendLog, error: sendLogError } = await supabase
+    .from('campaign_sends')
+    .insert({
+      campaign_id: campaign.id,
+      schedule_id: schedule.id,
+      recipient_id: recipient.contact_id,
+      campaign_recipient_id: recipient.id || null,
+      channel,
+      status: 'sending',
+      subject: recipient.subject || schedule.subject || null,
+      content: recipient.message || schedule.content || '',
+      metadata: recipient.metadata || {},
+    })
+    .select()
+    .single()
+
+  if (sendLogError) throw sendLogError
+
   try {
-    const now = new Date().toISOString()
+    const sent =
+      channel === 'email'
+        ? await sendEmail(campaign, schedule, recipient)
+        : await sendWhatsApp(campaign, schedule, recipient)
+    const outbound = await insertOutbound({
+      campaign_id: campaign.id,
+      campaign_recipient_id: recipient.id || null,
+      campaign_send_id: sendLog.id,
+      contact_id: recipient.contact_id,
+      provider: sent.provider,
+      channel,
+      to_address: sent.to,
+      subject: sent.subject,
+      body: sent.body,
+      status: 'sent',
+      provider_message_id: sent.providerId,
+      request_payload: sent.requestPayload,
+      response_payload: sent.responsePayload,
+      sent_at: now,
+      updated_at: now,
+    })
 
-    // 1. Fetch Due Schedules
-    const { data: schedules, error: scheduleError } = await supabase
-      .from('campaign_schedules')
-      .select(
-        `
-        *,
-        campaign:campaigns(*)
-      `,
-      )
-      .eq('status', 'Pendente')
-      .lte('scheduled_at', now)
-
-    if (scheduleError) throw scheduleError
-
-    const results = {
-      processed: 0,
-      emails: 0,
-      whatsapp: 0,
-      errors: [] as string[],
-    }
-
-    if (!schedules || schedules.length === 0) {
-      return new Response(
-        JSON.stringify({ message: 'No schedules due', results }),
-        {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 200,
+    await supabase
+      .from('campaign_sends')
+      .update({
+        status: 'sent',
+        provider_id: sent.providerId,
+        sent_at: now,
+        metadata: {
+          ...(recipient.metadata || {}),
+          outbound_message_id: outbound.id,
+          response: sent.responsePayload,
         },
+      })
+      .eq('id', sendLog.id)
+    await updateRecipient(recipient.id, 'sent')
+    await insertEvent(
+      outbound.id,
+      campaign.id,
+      recipient.contact_id,
+      sent.provider,
+      'sent',
+      sent.responsePayload,
+    )
+
+    return { status: 'sent', provider: sent.provider }
+  } catch (error: any) {
+    const errorMessage = error?.message || 'Erro desconhecido'
+    const outbound = await insertOutbound({
+      campaign_id: campaign.id,
+      campaign_recipient_id: recipient.id || null,
+      campaign_send_id: sendLog.id,
+      contact_id: recipient.contact_id,
+      provider: channel === 'email' ? 'resend' : 'botconversa',
+      channel,
+      to_address:
+        channel === 'email'
+          ? recipient.email || recipient.contact?.email || ''
+          : normalizePhone(recipient.phone || recipient.contact?.whatsapp || recipient.contact?.phone),
+      subject: recipient.subject || schedule.subject || null,
+      body: recipient.message || schedule.content || '',
+      status: 'failed',
+      error_message: errorMessage,
+      updated_at: now,
+    })
+
+    await supabase
+      .from('campaign_sends')
+      .update({
+        status: 'failed',
+        error_message: errorMessage,
+        failed_at: now,
+        metadata: {
+          ...(recipient.metadata || {}),
+          outbound_message_id: outbound.id,
+        },
+      })
+      .eq('id', sendLog.id)
+    await updateRecipient(recipient.id, 'failed')
+    await insertEvent(
+      outbound.id,
+      campaign.id,
+      recipient.contact_id,
+      channel === 'email' ? 'resend' : 'botconversa',
+      'failed',
+      { error: errorMessage },
+    )
+
+    return { status: 'failed', error: errorMessage }
+  }
+}
+
+const processSchedule = async (
+  schedule: any,
+  options: { limit?: number; mode?: 'pilot' | 'full' } = {},
+) => {
+  const campaign = schedule.campaign
+  const recipients = await resolveRecipients(campaign, schedule)
+  const selectedRecipients = options.limit
+    ? recipients.slice(0, Math.max(0, Number(options.limit)))
+    : recipients
+  const results = {
+    scheduleId: schedule.id,
+    channel: schedule.channel_type,
+    recipients: selectedRecipients.length,
+    remaining: Math.max(0, recipients.length - selectedRecipients.length),
+    sent: 0,
+    failed: 0,
+    errors: [] as string[],
+  }
+
+  for (const recipient of selectedRecipients) {
+    const result = await processRecipient(campaign, schedule, recipient)
+    if (result.status === 'sent') results.sent += 1
+    else {
+      results.failed += 1
+      if (result.error) results.errors.push(result.error)
+    }
+  }
+
+  await supabase
+    .from('campaign_schedules')
+    .update({
+      status: results.remaining > 0 ? 'Piloto enviado' : 'Processado',
+      processed_at:
+        results.remaining > 0 ? schedule.processed_at : new Date().toISOString(),
+    })
+    .eq('id', schedule.id)
+
+  await supabase
+    .from('campaigns')
+    .update({
+      status:
+        results.failed && !results.sent
+          ? 'Pausada'
+          : results.remaining > 0 || options.mode === 'pilot'
+            ? 'Piloto enviado'
+            : 'Em Andamento',
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', campaign.id)
+
+  return results
+}
+
+Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
+
+  try {
+    const body = req.method === 'POST' ? await req.json().catch(() => ({})) : {}
+    const now = new Date().toISOString()
+    let query = supabase
+      .from('campaign_schedules')
+      .select('*, campaign:campaigns(*)')
+      .in(
+        'status',
+        body?.campaignId
+          ? ['Aguardando aprovação', 'Pendente', 'Piloto enviado']
+          : ['Pendente'],
+      )
+      .lte('scheduled_date', now)
+      .limit(20)
+
+    if (body?.campaignId) query = query.eq('campaign_id', body.campaignId)
+    if (body?.scheduleId) query = query.eq('id', body.scheduleId)
+    if (body?.channel) query = query.eq('channel_type', body.channel)
+
+    const { data: schedules, error } = await query
+    if (error) throw error
+
+    const results = []
+    for (const schedule of schedules || []) {
+      if (!schedule.campaign) continue
+      results.push(
+        await processSchedule(schedule, {
+          limit: body?.limit ? Number(body.limit) : undefined,
+          mode: body?.mode,
+        }),
       )
     }
 
-    // Process each schedule
-    for (const schedule of schedules) {
-      const campaign = schedule.campaign
-      if (!campaign) continue
-
-      // 2. Resolve Audience
-      // Complex filter logic usually requires dynamic query or RPC.
-      // For MVP, we fetch all contacts and filter in memory, or handle simple tag filters.
-
-      let query = supabase
-        .from('contacts')
-        .select('id, email, phone, whatsapp, name')
-
-      // Apply Tags Filter
-      if (campaign.audience_filters?.tags?.length > 0) {
-        const { data: taggedIds } = await supabase
-          .from('contact_tags')
-          .select('contact_id, tags!inner(name)')
-          .in('tags.name', campaign.audience_filters.tags)
-
-        const ids = taggedIds?.map((t: any) => t.contact_id) || []
-        if (ids.length > 0) query = query.in('id', ids)
-        else {
-          // No contacts match tags, skip
-          await supabase
-            .from('campaign_schedules')
-            .update({ status: 'Processado' })
-            .eq('id', schedule.id)
-          continue
-        }
-      }
-
-      // Apply Segments (Basic implementation assuming View logic similar to contactsService)
-      if (campaign.audience_filters?.segments?.length > 0) {
-        const { data: segmentedContacts } = await supabase
-          .from('contact_segmentation_view')
-          .select('id')
-          .in('segment', campaign.audience_filters.segments)
-
-        const ids = segmentedContacts?.map((c: any) => c.id) || []
-        if (ids.length > 0) query = query.in('id', ids)
-        else {
-          // No contacts match segments
-          await supabase
-            .from('campaign_schedules')
-            .update({ status: 'Processado' })
-            .eq('id', schedule.id)
-          continue
-        }
-      }
-
-      const { data: contacts } = await query
-
-      if (!contacts || contacts.length === 0) {
-        await supabase
-          .from('campaign_schedules')
-          .update({ status: 'Processado' })
-          .eq('id', schedule.id)
-        continue
-      }
-
-      // 3. Process Channel Logic
-      if (schedule.channel_type === 'email') {
-        if (RESEND_API_KEY) {
-          // Batch sending with Resend (Free tier limit is 100/day, be careful. Batch limit is 100 emails per request)
-          // We'll loop in chunks of 50
-          const validContacts = contacts.filter((c: any) => c.email)
-
-          for (let i = 0; i < validContacts.length; i += 50) {
-            const chunk = validContacts.slice(i, i + 50)
-            const batch = chunk.map((contact: any) => ({
-              from: 'Milan Horses <contato@milanhorses.com.br>',
-              to: [contact.email],
-              subject: `Nova mensagem de Milan Horses`, // Should ideally come from Template/Schedule
-              html: schedule.content.replace('{{nome}}', contact.name),
-              // Tracking tags for Resend Webhook
-              tags: [
-                { name: 'campaign_id', value: campaign.id },
-                { name: 'recipient_id', value: contact.id },
-                { name: 'schedule_id', value: schedule.id },
-              ],
-            }))
-
-            try {
-              const res = await fetch('https://api.resend.com/emails/batch', {
-                method: 'POST',
-                headers: {
-                  Authorization: `Bearer ${RESEND_API_KEY}`,
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(batch),
-              })
-
-              if (!res.ok) {
-                const err = await res.json()
-                console.error('Resend Error', err)
-                results.errors.push(
-                  `Resend batch error: ${JSON.stringify(err)}`,
-                )
-              } else {
-                const data = await res.json()
-                // Insert Logs
-                const logs = chunk.map((c: any, idx: number) => ({
-                  campaign_id: campaign.id,
-                  schedule_id: schedule.id,
-                  recipient_id: c.id,
-                  channel: 'email',
-                  status: 'sent',
-                  provider_id: data.data?.[idx]?.id,
-                  sent_at: new Date().toISOString(),
-                }))
-
-                await supabase.from('campaign_sends').insert(logs)
-                results.emails += chunk.length
-              }
-            } catch (e: any) {
-              results.errors.push(e.message)
-            }
-          }
-        } else {
-          results.errors.push('RESEND_API_KEY missing')
-        }
-      } else if (schedule.channel_type === 'whatsapp') {
-        // Just populate the logs as "Pending" for manual sending UI
-        const validContacts = contacts.filter((c: any) => c.phone || c.whatsapp)
-
-        const logs = validContacts.map((c: any) => ({
-          campaign_id: campaign.id,
-          schedule_id: schedule.id,
-          recipient_id: c.id,
-          channel: 'whatsapp',
-          status: 'pending',
-        }))
-
-        if (logs.length > 0) {
-          await supabase.from('campaign_sends').insert(logs)
-          results.whatsapp += logs.length
-        }
-      }
-
-      // 4. Mark Schedule as Processed
-      await supabase
-        .from('campaign_schedules')
-        .update({
-          status: 'Processado',
-          processed_at: new Date().toISOString(),
-        })
-        .eq('id', schedule.id)
-
-      results.processed++
-    }
-
-    return new Response(JSON.stringify(results), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 200,
+    return jsonResponse({
+      processed: results.length,
+      results,
+      configuration: {
+        resend: Boolean(RESEND_API_KEY),
+        botconversa: Boolean(BOTCONVERSA_WEBHOOK_URL),
+      },
     })
   } catch (error: any) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 500,
-    })
+    return jsonResponse({ error: error?.message || 'Erro desconhecido' }, 500)
   }
 })

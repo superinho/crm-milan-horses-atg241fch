@@ -169,7 +169,7 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
               <FormItem>
                 <FormLabel>Nome Completo *</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: Roberto Almeida" {...field} />
+                  <Input placeholder="Nome completo ou razão social" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -183,7 +183,7 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
                 <FormItem>
                   <FormLabel>E-mail *</FormLabel>
                   <FormControl>
-                    <Input placeholder="email@exemplo.com" {...field} />
+                    <Input placeholder="E-mail do cliente" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

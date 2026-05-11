@@ -1,6 +1,8 @@
 {
+  "nodeModulesDir": "auto",
   "_versions": {
     "process-automation-tasks": 1,
+    "sync-smartleiloes": 1,
     "send-contact-email": 1
   }
 }

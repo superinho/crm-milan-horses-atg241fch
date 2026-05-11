@@ -1,3 +1,5 @@
+import supabase from '@/lib/supabase/client'
+
 export interface SmartLeilao {
   id: string | number
   title?: string
@@ -9,65 +11,37 @@ export interface SmartLeilao {
   [key: string]: any
 }
 
-const MOCK_LEILOES: SmartLeilao[] = [
-  {
-    id: 'SL-001',
-    title: 'Leilão Virtual Elite QM 2026',
-    status: 'Aberto',
-    date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-    description: 'Os melhores animais da raça Quarto de Milha.',
-  },
-  {
-    id: 'SL-002',
-    title: 'Leilão Haras Primavera',
-    status: 'Agendado',
-    date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
-    description: 'Genética de ponta para trabalho e corrida.',
-  },
-  {
-    id: 'SL-003',
-    title: 'Liquidação de Plantel São José',
-    status: 'Encerrado',
-    date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-    description: 'Oportunidade única de arrematar matrizes premiadas.',
-  },
-]
+const db = supabase as any
 
 export const smartLeiloesService = {
   async getLeiloes(): Promise<{ data: SmartLeilao[]; error: string | null }> {
     try {
-      const res = await fetch('https://api.smartleiloes.digital/')
-      if (!res.ok) {
-        return {
-          data: MOCK_LEILOES,
-          error: `Falha na comunicação com a API externa (Status: ${res.status}). Exibindo dados de demonstração.`,
-        }
-      }
-      const text = await res.text()
-      if (!text) {
-        return {
-          data: MOCK_LEILOES,
-          error: 'A API não retornou dados. Exibindo dados de demonstração.',
-        }
-      }
-      const data = JSON.parse(text)
-      const parsedData = Array.isArray(data)
-        ? data
-        : data.data || data.items || []
+      const { data, error } = await db
+        .from('smartleiloes_auctions')
+        .select('*')
+        .order('event_date', { ascending: false })
+        .limit(200)
 
-      if (parsedData.length === 0) {
-        return {
-          data: MOCK_LEILOES,
-          error:
-            'A API não possui leilões ativos no momento. Exibindo dados de demonstração.',
-        }
-      }
+      if (error) throw error
 
-      return { data: parsedData, error: null }
+      return {
+        data: (data || []).map((auction: any) => ({
+          id: auction.smartleiloes_id,
+          title: auction.title,
+          name: auction.title,
+          status: auction.status,
+          date: auction.event_date,
+          start_date: auction.event_date,
+          value: Number(auction.value || 0),
+          description: auction.payload?.descricaoEvento || auction.event_type || '',
+          ...auction.payload,
+        })),
+        error: null,
+      }
     } catch (error: any) {
       return {
-        data: MOCK_LEILOES,
-        error: `Erro ao conectar com API externa: ${error.message}. Exibindo dados de demonstração.`,
+        data: [],
+        error: `Não foi possível carregar leilões reais sincronizados: ${error.message}`,
       }
     }
   },

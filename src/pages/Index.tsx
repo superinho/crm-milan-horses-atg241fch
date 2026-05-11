@@ -12,6 +12,7 @@ import { PipelineOverview } from '@/components/dashboard/PipelineOverview'
 import { SmartAlerts } from '@/components/dashboard/SmartAlerts'
 import { SalesComparisonChart } from '@/components/dashboard/SalesComparisonChart'
 import { QuickActions } from '@/components/dashboard/QuickActions'
+import { MonetaryDashboard } from '@/components/dashboard/MonetaryDashboard'
 
 // Dialogs
 import {
@@ -130,6 +131,8 @@ export default function Index() {
 
       {/* Smart Alerts */}
       {data && <SmartAlerts alerts={data.alerts} />}
+
+      <MonetaryDashboard />
 
       {/* Goal & Quick Actions Row */}
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2">

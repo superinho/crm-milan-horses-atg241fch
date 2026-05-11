@@ -63,17 +63,11 @@ export function WhatsAppSender({ campaignId, onRefresh }: WhatsAppSenderProps) {
       return
     }
 
-    // Usually we would fetch the content from the schedule linked to this log,
-    // but for simplicity assuming we handle the content generation or link opening logic.
-    // Since we don't have the content in the log row directly in the optimized view,
-    // we would open just the chat or we need to join with schedule content.
-    // For this MVP, let's assume content is passed or generic.
-    // Better: Edge function populates 'content' or 'metadata' in campaign_sends.
-
-    // For now, let's just open the chat
     const cleanPhone = phone.replace(/\D/g, '')
-    // Ideally retrieve content from schedule. Let's assume blank for now or generic.
-    const url = `https://wa.me/55${cleanPhone}`
+    const message = item.content || item.metadata?.message || ''
+    const url = `https://wa.me/55${cleanPhone.replace(/^55/, '')}${
+      message ? `?text=${encodeURIComponent(message)}` : ''
+    }`
 
     window.open(url, '_blank')
     setProcessingId(item.id)
@@ -114,7 +108,7 @@ export function WhatsAppSender({ campaignId, onRefresh }: WhatsAppSenderProps) {
                   Fila de Envio Manual
                 </CardTitle>
                 <CardDescription>
-                  {queue.length} mensagens aguardando envio
+                  {queue.length} mensagens registradas nesta campanha
                 </CardDescription>
               </div>
               <Button variant="ghost" size="icon" onClick={fetchQueue}>
@@ -151,22 +145,34 @@ export function WhatsAppSender({ campaignId, onRefresh }: WhatsAppSenderProps) {
                           <p className="text-xs text-muted-foreground">
                             {item.contact?.whatsapp || item.contact?.phone}
                           </p>
+                          {item.error_message ? (
+                            <p className="mt-1 max-w-md text-xs text-destructive">
+                              {item.error_message}
+                            </p>
+                          ) : null}
                         </div>
                       </div>
-                      <Button
-                        size="sm"
-                        className="bg-green-600 hover:bg-green-700 text-white"
-                        onClick={() => handleSend(item)}
-                        disabled={!!processingId}
-                      >
-                        {processingId === item.id ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <>
-                            <Send className="mr-2 h-4 w-4" /> Enviar
-                          </>
-                        )}
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        <Badge variant={item.status === 'sent' ? 'default' : 'outline'}>
+                          {item.status}
+                        </Badge>
+                        {item.status !== 'sent' ? (
+                          <Button
+                            size="sm"
+                            className="bg-green-600 hover:bg-green-700 text-white"
+                            onClick={() => handleSend(item)}
+                            disabled={!!processingId}
+                          >
+                            {processingId === item.id ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <>
+                                <Send className="mr-2 h-4 w-4" /> Abrir
+                              </>
+                            )}
+                          </Button>
+                        ) : null}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -183,13 +189,13 @@ export function WhatsAppSender({ campaignId, onRefresh }: WhatsAppSenderProps) {
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
             <p>
-              O WhatsApp não permite envio em massa automático via API oficial
-              sem custos elevados. Utilize esta ferramenta para envios
-              sequenciais semirrpaidos.
+              Com o BotConversa configurado, os envios são disparados pela
+              função de campanha. Esta fila também permite fallback manual via
+              WhatsApp Web para mensagens que falharem.
             </p>
             <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
               <li>
-                Clique em "Enviar" para abrir a conversa no WhatsApp
+                Clique em "Abrir" para abrir a conversa no WhatsApp
                 Web/Desktop.
               </li>
               <li>A mensagem (se configurada) já estará digitada.</li>

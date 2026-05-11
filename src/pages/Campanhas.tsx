@@ -32,7 +32,6 @@ import {
 import { campaignsService, Campaign } from '@/services/campaigns'
 import { CampaignForm } from '@/components/campaigns/CampaignForm'
 import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 
 export default function Campanhas() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
@@ -187,7 +186,7 @@ export default function Campanhas() {
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-1">
-                        {campaign.channels.includes('email') && (
+                        {(campaign.channels || []).includes('email') && (
                           <div
                             className="p-1.5 bg-blue-100 text-blue-600 rounded-md"
                             title="E-mail"
@@ -195,7 +194,7 @@ export default function Campanhas() {
                             <Mail className="h-4 w-4" />
                           </div>
                         )}
-                        {campaign.channels.includes('whatsapp') && (
+                        {(campaign.channels || []).includes('whatsapp') && (
                           <div
                             className="p-1.5 bg-green-100 text-green-600 rounded-md"
                             title="WhatsApp"
@@ -209,7 +208,7 @@ export default function Campanhas() {
                       <div className="flex items-center gap-2 text-sm">
                         <Users className="h-4 w-4 text-muted-foreground" />
                         <span>
-                          {campaign.audience_filters.segments.length > 0
+                          {campaign.audience_filters?.segments?.length > 0
                             ? campaign.audience_filters.segments.join(', ')
                             : 'Todos'}
                         </span>

@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import { smartLeiloesService, SmartLeilao } from '@/services/smartleiloes'
 import { auctionsService, Auction } from '@/services/auctions'
+import {
+  smartLeiloesSyncService,
+  SmartLeiloesSyncSummary,
+} from '@/services/smartleiloes-sync'
 import { useToast } from '@/hooks/use-toast'
 import { useRealtime } from '@/hooks/use-realtime'
 import { Button } from '@/components/ui/button'
@@ -27,6 +31,7 @@ import {
   AlertCircle,
   Search,
   PlusCircle,
+  DatabaseZap,
 } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -50,6 +55,9 @@ export default function SmartLeiloes() {
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearching, setIsSearching] = useState(false)
   const [importingId, setImportingId] = useState<string | number | null>(null)
+  const [syncing, setSyncing] = useState(false)
+  const [lastSyncSummary, setLastSyncSummary] =
+    useState<SmartLeiloesSyncSummary | null>(null)
 
   const [dealAuction, setDealAuction] = useState<Auction | null>(null)
   const { toast } = useToast()
@@ -108,7 +116,7 @@ export default function SmartLeiloes() {
     fetchSavedAuctions()
   }, [])
 
-  useRealtime('auctions', () => {
+  useRealtime('smartleiloes_auctions', () => {
     if (!searchQuery.trim()) {
       fetchSavedAuctions()
     }
@@ -149,6 +157,37 @@ export default function SmartLeiloes() {
     setDealAuction(null)
   }
 
+  const handleSyncAll = async () => {
+    try {
+      setSyncing(true)
+      setLastSyncSummary(null)
+      const summary = await smartLeiloesSyncService.syncAll()
+      setLastSyncSummary(summary)
+      await fetchSavedAuctions()
+
+      const totalSaved = Object.values(summary).reduce(
+        (acc, item) => acc + item.saved,
+        0,
+      )
+
+      toast({
+        title: 'Sincronização concluída',
+        description: `${totalSaved} registros foram salvos no Supabase.`,
+        variant: 'success',
+      })
+    } catch (err: any) {
+      toast({
+        title: 'Erro na sincronização',
+        description:
+          err?.message ||
+          'Não foi possível sincronizar os dados da Smart Leilões.',
+        variant: 'destructive',
+      })
+    } finally {
+      setSyncing(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -160,7 +199,37 @@ export default function SmartLeiloes() {
             Navegue pelos eventos externos e salve-os no seu CRM.
           </p>
         </div>
+        <Button onClick={handleSyncAll} disabled={syncing}>
+          <DatabaseZap
+            className={`mr-2 h-4 w-4 ${syncing ? 'animate-pulse' : ''}`}
+          />
+          {syncing ? 'Sincronizando...' : 'Sincronizar Smart Leilões'}
+        </Button>
       </div>
+
+      {lastSyncSummary && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Última sincronização</CardTitle>
+            <CardDescription>
+              Dados importados da Smart Leilões para o Supabase.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {Object.entries(lastSyncSummary).map(([key, item]) => (
+                <div key={key} className="rounded-md border p-3">
+                  <div className="text-sm font-medium capitalize">{key}</div>
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    {item.saved} salvos de {item.fetched} recebidos
+                    {item.failed > 0 ? `, ${item.failed} falharam` : ''}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Tabs defaultValue="live" className="w-full">
         <TabsList className="grid w-full grid-cols-2 max-w-md">

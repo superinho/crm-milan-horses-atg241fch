@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useRef, type ChangeEvent } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -20,7 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   Pagination,
   PaginationContent,
@@ -58,6 +57,7 @@ import {
   MoreHorizontal,
   Phone,
   Mail,
+  MessageCircle,
   ArrowUpDown,
   Eye,
   FileDown,
@@ -65,6 +65,8 @@ import {
   X,
   Info,
   Trash2,
+  MapPin,
+  Upload,
 } from 'lucide-react'
 import { cn, getContrastColor } from '@/lib/utils'
 import { ContactForm } from '@/components/contacts/ContactForm'
@@ -76,28 +78,39 @@ import {
   AdvancedFilter,
   FilterState,
 } from '@/components/contacts/AdvancedFilter'
+import { ContactProfileSheet } from '@/components/contacts/ContactProfileSheet'
+import { birthdaysImportService } from '@/services/birthdays-import'
+
+const initialFilters: FilterState = {
+  tags: [],
+  segment: null,
+  minInvestment: '',
+  maxInvestment: '',
+  minPurchases: '',
+  maxPurchases: '',
+  status: null,
+  breed: null,
+  location: '',
+  hasWhatsapp: false,
+}
 
 export default function Contatos() {
   const [searchTerm, setSearchTerm] = useState('')
-  const [filters, setFilters] = useState<FilterState>({
-    tags: [],
-    segment: null,
-    minInvestment: '',
-    maxInvestment: '',
-    status: null,
-    breed: null,
-    location: '',
-  })
+  const [filters, setFilters] = useState<FilterState>(initialFilters)
 
   const [sortConfig, setSortConfig] = useState<{
     key: string
     direction: 'asc' | 'desc'
-  }>({ key: 'created_at', direction: 'desc' })
+  }>({ key: 'lastActivity', direction: 'desc' })
   const [currentPage, setCurrentPage] = useState(1)
   const [isSheetOpen, setSheetOpen] = useState(false)
   const [contacts, setContacts] = useState<Contact[]>([])
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [selectedContactId, setSelectedContactId] = useState<string | null>(null)
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [importingBirthdays, setImportingBirthdays] = useState(false)
+  const birthdayFileInputRef = useRef<HTMLInputElement>(null)
 
   // Delete Dialog State
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -106,6 +119,11 @@ export default function Contatos() {
 
   const itemsPerPage = 10
   const { toast } = useToast()
+
+  const openProfile = (contact: Contact) => {
+    setSelectedContactId(contact.id)
+    setProfileOpen(true)
+  }
 
   // Fetch Contacts
   const fetchContacts = async () => {
@@ -123,10 +141,17 @@ export default function Contatos() {
         maxInvestment: filters.maxInvestment
           ? Number(filters.maxInvestment)
           : undefined,
+        minPurchases: filters.minPurchases
+          ? Number(filters.minPurchases)
+          : undefined,
+        maxPurchases: filters.maxPurchases
+          ? Number(filters.maxPurchases)
+          : undefined,
         lastContactRange: filters.lastContactRange,
         status: filters.status,
         breed: filters.breed,
         location: filters.location,
+        hasWhatsapp: filters.hasWhatsapp,
         sortBy: sortConfig.key,
         sortDirection: sortConfig.direction,
       })
@@ -160,10 +185,23 @@ export default function Contatos() {
   const totalPages = Math.ceil(totalCount / itemsPerPage)
 
   const handleSort = (key: string) => {
+    const defaultDescKeys = new Set([
+      'lastActivity',
+      'totalInvested',
+      'purchaseCount',
+      'bidCount',
+      'rfmvScore',
+    ])
+
     setSortConfig((current) => ({
       key,
-      direction:
-        current.key === key && current.direction === 'asc' ? 'desc' : 'asc',
+      direction: current.key === key
+        ? current.direction === 'asc'
+          ? 'desc'
+          : 'asc'
+        : defaultDescKeys.has(key)
+          ? 'desc'
+          : 'asc',
     }))
   }
 
@@ -227,6 +265,52 @@ export default function Contatos() {
     setCurrentPage(1)
   }
 
+  const applyQuickFilter = (nextFilters: Partial<FilterState>) => {
+    setFilters((current) => ({
+      ...current,
+      ...nextFilters,
+    }))
+    setCurrentPage(1)
+  }
+
+  const clearAllFilters = () => {
+    setSearchTerm('')
+    setFilters({ ...initialFilters })
+    setCurrentPage(1)
+  }
+
+  const handleBirthdayCsvImport = async (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setImportingBirthdays(true)
+    try {
+      const text = await file.text()
+      const summary = await birthdaysImportService.importCsv(text)
+
+      toast({
+        title: 'Aniversários importados',
+        description: `${summary.updated} contatos atualizados. ${summary.unmatched} sem match e ${summary.invalidDates} linhas sem data válida.`,
+        variant: 'success',
+      })
+      fetchContacts()
+    } catch (error: any) {
+      console.error(error)
+      toast({
+        title: 'Erro ao importar aniversários',
+        description:
+          error?.message ||
+          'Confira se o arquivo tem CPF/e-mail/telefone e uma coluna de nascimento.',
+        variant: 'destructive',
+      })
+    } finally {
+      setImportingBirthdays(false)
+      event.target.value = ''
+    }
+  }
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Page Header */}
@@ -240,28 +324,50 @@ export default function Contatos() {
           </p>
         </div>
 
-        <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
-          <SheetTrigger asChild>
-            <Button className="bg-primary hover:bg-primary/90 text-white shadow-md">
-              <Plus className="mr-2 h-4 w-4" /> Adicionar novo contato
-            </Button>
-          </SheetTrigger>
-          <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-            <SheetHeader>
-              <SheetTitle>Novo Contato</SheetTitle>
-              <SheetDescription>
-                Preencha as informações abaixo para adicionar um novo cliente ou
-                lead.
-              </SheetDescription>
-            </SheetHeader>
-            <ContactForm
-              onSuccess={() => {
-                setSheetOpen(false)
-                fetchContacts()
-              }}
-            />
-          </SheetContent>
-        </Sheet>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <input
+            ref={birthdayFileInputRef}
+            type="file"
+            accept=".csv,text/csv"
+            className="hidden"
+            onChange={handleBirthdayCsvImport}
+          />
+          <Button
+            variant="outline"
+            onClick={() => birthdayFileInputRef.current?.click()}
+            disabled={importingBirthdays}
+          >
+            {importingBirthdays ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Upload className="mr-2 h-4 w-4" />
+            )}
+            Importar aniversários
+          </Button>
+
+          <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
+            <SheetTrigger asChild>
+              <Button className="bg-primary hover:bg-primary/90 text-white shadow-md">
+                <Plus className="mr-2 h-4 w-4" /> Adicionar novo contato
+              </Button>
+            </SheetTrigger>
+            <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+              <SheetHeader>
+                <SheetTitle>Novo Contato</SheetTitle>
+                <SheetDescription>
+                  Preencha as informações abaixo para adicionar um novo cliente
+                  ou lead.
+                </SheetDescription>
+              </SheetHeader>
+              <ContactForm
+                onSuccess={() => {
+                  setSheetOpen(false)
+                  fetchContacts()
+                }}
+              />
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
 
       <Card className="border-t-4 border-t-primary shadow-sm">
@@ -278,7 +384,10 @@ export default function Contatos() {
                   placeholder="Buscar por nome, email ou telefone..."
                   className="pl-9"
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value)
+                    setCurrentPage(1)
+                  }}
                 />
               </div>
 
@@ -293,6 +402,46 @@ export default function Contatos() {
             </div>
           </div>
 
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm text-muted-foreground">Atalhos:</span>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() =>
+                applyQuickFilter({ minPurchases: '1', maxPurchases: '' })
+              }
+            >
+              Compradores
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                applyQuickFilter({ minPurchases: '0', maxPurchases: '0' })
+              }
+            >
+              Sem compras
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => applyQuickFilter({ hasWhatsapp: true })}
+            >
+              Com WhatsApp
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => applyQuickFilter({ segment: 'VIP ativo' })}
+            >
+              VIP ativo
+            </Button>
+          </div>
+
           {/* Active Filters Display */}
           {(filters.tags.length > 0 ||
             filters.segment ||
@@ -300,6 +449,10 @@ export default function Contatos() {
             filters.breed ||
             filters.location ||
             filters.minInvestment ||
+            filters.maxInvestment ||
+            filters.minPurchases ||
+            filters.maxPurchases ||
+            filters.hasWhatsapp ||
             filters.lastContactRange) && (
             <div className="flex flex-wrap gap-2 pt-2">
               <span className="text-sm text-muted-foreground self-center mr-1">
@@ -329,6 +482,28 @@ export default function Contatos() {
                   Raça: {filters.breed}
                 </Badge>
               )}
+              {filters.location && (
+                <Badge variant="secondary" className="px-2 py-1 text-xs">
+                  Local: {filters.location}
+                </Badge>
+              )}
+              {(filters.minInvestment || filters.maxInvestment) && (
+                <Badge variant="secondary" className="px-2 py-1 text-xs">
+                  Investimento: {filters.minInvestment || '0'} -{' '}
+                  {filters.maxInvestment || 'sem limite'}
+                </Badge>
+              )}
+              {(filters.minPurchases || filters.maxPurchases) && (
+                <Badge variant="secondary" className="px-2 py-1 text-xs">
+                  Compras: {filters.minPurchases || '0'} -{' '}
+                  {filters.maxPurchases || 'sem limite'}
+                </Badge>
+              )}
+              {filters.hasWhatsapp && (
+                <Badge variant="secondary" className="px-2 py-1 text-xs">
+                  Com WhatsApp
+                </Badge>
+              )}
             </div>
           )}
         </CardHeader>
@@ -348,9 +523,19 @@ export default function Contatos() {
                       <ArrowUpDown className="h-3 w-3" />
                     </Button>
                   </TableHead>
-                  <TableHead>E-mail</TableHead>
-                  <TableHead>Telefone</TableHead>
-                  <TableHead>Tags</TableHead>
+                  <TableHead>Contato</TableHead>
+                  <TableHead>Local</TableHead>
+                  <TableHead>Perfil</TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      className="p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1"
+                      onClick={() => handleSort('purchaseCount')}
+                    >
+                      Compras
+                      <ArrowUpDown className="h-3 w-3" />
+                    </Button>
+                  </TableHead>
                   <TableHead>
                     <div className="flex items-center gap-1">
                       <Button
@@ -377,9 +562,9 @@ export default function Contatos() {
                     <Button
                       variant="ghost"
                       className="p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1"
-                      onClick={() => handleSort('updated_at')}
+                      onClick={() => handleSort('lastActivity')}
                     >
-                      Último Contato
+                      Última atividade
                       <ArrowUpDown className="h-3 w-3" />
                     </Button>
                   </TableHead>
@@ -389,7 +574,7 @@ export default function Contatos() {
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="h-32 text-center">
+                    <TableCell colSpan={8} className="h-32 text-center">
                       <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
                     </TableCell>
                   </TableRow>
@@ -397,78 +582,113 @@ export default function Contatos() {
                   contacts.map((contact) => (
                     <TableRow
                       key={contact.id}
-                      className="group hover:bg-muted/30 transition-colors"
+                      className="group cursor-pointer hover:bg-muted/30 transition-colors"
+                      onClick={() => openProfile(contact)}
                     >
                       <TableCell className="font-medium">
                         <div className="flex items-center gap-3">
                           <Avatar className="h-9 w-9 border border-muted">
-                            <AvatarImage
-                              src={`https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${contact.id}`}
-                            />
                             <AvatarFallback className="bg-primary/10 text-primary font-bold">
                               {contact.name.substring(0, 2).toUpperCase()}
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex flex-col">
-                            <Link
-                              to={`/contatos/${contact.id}`}
-                              className="font-semibold text-foreground hover:text-primary transition-colors"
+                            <button
+                              type="button"
+                              className="text-left font-semibold text-foreground transition-colors hover:text-primary"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                openProfile(contact)
+                              }}
                             >
                               {contact.name}
-                            </Link>
-                            {contact.address && (
+                            </button>
+                            {contact.segment && (
                               <span
                                 className="text-xs text-muted-foreground truncate max-w-[150px]"
-                                title={contact.address}
+                                title={contact.segment}
                               >
-                                {contact.address}
+                                {contact.segment}
                               </span>
                             )}
                           </div>
                         </div>
                       </TableCell>
                       <TableCell>
+                        <div className="flex flex-col gap-1 text-sm text-muted-foreground">
+                          <div className="flex items-center">
+                            <Mail className="mr-2 h-3 w-3 opacity-70" />
+                            <span className="max-w-[190px] truncate">
+                              {contact.email || '-'}
+                            </span>
+                          </div>
+                          <div className="flex items-center whitespace-nowrap">
+                            <Phone className="mr-2 h-3 w-3 opacity-70" />
+                            {contact.whatsapp || contact.phone || '-'}
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
                         <div className="flex items-center text-muted-foreground text-sm">
-                          <Mail className="mr-2 h-3 w-3 opacity-70" />
-                          {contact.email}
+                          <MapPin className="mr-2 h-3 w-3 opacity-70" />
+                          <span className="max-w-[160px] truncate">
+                            {[contact.city, contact.state].filter(Boolean).join(', ') ||
+                              contact.address ||
+                              '-'}
+                          </span>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center text-muted-foreground text-sm whitespace-nowrap">
-                          <Phone className="mr-2 h-3 w-3 opacity-70" />
-                          {contact.phone}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex flex-wrap items-center gap-1">
-                          {contact.tags?.map((tag) => (
-                            <Badge
-                              key={tag.id}
-                              className={cn(
-                                'font-normal group/tag pr-1',
-                                !tag.color?.startsWith('#') && tag.color,
-                              )}
-                              style={getBadgeStyle(tag)}
-                            >
-                              {tag.name}
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  e.preventDefault()
-                                  handleRemoveTag(contact.id, tag.id)
-                                }}
-                                className="ml-1 rounded-full p-0.5 hover:bg-black/10 focus:outline-none"
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            {contact.segment && (
+                              <Badge variant="secondary">{contact.segment}</Badge>
+                            )}
+                            {contact.rfmvScore ? (
+                              <Badge variant="outline">RFMV {contact.rfmvScore}</Badge>
+                            ) : null}
+                          </div>
+                          <div
+                            className="flex flex-wrap items-center gap-1"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {contact.tags?.slice(0, 2).map((tag) => (
+                              <Badge
+                                key={tag.id}
+                                className={cn(
+                                  'font-normal group/tag pr-1',
+                                  !tag.color?.startsWith('#') && tag.color,
+                                )}
+                                style={getBadgeStyle(tag)}
                               >
-                                <X className="h-3 w-3" />
-                              </button>
-                            </Badge>
-                          ))}
-                          <TagSelector
-                            contactId={contact.id}
-                            currentTags={contact.tags || []}
-                            onTagChange={fetchContacts}
-                            variant="icon"
-                          />
+                                {tag.name}
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    e.preventDefault()
+                                    handleRemoveTag(contact.id, tag.id)
+                                  }}
+                                  className="ml-1 rounded-full p-0.5 hover:bg-black/10 focus:outline-none"
+                                >
+                                  <X className="h-3 w-3" />
+                                </button>
+                              </Badge>
+                            ))}
+                            <TagSelector
+                              contactId={contact.id}
+                              currentTags={contact.tags || []}
+                              onTagChange={fetchContacts}
+                              variant="icon"
+                            />
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <span className="font-semibold text-foreground">
+                          {contact.purchaseCount || 0}
+                        </span>
+                        <div className="text-xs text-muted-foreground">
+                          {contact.bidCount || 0} lances
                         </div>
                       </TableCell>
                       <TableCell>
@@ -476,28 +696,60 @@ export default function Contatos() {
                           {new Intl.NumberFormat('pt-BR', {
                             style: 'currency',
                             currency: 'BRL',
-                          }).format((contact as any).totalInvested)}
+                            maximumFractionDigits: 0,
+                          }).format(contact.totalInvested || 0)}
                         </span>
+                        <div className="text-xs text-muted-foreground">
+                          Ticket médio{' '}
+                          {new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL',
+                            maximumFractionDigits: 0,
+                          }).format(contact.avgTicket || 0)}
+                        </div>
                       </TableCell>
                       <TableCell className="text-muted-foreground text-sm">
-                        {new Date(contact.updated_at).toLocaleDateString(
-                          'pt-BR',
-                        )}
+                        {contact.lastActivityDate
+                          ? new Date(contact.lastActivityDate).toLocaleDateString(
+                              'pt-BR',
+                            )
+                          : contact.updated_at
+                            ? new Date(contact.updated_at).toLocaleDateString(
+                                'pt-BR',
+                              )
+                            : '-'}
                       </TableCell>
                       <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-1">
+                        <div
+                          className="flex items-center justify-end gap-1"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {contact.whatsapp || contact.phone ? (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              asChild
+                              className="h-8 w-8 text-muted-foreground hover:text-primary"
+                            >
+                              <a
+                                href={`https://wa.me/55${String(
+                                  contact.whatsapp || contact.phone,
+                                ).replace(/\D/g, '')}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                title="Chamar no WhatsApp"
+                              >
+                                <MessageCircle className="h-4 w-4" />
+                              </a>
+                            </Button>
+                          ) : null}
                           <Button
                             variant="ghost"
                             size="icon"
-                            asChild
                             className="h-8 w-8 text-muted-foreground hover:text-primary"
+                            onClick={() => openProfile(contact)}
                           >
-                            <Link
-                              to={`/contatos/${contact.id}`}
-                              title="Ver detalhes"
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Link>
+                            <Eye className="h-4 w-4" />
                           </Button>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -529,25 +781,13 @@ export default function Contatos() {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={7} className="h-32 text-center">
+                    <TableCell colSpan={8} className="h-32 text-center">
                       <div className="flex flex-col items-center justify-center text-muted-foreground">
                         <Search className="h-8 w-8 mb-2 opacity-50" />
                         <p>Nenhum contato encontrado com os filtros atuais.</p>
                         <Button
                           variant="link"
-                          onClick={() => {
-                            setSearchTerm('')
-                            setFilters({
-                              tags: [],
-                              segment: null,
-                              minInvestment: '',
-                              maxInvestment: '',
-                              lastContactRange: undefined,
-                              status: null,
-                              breed: null,
-                              location: '',
-                            })
-                          }}
+                          onClick={clearAllFilters}
                           className="mt-2 text-primary"
                         >
                           Limpar todos os filtros
@@ -629,6 +869,12 @@ export default function Contatos() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <ContactProfileSheet
+        contactId={selectedContactId}
+        open={profileOpen}
+        onOpenChange={setProfileOpen}
+      />
     </div>
   )
 }

@@ -25,6 +25,7 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogContent,
@@ -50,10 +51,13 @@ export interface FilterState {
   segment: string | null
   minInvestment: string
   maxInvestment: string
+  minPurchases: string
+  maxPurchases: string
   lastContactRange?: DateRange
   status: 'active' | 'inactive' | null
   breed: string | null
   location: string
+  hasWhatsapp: boolean
 }
 
 const BREEDS = [
@@ -66,13 +70,28 @@ const BREEDS = [
 ]
 
 const SEGMENTS = [
-  'VIP',
-  'Frequentes',
-  'Ativos',
-  'Novos Leads',
-  'Inativos',
-  'Sem Segmento',
+  'VIP ativo',
+  'VIP inativo',
+  'Comprador',
+  'Lead',
+  'Interessado',
+  'Alto potencial sem compra',
+  'Reativação',
 ]
+
+const emptyFilters: FilterState = {
+  tags: [],
+  segment: null,
+  minInvestment: '',
+  maxInvestment: '',
+  minPurchases: '',
+  maxPurchases: '',
+  lastContactRange: undefined,
+  status: null,
+  breed: null,
+  location: '',
+  hasWhatsapp: false,
+}
 
 export function AdvancedFilter({
   onFilterChange,
@@ -105,16 +124,6 @@ export function AdvancedFilter({
   }
 
   const handleClear = () => {
-    const emptyFilters: FilterState = {
-      tags: [],
-      segment: null,
-      minInvestment: '',
-      maxInvestment: '',
-      lastContactRange: undefined,
-      status: null,
-      breed: null,
-      location: '',
-    }
     setFilters(emptyFilters)
     onFilterChange(emptyFilters)
   }
@@ -138,7 +147,7 @@ export function AdvancedFilter({
 
   const handleLoadFilter = (saved: SavedFilter) => {
     // Parse date strings back to Date objects if necessary
-    const loadedFilters = { ...saved.criteria }
+    const loadedFilters = { ...emptyFilters, ...saved.criteria }
     if (loadedFilters.lastContactRange) {
       loadedFilters.lastContactRange = {
         from: loadedFilters.lastContactRange.from
@@ -297,7 +306,48 @@ export function AdvancedFilter({
               </div>
 
               <div className="space-y-2">
-                <Label>Último Contato</Label>
+                <Label>Número de compras</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    min={0}
+                    placeholder="Min"
+                    value={filters.minPurchases}
+                    onChange={(e) =>
+                      setFilters({ ...filters, minPurchases: e.target.value })
+                    }
+                  />
+                  <span className="text-muted-foreground">-</span>
+                  <Input
+                    type="number"
+                    min={0}
+                    placeholder="Max"
+                    value={filters.maxPurchases}
+                    onChange={(e) =>
+                      setFilters({ ...filters, maxPurchases: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 rounded-md border p-3">
+                <Checkbox
+                  id="has-whatsapp"
+                  checked={filters.hasWhatsapp}
+                  onCheckedChange={(checked) =>
+                    setFilters({ ...filters, hasWhatsapp: checked === true })
+                  }
+                />
+                <div className="space-y-1 leading-none">
+                  <Label htmlFor="has-whatsapp">Somente com WhatsApp</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Útil para montar listas acionáveis de disparo e follow-up.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Última atividade</Label>
                 <DatePickerWithRange
                   date={filters.lastContactRange}
                   setDate={(date) =>
