@@ -3,6 +3,7 @@ import { Loader2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { dashboardService, DashboardData } from '@/services/dashboard'
 import { tasksService, Task } from '@/services/tasks'
+import { useRealtime } from '@/hooks/use-realtime'
 
 // Components
 import { GoalCard } from '@/components/dashboard/GoalCard'
@@ -63,6 +64,10 @@ export default function Index() {
   useEffect(() => {
     fetchData()
   }, [])
+
+  useRealtime('campaigns', () => fetchData())
+  useRealtime('deals', () => fetchData())
+  useRealtime('tasks', () => fetchData())
 
   const handleTaskComplete = async (task: Task) => {
     try {

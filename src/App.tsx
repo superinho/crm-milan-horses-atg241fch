@@ -4,6 +4,8 @@ import { Toaster as Sonner } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import Layout from './components/Layout'
 import { AuthProvider } from '@/hooks/use-auth'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
+import Login from './pages/Login'
 
 import Index from './pages/Index'
 import Contatos from './pages/Contatos'
@@ -24,17 +26,20 @@ import NotFound from './pages/NotFound'
 
 const App = () => (
   <AuthProvider>
-    <BrowserRouter
-      future={{ v7_startTransition: false, v7_relativeSplatPath: false }}
-    >
+    <BrowserRouter>
       <TooltipProvider>
         <Toaster />
         <Sonner />
         <Routes>
-          {/* Redirect /login directly to the admin dashboard */}
-          <Route path="/login" element={<Navigate to="/" replace />} />
+          <Route path="/login" element={<Login />} />
 
-          <Route element={<Layout />}>
+          <Route
+            element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
             <Route path="/" element={<Index />} />
             <Route path="/contatos" element={<Contatos />} />
             <Route path="/contatos/:id" element={<ContatoDetalhes />} />

@@ -69,7 +69,7 @@ import {
 import { Button } from '@/components/ui/button'
 import logoImg from '@/assets/editedimage_1769630541473-88067.png'
 import { useAuth } from '@/hooks/use-auth'
-import { supabase } from '@/lib/supabase/client'
+import pb from '@/lib/pocketbase/client'
 import { useToast } from '@/hooks/use-toast'
 
 // Modals & Search
@@ -170,7 +170,7 @@ function AppSidebarContent({
           <Avatar className="h-9 w-9 border border-secondary shrink-0">
             <AvatarImage
               src={
-                user?.user_metadata?.avatar_url ||
+                (user?.avatar ? pb.files.getURL(user, user.avatar) : '') ||
                 `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}`
               }
             />
@@ -181,9 +181,9 @@ function AppSidebarContent({
           <div className="flex flex-col min-w-0 group-data-[collapsible=icon]:hidden">
             <span
               className="text-sm font-medium text-sidebar-foreground truncate"
-              title={user?.user_metadata?.full_name || user?.email}
+              title={user?.name || user?.email}
             >
-              {user?.user_metadata?.full_name || user?.email?.split('@')[0]}
+              {user?.name || user?.email?.split('@')[0]}
             </span>
             <span
               className="text-xs text-sidebar-foreground/60 truncate"
@@ -243,25 +243,9 @@ function TopHeader({
       if (!file) return
 
       setUploading(true)
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${user?.id}-${Math.random()}.${fileExt}`
-      const filePath = `${fileName}`
-
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, file)
-
-      if (uploadError) throw uploadError
-
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from('avatars').getPublicUrl(filePath)
-
-      const { error: updateError } = await supabase.auth.updateUser({
-        data: { avatar_url: publicUrl },
-      })
-
-      if (updateError) throw updateError
+      const formData = new FormData()
+      formData.append('avatar', file)
+      await pb.collection('users').update(user.id, formData)
 
       toast({
         title: 'Foto atualizada',
@@ -416,7 +400,7 @@ function TopHeader({
             <Avatar className="h-8 w-8 cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all">
               <AvatarImage
                 src={
-                  user?.user_metadata?.avatar_url ||
+                  (user?.avatar ? pb.files.getURL(user, user.avatar) : '') ||
                   `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}`
                 }
               />

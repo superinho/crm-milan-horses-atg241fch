@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { smartLeiloesService, SmartLeilao } from '@/services/smartleiloes'
-import { campaignsService } from '@/services/campaigns'
+import { auctionsService } from '@/services/auctions'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import {
@@ -61,23 +61,17 @@ export default function SmartLeiloes() {
         new Date(startDate).getTime() + 30 * 24 * 60 * 60 * 1000,
       ).toISOString()
 
-      await campaignsService.createCampaign(
-        {
-          name,
-          objective:
-            leilao.description || `Campanha baseada no leilão ${leilao.id}`,
-          start_date: startDate,
-          end_date: endDate,
-          status: 'Rascunho',
-          audience_filters: { tags: [], segments: [] },
-          channels: ['email', 'whatsapp'],
-        },
-        [],
-      )
+      await auctionsService.saveAuction({
+        external_id: String(leilao.id),
+        title: name,
+        value: leilao.value || 0,
+        status: leilao.status || 'Importado',
+        source_url: 'https://api.smartleiloes.digital/',
+      })
 
       toast({
-        title: 'Campanha Criada',
-        description: `${name} foi importado com sucesso como rascunho.`,
+        title: 'Leilão Salvo',
+        description: `${name} foi importado com sucesso para o banco de dados.`,
       })
     } catch (err: any) {
       toast({

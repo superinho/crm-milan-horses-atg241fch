@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase/client'
+import pb from '@/lib/pocketbase/client'
 
 export type Tag = {
   id: string
@@ -8,41 +8,21 @@ export type Tag = {
 
 export const tagsService = {
   async getTags() {
-    const { data, error } = await supabase
-      .from('tags')
-      .select('*')
-      .order('name')
-
-    if (error) throw error
+    const data = await pb.collection('tags').getFullList({ sort: 'name' })
     return data as Tag[]
   },
 
   async createTag(tag: Omit<Tag, 'id'>) {
-    const { data, error } = await supabase
-      .from('tags')
-      .insert(tag)
-      .select()
-      .single()
-
-    if (error) throw error
+    const data = await pb.collection('tags').create(tag)
     return data as Tag
   },
 
   async updateTag(id: string, tag: Partial<Tag>) {
-    const { data, error } = await supabase
-      .from('tags')
-      .update(tag)
-      .eq('id', id)
-      .select()
-      .single()
-
-    if (error) throw error
+    const data = await pb.collection('tags').update(id, tag)
     return data as Tag
   },
 
   async deleteTag(id: string) {
-    const { error } = await supabase.from('tags').delete().eq('id', id)
-
-    if (error) throw error
+    await pb.collection('tags').delete(id)
   },
 }

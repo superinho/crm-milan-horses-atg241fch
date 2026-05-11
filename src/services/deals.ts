@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase/client'
+import pb from '@/lib/pocketbase/client'
 import { Contact } from './contacts'
 
 export type DealStage =
@@ -10,154 +10,91 @@ export type DealStage =
 
 export type Deal = {
   id: string
-  contact_id: string
+  contact_id?: string
   title: string
   stage: DealStage
   value: number
-  probability: number
-  expected_close_date: string | null
-  notes?: string | null
-  created_at: string
-  updated_at: string
+  created: string
+  updated: string
   contact?: Contact
 }
 
-export type DealTask = {
-  id: string
-  deal_id: string
-  description: string
-  is_completed: boolean
-  created_at: string
+const stageToDb = (stage: string) => {
+  if (stage === 'Lead') return 'lead'
+  if (stage === 'Qualificado') return 'qualified'
+  if (stage === 'Interesse') return 'negotiation'
+  if (stage === 'Proposta') return 'proposal'
+  if (stage === 'Fechado') return 'closed_won'
+  return 'lead'
 }
 
-export type DealInsert = Omit<
-  Deal,
-  'id' | 'created_at' | 'updated_at' | 'contact'
->
-export type DealUpdate = Partial<DealInsert>
+const dbToStage = (stage: string): DealStage => {
+  if (stage === 'lead') return 'Lead'
+  if (stage === 'qualified') return 'Qualificado'
+  if (stage === 'negotiation') return 'Interesse'
+  if (stage === 'proposal') return 'Proposta'
+  if (stage === 'closed_won') return 'Fechado'
+  if (stage === 'closed_lost') return 'Fechado'
+  return 'Lead'
+}
 
 export const dealsService = {
   async getDeals() {
-    const { data, error } = await supabase
-      .from('deals')
-      .select(
-        `
-        *,
-        contact:contacts(*)
-      `,
-      )
-      .order('created_at', { ascending: false })
-
-    if (error) throw error
-    return data as Deal[]
+    const items = await pb
+      .collection('deals')
+      .getFullList({ expand: 'contact', sort: '-created' })
+    return items.map((d) => ({
+      id: d.id,
+      contact_id: d.contact,
+      title: d.title,
+      value: d.value,
+      stage: dbToStage(d.stage),
+      created: d.created,
+      updated: d.updated,
+      contact: d.expand?.contact as unknown as Contact,
+    })) as Deal[]
   },
 
   async getDealById(id: string) {
-    const { data, error } = await supabase
-      .from('deals')
-      .select(
-        `
-        *,
-        contact:contacts(*)
-      `,
-      )
-      .eq('id', id)
-      .single()
-
-    if (error) throw error
-    return data as Deal
+    const d = await pb.collection('deals').getOne(id, { expand: 'contact' })
+    return {
+      id: d.id,
+      contact_id: d.contact,
+      title: d.title,
+      value: d.value,
+      stage: dbToStage(d.stage),
+      created: d.created,
+      updated: d.updated,
+      contact: d.expand?.contact as unknown as Contact,
+    } as Deal
   },
 
-  async getDealsByContactId(contactId: string) {
-    const { data, error } = await supabase
-      .from('deals')
-      .select('*')
-      .eq('contact_id', contactId)
-      .order('created_at', { ascending: false })
-
-    if (error) throw error
-    return data as Deal[]
+  async createDeal(deal: any) {
+    const d = await pb.collection('deals').create({
+      title: deal.title,
+      value: deal.value || 0,
+      stage: stageToDb(deal.stage),
+      contact: deal.contact_id,
+    })
+    return { ...d, stage: dbToStage(d.stage) } as unknown as Deal
   },
 
-  async createDeal(deal: DealInsert) {
-    const { data, error } = await supabase
-      .from('deals')
-      .insert(deal)
-      .select()
-      .single()
+  async updateDeal(id: string, updates: any) {
+    const payload: any = { ...updates }
+    if (updates.stage) payload.stage = stageToDb(updates.stage)
 
-    if (error) throw error
-    return data as Deal
-  },
-
-  async updateDeal(id: string, updates: DealUpdate | { notes: string }) {
-    const { data, error } = await supabase
-      .from('deals')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .single()
-
-    if (error) throw error
-    return data as Deal
+    const d = await pb.collection('deals').update(id, payload)
+    return { ...d, stage: dbToStage(d.stage) } as unknown as Deal
   },
 
   async updateDealStage(id: string, stage: string) {
-    const { data, error } = await supabase
-      .from('deals')
-      .update({ stage })
-      .eq('id', id)
-      .select()
-      .single()
-
-    if (error) throw error
-    return data as Deal
+    const d = await pb
+      .collection('deals')
+      .update(id, { stage: stageToDb(stage) })
+    return { ...d, stage: dbToStage(d.stage) } as unknown as Deal
   },
 
   async deleteDeal(id: string) {
-    const { error } = await supabase.from('deals').delete().eq('id', id)
-
-    if (error) throw error
-  },
-
-  // Task methods
-  async getDealTasks(dealId: string) {
-    const { data, error } = await supabase
-      .from('deal_tasks')
-      .select('*')
-      .eq('deal_id', dealId)
-      .order('created_at', { ascending: true })
-
-    if (error) throw error
-    return data as DealTask[]
-  },
-
-  async addDealTask(dealId: string, description: string) {
-    const { data, error } = await supabase
-      .from('deal_tasks')
-      .insert({ deal_id: dealId, description })
-      .select()
-      .single()
-
-    if (error) throw error
-    return data as DealTask
-  },
-
-  async updateDealTask(id: string, updates: Partial<DealTask>) {
-    const { data, error } = await supabase
-      .from('deal_tasks')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .single()
-
-    if (error) throw error
-    return data as DealTask
-  },
-
-  async deleteDealTask(id: string) {
-    const { error } = await supabase.from('deal_tasks').delete().eq('id', id)
-
-    if (error) throw error
+    await pb.collection('deals').delete(id)
   },
 }
