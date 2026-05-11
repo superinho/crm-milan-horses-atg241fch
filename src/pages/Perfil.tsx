@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Loader2, Camera } from 'lucide-react'
-import pb from '@/lib/pocketbase/client'
+import supabase from '@/lib/supabase/client'
 
 export default function Perfil() {
   const { user } = useAuth()
@@ -30,9 +30,10 @@ export default function Perfil() {
     try {
       if (!user) throw new Error('Usuário não encontrado')
 
-      await pb.collection('users').update(user.id, {
-        name,
+      const { error } = await supabase.auth.updateUser({
+        data: { name },
       })
+      if (error) throw error
 
       toast({ title: 'Perfil atualizado com sucesso!' })
     } catch (err: any) {
@@ -54,10 +55,20 @@ export default function Perfil() {
       if (!file || !user) return
 
       setUploading(true)
-      const formData = new FormData()
-      formData.append('avatar', file)
+      const extension = file.name.split('.').pop() || 'jpg'
+      const path = `${user.id}/avatar.${extension}`
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(path, file, { upsert: true })
 
-      await pb.collection('users').update(user.id, formData)
+      if (uploadError) throw uploadError
+
+      const { data } = supabase.storage.from('avatars').getPublicUrl(path)
+      const { error: updateError } = await supabase.auth.updateUser({
+        data: { avatar_url: data.publicUrl },
+      })
+
+      if (updateError) throw updateError
 
       toast({
         title: 'Foto atualizada',
@@ -87,12 +98,7 @@ export default function Perfil() {
           <div className="flex flex-col items-center gap-4">
             <div className="relative group">
               <Avatar className="h-24 w-24 border">
-                <AvatarImage
-                  src={
-                    (user?.avatar ? pb.files.getURL(user, user.avatar) : '') ||
-                    `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}`
-                  }
-                />
+                {user?.avatar && <AvatarImage src={user.avatar} />}
                 <AvatarFallback>
                   {user?.email?.substring(0, 2).toUpperCase()}
                 </AvatarFallback>

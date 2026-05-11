@@ -40,6 +40,7 @@ import {
   Camera,
   Loader2,
   Gavel,
+  Radar,
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
@@ -69,7 +70,7 @@ import {
 import { Button } from '@/components/ui/button'
 import logoImg from '@/assets/editedimage_1769630541473-88067.png'
 import { useAuth } from '@/hooks/use-auth'
-import pb from '@/lib/pocketbase/client'
+import supabase from '@/lib/supabase/client'
 import { useToast } from '@/hooks/use-toast'
 
 // Modals & Search
@@ -88,6 +89,7 @@ const NAV_ITEMS = [
   { label: 'Tarefas', icon: CheckSquare, path: '/tarefas' },
   { label: 'Relatórios', icon: BarChart3, path: '/relatorios' },
   { label: 'Leilões', icon: Gavel, path: '/leiloes' },
+  { label: 'Radar VIP', icon: Radar, path: '/radar-vip' },
   { label: 'Tags', icon: TagIcon, path: '/tags' },
   { label: 'Modelos', icon: FileText, path: '/modelos' },
   { label: 'Configurações', icon: Settings, path: '/configuracoes' },
@@ -168,12 +170,7 @@ function AppSidebarContent({
           }}
         >
           <Avatar className="h-9 w-9 border border-secondary shrink-0">
-            <AvatarImage
-              src={
-                (user?.avatar ? pb.files.getURL(user, user.avatar) : '') ||
-                `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}`
-              }
-            />
+            {user?.avatar && <AvatarImage src={user.avatar} />}
             <AvatarFallback>
               {user?.email?.substring(0, 2).toUpperCase()}
             </AvatarFallback>
@@ -241,11 +238,23 @@ function TopHeader({
     try {
       const file = event.target.files?.[0]
       if (!file) return
+      if (!user) return
 
       setUploading(true)
-      const formData = new FormData()
-      formData.append('avatar', file)
-      await pb.collection('users').update(user.id, formData)
+      const extension = file.name.split('.').pop() || 'jpg'
+      const path = `${user.id}/avatar.${extension}`
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(path, file, { upsert: true })
+
+      if (uploadError) throw uploadError
+
+      const { data } = supabase.storage.from('avatars').getPublicUrl(path)
+      const { error: updateError } = await supabase.auth.updateUser({
+        data: { avatar_url: data.publicUrl },
+      })
+
+      if (updateError) throw updateError
 
       toast({
         title: 'Foto atualizada',
@@ -398,12 +407,7 @@ function TopHeader({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="h-8 w-8 cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all">
-              <AvatarImage
-                src={
-                  (user?.avatar ? pb.files.getURL(user, user.avatar) : '') ||
-                  `https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${user?.id}`
-                }
-              />
+              {user?.avatar && <AvatarImage src={user.avatar} />}
               <AvatarFallback>
                 {user?.email?.substring(0, 2).toUpperCase()}
               </AvatarFallback>

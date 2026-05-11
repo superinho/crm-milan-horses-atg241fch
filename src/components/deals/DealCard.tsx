@@ -13,7 +13,7 @@ import { ptBR } from 'date-fns/locale'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -116,9 +116,6 @@ export function DealCard({
           {deal.contact && (
             <div className="flex items-center gap-2 pt-1">
               <Avatar className="h-5 w-5">
-                <AvatarImage
-                  src={`https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${deal.contact.id}`}
-                />
                 <AvatarFallback className="text-[8px]">
                   {deal.contact.name.substring(0, 2).toUpperCase()}
                 </AvatarFallback>

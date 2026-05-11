@@ -1,50 +1,78 @@
-import pb from '@/lib/pocketbase/client'
+import supabase from '@/lib/supabase/client'
+
+const db = supabase as any
 
 export type Task = {
   id: string
   title: string
   description?: string
+  type?: string
+  contact_id?: string | null
+  deal_id?: string | null
   due_date: string
   is_completed: boolean
+  has_reminder?: boolean
+  created_at?: string
   created: string
 }
 
+const mapTask = (task: any): Task => ({
+  ...task,
+  is_completed: Boolean(task.is_completed),
+  created: task.created_at,
+})
+
 export const tasksService = {
   async getTasks() {
-    const items = await pb.collection('tasks').getFullList({ sort: 'due_date' })
-    return items.map((t) => ({
-      ...t,
-      is_completed: t.completed,
-    })) as unknown as Task[]
+    const { data, error } = await db
+      .from('tasks')
+      .select('*')
+      .order('due_date', { ascending: true })
+
+    if (error) throw error
+    return (data || []).map(mapTask)
   },
 
   async createTask(task: any) {
-    const t = await pb.collection('tasks').create({
+    const payload = {
       title: task.title,
-      description: task.description,
+      description: task.description || null,
+      type: task.type || 'Outro',
+      contact_id: task.contact_id || null,
+      deal_id: task.deal_id || null,
       due_date: task.due_date,
-      completed: task.is_completed || false,
-    })
-    return { ...t, is_completed: t.completed } as unknown as Task
+      is_completed: task.is_completed || false,
+      has_reminder: task.has_reminder || false,
+    }
+
+    const { data, error } = await db
+      .from('tasks')
+      .insert(payload)
+      .select()
+      .single()
+
+    if (error) throw error
+    return mapTask(data)
   },
 
   async updateTask(id: string, updates: any) {
-    const payload: any = { ...updates }
-    if (updates.is_completed !== undefined) {
-      payload.completed = updates.is_completed
-    }
-    const t = await pb.collection('tasks').update(id, payload)
-    return { ...t, is_completed: t.completed } as unknown as Task
+    const { data, error } = await db
+      .from('tasks')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) throw error
+    return mapTask(data)
   },
 
   async deleteTask(id: string) {
-    await pb.collection('tasks').delete(id)
+    const { error } = await db.from('tasks').delete().eq('id', id)
+    if (error) throw error
   },
 
   async toggleTaskCompletion(id: string, is_completed: boolean) {
-    const t = await pb
-      .collection('tasks')
-      .update(id, { completed: is_completed })
-    return { ...t, is_completed: t.completed } as unknown as Task
+    return this.updateTask(id, { is_completed })
   },
 }

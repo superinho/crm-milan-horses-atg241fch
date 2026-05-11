@@ -208,7 +208,7 @@ export default function Configuracoes() {
                             <div className="flex gap-2">
                               <FormControl>
                                 <Input
-                                  placeholder="https://exemplo.com/logo.png"
+                                  placeholder="URL da logo"
                                   {...field}
                                 />
                               </FormControl>

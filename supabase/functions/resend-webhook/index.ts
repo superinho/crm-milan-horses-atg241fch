@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
     */
 
     const type = event.type
-    const emailId = event.data?.email_id
+    const emailId = event.data?.email_id || event.data?.id
     // Resend doesn't always pass tags in the top level 'data' depending on event type versions,
     // sometimes we need to match by email_id (provider_id).
 
@@ -49,6 +49,39 @@ Deno.serve(async (req) => {
         .from('campaign_sends')
         .update(updateData)
         .eq('provider_id', emailId)
+
+      const { data: outbound } = await supabase
+        .from('outbound_messages')
+        .select('id, campaign_id, contact_id')
+        .eq('provider_message_id', emailId)
+        .maybeSingle()
+
+      if (outbound?.id) {
+        await supabase
+          .from('outbound_messages')
+          .update({
+            status:
+              type === 'email.delivered'
+                ? 'delivered'
+                : type === 'email.opened'
+                  ? 'opened'
+                  : type === 'email.clicked'
+                    ? 'clicked'
+                    : updateData.status || 'sent',
+            response_payload: event,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', outbound.id)
+
+        await supabase.from('message_events').insert({
+          outbound_message_id: outbound.id,
+          campaign_id: outbound.campaign_id,
+          contact_id: outbound.contact_id,
+          provider: 'resend',
+          event_type: type,
+          payload: event,
+        })
+      }
     }
 
     return new Response(JSON.stringify({ received: true }), {

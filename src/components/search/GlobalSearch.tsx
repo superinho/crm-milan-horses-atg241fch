@@ -13,6 +13,7 @@ import {
   Megaphone,
   Search,
   Loader2,
+  Radar,
 } from 'lucide-react'
 
 import {
@@ -152,6 +153,10 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
             <CommandItem onSelect={() => handleSelect('/negocios')}>
               <Briefcase className="mr-2 h-4 w-4" />
               <span>Negócios</span>
+            </CommandItem>
+            <CommandItem onSelect={() => handleSelect('/radar-vip')}>
+              <Radar className="mr-2 h-4 w-4" />
+              <span>Radar VIP</span>
             </CommandItem>
             <CommandItem onSelect={() => handleSelect('/configuracoes')}>
               <Settings className="mr-2 h-4 w-4" />

@@ -1,13 +1,10 @@
 import { dealsService } from './deals'
 import { tasksService, Task } from './tasks'
 import { contactsService } from './contacts'
-import {
-  startOfMonth,
-  endOfMonth,
-  subMonths,
-  getMonth,
-  getDate,
-} from 'date-fns'
+import { settingsService } from './settings'
+import supabase from '@/lib/supabase/client'
+
+const db = supabase as any
 
 export interface DashboardData {
   goal: {
@@ -38,18 +35,23 @@ export const dashboardService = {
   async getDashboardData(): Promise<DashboardData> {
     const now = new Date()
 
-    const allTasks = await tasksService.getTasks()
-    const allDeals = await dealsService.getDeals()
+    const [allTasks, allDeals, settings] = await Promise.all([
+      tasksService.getTasks(),
+      dealsService.getDeals(),
+      settingsService.getSettings(),
+    ])
 
     // 1. Goal
     const currentRevenue = allDeals
       .filter((d) => d.stage === 'Fechado')
       .reduce((acc, d) => acc + d.value, 0)
-    const targetRevenue = 100000 // mock goal for now
+    const targetRevenue = Number(settings.monthly_sales_goal || 0)
     const goal = {
       current: currentRevenue,
       target: targetRevenue,
-      percentage: Math.min((currentRevenue / targetRevenue) * 100, 100),
+      percentage: targetRevenue
+        ? Math.min((currentRevenue / targetRevenue) * 100, 100)
+        : 0,
     }
 
     // 2. Urgent Tasks
@@ -95,15 +97,41 @@ export const dashboardService = {
       ).length,
     }
 
-    // 5. Comparison (mocked for simplicity due to lack of historical purchases)
-    const salesComparison = [
-      { name: 'Jan', current: 4000, previous: 2400 },
-      { name: 'Fev', current: 3000, previous: 1398 },
-      { name: 'Mar', current: 2000, previous: 9800 },
-      { name: 'Abr', current: 2780, previous: 3908 },
-      { name: 'Mai', current: 1890, previous: 4800 },
-      { name: 'Jun', current: 2390, previous: 3800 },
-    ]
+    // 5. Comparison from real Smart Leilões purchases
+    const comparisonStart = new Date(now.getFullYear() - 1, now.getMonth() - 5, 1)
+    const { data: purchases, error: purchasesError } = await db
+      .from('purchases')
+      .select('value,date')
+      .gte('date', comparisonStart.toISOString().slice(0, 10))
+
+    if (purchasesError) throw purchasesError
+
+    const monthFormatter = new Intl.DateTimeFormat('pt-BR', { month: 'short' })
+    const salesComparison = Array.from({ length: 6 }, (_, index) => {
+      const monthDate = new Date(now.getFullYear(), now.getMonth() - 5 + index, 1)
+      const previousDate = new Date(
+        monthDate.getFullYear() - 1,
+        monthDate.getMonth(),
+        1,
+      )
+
+      const sumFor = (date: Date) =>
+        (purchases || [])
+          .filter((purchase: any) => {
+            const purchaseDate = new Date(`${purchase.date}T00:00:00`)
+            return (
+              purchaseDate.getFullYear() === date.getFullYear() &&
+              purchaseDate.getMonth() === date.getMonth()
+            )
+          })
+          .reduce((sum: number, purchase: any) => sum + Number(purchase.value || 0), 0)
+
+      return {
+        name: monthFormatter.format(monthDate),
+        current: sumFor(monthDate),
+        previous: sumFor(previousDate),
+      }
+    })
 
     return {
       goal,

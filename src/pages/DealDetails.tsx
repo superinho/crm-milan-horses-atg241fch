@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { useToast } from '@/hooks/use-toast'
 import { dealsService, Deal } from '@/services/deals'
 import { DealTimeline } from '@/components/deals/DealTimeline'
@@ -140,9 +140,6 @@ export default function DealDetails() {
                   className="flex items-center gap-3 group"
                 >
                   <Avatar className="h-10 w-10 border border-muted group-hover:scale-105 transition-transform">
-                    <AvatarImage
-                      src={`https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${deal.contact.id}`}
-                    />
                     <AvatarFallback>
                       {deal.contact.name.substring(0, 2).toUpperCase()}
                     </AvatarFallback>

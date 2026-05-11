@@ -14,7 +14,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { ReportData } from '@/services/reports'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 interface TopCustomersListProps {
   data: ReportData['topCustomers']
@@ -56,9 +56,6 @@ export function TopCustomersList({ data }: TopCustomersListProps) {
                       {index + 1}
                     </span>
                     <Avatar className="h-8 w-8 border border-muted">
-                      <AvatarImage
-                        src={`https://img.usecurling.com/ppl/thumbnail?gender=male&seed=${customer.id}`}
-                      />
                       <AvatarFallback className="text-xs bg-primary/10 text-primary">
                         {customer.name.substring(0, 2).toUpperCase()}
                       </AvatarFallback>

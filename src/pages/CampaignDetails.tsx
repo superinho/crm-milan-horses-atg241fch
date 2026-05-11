@@ -5,18 +5,20 @@ import {
   Calendar,
   Mail,
   MessageSquare,
-  Users,
   CheckCircle2,
   MousePointerClick,
   Eye,
-  Send,
   Loader2,
   RefreshCcw,
+  Rocket,
+  Send,
+  ShieldCheck,
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   Card,
   CardContent,
@@ -31,19 +33,9 @@ import { campaignsService, Campaign } from '@/services/campaigns'
 import { WhatsAppSender } from '@/components/campaigns/WhatsAppSender'
 import {
   ChartContainer,
-  ChartTooltip,
   ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
 } from '@/components/ui/chart'
-import {
-  Bar,
-  BarChart,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts'
+import { Bar, BarChart, XAxis, YAxis, Tooltip } from 'recharts'
 
 export default function CampaignDetails() {
   const { id } = useParams<{ id: string }>()
@@ -52,14 +44,18 @@ export default function CampaignDetails() {
   const [campaign, setCampaign] = useState<Campaign | null>(null)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
+  const [testPhone, setTestPhone] = useState('11999427752')
+  const [action, setAction] = useState<
+    'test' | 'pilot' | 'full' | null
+  >(null)
 
   const fetchCampaign = async () => {
     if (!id) return
     try {
       const data = await campaignsService.getCampaignById(id)
       setCampaign(data)
-    } catch (error) {
-      console.error(error)
+    } catch (_error) {
+      console.error(_error)
       toast({
         title: 'Erro',
         description: 'Não foi possível carregar a campanha.',
@@ -69,6 +65,7 @@ export default function CampaignDetails() {
     } finally {
       setLoading(false)
       setRefreshing(false)
+      setAction(null)
     }
   }
 
@@ -76,16 +73,79 @@ export default function CampaignDetails() {
     fetchCampaign()
   }, [id])
 
+  const refreshSoon = () => setTimeout(fetchCampaign, 2000)
+
+  const handleTestSend = async () => {
+    try {
+      if (!id) return
+      setAction('test')
+      await campaignsService.sendWhatsAppTest(id, testPhone)
+      toast({
+        title: 'Teste enviado',
+        description: 'Mensagem teste enviada via BotConversa.',
+        variant: 'success',
+      })
+    } catch (error: any) {
+      toast({
+        title: 'Erro no teste',
+        description: error?.message || 'Não foi possível enviar o teste.',
+        variant: 'destructive',
+      })
+    } finally {
+      setAction(null)
+    }
+  }
+
+  const handlePilotProcessing = async () => {
+    try {
+      setAction('pilot')
+      if (id) await campaignsService.processCampaign(id, { limit: 10, mode: 'pilot' })
+      toast({
+        title: 'Piloto enviado',
+        description: 'Até 10 destinatários foram processados para validação.',
+        variant: 'success',
+      })
+      refreshSoon()
+    } catch (error: any) {
+      toast({
+        title: 'Erro no piloto',
+        description: error?.message || 'Falha ao enviar campanha piloto.',
+        variant: 'destructive',
+      })
+      setAction(null)
+    }
+  }
+
+  const handleFullProcessing = async () => {
+    try {
+      setAction('full')
+      if (id) await campaignsService.processCampaign(id, { mode: 'full' })
+      toast({
+        title: 'Campanha completa enviada',
+        description: 'Todos os destinatários pendentes foram processados.',
+        variant: 'success',
+      })
+      refreshSoon()
+    } catch (error: any) {
+      toast({
+        title: 'Erro no disparo',
+        description: error?.message || 'Falha ao enviar campanha completa.',
+        variant: 'destructive',
+      })
+      setAction(null)
+    }
+  }
+
   const handleManualProcessing = async () => {
     try {
       setRefreshing(true)
-      await campaignsService.triggerProcessing()
+      if (id) await campaignsService.processCampaign(id)
       toast({
         title: 'Processamento iniciado',
         description: 'Verificando cronograma e gerando envios...',
       })
-      setTimeout(fetchCampaign, 2000) // Delay to allow DB update
-    } catch (error) {
+      refreshSoon()
+    } catch (_error) {
       setRefreshing(false)
       toast({
         title: 'Erro',
@@ -115,6 +175,8 @@ export default function CampaignDetails() {
     open_rate: 0,
     click_rate: 0,
   }
+  const audienceCount = campaign.audience_filters?.contact_ids?.length || 0
+  const hasWhatsapp = (campaign.channels || []).includes('whatsapp')
 
   const chartData = [
     { name: 'Enviados', value: stats.emails_sent, fill: 'hsl(var(--primary))' },
@@ -182,6 +244,94 @@ export default function CampaignDetails() {
           </Button>
         </div>
       </div>
+
+      <Card className="border-t-4 border-t-primary">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <ShieldCheck className="h-5 w-5 text-primary" />
+            Aprovação de disparo
+          </CardTitle>
+          <CardDescription>
+            Envie um teste para você, valide um piloto pequeno e só então
+            processe a campanha completa.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4 xl:grid-cols-[1.1fr_2fr]">
+          <div className="space-y-2">
+            <div className="text-sm text-muted-foreground">Destinatários alvo</div>
+            <div className="text-3xl font-semibold text-primary">
+              {audienceCount || 'Todos'}
+            </div>
+            <div className="text-sm text-muted-foreground">
+              Canais: {(campaign.channels || []).join(', ') || 'não definidos'}
+            </div>
+          </div>
+
+          <div className="grid gap-3 lg:grid-cols-3">
+            <div className="space-y-2 rounded-md border p-3">
+              <div className="text-sm font-medium">1. Teste interno</div>
+              <Input
+                value={testPhone}
+                onChange={(event) => setTestPhone(event.target.value)}
+                placeholder="WhatsApp de teste"
+                disabled={!hasWhatsapp || action === 'test'}
+              />
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={handleTestSend}
+                disabled={!hasWhatsapp || !testPhone || Boolean(action)}
+              >
+                {action === 'test' ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="mr-2 h-4 w-4" />
+                )}
+                Enviar teste
+              </Button>
+            </div>
+
+            <div className="space-y-2 rounded-md border p-3">
+              <div className="text-sm font-medium">2. Piloto real</div>
+              <p className="min-h-10 text-xs text-muted-foreground">
+                Envia para até 10 contatos pendentes e mantém o restante em fila.
+              </p>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={handlePilotProcessing}
+                disabled={Boolean(action)}
+              >
+                {action === 'pilot' ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Rocket className="mr-2 h-4 w-4" />
+                )}
+                Enviar piloto
+              </Button>
+            </div>
+
+            <div className="space-y-2 rounded-md border p-3">
+              <div className="text-sm font-medium">3. Campanha completa</div>
+              <p className="min-h-10 text-xs text-muted-foreground">
+                Processa todos os destinatários que ainda estiverem pendentes.
+              </p>
+              <Button
+                className="w-full"
+                onClick={handleFullProcessing}
+                disabled={Boolean(action)}
+              >
+                {action === 'full' ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <ShieldCheck className="mr-2 h-4 w-4" />
+                )}
+                Aprovar e enviar
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Metrics Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -253,7 +403,7 @@ export default function CampaignDetails() {
           <TabsTrigger value="overview">Visão Geral</TabsTrigger>
           <TabsTrigger
             value="whatsapp"
-            disabled={!campaign.channels.includes('whatsapp')}
+            disabled={!(campaign.channels || []).includes('whatsapp')}
           >
             Envio WhatsApp{' '}
             {stats.whatsapp_pending > 0 && (
@@ -307,7 +457,7 @@ export default function CampaignDetails() {
                     Segmentos Alvo
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {campaign.audience_filters.segments.length > 0 ? (
+                    {campaign.audience_filters?.segments?.length > 0 ? (
                       campaign.audience_filters.segments.map((seg) => (
                         <Badge key={seg} variant="secondary">
                           {seg}
@@ -325,7 +475,7 @@ export default function CampaignDetails() {
                     Tags Filtradas
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {campaign.audience_filters.tags.length > 0 ? (
+                    {campaign.audience_filters?.tags?.length > 0 ? (
                       campaign.audience_filters.tags.map((tag) => (
                         <Badge key={tag} variant="outline">
                           {tag}
