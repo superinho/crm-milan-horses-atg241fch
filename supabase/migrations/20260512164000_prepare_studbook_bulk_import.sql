@@ -11,6 +11,9 @@ ALTER TABLE studbook_horses
     ADD COLUMN IF NOT EXISTS dam_name TEXT,
     ADD COLUMN IF NOT EXISTS abcch_owner_token TEXT,
     ADD COLUMN IF NOT EXISTS abcch_breeder_token TEXT,
+    ADD COLUMN IF NOT EXISTS abcch_detail_synced_at TIMESTAMP WITH TIME ZONE,
+    ADD COLUMN IF NOT EXISTS abcch_detail_sync_status TEXT,
+    ADD COLUMN IF NOT EXISTS abcch_detail_error TEXT,
     ADD COLUMN IF NOT EXISTS import_batch_id UUID,
     ADD COLUMN IF NOT EXISTS source_checksum TEXT;
 
@@ -33,6 +36,12 @@ ON studbook_horses USING gin (to_tsvector('simple', COALESCE(sire_name, '')));
 
 CREATE INDEX IF NOT EXISTS idx_studbook_horses_dam_name
 ON studbook_horses USING gin (to_tsvector('simple', COALESCE(dam_name, '')));
+
+CREATE INDEX IF NOT EXISTS idx_studbook_horses_detail_synced
+ON studbook_horses (abcch_detail_synced_at);
+
+CREATE INDEX IF NOT EXISTS idx_studbook_horses_detail_status
+ON studbook_horses (abcch_detail_sync_status);
 
 CREATE TABLE IF NOT EXISTS studbook_import_runs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

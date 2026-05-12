@@ -35,6 +35,11 @@ const BATCH_SIZE = Number(env.ABCCH_BATCH_SIZE || 200)
 const REQUEST_DELAY_MS = Number(env.ABCCH_REQUEST_DELAY_MS || 40)
 const REQUEST_TIMEOUT_MS = Number(env.ABCCH_REQUEST_TIMEOUT_MS || 12000)
 const ONLY_MISSING_DETAILS = env.ABCCH_ONLY_MISSING_DETAILS !== 'false'
+const MAX_TOKENS = Number(env.ABCCH_MAX_TOKENS || 0)
+const TOKEN_OFFSET = Number(env.ABCCH_TOKEN_OFFSET || 0)
+const DETAIL_RETRIES = Number(env.ABCCH_DETAIL_RETRIES || 2)
+const TOKEN_BUCKETS = Number(env.ABCCH_TOKEN_BUCKETS || 1)
+const TOKEN_BUCKET = Number(env.ABCCH_TOKEN_BUCKET || 0)
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
   throw new Error(
@@ -73,7 +78,7 @@ const supabaseHeaders = {
   'Content-Type': 'application/json',
 }
 
-const supabaseRequest = async (path, init = {}) => {
+const supabaseRequestOnce = async (path, init = {}) => {
   const url = `${SUPABASE_URL.replace(/\/$/, '')}/rest/v1/${path}`
   const res = await fetch(url, {
     ...init,
@@ -87,6 +92,19 @@ const supabaseRequest = async (path, init = {}) => {
     throw new Error(`${res.status} ${res.statusText} ${path}: ${text}`)
   }
   return text ? JSON.parse(text) : null
+}
+
+const supabaseRequest = async (path, init = {}) => {
+  let lastError = null
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    try {
+      return await supabaseRequestOnce(path, init)
+    } catch (error) {
+      lastError = error
+      await sleep(1000 * (attempt + 1))
+    }
+  }
+  throw lastError
 }
 
 const createImportRun = async () => {
@@ -139,7 +157,7 @@ const fetchAllTokens = async () => {
   const tokens = []
   const pageSize = 1000
   const detailFilter = ONLY_MISSING_DETAILS
-    ? '&or=(breed.is.null,microchip.is.null,abcch_breeder_token.is.null)'
+    ? '&abcch_detail_synced_at=is.null&or=(abcch_detail_sync_status.is.null,abcch_detail_sync_status.eq.pending)'
     : ''
   for (let from = 0; ; from += pageSize) {
     const to = from + pageSize - 1
@@ -155,7 +173,20 @@ const fetchAllTokens = async () => {
     tokens.push(...rows.map((row) => row.abcch_token).filter(Boolean))
     if (rows.length < pageSize) break
   }
-  return [...new Set(tokens)]
+  const uniqueTokens = [...new Set(tokens)]
+  const bucketedTokens =
+    TOKEN_BUCKETS > 1
+      ? uniqueTokens.filter((token) => {
+          const hash = Number.parseInt(
+            crypto.createHash('sha1').update(token).digest('hex').slice(0, 8),
+            16,
+          )
+          return hash % TOKEN_BUCKETS === TOKEN_BUCKET
+        })
+      : uniqueTokens
+  const offsetTokens =
+    TOKEN_OFFSET > 0 ? bucketedTokens.slice(TOKEN_OFFSET) : bucketedTokens
+  return MAX_TOKENS > 0 ? offsetTokens.slice(0, MAX_TOKENS) : offsetTokens
 }
 
 const upsertPeople = async (peopleByKey) => {
@@ -203,6 +234,9 @@ const HORSE_COLUMNS = [
   'owner_id',
   'abcch_owner_token',
   'abcch_breeder_token',
+  'abcch_detail_synced_at',
+  'abcch_detail_sync_status',
+  'abcch_detail_error',
   'birthplace',
   'sire_name',
   'dam_name',
@@ -247,6 +281,9 @@ const detailToHorse = (detail, peopleIds, runId) => {
     owner_id: ownerKey ? peopleIds.get(ownerKey) || null : null,
     abcch_owner_token: textOrNull(detail.CdTokenOwner),
     abcch_breeder_token: textOrNull(detail.CdTokenBreeder),
+    abcch_detail_synced_at: new Date().toISOString(),
+    abcch_detail_sync_status: 'synced',
+    abcch_detail_error: null,
     birthplace: textOrNull(detail.DsFoalBirthplace),
     sire_name: textOrNull(detail.NmAnimalSire),
     dam_name: textOrNull(detail.NmAnimalDam),
@@ -331,7 +368,24 @@ const fetchDetailsChunk = async (tokens) => {
       const token = tokens[cursor]
       cursor += 1
       try {
-        details.push(await abcchGet(`/animais/${encodeURIComponent(token)}`))
+        let detail = null
+        let lastError = null
+        for (let attempt = 0; attempt <= DETAIL_RETRIES; attempt += 1) {
+          try {
+            detail = await abcchGet(`/animais/${encodeURIComponent(token)}`)
+            break
+          } catch (error) {
+            lastError = error
+            if (attempt < DETAIL_RETRIES) {
+              await sleep(500 * (attempt + 1))
+            }
+          }
+        }
+        if (detail) {
+          details.push(detail)
+        } else {
+          throw lastError
+        }
       } catch (error) {
         errors.push({ token, message: error.message })
       }
