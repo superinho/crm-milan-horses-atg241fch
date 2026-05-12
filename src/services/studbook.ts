@@ -214,6 +214,25 @@ const horseListColumns = [
   'updated_at',
 ].join(',')
 
+const networkHorseColumns = [
+  'id',
+  'name',
+  'registration',
+  'original_registration',
+  'ueln',
+  'microchip',
+  'sex',
+  'birth_year',
+  'age_years',
+  'is_reproductive_mare',
+  'data_quality_score',
+  'offspring_count',
+  'breeder_name',
+  'owner_name',
+  'sire_name',
+  'dam_name',
+].join(',')
+
 const searchStopwords = new Set([
   'a',
   'as',
@@ -492,6 +511,23 @@ const emptyNetworkOverview: StudbookNetworkOverview = {
   },
 }
 
+const isActionableNetworkName = (value?: string | null) => {
+  const normalized = normalizeName(value)
+  if (!normalized) return false
+
+  return !new Set([
+    'nao cadastrada',
+    'nao cadastrado',
+    'nao informada',
+    'nao informado',
+    'pendente',
+    'pendente abcch',
+    'sem registro',
+    'desconhecido',
+    'desconhecida',
+  ]).has(normalized)
+}
+
 const entityNameColumnByKind: Record<StudbookNetworkKind, keyof StudbookHorse> =
   {
     breeder: 'breeder_name',
@@ -591,6 +627,193 @@ const networkRowsToOverview = (
       dams: grouped.dams[0]?.total_entities || grouped.dams.length,
     },
   }
+}
+
+type NetworkAggregate = StudbookNetworkEntity & {
+  connectedNames: Set<string>
+  qualityTotal: number
+}
+
+const emptyNetworkGroup = () => new Map<string, NetworkAggregate>()
+
+const addToNetworkGroup = (
+  group: Map<string, NetworkAggregate>,
+  kind: StudbookNetworkKind,
+  name: string | null | undefined,
+  row: StudbookHorse,
+  recentCutoff: number,
+  connectedName?: string | null,
+) => {
+  if (!isActionableNetworkName(name)) return
+
+  const key = normalizeName(name)
+  const current =
+    group.get(key) ||
+    ({
+      entity_id: key,
+      entity_kind: kind,
+      name: String(name || '').trim(),
+      horse_count: 0,
+      female_count: 0,
+      young_count: 0,
+      active_mare_count: 0,
+      connected_owner_count: 0,
+      avg_quality: 0,
+      latest_birth_year: null,
+      recent_horse_count: 0,
+      crm_contact_count: 0,
+      total_entities: 0,
+      connectedNames: new Set<string>(),
+      qualityTotal: 0,
+    } satisfies NetworkAggregate)
+
+  const sex = normalizeName(row.sex)
+  const birthYear = Number(row.birth_year || 0)
+
+  current.horse_count += 1
+  if (sex.includes('f') || sex.includes('egua')) current.female_count += 1
+  if (typeof row.age_years === 'number' && row.age_years <= 6) {
+    current.young_count += 1
+  }
+  if (row.is_reproductive_mare) current.active_mare_count += 1
+  if (birthYear) {
+    current.latest_birth_year = Math.max(
+      Number(current.latest_birth_year || 0),
+      birthYear,
+    )
+    if (birthYear >= recentCutoff)
+      current.recent_horse_count = Number(current.recent_horse_count || 0) + 1
+  }
+  current.qualityTotal += Number(row.data_quality_score || 0)
+
+  if (connectedName && isActionableNetworkName(connectedName)) {
+    current.connectedNames.add(normalizeName(connectedName))
+    current.connected_owner_count = current.connectedNames.size
+  }
+
+  group.set(key, current)
+}
+
+const finalizeNetworkGroup = (
+  group: Map<string, NetworkAggregate>,
+  rankMode: StudbookFilters['rankMode'],
+) => {
+  const rows = [...group.values()].map((item) => {
+    const { connectedNames: _connectedNames, qualityTotal, ...entity } = item
+    return {
+      ...entity,
+      avg_quality: entity.horse_count
+        ? Number((qualityTotal / entity.horse_count).toFixed(1))
+        : 0,
+      total_entities: group.size,
+    }
+  })
+
+  return rows
+    .sort((a, b) => {
+      const primary =
+        rankMode === 'recent'
+          ? Number(b.recent_horse_count || 0) -
+            Number(a.recent_horse_count || 0)
+          : b.horse_count - a.horse_count
+      if (primary !== 0) return primary
+      return (
+        Number(b.latest_birth_year || 0) - Number(a.latest_birth_year || 0) ||
+        b.horse_count - a.horse_count ||
+        a.name.localeCompare(b.name, 'pt-BR')
+      )
+    })
+    .slice(0, 6)
+}
+
+const networkOverviewFromHorses = (
+  rows: StudbookHorse[],
+  rankMode: StudbookFilters['rankMode'],
+  recentYears?: number,
+): StudbookNetworkOverview => {
+  const breeders = emptyNetworkGroup()
+  const owners = emptyNetworkGroup()
+  const sires = emptyNetworkGroup()
+  const dams = emptyNetworkGroup()
+  const recentWindow = recentYears && recentYears > 0 ? recentYears : 3
+  const recentCutoff = new Date().getFullYear() - recentWindow + 1
+
+  rows.forEach((row) => {
+    addToNetworkGroup(
+      breeders,
+      'breeder',
+      row.breeder_name,
+      row,
+      recentCutoff,
+      row.owner_name,
+    )
+    addToNetworkGroup(
+      owners,
+      'owner',
+      row.owner_name,
+      row,
+      recentCutoff,
+      row.breeder_name,
+    )
+    addToNetworkGroup(
+      sires,
+      'sire',
+      row.sire_name,
+      row,
+      recentCutoff,
+      row.owner_name,
+    )
+    addToNetworkGroup(
+      dams,
+      'dam',
+      row.dam_name,
+      row,
+      recentCutoff,
+      row.owner_name,
+    )
+  })
+
+  return {
+    breeders: finalizeNetworkGroup(breeders, rankMode),
+    owners: finalizeNetworkGroup(owners, rankMode),
+    sires: finalizeNetworkGroup(sires, rankMode),
+    dams: finalizeNetworkGroup(dams, rankMode),
+    stats: {
+      breeders: breeders.size,
+      owners: owners.size,
+      sires: sires.size,
+      dams: dams.size,
+    },
+  }
+}
+
+const filteredNetworkOverview = async (filters: StudbookFilters) => {
+  const pageSize = 1000
+  let from = 0
+  const rows: StudbookHorse[] = []
+
+  while (true) {
+    const { data, error } = await applyFilters(
+      db
+        .from('studbook_horses_enriched')
+        .select(networkHorseColumns)
+        .order('id', { ascending: true })
+        .range(from, from + pageSize - 1),
+      filters,
+    )
+
+    if (error) throw error
+
+    rows.push(...((data || []) as StudbookHorse[]))
+    if (!data || data.length < pageSize) break
+    from += pageSize
+  }
+
+  return networkOverviewFromHorses(
+    rows,
+    filters.rankMode || 'volume',
+    filters.recentYears,
+  )
 }
 
 const networkRpcPayload = (filters: StudbookFilters = {}) => ({
@@ -832,6 +1055,18 @@ export const studbookService = {
   async getNetworkOverview(
     filters: StudbookFilters = {},
   ): Promise<StudbookNetworkOverview> {
+    const shouldUseFilteredRows =
+      hasActiveHorseFilters(filters) || filters.rankMode === 'recent'
+
+    if (shouldUseFilteredRows) {
+      try {
+        return await filteredNetworkOverview(filters)
+      } catch (error) {
+        console.warn('Filtered Studbook rows unavailable.', error)
+        return emptyNetworkOverview
+      }
+    }
+
     try {
       const { data, error } = await db.rpc(
         'get_studbook_network_rankings',
