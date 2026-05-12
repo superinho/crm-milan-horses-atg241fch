@@ -1,4 +1,10 @@
-import { useState, useEffect, useRef, type ChangeEvent } from 'react'
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  type ChangeEvent,
+} from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -67,10 +73,20 @@ import {
   Trash2,
   MapPin,
   Upload,
+  RefreshCcw,
+  Users,
+  UserCheck,
+  UserX,
+  Send,
 } from 'lucide-react'
 import { cn, getContrastColor } from '@/lib/utils'
 import { ContactForm } from '@/components/contacts/ContactForm'
-import { contactsService, type Contact, type Tag } from '@/services/contacts'
+import {
+  contactsService,
+  type Contact,
+  type ContactOverview,
+  type Tag,
+} from '@/services/contacts'
 import { useToast } from '@/hooks/use-toast'
 import { useRealtime } from '@/hooks/use-realtime'
 import { TagSelector } from '@/components/tags/TagSelector'
@@ -80,6 +96,11 @@ import {
 } from '@/components/contacts/AdvancedFilter'
 import { ContactProfileSheet } from '@/components/contacts/ContactProfileSheet'
 import { birthdaysImportService } from '@/services/birthdays-import'
+import {
+  smartLeiloesSyncService,
+  type SmartLeiloesSyncRun,
+  type SmartLeiloesSyncSummary,
+} from '@/services/smartleiloes-sync'
 
 const initialFilters: FilterState = {
   tags: [],
@@ -94,6 +115,43 @@ const initialFilters: FilterState = {
   hasWhatsapp: false,
 }
 
+const emptyOverview: ContactOverview = {
+  total: 0,
+  buyers: 0,
+  inactive: 0,
+  active: 0,
+  withWhatsapp: 0,
+  totalInvested: 0,
+  avgTicket: 0,
+}
+
+const formatCompactNumber = (value: number) =>
+  new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 }).format(value)
+
+const formatCurrency = (value: number) =>
+  new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    maximumFractionDigits: 0,
+  }).format(value)
+
+const formatDateTime = (date?: string | null) => {
+  if (!date) return 'Ainda não sincronizado'
+
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(date))
+}
+
+const getSyncSavedCount = (summary?: SmartLeiloesSyncSummary | null) =>
+  Object.values(summary || {}).reduce(
+    (total, counter) => total + Number(counter?.saved || 0),
+    0,
+  )
+
 export default function Contatos() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filters, setFilters] = useState<FilterState>(initialFilters)
@@ -107,6 +165,11 @@ export default function Contatos() {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [overview, setOverview] = useState<ContactOverview>(emptyOverview)
+  const [overviewLoading, setOverviewLoading] = useState(true)
+  const [syncingSmartLeiloes, setSyncingSmartLeiloes] = useState(false)
+  const [latestSyncRun, setLatestSyncRun] =
+    useState<SmartLeiloesSyncRun | null>(null)
   const [selectedContactId, setSelectedContactId] = useState<string | null>(
     null,
   )
@@ -127,8 +190,33 @@ export default function Contatos() {
     setProfileOpen(true)
   }
 
+  const fetchOverview = useCallback(async () => {
+    setOverviewLoading(true)
+    try {
+      setOverview(await contactsService.getContactOverview())
+    } catch (error) {
+      console.error(error)
+      toast({
+        variant: 'destructive',
+        title: 'Erro',
+        description: 'Falha ao carregar visão geral de contatos.',
+      })
+    } finally {
+      setOverviewLoading(false)
+    }
+  }, [toast])
+
+  const fetchLatestSyncRun = useCallback(async () => {
+    try {
+      const [latestRun] = await smartLeiloesSyncService.getLatestRuns(1)
+      setLatestSyncRun(latestRun || null)
+    } catch (error) {
+      console.error(error)
+    }
+  }, [])
+
   // Fetch Contacts
-  const fetchContacts = async () => {
+  const fetchContacts = useCallback(async () => {
     setLoading(true)
     try {
       const { data, count, error } = await contactsService.getContacts({
@@ -170,7 +258,7 @@ export default function Contatos() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [currentPage, filters, searchTerm, sortConfig, toast])
 
   useEffect(() => {
     // Debounce search
@@ -178,10 +266,16 @@ export default function Contatos() {
       fetchContacts()
     }, 500)
     return () => clearTimeout(timer)
-  }, [currentPage, searchTerm, filters, sortConfig])
+  }, [fetchContacts])
+
+  useEffect(() => {
+    fetchOverview()
+    fetchLatestSyncRun()
+  }, [fetchOverview, fetchLatestSyncRun])
 
   useRealtime('contacts', () => {
     fetchContacts()
+    fetchOverview()
   })
 
   const totalPages = Math.ceil(totalCount / itemsPerPage)
@@ -238,6 +332,7 @@ export default function Contatos() {
         description: `O contato ${contactToDelete.name} foi removido.`,
       })
       fetchContacts()
+      fetchOverview()
     } catch (error) {
       console.error(error)
       toast({
@@ -276,10 +371,49 @@ export default function Contatos() {
     setCurrentPage(1)
   }
 
+  const applyOverviewFilter = (nextFilters: Partial<FilterState>) => {
+    setSearchTerm('')
+    setFilters({
+      ...initialFilters,
+      ...nextFilters,
+    })
+    setCurrentPage(1)
+  }
+
   const clearAllFilters = () => {
     setSearchTerm('')
     setFilters({ ...initialFilters })
     setCurrentPage(1)
+  }
+
+  const handleSmartLeiloesSync = async () => {
+    setSyncingSmartLeiloes(true)
+    try {
+      const summary = await smartLeiloesSyncService.syncAll()
+      const savedCount = getSyncSavedCount(summary)
+
+      toast({
+        title: 'Smart Leilões sincronizado',
+        description: `${formatCompactNumber(savedCount)} registros foram criados ou atualizados na base.`,
+        variant: 'success',
+      })
+
+      await Promise.all([
+        fetchContacts(),
+        fetchOverview(),
+        fetchLatestSyncRun(),
+      ])
+    } catch (error: any) {
+      console.error(error)
+      toast({
+        title: 'Erro ao sincronizar Smart Leilões',
+        description:
+          error?.message || 'Não foi possível concluir a sincronização agora.',
+        variant: 'destructive',
+      })
+    } finally {
+      setSyncingSmartLeiloes(false)
+    }
   }
 
   const handleBirthdayCsvImport = async (
@@ -299,6 +433,7 @@ export default function Contatos() {
         variant: 'success',
       })
       fetchContacts()
+      fetchOverview()
     } catch (error: any) {
       console.error(error)
       toast({
@@ -336,6 +471,20 @@ export default function Contatos() {
             onChange={handleBirthdayCsvImport}
           />
           <Button
+            type="button"
+            onClick={handleSmartLeiloesSync}
+            disabled={syncingSmartLeiloes}
+            className="bg-primary text-white shadow-md hover:bg-primary/90"
+          >
+            <RefreshCcw
+              className={cn(
+                'mr-2 h-4 w-4',
+                syncingSmartLeiloes && 'animate-spin',
+              )}
+            />
+            {syncingSmartLeiloes ? 'Sincronizando' : 'Sincronizar Smart'}
+          </Button>
+          <Button
             variant="outline"
             onClick={() => birthdayFileInputRef.current?.click()}
             disabled={importingBirthdays}
@@ -366,11 +515,152 @@ export default function Contatos() {
                 onSuccess={() => {
                   setSheetOpen(false)
                   fetchContacts()
+                  fetchOverview()
                 }}
               />
             </SheetContent>
           </Sheet>
         </div>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <Card className="border-border/70 shadow-sm">
+          <CardContent className="p-5">
+            <div className="flex items-start justify-between gap-3">
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-muted-foreground">
+                  Contatos gerais
+                </p>
+                <p className="text-3xl font-bold text-foreground">
+                  {overviewLoading ? (
+                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                  ) : (
+                    formatCompactNumber(overview.total)
+                  )}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Último sync: {formatDateTime(latestSyncRun?.finished_at)}
+                </p>
+              </div>
+              <div className="rounded-full bg-primary/10 p-2 text-primary">
+                <Users className="h-5 w-5" />
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="mt-4 h-8 px-0 text-primary hover:bg-transparent hover:text-primary/80"
+              onClick={clearAllFilters}
+            >
+              Ver base completa
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 shadow-sm">
+          <CardContent className="p-5">
+            <div className="flex items-start justify-between gap-3">
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-muted-foreground">
+                  Compradores
+                </p>
+                <p className="text-3xl font-bold text-foreground">
+                  {overviewLoading ? (
+                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                  ) : (
+                    formatCompactNumber(overview.buyers)
+                  )}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Valor total {formatCurrency(overview.totalInvested)}
+                </p>
+              </div>
+              <div className="rounded-full bg-emerald-500/10 p-2 text-emerald-700">
+                <UserCheck className="h-5 w-5" />
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="mt-4 h-8 px-0 text-primary hover:bg-transparent hover:text-primary/80"
+              onClick={() =>
+                applyOverviewFilter({ minPurchases: '1', maxPurchases: '' })
+              }
+            >
+              Filtrar compradores
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 shadow-sm">
+          <CardContent className="p-5">
+            <div className="flex items-start justify-between gap-3">
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-muted-foreground">
+                  Inativos
+                </p>
+                <p className="text-3xl font-bold text-foreground">
+                  {overviewLoading ? (
+                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                  ) : (
+                    formatCompactNumber(overview.inactive)
+                  )}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Sem atividade nos últimos 180 dias
+                </p>
+              </div>
+              <div className="rounded-full bg-amber-500/10 p-2 text-amber-700">
+                <UserX className="h-5 w-5" />
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="mt-4 h-8 px-0 text-primary hover:bg-transparent hover:text-primary/80"
+              onClick={() => applyOverviewFilter({ status: 'inactive' })}
+            >
+              Reativar público
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 shadow-sm">
+          <CardContent className="p-5">
+            <div className="flex items-start justify-between gap-3">
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-muted-foreground">
+                  Prontos para WhatsApp
+                </p>
+                <p className="text-3xl font-bold text-foreground">
+                  {overviewLoading ? (
+                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                  ) : (
+                    formatCompactNumber(overview.withWhatsapp)
+                  )}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Ticket médio {formatCurrency(overview.avgTicket)}
+                </p>
+              </div>
+              <div className="rounded-full bg-sky-500/10 p-2 text-sky-700">
+                <Send className="h-5 w-5" />
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="mt-4 h-8 px-0 text-primary hover:bg-transparent hover:text-primary/80"
+              onClick={() => applyOverviewFilter({ hasWhatsapp: true })}
+            >
+              Ver contatos acionáveis
+            </Button>
+          </CardContent>
+        </Card>
       </div>
 
       <Card className="border-t-4 border-t-primary shadow-sm">

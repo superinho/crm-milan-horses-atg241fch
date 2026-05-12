@@ -84,6 +84,16 @@ export type GetContactsParams = {
   lastContactRange?: any
 }
 
+export type ContactOverview = {
+  total: number
+  buyers: number
+  inactive: number
+  active: number
+  withWhatsapp: number
+  totalInvested: number
+  avgTicket: number
+}
+
 const mapContact = (contact: any): Contact => {
   const tags =
     contact.contact_tags
@@ -160,6 +170,78 @@ const tagIdsByNames = async (names: string[]) => {
 export const contactsService = {
   async getTags() {
     return tagsService.getTags()
+  },
+
+  async getContactOverview(): Promise<ContactOverview> {
+    const pageSize = 1000
+    let from = 0
+    const rows: any[] = []
+
+    while (true) {
+      const { data, error } = await db
+        .from('customer_rfmv_view')
+        .select(
+          'id, purchase_count, monetary_value, last_activity_date, whatsapp',
+        )
+        .order('id', { ascending: true })
+        .range(from, from + pageSize - 1)
+
+      if (error) throw error
+
+      rows.push(...(data || []))
+      if (!data || data.length < pageSize) break
+      from += pageSize
+    }
+
+    const inactiveThreshold = new Date()
+    inactiveThreshold.setDate(inactiveThreshold.getDate() - 180)
+
+    const overview = rows.reduce(
+      (acc, row) => {
+        const purchaseCount = Number(row.purchase_count || 0)
+        const monetaryValue = Number(row.monetary_value || 0)
+        const lastActivity = row.last_activity_date
+          ? new Date(row.last_activity_date)
+          : null
+        const whatsappDigits = String(row.whatsapp || '').replace(/\D/g, '')
+
+        acc.total += 1
+        acc.totalInvested += monetaryValue
+        acc.purchases += purchaseCount
+
+        if (purchaseCount > 0) acc.buyers += 1
+        if (whatsappDigits.length >= 10) acc.withWhatsapp += 1
+        if (!lastActivity || lastActivity < inactiveThreshold) {
+          acc.inactive += 1
+        } else {
+          acc.active += 1
+        }
+
+        return acc
+      },
+      {
+        total: 0,
+        buyers: 0,
+        inactive: 0,
+        active: 0,
+        withWhatsapp: 0,
+        totalInvested: 0,
+        purchases: 0,
+      },
+    )
+
+    return {
+      total: overview.total,
+      buyers: overview.buyers,
+      inactive: overview.inactive,
+      active: overview.active,
+      withWhatsapp: overview.withWhatsapp,
+      totalInvested: overview.totalInvested,
+      avgTicket:
+        overview.purchases > 0
+          ? overview.totalInvested / overview.purchases
+          : 0,
+    }
   },
 
   async getContacts({
@@ -257,9 +339,8 @@ export const contactsService = {
       if (status === 'inactive') {
         const threshold = new Date()
         threshold.setDate(threshold.getDate() - 180)
-        query = query.lt(
-          'last_activity_date',
-          threshold.toISOString().slice(0, 10),
+        query = query.or(
+          `last_activity_date.lt.${threshold.toISOString().slice(0, 10)},last_activity_date.is.null`,
         )
       }
 
