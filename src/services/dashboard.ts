@@ -121,7 +121,8 @@ export const dashboardService = {
       ),
       avgTicket: totalPurchases ? totalRevenue / totalPurchases : 0,
       ghostBidders: rfmvRows.filter(
-        (row: any) => row.purchase_count === 0 && Number(row.bid_count || 0) >= 5,
+        (row: any) =>
+          row.purchase_count === 0 && Number(row.bid_count || 0) >= 5,
       ).length,
       hotBuyers: hotBuyerCount(purchaseData || []),
       upcomingBirthdays: upcomingBirthdays.length,

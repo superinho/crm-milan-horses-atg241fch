@@ -136,12 +136,11 @@ const buildPurchaseHeatProfiles = (purchases: any[]) => {
 
   purchases.forEach((purchase) => {
     if (!purchase.contact_id) return
-    const current =
-      byContact.get(purchase.contact_id) || {
-        dates: [],
-        events: [],
-        recentValue: 0,
-      }
+    const current = byContact.get(purchase.contact_id) || {
+      dates: [],
+      events: [],
+      recentValue: 0,
+    }
     const date = String(purchase.date || '')
     current.dates.push(date)
 

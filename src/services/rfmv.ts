@@ -67,7 +67,9 @@ export const rfmvService = {
       fetchAllCustomerRfmvRows(),
       db
         .from('purchases')
-        .select('contact_id,date,smartleiloes_event_id,auction_id,value,payload')
+        .select(
+          'contact_id,date,smartleiloes_event_id,auction_id,value,payload',
+        )
         .order('date', { ascending: false })
         .limit(5000),
     ])
@@ -166,12 +168,11 @@ const buildPurchaseProfiles = (purchases: any[]) => {
 
   purchases.forEach((purchase) => {
     if (!purchase.contact_id) return
-    const current =
-      byContact.get(purchase.contact_id) || {
-        dates: [],
-        events: [],
-        recentValue: 0,
-      }
+    const current = byContact.get(purchase.contact_id) || {
+      dates: [],
+      events: [],
+      recentValue: 0,
+    }
     const date = String(purchase.date || '')
     current.dates.push(date)
 

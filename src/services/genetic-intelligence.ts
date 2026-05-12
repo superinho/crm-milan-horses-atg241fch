@@ -456,7 +456,10 @@ const lotMetaFromHorse = (
 const cleanCrossName = (value: string) =>
   value
     .replace(/\([^)]*\)/g, '')
-    .replace(/\b(EMBRIAO|EMBRYON|COBERTURA|PRENHEZ|PALHETA|SEMEN|SEMEM)\b/gi, '')
+    .replace(
+      /\b(EMBRIAO|EMBRYON|COBERTURA|PRENHEZ|PALHETA|SEMEN|SEMEM)\b/gi,
+      '',
+    )
     .replace(/^[\s:.-]+|[\s:.-]+$/g, '')
     .replace(/\s+/g, ' ')
     .trim()
@@ -470,7 +473,10 @@ const parsedCrossFromTitle = (
   const damSireHint = title.match(/\(([^)]+)\)/)?.[1] || ''
   const text = title
     .replace(/\([^)]*\)/g, '')
-    .replace(/\b(EMBRIAO|EMBRYON|COBERTURA|PRENHEZ|PALHETA|SEMEN|SEMEM)\b/gi, '')
+    .replace(
+      /\b(EMBRIAO|EMBRYON|COBERTURA|PRENHEZ|PALHETA|SEMEN|SEMEM)\b/gi,
+      '',
+    )
     .replace(/^[\s:.-]+|[\s:.-]+$/g, '')
     .replace(/\s+/g, ' ')
     .trim()

@@ -278,7 +278,10 @@ const payloadFromHorse = (row, horse, horseIndex) => {
 const cleanCrossName = (value) =>
   String(value || '')
     .replace(/\([^)]*\)/g, '')
-    .replace(/\b(EMBRIAO|EMBRYON|COBERTURA|PRENHEZ|PALHETA|SEMEN|SEMEM)\b/gi, '')
+    .replace(
+      /\b(EMBRIAO|EMBRYON|COBERTURA|PRENHEZ|PALHETA|SEMEN|SEMEM)\b/gi,
+      '',
+    )
     .replace(/^[\s:.-]+|[\s:.-]+$/g, '')
     .replace(/\s+/g, ' ')
     .trim()
@@ -288,7 +291,10 @@ const payloadFromCross = (row, horseIndex) => {
   const damSireHint = title.match(/\(([^)]+)\)/)?.[1] || ''
   const text = title
     .replace(/\([^)]*\)/g, '')
-    .replace(/\b(EMBRIAO|EMBRYON|COBERTURA|PRENHEZ|PALHETA|SEMEN|SEMEM)\b/gi, '')
+    .replace(
+      /\b(EMBRIAO|EMBRYON|COBERTURA|PRENHEZ|PALHETA|SEMEN|SEMEM)\b/gi,
+      '',
+    )
     .replace(/^[\s:.-]+|[\s:.-]+$/g, '')
     .replace(/\s+/g, ' ')
     .trim()
@@ -430,10 +436,9 @@ const main = async () => {
     else stats.directStudbook += 1
 
     const current = rowsByLotId.get(lotId)
-    const value = Number(row.value || 0) || numberOf(valueOf(row.payload, [
-      'valorContrato',
-      'valorLance',
-    ]))
+    const value =
+      Number(row.value || 0) ||
+      numberOf(valueOf(row.payload, ['valorContrato', 'valorLance']))
 
     if (current) {
       current.value = Math.max(Number(current.value || 0), value)
@@ -449,11 +454,12 @@ const main = async () => {
     rowsByLotId.set(lotId, {
       smartleiloes_id: lotId,
       auction_id: null,
-      auction_smartleiloes_id: valueOf(row.payload, [
-        'idEventoContrato',
-        'idEventoLance',
-        'idEvento',
-      ]) || null,
+      auction_smartleiloes_id:
+        valueOf(row.payload, [
+          'idEventoContrato',
+          'idEventoLance',
+          'idEvento',
+        ]) || null,
       lot_number: row.lot_number || payload.numeroLote || null,
       title: payload.descricaoLote || titleOf(row) || `Lote ${lotId}`,
       category: payload.categoriaLote || categoryOf(row),
