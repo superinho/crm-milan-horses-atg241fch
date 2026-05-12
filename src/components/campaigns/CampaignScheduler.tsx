@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Plus, Trash2, Calendar, Mail, MessageSquare, Wand2 } from 'lucide-react'
+import {
+  Plus,
+  Trash2,
+  Calendar,
+  Mail,
+  MessageSquare,
+  Wand2,
+} from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Button } from '@/components/ui/button'

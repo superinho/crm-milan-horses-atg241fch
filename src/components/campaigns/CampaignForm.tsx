@@ -92,7 +92,9 @@ export function CampaignForm({
       objective: campaign?.objective || '',
       channels: campaign?.channels?.length ? campaign.channels : ['email'],
       dates: {
-        start: campaign?.start_date ? new Date(campaign.start_date) : new Date(),
+        start: campaign?.start_date
+          ? new Date(campaign.start_date)
+          : new Date(),
         end: campaign?.end_date ? new Date(campaign.end_date) : new Date(),
       },
       filters: {
@@ -109,22 +111,25 @@ export function CampaignForm({
     [selectedTemplateId, templates],
   )
 
-  const applyTemplateToCampaign = useCallback((template: MessageTemplate) => {
-    const channel = templateChannel(template.type)
-    setSelectedTemplateId(template.id)
-    form.setValue('channels', [channel])
+  const applyTemplateToCampaign = useCallback(
+    (template: MessageTemplate) => {
+      const channel = templateChannel(template.type)
+      setSelectedTemplateId(template.id)
+      form.setValue('channels', [channel])
 
-    if (!form.getValues('name')) {
-      form.setValue('name', template.title)
-    }
+      if (!form.getValues('name')) {
+        form.setValue('name', template.title)
+      }
 
-    if (!form.getValues('objective')) {
-      form.setValue(
-        'objective',
-        `${template.category}: campanha criada a partir do Estúdio de Mensagens.`,
-      )
-    }
-  }, [form])
+      if (!form.getValues('objective')) {
+        form.setValue(
+          'objective',
+          `${template.category}: campanha criada a partir do Estúdio de Mensagens.`,
+        )
+      }
+    },
+    [form],
+  )
 
   useEffect(() => {
     let mounted = true
@@ -170,8 +175,7 @@ export function CampaignForm({
           time: Number.isNaN(date.getTime())
             ? '09:00'
             : date.toTimeString().slice(0, 5),
-          channel:
-            schedule.channel_type === 'whatsapp' ? 'whatsapp' : 'email',
+          channel: schedule.channel_type === 'whatsapp' ? 'whatsapp' : 'email',
           templateId: schedule.template_id || null,
           subject: schedule.subject || null,
           content: schedule.content || '',
@@ -243,7 +247,9 @@ export function CampaignForm({
       console.error(error)
       toast({
         variant: 'destructive',
-        title: campaign?.id ? 'Erro ao editar campanha' : 'Erro ao criar campanha',
+        title: campaign?.id
+          ? 'Erro ao editar campanha'
+          : 'Erro ao criar campanha',
         description: 'Ocorreu um erro inesperado. Tente novamente.',
       })
     } finally {
