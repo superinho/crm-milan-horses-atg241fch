@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   ArrowRight,
   Baby,
@@ -49,14 +49,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Slider } from '@/components/ui/slider'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 import { useToast } from '@/hooks/use-toast'
 import {
   studbookService,
@@ -301,6 +293,7 @@ function NetworkDetailDialog({
   onCreateList,
   onApplyFilter,
   onCreateCrmContact,
+  onDetailPageChange,
 }: {
   open: boolean
   detail: StudbookNetworkDetail | null
@@ -309,10 +302,14 @@ function NetworkDetailDialog({
   onCreateList: (entity: StudbookNetworkEntity) => void
   onApplyFilter: (entity: StudbookNetworkEntity) => void
   onCreateCrmContact: (entity: StudbookNetworkEntity) => void
+  onDetailPageChange: (page: number) => void
 }) {
   const entity = detail?.entity
   const copy = entity ? networkKindCopy[entity.entity_kind] : null
   const Icon = copy?.icon || Crown
+  const detailTotalPages = detail
+    ? Math.max(1, Math.ceil(detail.horseTotal / detail.pageSize))
+    : 1
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -438,7 +435,7 @@ function NetworkDetailDialog({
                   </div>
                 </div>
                 <Badge variant="outline" className="rounded-md">
-                  {formatNumber(detail?.horses.length || 0)} exibidos
+                  {formatNumber(detail?.horseTotal || 0)} conectados
                 </Badge>
               </div>
               <div className="max-h-72 overflow-y-auto rounded-md border">
@@ -470,6 +467,37 @@ function NetworkDetailDialog({
                   ))
                 )}
               </div>
+              {detailTotalPages > 1 ? (
+                <div className="mt-3 flex items-center justify-between gap-3">
+                  <div className="text-xs text-muted-foreground">
+                    Página {detail?.page || 1} de {detailTotalPages}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={!detail || detail.page <= 1 || loading}
+                      onClick={() =>
+                        detail ? onDetailPageChange(detail.page - 1) : null
+                      }
+                    >
+                      Anterior
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={
+                        !detail || detail.page >= detailTotalPages || loading
+                      }
+                      onClick={() =>
+                        detail ? onDetailPageChange(detail.page + 1) : null
+                      }
+                    >
+                      Próxima
+                    </Button>
+                  </div>
+                </div>
+              ) : null}
             </div>
 
             <DialogFooter className="gap-2 sm:space-x-0">
@@ -496,6 +524,203 @@ function NetworkDetailDialog({
   )
 }
 
+function HorseDetailDialog({
+  horse,
+  open,
+  onOpenChange,
+}: {
+  horse: StudbookHorse | null
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-3xl">
+        {!horse ? (
+          <>
+            <DialogHeader>
+              <DialogTitle className="text-primary">Registro</DialogTitle>
+              <DialogDescription>Selecione um cavalo.</DialogDescription>
+            </DialogHeader>
+          </>
+        ) : (
+          <>
+            <DialogHeader>
+              <div className="mb-2 flex flex-wrap gap-2">
+                {horse.sex ? (
+                  <Badge variant="outline" className="rounded-md">
+                    {horse.sex}
+                  </Badge>
+                ) : null}
+                {horse.breed ? (
+                  <Badge variant="secondary" className="rounded-md">
+                    {horse.breed}
+                  </Badge>
+                ) : null}
+                {horse.is_reproductive_mare ? (
+                  <Badge className="rounded-md">Matriz ativa</Badge>
+                ) : null}
+              </div>
+              <DialogTitle className="text-2xl text-primary">
+                {horse.name}
+              </DialogTitle>
+              <DialogDescription>{registrationLabel(horse)}</DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-3 md:grid-cols-3">
+              <div className="rounded-md border bg-muted/10 p-3">
+                <div className="text-xs text-muted-foreground">Idade</div>
+                <div className="mt-1 font-semibold">{ageLabel(horse)}</div>
+                <div className="text-xs text-muted-foreground">
+                  {formatDate(horse.birth_date)}
+                </div>
+              </div>
+              <div className="rounded-md border bg-muted/10 p-3">
+                <div className="text-xs text-muted-foreground">Filhos</div>
+                <div className="mt-1 font-semibold">
+                  {formatNumber(horse.offspring_count || 0)}
+                </div>
+              </div>
+              <div className="rounded-md border bg-muted/10 p-3">
+                <div className="text-xs text-muted-foreground">Qualidade</div>
+                <div className="mt-1 font-semibold">
+                  {quality(horse.data_quality_score)}%
+                </div>
+              </div>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              <div className="rounded-md border p-4">
+                <div className="font-semibold text-primary">Genealogia</div>
+                <div className="mt-2 text-sm text-muted-foreground">
+                  Pai: {horse.sire_name || 'não informado'}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Mãe: {horse.dam_name || 'não informada'}
+                </div>
+              </div>
+              <div className="rounded-md border p-4">
+                <div className="font-semibold text-primary">
+                  Origem comercial
+                </div>
+                <div className="mt-2 text-sm text-muted-foreground">
+                  Criador: {horse.breeder_name || 'não informado'}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Proprietário: {horse.owner_name || 'não informado'}
+                </div>
+              </div>
+            </div>
+            {horse.source_url ? (
+              <DialogFooter>
+                <Button variant="outline" asChild>
+                  <a href={horse.source_url} target="_blank" rel="noreferrer">
+                    Fonte ABCCH
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </Button>
+              </DialogFooter>
+            ) : null}
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function HorseRecordCard({
+  horse,
+  lists,
+  onAddToList,
+  onOpen,
+}: {
+  horse: StudbookHorse
+  lists: AuctionCandidateList[]
+  onAddToList: (horse: StudbookHorse) => void
+  onOpen: (horse: StudbookHorse) => void
+}) {
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() => onOpen(horse)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          onOpen(horse)
+        }
+      }}
+      className="group rounded-md border bg-white p-4 text-left transition hover:border-primary/40 hover:bg-primary/5"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="truncate font-semibold text-foreground">
+            {horse.name}
+          </div>
+          <div className="mt-1 text-xs text-muted-foreground">
+            {registrationLabel(horse)}
+            {horse.microchip ? ` · chip ${horse.microchip}` : ''}
+          </div>
+        </div>
+        <Badge variant="outline" className="shrink-0 rounded-md">
+          {ageLabel(horse)}
+        </Badge>
+      </div>
+      <div className="mt-3 grid gap-3 text-sm md:grid-cols-2">
+        <div>
+          <div className="flex items-center gap-1.5 font-medium">
+            <GitBranch className="h-3.5 w-3.5 text-primary" />
+            {horse.sire_name || 'Pai não informado'}
+          </div>
+          <div className="mt-1 text-xs text-muted-foreground">
+            Matriz: {horse.dam_name || 'não informada'}
+          </div>
+        </div>
+        <div className="text-xs text-muted-foreground">
+          <div>Criador: {horse.breeder_name || 'não informado'}</div>
+          <div>Prop.: {horse.owner_name || 'não informado'}</div>
+        </div>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        {horse.sex ? (
+          <Badge variant="outline" className="rounded-md">
+            {horse.sex}
+          </Badge>
+        ) : null}
+        {horse.breed ? (
+          <Badge variant="secondary" className="rounded-md">
+            {horse.breed}
+          </Badge>
+        ) : null}
+        {horse.is_reproductive_mare ? (
+          <Badge className="rounded-md">Matriz ativa</Badge>
+        ) : null}
+      </div>
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <div className="mb-1 flex items-center justify-between gap-2 text-xs">
+            <span>Qualidade</span>
+            <span className="font-semibold">
+              {quality(horse.data_quality_score)}%
+            </span>
+          </div>
+          <Progress value={quality(horse.data_quality_score)} className="h-2" />
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={!lists.length}
+          onClick={(event) => {
+            event.stopPropagation()
+            onAddToList(horse)
+          }}
+        >
+          <Plus className="h-4 w-4" />
+          Lista
+        </Button>
+      </div>
+    </div>
+  )
+}
+
 function HorseTable({
   horses,
   total,
@@ -504,6 +729,7 @@ function HorseTable({
   lists,
   onAddToList,
   onPageChange,
+  onOpenHorse,
 }: {
   horses: StudbookHorse[]
   total: number
@@ -512,6 +738,7 @@ function HorseTable({
   lists: AuctionCandidateList[]
   onAddToList: (horse: StudbookHorse) => void
   onPageChange: (page: number) => void
+  onOpenHorse: (horse: StudbookHorse) => void
 }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
   const from = total === 0 ? 0 : (page - 1) * pageSize + 1
@@ -532,128 +759,24 @@ function HorseTable({
           Página {page} de {totalPages}
         </Badge>
       </CardHeader>
-      <CardContent className="p-0">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Cavalo</TableHead>
-              <TableHead>Genealogia</TableHead>
-              <TableHead>Perfil</TableHead>
-              <TableHead>Criador e proprietário</TableHead>
-              <TableHead>Curadoria</TableHead>
-              <TableHead>Ação</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {horses.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={6}
-                  className="py-10 text-center text-muted-foreground"
-                >
-                  Nenhum registro encontrado com os filtros atuais.
-                </TableCell>
-              </TableRow>
-            ) : (
-              horses.map((horse) => (
-                <TableRow key={horse.id}>
-                  <TableCell className="min-w-[260px]">
-                    <div className="font-semibold text-foreground">
-                      {horse.name}
-                    </div>
-                    <div className="mt-1 text-xs text-muted-foreground">
-                      {registrationLabel(horse)}
-                      {horse.microchip ? ` · chip ${horse.microchip}` : ''}
-                    </div>
-                    <div className="mt-2 flex flex-wrap gap-1">
-                      {horse.sex ? (
-                        <Badge variant="outline" className="rounded-md">
-                          {horse.sex}
-                        </Badge>
-                      ) : null}
-                      {horse.breed ? (
-                        <Badge variant="secondary" className="rounded-md">
-                          {horse.breed}
-                        </Badge>
-                      ) : null}
-                      {horse.is_reproductive_mare ? (
-                        <Badge className="rounded-md">Matriz ativa</Badge>
-                      ) : null}
-                    </div>
-                  </TableCell>
-                  <TableCell className="min-w-[240px]">
-                    <div className="space-y-1 text-sm">
-                      <div className="flex items-center gap-1.5">
-                        <GitBranch className="h-3.5 w-3.5 text-primary" />
-                        <span className="font-medium">
-                          {horse.sire_name || 'Pai não informado'}
-                        </span>
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        Matriz: {horse.dam_name || 'não informada'}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="font-medium">{ageLabel(horse)}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {formatDate(horse.birth_date)}
-                    </div>
-                    <div className="mt-2 text-xs text-muted-foreground">
-                      {horse.offspring_count || 0} filhos registrados
-                    </div>
-                  </TableCell>
-                  <TableCell className="min-w-[220px]">
-                    <div className="text-sm">
-                      {horse.breeder_name || 'Criador não informado'}
-                    </div>
-                    <div className="mt-1 text-xs text-muted-foreground">
-                      Prop.: {horse.owner_name || 'não informado'}
-                    </div>
-                  </TableCell>
-                  <TableCell className="min-w-[170px]">
-                    <div className="mb-1 flex items-center justify-between gap-2 text-xs">
-                      <span>Qualidade</span>
-                      <span className="font-semibold">
-                        {quality(horse.data_quality_score)}%
-                      </span>
-                    </div>
-                    <Progress
-                      value={quality(horse.data_quality_score)}
-                      className="h-2"
-                    />
-                    {horse.source_url ? (
-                      <a
-                        href={horse.source_url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-                      >
-                        Fonte ABCCH
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
-                    ) : (
-                      <div className="mt-2 text-xs text-muted-foreground">
-                        Sem link de fonte
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      disabled={!lists.length}
-                      onClick={() => onAddToList(horse)}
-                    >
-                      <Plus className="h-4 w-4" />
-                      Lista
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+      <CardContent className="p-4">
+        {horses.length === 0 ? (
+          <div className="rounded-md border border-dashed p-8 text-center text-muted-foreground">
+            Nenhum registro encontrado com os filtros atuais.
+          </div>
+        ) : (
+          <div className="grid gap-3">
+            {horses.map((horse) => (
+              <HorseRecordCard
+                key={horse.id}
+                horse={horse}
+                lists={lists}
+                onAddToList={onAddToList}
+                onOpen={onOpenHorse}
+              />
+            ))}
+          </div>
+        )}
         <div className="flex flex-col gap-3 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-sm text-muted-foreground">
             {formatNumber(horses.length)} itens nesta página
@@ -688,6 +811,8 @@ export default function Studbook() {
     useState<StudbookNetworkOverview | null>(null)
   const [networkLoading, setNetworkLoading] = useState(true)
   const [networkDialogOpen, setNetworkDialogOpen] = useState(false)
+  const [selectedNetworkEntity, setSelectedNetworkEntity] =
+    useState<StudbookNetworkEntity | null>(null)
   const [networkDetail, setNetworkDetail] =
     useState<StudbookNetworkDetail | null>(null)
   const [networkDetailLoading, setNetworkDetailLoading] = useState(false)
@@ -695,10 +820,14 @@ export default function Studbook() {
     useState<StudbookFilterOptions>(emptyFilterOptions)
   const [horses, setHorses] = useState<StudbookHorse[]>([])
   const [horseTotal, setHorseTotal] = useState(0)
+  const [selectedHorse, setSelectedHorse] = useState<StudbookHorse | null>(null)
+  const [horseDialogOpen, setHorseDialogOpen] = useState(false)
   const [page, setPage] = useState(1)
   const pageSize = 50
   const [lists, setLists] = useState<AuctionCandidateList[]>([])
   const [loading, setLoading] = useState(true)
+  const dataRequestRef = useRef(0)
+  const networkRequestRef = useRef(0)
   const [search, setSearch] = useState('')
   const [sex, setSex] = useState('all')
   const [selectedBreeders, setSelectedBreeders] = useState<string[]>([])
@@ -754,6 +883,8 @@ export default function Studbook() {
   )
 
   const loadData = useCallback(async () => {
+    const requestId = dataRequestRef.current + 1
+    dataRequestRef.current = requestId
     setLoading(true)
     try {
       const [nextOverview, nextHorses, nextLists] = await Promise.all([
@@ -761,11 +892,13 @@ export default function Studbook() {
         studbookService.getHorses(filters, { page, pageSize }),
         studbookService.getCandidateLists(),
       ])
+      if (requestId !== dataRequestRef.current) return
       setOverview(nextOverview)
       setHorses(nextHorses.rows)
       setHorseTotal(nextHorses.total)
       setLists(nextLists)
     } catch (error) {
+      if (requestId !== dataRequestRef.current) return
       console.error(error)
       toast({
         title: 'Erro ao carregar Studbook',
@@ -773,7 +906,7 @@ export default function Studbook() {
         variant: 'destructive',
       })
     } finally {
-      setLoading(false)
+      if (requestId === dataRequestRef.current) setLoading(false)
     }
   }, [filters, page, toast])
 
@@ -782,10 +915,16 @@ export default function Studbook() {
   }, [loadData])
 
   const loadNetwork = useCallback(async () => {
+    const requestId = networkRequestRef.current + 1
+    networkRequestRef.current = requestId
     setNetworkLoading(true)
     try {
-      setNetworkOverview(await studbookService.getNetworkOverview(filters))
+      const nextNetworkOverview =
+        await studbookService.getNetworkOverview(filters)
+      if (requestId !== networkRequestRef.current) return
+      setNetworkOverview(nextNetworkOverview)
     } catch (error) {
+      if (requestId !== networkRequestRef.current) return
       console.error(error)
       toast({
         title: 'Erro ao carregar Rede Hípica',
@@ -793,7 +932,7 @@ export default function Studbook() {
         variant: 'destructive',
       })
     } finally {
-      setNetworkLoading(false)
+      if (requestId === networkRequestRef.current) setNetworkLoading(false)
     }
   }, [filters, toast])
 
@@ -925,15 +1064,26 @@ export default function Studbook() {
     }
   }
 
-  const openNetworkEntity = async (entity: StudbookNetworkEntity) => {
+  const openHorse = (horse: StudbookHorse) => {
+    setSelectedHorse(horse)
+    setHorseDialogOpen(true)
+  }
+
+  const openNetworkEntity = async (
+    entity: StudbookNetworkEntity,
+    detailPage = 1,
+  ) => {
+    setSelectedNetworkEntity(entity)
     setNetworkDialogOpen(true)
-    setNetworkDetail(null)
+    if (detailPage === 1) setNetworkDetail(null)
     setNetworkDetailLoading(true)
     try {
       const detail = await studbookService.getNetworkDetail(
         entity.entity_kind,
         entity.name,
         filters,
+        entity,
+        { page: detailPage, pageSize: 12 },
       )
       setNetworkDetail(detail)
     } catch (error) {
@@ -947,6 +1097,11 @@ export default function Studbook() {
     } finally {
       setNetworkDetailLoading(false)
     }
+  }
+
+  const changeNetworkDetailPage = async (nextPage: number) => {
+    if (!selectedNetworkEntity) return
+    await openNetworkEntity(selectedNetworkEntity, nextPage)
   }
 
   const createProspectingList = async (entity: StudbookNetworkEntity) => {
@@ -981,6 +1136,8 @@ export default function Studbook() {
         entity.entity_kind,
         entity.name,
         filters,
+        entity,
+        { page: networkDetail?.page || 1, pageSize: 12 },
       )
       setNetworkDetail(detail)
       await loadNetwork()
@@ -1028,6 +1185,12 @@ export default function Studbook() {
         onCreateList={createProspectingList}
         onApplyFilter={applyNetworkFilter}
         onCreateCrmContact={createOrTagCrmContact}
+        onDetailPageChange={changeNetworkDetailPage}
+      />
+      <HorseDetailDialog
+        horse={selectedHorse}
+        open={horseDialogOpen}
+        onOpenChange={setHorseDialogOpen}
       />
 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -1428,6 +1591,7 @@ export default function Studbook() {
               lists={lists}
               onAddToList={addToFirstList}
               onPageChange={setPage}
+              onOpenHorse={openHorse}
             />
           )}
         </div>
