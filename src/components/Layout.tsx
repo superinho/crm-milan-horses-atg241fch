@@ -68,16 +68,16 @@ function AppSidebarContent({
   return (
     <>
       <SidebarHeader className="h-24 flex items-center justify-center border-b border-sidebar-border px-4 py-2">
-        <div className="flex items-center gap-2 w-full overflow-hidden transition-all duration-300 justify-start group-data-[collapsible=icon]:justify-center">
+        <div className="flex h-20 w-full items-center justify-center overflow-hidden rounded-xl border border-sidebar-border bg-white/80 px-2 shadow-[0_10px_28px_rgba(11,45,99,0.08)] transition-all duration-300 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:border-0 group-data-[collapsible=icon]:bg-transparent group-data-[collapsible=icon]:shadow-none">
           <img
             src={logoImg}
             alt="Milan Horses"
-            className="h-20 w-auto object-contain transition-all duration-300 group-data-[collapsible=icon]:h-8 max-w-full"
+            className="h-16 w-auto max-w-full object-contain mix-blend-multiply transition-all duration-300 group-data-[collapsible=icon]:h-8"
           />
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="p-2">
+      <SidebarContent className="p-3">
         <SidebarMenu>
           {NAV_ITEMS.map((item) => {
             const isActive = location.pathname === item.path
@@ -87,9 +87,9 @@ function AppSidebarContent({
                   asChild
                   tooltip={item.label}
                   className={cn(
-                    'w-full justify-start gap-3 px-3 py-6 transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:scale-[1.02]',
+                    'w-full justify-start gap-3 rounded-xl px-3 py-5 font-semibold transition-all duration-200 ease-in-out hover:bg-sidebar-accent',
                     isActive &&
-                      'bg-primary text-primary-foreground font-medium border-l-4 border-l-secondary shadow-sm hover:bg-primary/90',
+                      'bg-primary text-primary-foreground shadow-[0_12px_28px_rgba(11,45,99,0.18)] hover:bg-primary/95',
                   )}
                   onClick={() => {
                     if (isMobile && closeMobileMenu) closeMobileMenu()
@@ -172,7 +172,7 @@ function TopHeader({ onSearchClick }: { onSearchClick: () => void }) {
   const breadcrumbs = getBreadcrumbs()
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm md:px-6 print:hidden">
+    <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-white/90 px-4 shadow-[0_10px_35px_rgba(11,45,99,0.06)] backdrop-blur md:px-6 print:hidden">
       <div className="flex items-center gap-4">
         {/* Mobile Sidebar Trigger */}
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -228,12 +228,12 @@ function TopHeader({ onSearchClick }: { onSearchClick: () => void }) {
           className="hidden md:flex relative w-64 lg:w-96 cursor-pointer ml-4"
           onClick={onSearchClick}
         >
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             readOnly
             placeholder="Buscar contatos, campanhas e leilões..."
-            className="w-full bg-gray-50 pl-9 focus-visible:ring-primary/20 cursor-pointer pointer-events-none h-9"
+            className="h-9 w-full cursor-pointer border-primary/10 bg-accent/60 pl-9 shadow-none pointer-events-none"
           />
           <div className="absolute right-2.5 top-2.5 pointer-events-none">
             <kbd className="inline-flex h-4 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
@@ -264,7 +264,7 @@ function TopHeader({ onSearchClick }: { onSearchClick: () => void }) {
           <LogOut className="h-5 w-5 text-muted-foreground" />
         </Button>
 
-        <div className="hidden items-center gap-2 rounded-md border bg-white px-3 py-1.5 text-sm md:flex">
+        <div className="hidden items-center gap-2 rounded-xl border bg-white/80 px-3 py-1.5 text-sm shadow-[0_8px_22px_rgba(11,45,99,0.06)] md:flex">
           <div className="text-right leading-tight">
             <div className="font-medium text-primary">{user?.name}</div>
             <div className="max-w-40 truncate text-xs text-muted-foreground">
@@ -304,7 +304,7 @@ export default function Layout() {
 
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="flex min-h-screen w-full bg-gray-50/50">
+      <div className="flex min-h-screen w-full bg-background">
         <AppSidebar />
         <div className="flex flex-1 flex-col overflow-hidden w-full">
           <TopHeader onSearchClick={() => setShowSearch(true)} />
