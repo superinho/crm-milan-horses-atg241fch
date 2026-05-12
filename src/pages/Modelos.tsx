@@ -174,8 +174,9 @@ const renderWithSample = (text = '') =>
     text,
   )
 
-const extractVariables = (text: string) =>
-  [...new Set([...text.matchAll(/\{\{(.*?)\}\}/g)].map((match) => match[1]))]
+const extractVariables = (text: string) => [
+  ...new Set([...text.matchAll(/\{\{(.*?)\}\}/g)].map((match) => match[1])),
+]
 
 const whatsappLengthHint = (body: string) => {
   if (body.length <= 280) return 'Ideal para WhatsApp'
@@ -225,14 +226,17 @@ export default function Modelos() {
         template.body.toLowerCase().includes(term) ||
         template.category.toLowerCase().includes(term)
       const matchesChannel = channel === 'Todos' || template.type === channel
-      const matchesCategory = category === 'Todas' || template.category === category
+      const matchesCategory =
+        category === 'Todas' || template.category === category
       return matchesSearch && matchesChannel && matchesCategory
     })
   }, [templates, search, channel, category])
 
   const previewSubject = renderWithSample(draft.subject || '')
   const previewBody = renderWithSample(draft.body)
-  const variablesInDraft = extractVariables(`${draft.subject || ''} ${draft.body}`)
+  const variablesInDraft = extractVariables(
+    `${draft.subject || ''} ${draft.body}`,
+  )
 
   const updateDraft = (patch: Partial<DraftTemplate>) => {
     setDraft((current) => ({ ...current, ...patch }))
@@ -333,7 +337,9 @@ export default function Modelos() {
 
   const deleteTemplate = async () => {
     if (!selectedId) return
-    if (!window.confirm('Excluir este modelo? Esta ação não pode ser desfeita.')) {
+    if (
+      !window.confirm('Excluir este modelo? Esta ação não pode ser desfeita.')
+    ) {
       return
     }
 
@@ -365,23 +371,29 @@ export default function Modelos() {
     setTesting(true)
     try {
       if (draft.type === 'WhatsApp') {
-        const { error } = await supabase.functions.invoke('send-whatsapp-botconversa', {
-          body: {
-            phone: testTarget,
-            name: 'Teste CRM Milan',
-            message: previewBody,
-            metadata: { source: 'message-studio-test' },
+        const { error } = await supabase.functions.invoke(
+          'send-whatsapp-botconversa',
+          {
+            body: {
+              phone: testTarget,
+              name: 'Teste CRM Milan',
+              message: previewBody,
+              metadata: { source: 'message-studio-test' },
+            },
           },
-        })
+        )
         if (error) throw error
       } else {
-        const { error } = await supabase.functions.invoke('send-contact-email', {
-          body: {
-            to: [testTarget],
-            subject: previewSubject,
-            html: previewBody,
+        const { error } = await supabase.functions.invoke(
+          'send-contact-email',
+          {
+            body: {
+              to: [testTarget],
+              subject: previewSubject,
+              html: previewBody,
+            },
           },
-        })
+        )
         if (error) throw error
       }
 
@@ -404,10 +416,14 @@ export default function Modelos() {
     }
   }
 
-  const refine = (mode: 'short' | 'elegant' | 'personal' | 'urgent' | 'exclusive') => {
+  const refine = (
+    mode: 'short' | 'elegant' | 'personal' | 'urgent' | 'exclusive',
+  ) => {
     const firstSentence = draft.body.split(/[.!?]/)[0]?.trim()
     const base =
-      firstSentence && firstSentence.length > 25 ? `${firstSentence}.` : draft.body
+      firstSentence && firstSentence.length > 25
+        ? `${firstSentence}.`
+        : draft.body
 
     const next = {
       short: `${base} Posso te enviar uma curadoria rápida?`,
@@ -512,7 +528,9 @@ export default function Modelos() {
             <div className="grid grid-cols-2 gap-2">
               <Select
                 value={channel}
-                onValueChange={(value) => setChannel(value as TemplateType | 'Todos')}
+                onValueChange={(value) =>
+                  setChannel(value as TemplateType | 'Todos')
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -666,7 +684,9 @@ export default function Modelos() {
                 <Input
                   id="title"
                   value={draft.title}
-                  onChange={(event) => updateDraft({ title: event.target.value })}
+                  onChange={(event) =>
+                    updateDraft({ title: event.target.value })
+                  }
                   placeholder="Ex: Convite VIP discreto"
                 />
               </div>
@@ -679,7 +699,8 @@ export default function Modelos() {
                       type: value as TemplateType,
                       subject:
                         value === 'E-mail'
-                          ? draft.subject || 'Curadoria Milan Horses: {{leilao}}'
+                          ? draft.subject ||
+                            'Curadoria Milan Horses: {{leilao}}'
                           : '',
                     })
                   }
@@ -756,10 +777,14 @@ export default function Modelos() {
               />
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
                 <span>
-                  {draft.body.length} caracteres · {whatsappLengthHint(draft.body)}
+                  {draft.body.length} caracteres ·{' '}
+                  {whatsappLengthHint(draft.body)}
                 </span>
                 <span>
-                  Variáveis: {variablesInDraft.length ? variablesInDraft.join(', ') : 'nenhuma'}
+                  Variáveis:{' '}
+                  {variablesInDraft.length
+                    ? variablesInDraft.join(', ')
+                    : 'nenhuma'}
                 </span>
               </div>
             </div>
@@ -770,19 +795,39 @@ export default function Modelos() {
                 Assistente de copy
               </div>
               <div className="flex flex-wrap gap-2">
-                <Button variant="outline" size="sm" onClick={() => refine('elegant')}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => refine('elegant')}
+                >
                   Mais elegante
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => refine('short')}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => refine('short')}
+                >
                   Mais curta
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => refine('personal')}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => refine('personal')}
+                >
                   Mais pessoal
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => refine('urgent')}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => refine('urgent')}
+                >
                   Mais urgente
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => refine('exclusive')}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => refine('exclusive')}
+                >
                   Mais exclusiva
                 </Button>
                 <Button variant="outline" size="sm" onClick={createVariations}>
@@ -798,7 +843,9 @@ export default function Modelos() {
                       className="rounded-md border p-3 text-left text-sm transition-colors hover:border-primary hover:bg-primary/5"
                       onClick={() => updateDraft({ body: variation })}
                     >
-                      <span className="font-medium">Variação {index + 1}: </span>
+                      <span className="font-medium">
+                        Variação {index + 1}:{' '}
+                      </span>
                       {variation}
                     </button>
                   ))}

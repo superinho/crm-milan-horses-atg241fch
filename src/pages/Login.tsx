@@ -61,7 +61,11 @@ export default function Login() {
       <div className="grid min-h-screen lg:grid-cols-[0.95fr_1.05fr]">
         <section className="hidden border-r bg-white px-10 py-12 lg:flex lg:flex-col lg:justify-between">
           <div>
-            <img src={logoImg} alt="Milan Horses Leilões" className="h-24 w-auto" />
+            <img
+              src={logoImg}
+              alt="Milan Horses Leilões"
+              className="h-24 w-auto"
+            />
             <div className="mt-16 max-w-xl">
               <div className="inline-flex items-center gap-2 rounded-md bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
                 <LockKeyhole className="h-4 w-4" />
@@ -135,7 +139,11 @@ export default function Login() {
                   </div>
                 </div>
 
-                <Button className="w-full" type="submit" disabled={submitting || loading}>
+                <Button
+                  className="w-full"
+                  type="submit"
+                  disabled={submitting || loading}
+                >
                   {submitting ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   ) : null}
