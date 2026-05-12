@@ -27,6 +27,7 @@ import Tags from './pages/Tags'
 import Modelos from './pages/Modelos'
 import Genetica from './pages/Genetica'
 import Studbook from './pages/Studbook'
+import MercadoGlobal from './pages/MercadoGlobal'
 import Configuracoes from './pages/Configuracoes'
 import Perfil from './pages/Perfil'
 import Login from './pages/Login'
@@ -73,6 +74,7 @@ const App = () => (
             <Route path="/leiloes" element={<SmartLeiloes />} />
             <Route path="/genetica" element={<Genetica />} />
             <Route path="/studbook" element={<Studbook />} />
+            <Route path="/mercado-global" element={<MercadoGlobal />} />
             <Route path="/radar-vip" element={<RadarVip />} />
             <Route path="/tags" element={<Tags />} />
             <Route path="/modelos" element={<Modelos />} />
