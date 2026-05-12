@@ -276,5 +276,4 @@ export const birthdaysImportService = {
     }
 
     return summary
-  },
-}
+  }

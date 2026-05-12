@@ -45,5 +45,4 @@ export const smartLeiloesService = {
         error: `Não foi possível carregar leilões reais sincronizados: ${error.message}`,
       }
     }
-  },
-}
+  }
