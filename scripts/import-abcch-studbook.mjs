@@ -30,8 +30,7 @@ const SUPABASE_KEY =
 const ABCCH_API_URL = env.ABCCH_API_URL || 'https://api.abcch.com.br'
 const ABCCH_AUTH = env.ABCCH_AUTH || 'admin=,user='
 const TERM_SET =
-  env.ABCCH_TERMS ||
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ÁÉÍÓÚÂÊÔÃÕÇÜÑ.- '
+  env.ABCCH_TERMS || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ÁÉÍÓÚÂÊÔÃÕÇÜÑ.- '
 const DETAIL_LIMIT = Number(env.ABCCH_DETAIL_LIMIT || 0)
 const DETAIL_ONLY_MARES = env.ABCCH_DETAIL_ONLY_MARES === 'true'
 const BATCH_SIZE = Number(env.ABCCH_BATCH_SIZE || 500)
@@ -108,7 +107,9 @@ const HORSE_COLUMNS = [
 ]
 
 const horsePayload = (horse) =>
-  Object.fromEntries(HORSE_COLUMNS.map((column) => [column, horse[column] ?? null]))
+  Object.fromEntries(
+    HORSE_COLUMNS.map((column) => [column, horse[column] ?? null]),
+  )
 
 const supabaseRequest = async (path, init = {}) => {
   const url = `${SUPABASE_URL.replace(/\/$/, '')}/rest/v1/${path}`
@@ -177,7 +178,8 @@ const searchAnimals = async (term) => {
   return Array.isArray(data?.data) ? data.data : []
 }
 
-const fetchDetails = async (token) => abcchGet(`/animais/${encodeURIComponent(token)}`)
+const fetchDetails = async (token) =>
+  abcchGet(`/animais/${encodeURIComponent(token)}`)
 
 const upsertPeople = async (peopleByKey) => {
   const people = [...peopleByKey.values()]
@@ -439,7 +441,9 @@ const main = async () => {
     }
   }
 
-  const horses = [...horsesByToken.values()].filter((horse) => horse.abcch_token)
+  const horses = [...horsesByToken.values()].filter(
+    (horse) => horse.abcch_token,
+  )
   console.log(`Gravando ${horses.length} cavalos no Supabase...`)
   const horsesChanged = await upsertHorses(horses)
 

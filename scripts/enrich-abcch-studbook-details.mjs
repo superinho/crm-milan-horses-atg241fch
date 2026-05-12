@@ -217,7 +217,9 @@ const HORSE_COLUMNS = [
 ]
 
 const horsePayload = (horse) =>
-  Object.fromEntries(HORSE_COLUMNS.map((column) => [column, horse[column] ?? null]))
+  Object.fromEntries(
+    HORSE_COLUMNS.map((column) => [column, horse[column] ?? null]),
+  )
 
 const detailToHorse = (detail, peopleIds, runId) => {
   const ownerName = textOrNull(detail.NmUserOwner)
