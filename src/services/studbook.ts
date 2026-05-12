@@ -140,6 +140,9 @@ export type StudbookNetworkOverview = {
 export type StudbookNetworkDetail = {
   entity: StudbookNetworkEntity
   horses: StudbookHorse[]
+  horseTotal: number
+  page: number
+  pageSize: number
   crmContacts: StudbookCrmContact[]
 }
 
@@ -856,19 +859,28 @@ export const studbookService = {
     kind: StudbookNetworkKind,
     name: string,
     filters: StudbookFilters = {},
+    seedEntity?: StudbookNetworkEntity,
+    pagination: StudbookPagination = {},
   ): Promise<StudbookNetworkDetail | null> {
     try {
       const nameColumn = entityNameColumnByKind[kind]
-      const rankingResult = await db.rpc('get_studbook_network_rankings', {
-        ...networkRpcPayload(filters),
-        p_limit: 20,
-      })
-
-      if (rankingResult.error) throw rankingResult.error
-      const entity = (
-        (rankingResult.data || []) as StudbookNetworkEntity[]
-      ).find((row) => row.entity_kind === kind && row.name === name)
-      if (!entity) return null
+      const page = Math.max(1, pagination.page || 1)
+      const pageSize = Math.min(50, Math.max(8, pagination.pageSize || 12))
+      const from = (page - 1) * pageSize
+      const to = from + pageSize - 1
+      const entity =
+        seedEntity ||
+        ({
+          entity_kind: kind,
+          name,
+          horse_count: 0,
+          female_count: 0,
+          young_count: 0,
+          active_mare_count: 0,
+          connected_owner_count: 0,
+          recent_horse_count: 0,
+          crm_contact_count: 0,
+        } satisfies StudbookNetworkEntity)
 
       const horseQuery = applyFilters(
         db
@@ -877,7 +889,7 @@ export const studbookService = {
           .eq(nameColumn, name)
           .order('birth_year', { ascending: false, nullsFirst: false })
           .order('data_quality_score', { ascending: false })
-          .limit(24),
+          .range(from, to),
         filters,
       )
 
@@ -889,6 +901,9 @@ export const studbookService = {
       return {
         entity: entity as StudbookNetworkEntity,
         horses: (horses || []) as StudbookHorse[],
+        horseTotal: entity.horse_count || (horses || []).length,
+        page,
+        pageSize,
         crmContacts,
       }
     } catch (error) {

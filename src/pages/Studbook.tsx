@@ -301,6 +301,7 @@ function NetworkDetailDialog({
   onCreateList,
   onApplyFilter,
   onCreateCrmContact,
+  onDetailPageChange,
 }: {
   open: boolean
   detail: StudbookNetworkDetail | null
@@ -309,10 +310,14 @@ function NetworkDetailDialog({
   onCreateList: (entity: StudbookNetworkEntity) => void
   onApplyFilter: (entity: StudbookNetworkEntity) => void
   onCreateCrmContact: (entity: StudbookNetworkEntity) => void
+  onDetailPageChange: (page: number) => void
 }) {
   const entity = detail?.entity
   const copy = entity ? networkKindCopy[entity.entity_kind] : null
   const Icon = copy?.icon || Crown
+  const detailTotalPages = detail
+    ? Math.max(1, Math.ceil(detail.horseTotal / detail.pageSize))
+    : 1
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -438,7 +443,7 @@ function NetworkDetailDialog({
                   </div>
                 </div>
                 <Badge variant="outline" className="rounded-md">
-                  {formatNumber(detail?.horses.length || 0)} exibidos
+                  {formatNumber(detail?.horseTotal || 0)} conectados
                 </Badge>
               </div>
               <div className="max-h-72 overflow-y-auto rounded-md border">
@@ -470,6 +475,37 @@ function NetworkDetailDialog({
                   ))
                 )}
               </div>
+              {detailTotalPages > 1 ? (
+                <div className="mt-3 flex items-center justify-between gap-3">
+                  <div className="text-xs text-muted-foreground">
+                    Página {detail?.page || 1} de {detailTotalPages}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={!detail || detail.page <= 1 || loading}
+                      onClick={() =>
+                        detail ? onDetailPageChange(detail.page - 1) : null
+                      }
+                    >
+                      Anterior
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={
+                        !detail || detail.page >= detailTotalPages || loading
+                      }
+                      onClick={() =>
+                        detail ? onDetailPageChange(detail.page + 1) : null
+                      }
+                    >
+                      Próxima
+                    </Button>
+                  </div>
+                </div>
+              ) : null}
             </div>
 
             <DialogFooter className="gap-2 sm:space-x-0">
@@ -688,6 +724,8 @@ export default function Studbook() {
     useState<StudbookNetworkOverview | null>(null)
   const [networkLoading, setNetworkLoading] = useState(true)
   const [networkDialogOpen, setNetworkDialogOpen] = useState(false)
+  const [selectedNetworkEntity, setSelectedNetworkEntity] =
+    useState<StudbookNetworkEntity | null>(null)
   const [networkDetail, setNetworkDetail] =
     useState<StudbookNetworkDetail | null>(null)
   const [networkDetailLoading, setNetworkDetailLoading] = useState(false)
@@ -925,15 +963,21 @@ export default function Studbook() {
     }
   }
 
-  const openNetworkEntity = async (entity: StudbookNetworkEntity) => {
+  const openNetworkEntity = async (
+    entity: StudbookNetworkEntity,
+    detailPage = 1,
+  ) => {
+    setSelectedNetworkEntity(entity)
     setNetworkDialogOpen(true)
-    setNetworkDetail(null)
+    if (detailPage === 1) setNetworkDetail(null)
     setNetworkDetailLoading(true)
     try {
       const detail = await studbookService.getNetworkDetail(
         entity.entity_kind,
         entity.name,
         filters,
+        entity,
+        { page: detailPage, pageSize: 12 },
       )
       setNetworkDetail(detail)
     } catch (error) {
@@ -947,6 +991,11 @@ export default function Studbook() {
     } finally {
       setNetworkDetailLoading(false)
     }
+  }
+
+  const changeNetworkDetailPage = async (nextPage: number) => {
+    if (!selectedNetworkEntity) return
+    await openNetworkEntity(selectedNetworkEntity, nextPage)
   }
 
   const createProspectingList = async (entity: StudbookNetworkEntity) => {
@@ -981,6 +1030,8 @@ export default function Studbook() {
         entity.entity_kind,
         entity.name,
         filters,
+        entity,
+        { page: networkDetail?.page || 1, pageSize: 12 },
       )
       setNetworkDetail(detail)
       await loadNetwork()
@@ -1028,6 +1079,7 @@ export default function Studbook() {
         onCreateList={createProspectingList}
         onApplyFilter={applyNetworkFilter}
         onCreateCrmContact={createOrTagCrmContact}
+        onDetailPageChange={changeNetworkDetailPage}
       />
 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
