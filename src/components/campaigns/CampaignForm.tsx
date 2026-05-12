@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { campaignsService } from '@/services/campaigns'
+import { campaignsService, type Campaign } from '@/services/campaigns'
 import {
   templatesService,
   type MessageTemplate,
@@ -62,6 +62,7 @@ interface CampaignFormProps {
   onSuccess: () => void
   onCancel: () => void
   initialTemplateId?: string | null
+  campaign?: Campaign | null
 }
 
 const templateChannel = (type: TemplateType) =>
@@ -73,6 +74,7 @@ export function CampaignForm({
   onSuccess,
   onCancel,
   initialTemplateId,
+  campaign,
 }: CampaignFormProps) {
   const [schedules, setSchedules] = useState<ScheduleItem[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -86,16 +88,16 @@ export function CampaignForm({
   const form = useForm<CampaignFormValues>({
     resolver: zodResolver(campaignSchema),
     defaultValues: {
-      name: '',
-      objective: '',
-      channels: ['email'],
+      name: campaign?.name || '',
+      objective: campaign?.objective || '',
+      channels: campaign?.channels?.length ? campaign.channels : ['email'],
       dates: {
-        start: new Date(),
-        end: new Date(),
+        start: campaign?.start_date ? new Date(campaign.start_date) : new Date(),
+        end: campaign?.end_date ? new Date(campaign.end_date) : new Date(),
       },
       filters: {
-        tags: [],
-        segments: [],
+        tags: campaign?.audience_filters?.tags || [],
+        segments: campaign?.audience_filters?.segments || [],
       },
     },
   })
@@ -154,6 +156,30 @@ export function CampaignForm({
     }
   }, [applyTemplateToCampaign, initialTemplateId, toast])
 
+  useEffect(() => {
+    if (!campaign?.schedules?.length) return
+
+    setSchedules(
+      campaign.schedules.map((schedule) => {
+        const date = new Date(schedule.scheduled_date)
+        return {
+          id: schedule.id || Math.random().toString(36).substring(7),
+          date: Number.isNaN(date.getTime())
+            ? new Date().toISOString().split('T')[0]
+            : date.toISOString().split('T')[0],
+          time: Number.isNaN(date.getTime())
+            ? '09:00'
+            : date.toTimeString().slice(0, 5),
+          channel:
+            schedule.channel_type === 'whatsapp' ? 'whatsapp' : 'email',
+          templateId: schedule.template_id || null,
+          subject: schedule.subject || null,
+          content: schedule.content || '',
+        }
+      }),
+    )
+  }, [campaign])
+
   const onSubmit = async (values: CampaignFormValues) => {
     if (
       values.filters.tags.length === 0 &&
@@ -178,36 +204,46 @@ export function CampaignForm({
 
     setIsSubmitting(true)
     try {
-      await campaignsService.createCampaign(
-        {
-          name: values.name,
-          objective: values.objective,
-          start_date: values.dates.start.toISOString(),
-          end_date: values.dates.end.toISOString(),
-          status: 'Agendada',
-          audience_filters: values.filters,
-          channels: values.channels,
-        },
-        schedules.map((s) => ({
-          channel_type: s.channel,
-          scheduled_date: new Date(`${s.date}T${s.time}`).toISOString(), // Updated key
-          template_id: s.templateId,
-          subject: s.subject,
-          content: s.content,
-        })),
-      )
+      const payload = {
+        name: values.name,
+        objective: values.objective,
+        start_date: values.dates.start.toISOString(),
+        end_date: values.dates.end.toISOString(),
+        status: campaign?.status || 'Agendada',
+        audience_filters: values.filters,
+        channels: values.channels,
+      }
+      const schedulePayload = schedules.map((s) => ({
+        channel_type: s.channel,
+        scheduled_date: new Date(`${s.date}T${s.time}`).toISOString(),
+        template_id: s.templateId,
+        subject: s.subject,
+        content: s.content,
+      }))
+
+      if (campaign?.id) {
+        await campaignsService.updateCampaign(
+          campaign.id,
+          payload,
+          schedulePayload,
+        )
+      } else {
+        await campaignsService.createCampaign(payload, schedulePayload)
+      }
 
       toast({
         variant: 'success',
-        title: 'Sucesso',
-        description: 'Campanha criada e agendada com sucesso!',
+        title: campaign?.id ? 'Campanha atualizada' : 'Sucesso',
+        description: campaign?.id
+          ? 'As alterações foram salvas com sucesso.'
+          : 'Campanha criada e agendada com sucesso!',
       })
       onSuccess()
     } catch (error) {
       console.error(error)
       toast({
         variant: 'destructive',
-        title: 'Erro ao criar campanha',
+        title: campaign?.id ? 'Erro ao editar campanha' : 'Erro ao criar campanha',
         description: 'Ocorreu um erro inesperado. Tente novamente.',
       })
     } finally {
@@ -432,7 +468,13 @@ export function CampaignForm({
             ) : (
               <Save className="mr-2 h-4 w-4" />
             )}
-            {isSubmitting ? 'Criando...' : 'Criar Campanha'}
+            {isSubmitting
+              ? campaign?.id
+                ? 'Salvando...'
+                : 'Criando...'
+              : campaign?.id
+                ? 'Salvar Campanha'
+                : 'Criar Campanha'}
           </Button>
         </div>
       </form>

@@ -174,6 +174,56 @@ export const campaignsService = {
     return mapCampaign(newCampaign)
   },
 
+  async updateCampaign(id: string, campaign: any, schedules: any[]) {
+    const { data: updatedCampaign, error } = await db
+      .from('campaigns')
+      .update({
+        name: campaign.name,
+        description: campaign.objective || campaign.description || '',
+        start_date: campaign.start_date,
+        end_date: campaign.end_date,
+        status: campaign.status || 'Agendada',
+        audience_filters: campaign.audience_filters || {},
+        channels: campaign.channels || [],
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) throw error
+
+    const { error: deleteSchedulesError } = await db
+      .from('campaign_schedules')
+      .delete()
+      .eq('campaign_id', id)
+
+    if (deleteSchedulesError) throw deleteSchedulesError
+
+    if (schedules?.length > 0) {
+      const rows = schedules.map((schedule) => ({
+        campaign_id: id,
+        channel_type: schedule.channel_type,
+        scheduled_date: schedule.scheduled_date,
+        template_id: schedule.template_id || null,
+        subject: schedule.subject || null,
+        content: schedule.content || '',
+        status: schedule.status || 'Pendente',
+      }))
+      const { error: scheduleError } = await db
+        .from('campaign_schedules')
+        .insert(rows)
+      if (scheduleError) throw scheduleError
+    }
+
+    return mapCampaign(updatedCampaign)
+  },
+
+  async deleteCampaign(id: string) {
+    const { error } = await db.from('campaigns').delete().eq('id', id)
+    if (error) throw error
+  },
+
   async createVipRadarCampaign({
     auction,
     recommendations,

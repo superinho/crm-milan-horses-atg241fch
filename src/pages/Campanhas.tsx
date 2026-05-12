@@ -13,7 +13,19 @@ import {
   Loader2,
   ExternalLink,
   Wand2,
+  Pencil,
+  Trash2,
 } from 'lucide-react'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import {
   Dialog,
   DialogContent,
@@ -33,12 +45,17 @@ import {
 import { campaignsService, Campaign } from '@/services/campaigns'
 import { CampaignForm } from '@/components/campaigns/CampaignForm'
 import { format } from 'date-fns'
+import { useToast } from '@/hooks/use-toast'
 
 export default function Campanhas() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [loading, setLoading] = useState(true)
   const [isCreateOpen, setIsCreateOpen] = useState(false)
+  const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null)
+  const [campaignToDelete, setCampaignToDelete] = useState<Campaign | null>(null)
+  const [deleting, setDeleting] = useState(false)
   const [searchParams, setSearchParams] = useSearchParams()
+  const { toast } = useToast()
   const templateId = searchParams.get('template')
 
   const fetchCampaigns = async () => {
@@ -60,6 +77,43 @@ export default function Campanhas() {
   useEffect(() => {
     if (templateId) setIsCreateOpen(true)
   }, [templateId])
+
+  const openEditCampaign = async (campaign: Campaign) => {
+    try {
+      const fullCampaign = await campaignsService.getCampaignById(campaign.id)
+      setEditingCampaign(fullCampaign)
+    } catch (error: any) {
+      toast({
+        title: 'Erro ao abrir campanha',
+        description: error?.message || 'Não foi possível carregar a campanha.',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const deleteCampaign = async () => {
+    if (!campaignToDelete) return
+
+    setDeleting(true)
+    try {
+      await campaignsService.deleteCampaign(campaignToDelete.id)
+      toast({
+        title: 'Campanha excluída',
+        description: 'A campanha foi removida com seus envios relacionados.',
+        variant: 'success',
+      })
+      setCampaignToDelete(null)
+      fetchCampaigns()
+    } catch (error: any) {
+      toast({
+        title: 'Erro ao excluir campanha',
+        description: error?.message || 'Não foi possível excluir a campanha.',
+        variant: 'destructive',
+      })
+    } finally {
+      setDeleting(false)
+    }
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -134,6 +188,60 @@ export default function Campanhas() {
           </Dialog>
         </div>
       </div>
+
+      <Dialog
+        open={Boolean(editingCampaign)}
+        onOpenChange={(open) => {
+          if (!open) setEditingCampaign(null)
+        }}
+      >
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Editar Campanha</DialogTitle>
+            <DialogDescription>
+              Ajuste dados, público, mensagens e cronograma desta campanha.
+            </DialogDescription>
+          </DialogHeader>
+          {editingCampaign ? (
+            <CampaignForm
+              key={editingCampaign.id}
+              campaign={editingCampaign}
+              onSuccess={() => {
+                setEditingCampaign(null)
+                fetchCampaigns()
+              }}
+              onCancel={() => setEditingCampaign(null)}
+            />
+          ) : null}
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog
+        open={Boolean(campaignToDelete)}
+        onOpenChange={(open) => {
+          if (!open) setCampaignToDelete(null)
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir campanha?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação remove a campanha, cronogramas e registros relacionados.
+              Ela não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={deleteCampaign}
+              disabled={deleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleting ? 'Excluindo...' : 'Excluir campanha'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {loading ? (
         <div className="flex justify-center py-12">
@@ -244,16 +352,34 @@ export default function Campanhas() {
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        title="Ver Dashboard"
-                        asChild
-                      >
-                        <Link to={`/campanhas/${campaign.id}`}>
-                          <BarChart2 className="h-4 w-4 text-muted-foreground hover:text-primary" />
-                        </Link>
-                      </Button>
+                      <div className="flex justify-end gap-1">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          title="Ver Dashboard"
+                          asChild
+                        >
+                          <Link to={`/campanhas/${campaign.id}`}>
+                            <BarChart2 className="h-4 w-4 text-muted-foreground hover:text-primary" />
+                          </Link>
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          title="Editar campanha"
+                          onClick={() => openEditCampaign(campaign)}
+                        >
+                          <Pencil className="h-4 w-4 text-muted-foreground hover:text-primary" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          title="Excluir campanha"
+                          onClick={() => setCampaignToDelete(campaign)}
+                        >
+                          <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
