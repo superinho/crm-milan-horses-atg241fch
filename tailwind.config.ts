@@ -27,9 +27,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        // Standardized font family to Inter as used in Dashboard cards (Total de Contatos)
         sans: ['Inter', 'sans-serif'],
-        display: ['Inter', 'sans-serif'],
+        display: ['Georgia', 'Times New Roman', 'serif'],
       },
       colors: {
         border: 'hsl(var(--border))',

@@ -129,6 +129,9 @@ const asDate = (value: unknown) => {
   if (!value) return null
   const raw = String(value).trim()
   const brazilianDate = raw.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})$/)
+  const isoDateOnly = raw.match(
+    /^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T]00:00(?::00)?(?:\.000)?(?:Z|[+-]\d{2}:?\d{2})?)?$/,
+  )
 
   if (brazilianDate) {
     const [, day, month, year] = brazilianDate
@@ -139,7 +142,18 @@ const asDate = (value: unknown) => {
           ? 1900 + numericYear
           : 2000 + numericYear
         : numericYear
-    const date = new Date(Date.UTC(fullYear, Number(month) - 1, Number(day)))
+    const date = new Date(
+      Date.UTC(fullYear, Number(month) - 1, Number(day), 12),
+    )
+
+    return Number.isNaN(date.getTime()) ? null : date.toISOString()
+  }
+
+  if (isoDateOnly) {
+    const [, year, month, day] = isoDateOnly
+    const date = new Date(
+      Date.UTC(Number(year), Number(month) - 1, Number(day), 12),
+    )
 
     return Number.isNaN(date.getTime()) ? null : date.toISOString()
   }

@@ -37,6 +37,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Input } from '@/components/ui/input'
 import { DealForm } from '@/components/deals/DealForm'
+import { formatCivilDate } from '@/lib/dates'
 import {
   Dialog,
   DialogContent,
@@ -303,9 +304,9 @@ export default function SmartLeiloes() {
                           </TableCell>
                           <TableCell>
                             {leilao.date || leilao.start_date
-                              ? new Date(
-                                  leilao.date || leilao.start_date!,
-                                ).toLocaleDateString('pt-BR')
+                              ? formatCivilDate(
+                                  leilao.date || leilao.start_date,
+                                )
                               : 'N/A'}
                           </TableCell>
                           <TableCell>

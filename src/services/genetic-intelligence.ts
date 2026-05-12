@@ -22,6 +22,13 @@ type CommercialRow = {
 }
 
 export type GeneticRankingMode = 'mare' | 'sire' | 'cross'
+export type GeneticReproductiveType =
+  | 'mare'
+  | 'stallion'
+  | 'gelding'
+  | 'embryo'
+  | 'young'
+  | 'unknown'
 
 export type GeneticMetricRow = {
   key: string
@@ -40,6 +47,15 @@ export type GeneticMetricRow = {
   avgSale: number
   conversionRate: number
   categories: string[]
+  breeders: string[]
+  reproductiveTypes: GeneticReproductiveType[]
+  age: {
+    min: number | null
+    max: number | null
+    avg: number | null
+    knownLots: number
+    unknownLots: number
+  }
   representativeLot: {
     id: string
     title: string
@@ -49,6 +65,13 @@ export type GeneticMetricRow = {
     mare: string
     sire: string
     damSire: string
+    breeder: string
+    sex: string
+    reproductiveType: GeneticReproductiveType
+    ageYears: number | null
+    ageLabel: string
+    ageSource: string
+    commercialStatus: string
   } | null
 }
 
@@ -110,6 +133,54 @@ const normalize = (value: string) =>
 const clean = (value: string, fallback = 'Não informado') =>
   value ? value.replace(/\s+/g, ' ').trim() : fallback
 
+const parseBirthDate = (value: string) => {
+  if (!value || value === '0000-00-00') return null
+  const date = new Date(`${value.slice(0, 10)}T00:00:00`)
+  return Number.isNaN(date.getTime()) ? null : date
+}
+
+const ageFromDate = (birthDate: Date | null) => {
+  if (!birthDate) return null
+  const today = new Date()
+  let years = today.getFullYear() - birthDate.getFullYear()
+  const birthdayThisYear = new Date(
+    today.getFullYear(),
+    birthDate.getMonth(),
+    birthDate.getDate(),
+  )
+  if (today < birthdayThisYear) years -= 1
+  return years >= 0 && years <= 40 ? years : null
+}
+
+const classifyReproductiveType = ({
+  category,
+  sex,
+  title,
+  payload,
+}: {
+  category: string
+  sex: string
+  title: string
+  payload: Record<string, any>
+}): GeneticReproductiveType => {
+  const text = normalize(
+    `${category} ${sex} ${title} ${valueOf(payload, [
+      'observacoesLote',
+      'tipoAnimalLote',
+      'tipoLote',
+    ])}`,
+  )
+
+  if (text.includes('EMBRIAO')) return 'embryo'
+  if (text.includes('CASTRAD')) return 'gelding'
+  if (text.includes('POTRO') || text.includes('POTRA')) return 'young'
+  if (text.includes('GARANHAO')) return 'stallion'
+  if (text.includes('MATRIZ')) return 'mare'
+  if (normalize(sex).includes('MACHO')) return 'stallion'
+  if (normalize(sex).includes('FEMEA')) return 'mare'
+  return 'unknown'
+}
+
 const fetchAll = async <T>(table: string, columns: string): Promise<T[]> => {
   const rows: T[] = []
   let from = 0
@@ -141,16 +212,58 @@ const lotMeta = (lot: SmartLotRow) => {
       valueOf(payload, ['categoriaLote', 'categoria_lote']) ||
       'Sem categoria',
   )
+  const title = clean(lot.title || valueOf(payload, ['descricaoLote']))
+  const birthDate = parseBirthDate(
+    valueOf(payload, [
+      'dataNascimentoAnimal',
+      'data_nascimento_animal',
+      'nascimentoAnimal',
+      'dataNascimentoLote',
+    ]),
+  )
+  const ageYears = ageFromDate(birthDate)
+  const sex = clean(
+    valueOf(payload, ['sexoLote', 'sexoAnimal']),
+    'Não informado',
+  )
+  const breeder = clean(
+    valueOf(payload, [
+      'criadorLote',
+      'criadorAnimal',
+      'nomeCriador',
+      'harasCriador',
+      'harasOrigem',
+      'harasLote',
+      'studFarm',
+      'breeder',
+    ]),
+  )
+  const reproductiveType = classifyReproductiveType({
+    category,
+    sex,
+    title,
+    payload,
+  })
 
   return {
     id: String(lot.smartleiloes_id),
-    title: clean(lot.title || valueOf(payload, ['descricaoLote'])),
+    title,
     lotNumber: clean(lot.lot_number || valueOf(payload, ['numeroLote']), '-'),
     imageUrl: valueOf(payload, ['fotoLote01', 'fotoLote02']),
     category,
     mare,
     sire,
     damSire,
+    breeder,
+    sex,
+    reproductiveType,
+    ageYears,
+    ageLabel: ageYears === null ? 'Idade não informada' : `${ageYears} anos`,
+    ageSource: birthDate ? 'Smart Leilões' : 'Sem data de nascimento',
+    commercialStatus: clean(
+      lot.commercial_status || valueOf(payload, ['situacaoComercialLote']),
+      'Não informado',
+    ),
   }
 }
 
@@ -195,6 +308,15 @@ const createMetric = (
   avgSale: 0,
   conversionRate: 0,
   categories: [],
+  breeders: [],
+  reproductiveTypes: [],
+  age: {
+    min: null,
+    max: null,
+    avg: null,
+    knownLots: 0,
+    unknownLots: 0,
+  },
   representativeLot: lot,
 })
 
@@ -203,11 +325,20 @@ const addCategory = (row: GeneticMetricRow, category: string) => {
     row.categories.push(category)
 }
 
+const average = (values: number[]) =>
+  values.length > 0
+    ? values.reduce((total, value) => total + value, 0) / values.length
+    : null
+
 const finalizeMetric = (
   row: GeneticMetricRow,
   lotIds: Set<string>,
   soldLotIds: Set<string>,
   bidders: Set<string>,
+  breeders: Set<string>,
+  reproductiveTypes: Set<GeneticReproductiveType>,
+  ages: number[],
+  unknownAgeLots: number,
 ) => {
   row.lotsOffered = lotIds.size
   row.soldLots = soldLotIds.size
@@ -216,6 +347,15 @@ const finalizeMetric = (
   row.conversionRate =
     row.lotsOffered > 0 ? (row.soldLots / row.lotsOffered) * 100 : 0
   row.categories = row.categories.slice(0, 3)
+  row.breeders = [...breeders].sort()
+  row.reproductiveTypes = [...reproductiveTypes].sort()
+  row.age = {
+    min: ages.length > 0 ? Math.min(...ages) : null,
+    max: ages.length > 0 ? Math.max(...ages) : null,
+    avg: average(ages),
+    knownLots: ages.length,
+    unknownLots: unknownAgeLots,
+  }
 }
 
 const addActivity = (
@@ -274,6 +414,10 @@ export const geneticIntelligenceService = {
     const rowLots = new Map<string, Set<string>>()
     const rowSoldLots = new Map<string, Set<string>>()
     const rowBidders = new Map<string, Set<string>>()
+    const rowBreeders = new Map<string, Set<string>>()
+    const rowReproductiveTypes = new Map<string, Set<GeneticReproductiveType>>()
+    const rowAges = new Map<string, number[]>()
+    const rowUnknownAges = new Map<string, number>()
     const lotsWithActivity = new Set<string>()
     const gaps: GeneticGapRow[] = []
 
@@ -281,6 +425,11 @@ export const geneticIntelligenceService = {
       if (!rowLots.has(key)) rowLots.set(key, new Set())
       if (!rowSoldLots.has(key)) rowSoldLots.set(key, new Set())
       if (!rowBidders.has(key)) rowBidders.set(key, new Set())
+      if (!rowBreeders.has(key)) rowBreeders.set(key, new Set())
+      if (!rowReproductiveTypes.has(key))
+        rowReproductiveTypes.set(key, new Set())
+      if (!rowAges.has(key)) rowAges.set(key, [])
+      if (!rowUnknownAges.has(key)) rowUnknownAges.set(key, 0)
     }
 
     const ensureRow = (
@@ -294,8 +443,19 @@ export const geneticIntelligenceService = {
       if (!map.has(key))
         map.set(key, createMetric(mode, key, label, secondaryLabel, lot))
       ensureSets(key)
-      rowLots.get(key)?.add(lot.id)
-      addCategory(map.get(key)!, lot.category)
+      const lotIds = rowLots.get(key)!
+      const isNewLot = !lotIds.has(lot.id)
+      lotIds.add(lot.id)
+      if (isNewLot) {
+        addCategory(map.get(key)!, lot.category)
+        rowBreeders.get(key)?.add(lot.breeder)
+        rowReproductiveTypes.get(key)?.add(lot.reproductiveType)
+        if (lot.ageYears === null) {
+          rowUnknownAges.set(key, (rowUnknownAges.get(key) || 0) + 1)
+        } else {
+          rowAges.get(key)?.push(lot.ageYears)
+        }
+      }
       return map.get(key)!
     }
 
@@ -385,6 +545,10 @@ export const geneticIntelligenceService = {
         rowLots.get(row.key) || new Set(),
         rowSoldLots.get(row.key) || new Set(),
         rowBidders.get(row.key) || new Set(),
+        rowBreeders.get(row.key) || new Set(),
+        rowReproductiveTypes.get(row.key) || new Set(),
+        rowAges.get(row.key) || [],
+        rowUnknownAges.get(row.key) || 0,
       )
     }
 

@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase/client'
+import { civilDateTime } from '@/lib/dates'
 
 const db = supabase as any
 
@@ -267,11 +268,9 @@ const isOpenAuction = (auction: any) => {
       auction.payload?.id_situacao_evento ||
       auction.payload?.situacao,
   )
-  const eventDate = auction.event_date ? new Date(auction.event_date) : null
+  const eventDate = civilDateTime(auction.event_date)
   const startsInFuture =
-    eventDate && !Number.isNaN(eventDate.getTime())
-      ? eventDate >= new Date(Date.now() - 86_400_000)
-      : false
+    eventDate > 0 ? eventDate >= Date.now() - 86_400_000 : false
 
   return (
     situationId === '1' ||
@@ -316,8 +315,8 @@ export const vipRadarService = {
       )
     const now = Date.now()
     const auctions = normalizedAuctions.sort((a, b) => {
-      const aDate = a.eventDate ? new Date(a.eventDate).getTime() : 0
-      const bDate = b.eventDate ? new Date(b.eventDate).getTime() : 0
+      const aDate = civilDateTime(a.eventDate)
+      const bDate = civilDateTime(b.eventDate)
       const aIsUpcoming = aDate >= now
       const bIsUpcoming = bDate >= now
 
@@ -332,7 +331,7 @@ export const vipRadarService = {
       ) ||
       auctions.find((auction) => {
         if (!auction.eventDate) return false
-        return new Date(auction.eventDate) >= new Date()
+        return civilDateTime(auction.eventDate) >= Date.now()
       }) ||
       auctions[0] ||
       null
