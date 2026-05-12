@@ -727,14 +727,14 @@ const syncEndpointRows = async (
     if (type === 'client') {
       const rows = contactRowsFor(recordsChunk)
       await upsertRows('contacts', rows, 'smartleiloes_id')
-      saved += rows.length
+      saved += recordsChunk.length
       continue
     }
 
     if (type === 'event') {
       const rows = eventRowsFor(recordsChunk)
       await upsertRows('smartleiloes_auctions', rows, 'smartleiloes_id')
-      saved += rows.length
+      saved += recordsChunk.length
       continue
     }
 
@@ -745,7 +745,7 @@ const syncEndpointRows = async (
       )
       const rows = lotRowsFor(recordsChunk, auctionIdsBySmartId)
       await upsertRows('smartleiloes_lots', rows, 'smartleiloes_id')
-      saved += rows.length
+      saved += recordsChunk.length
       continue
     }
 
@@ -756,7 +756,7 @@ const syncEndpointRows = async (
       )
       const rows = bidRowsFor(recordsChunk, contactIdsBySmartId)
       await upsertRows('bids', rows, 'smartleiloes_id')
-      saved += rows.length
+      saved += recordsChunk.length
       continue
     }
 
@@ -780,7 +780,7 @@ const syncEndpointRows = async (
       )
       await deleteRowsByIds('purchases', 'smartleiloes_id', unsoldIds)
       await upsertRows('purchases', soldRows, 'smartleiloes_id')
-      saved += soldRows.length + unsoldIds.length
+      saved += recordsChunk.length
     }
   }
 
