@@ -81,4 +81,5 @@ export const rfmvService = {
         .sort((a, b) => b.bid_value - a.bid_value)
         .slice(0, 5),
     }
-  }
+  },
+}
