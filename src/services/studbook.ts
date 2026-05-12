@@ -76,6 +76,8 @@ export type StudbookFilters = {
   includeUnknownAge?: boolean
   minOffspring?: number
   dataQualityMin?: number
+  recentYears?: number
+  rankMode?: 'volume' | 'recent'
   sortBy?: StudbookSortMode
 }
 
@@ -117,6 +119,9 @@ export type StudbookNetworkEntity = {
   connected_owner_count: number
   avg_quality?: number | null
   latest_birth_year?: number | null
+  recent_horse_count?: number | null
+  crm_contact_count?: number | null
+  total_entities?: number | null
 }
 
 export type StudbookNetworkOverview = {
@@ -135,6 +140,18 @@ export type StudbookNetworkOverview = {
 export type StudbookNetworkDetail = {
   entity: StudbookNetworkEntity
   horses: StudbookHorse[]
+  crmContacts: StudbookCrmContact[]
+}
+
+export type StudbookCrmContact = {
+  id: string
+  name: string
+  email?: string | null
+  phone?: string | null
+  whatsapp?: string | null
+  city?: string | null
+  state?: string | null
+  tags?: Array<{ id: string; name: string; color: string }>
 }
 
 const emptyOverview: StudbookOverview = {
@@ -315,6 +332,11 @@ const applyFilters = (query: any, filters: StudbookFilters) => {
     nextQuery = nextQuery.gte('data_quality_score', filters.dataQualityMin)
   }
 
+  if (typeof filters.recentYears === 'number' && filters.recentYears > 0) {
+    const cutoffYear = new Date().getFullYear() - filters.recentYears + 1
+    nextQuery = nextQuery.gte('birth_year', cutoffYear)
+  }
+
   return nextQuery
 }
 
@@ -342,7 +364,8 @@ const hasActiveHorseFilters = (filters: StudbookFilters) =>
   Boolean(filters.sireNames?.length) ||
   Boolean(filters.damNames?.length) ||
   Boolean(filters.minOffspring && filters.minOffspring > 0) ||
-  Boolean(filters.dataQualityMin && filters.dataQualityMin > 0)
+  Boolean(filters.dataQualityMin && filters.dataQualityMin > 0) ||
+  Boolean(filters.recentYears && filters.recentYears > 0)
 
 const searchableText = (horse: StudbookHorse) =>
   normalizeSearchText(
@@ -466,13 +489,6 @@ const emptyNetworkOverview: StudbookNetworkOverview = {
   },
 }
 
-const rankingViewByKind: Record<StudbookNetworkKind, string> = {
-  breeder: 'studbook_breeder_rankings',
-  owner: 'studbook_owner_rankings',
-  sire: 'studbook_sire_rankings',
-  dam: 'studbook_dam_rankings',
-}
-
 const entityNameColumnByKind: Record<StudbookNetworkKind, keyof StudbookHorse> =
   {
     breeder: 'breeder_name',
@@ -480,6 +496,60 @@ const entityNameColumnByKind: Record<StudbookNetworkKind, keyof StudbookHorse> =
     sire: 'sire_name',
     dam: 'dam_name',
   }
+
+const networkRowsToOverview = (
+  rows: StudbookNetworkEntity[],
+): StudbookNetworkOverview => {
+  const grouped = {
+    breeders: rows.filter((row) => row.entity_kind === 'breeder'),
+    owners: rows.filter((row) => row.entity_kind === 'owner'),
+    sires: rows.filter((row) => row.entity_kind === 'sire'),
+    dams: rows.filter((row) => row.entity_kind === 'dam'),
+  }
+
+  return {
+    ...grouped,
+    stats: {
+      breeders: grouped.breeders[0]?.total_entities || grouped.breeders.length,
+      owners: grouped.owners[0]?.total_entities || grouped.owners.length,
+      sires: grouped.sires[0]?.total_entities || grouped.sires.length,
+      dams: grouped.dams[0]?.total_entities || grouped.dams.length,
+    },
+  }
+}
+
+const networkRpcPayload = (filters: StudbookFilters = {}) => ({
+  p_search: filters.search?.trim() || null,
+  p_sex: filters.sex || 'all',
+  p_min_age: filters.includeUnknownAge === false ? filters.minAge : null,
+  p_max_age: filters.includeUnknownAge === false ? filters.maxAge : null,
+  p_include_unknown_age: filters.includeUnknownAge !== false,
+  p_reproductive_only: Boolean(filters.reproductiveOnly),
+  p_breeder_names: filters.breederNames?.length ? filters.breederNames : null,
+  p_owner_names: filters.ownerNames?.length ? filters.ownerNames : null,
+  p_sire_names: filters.sireNames?.length ? filters.sireNames : null,
+  p_dam_names: filters.damNames?.length ? filters.damNames : null,
+  p_min_offspring: filters.minOffspring || null,
+  p_data_quality_min: filters.dataQualityMin || null,
+  p_recent_years: filters.recentYears || null,
+  p_rank_mode: filters.rankMode || 'volume',
+  p_limit: 6,
+})
+
+const normalizeName = (value: unknown) =>
+  String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+
+const entityTagName = (entity: StudbookNetworkEntity) =>
+  entity.entity_kind === 'owner'
+    ? 'Studbook Proprietário'
+    : entity.entity_kind === 'breeder'
+      ? 'Studbook Criador'
+      : 'Studbook Linhagem'
 
 const prospectingThesis = (entity: StudbookNetworkEntity) => {
   if (entity.entity_kind === 'breeder') {
@@ -684,77 +754,18 @@ export const studbookService = {
     }
   },
 
-  async getNetworkOverview(): Promise<StudbookNetworkOverview> {
+  async getNetworkOverview(
+    filters: StudbookFilters = {},
+  ): Promise<StudbookNetworkOverview> {
     try {
-      const [
-        breederRows,
-        ownerRows,
-        sireRows,
-        damRows,
-        breederCount,
-        ownerCount,
-        sireCount,
-        damCount,
-      ] = await Promise.all([
-        db
-          .from('studbook_breeder_rankings')
-          .select('*')
-          .order('horse_count', { ascending: false })
-          .limit(6),
-        db
-          .from('studbook_owner_rankings')
-          .select('*')
-          .order('horse_count', { ascending: false })
-          .limit(6),
-        db
-          .from('studbook_sire_rankings')
-          .select('*')
-          .order('horse_count', { ascending: false })
-          .limit(6),
-        db
-          .from('studbook_dam_rankings')
-          .select('*')
-          .order('horse_count', { ascending: false })
-          .limit(6),
-        db
-          .from('studbook_breeder_rankings')
-          .select('entity_id', { count: 'exact', head: true }),
-        db
-          .from('studbook_owner_rankings')
-          .select('entity_id', { count: 'exact', head: true }),
-        db
-          .from('studbook_sire_rankings')
-          .select('entity_id', { count: 'exact', head: true }),
-        db
-          .from('studbook_dam_rankings')
-          .select('entity_id', { count: 'exact', head: true }),
-      ])
+      const { data, error } = await db.rpc(
+        'get_studbook_network_rankings',
+        networkRpcPayload(filters),
+      )
 
-      const results = [
-        breederRows,
-        ownerRows,
-        sireRows,
-        damRows,
-        breederCount,
-        ownerCount,
-        sireCount,
-        damCount,
-      ]
-      const failed = results.find((result) => result.error)
-      if (failed?.error) throw failed.error
+      if (error) throw error
 
-      return {
-        breeders: (breederRows.data || []) as StudbookNetworkEntity[],
-        owners: (ownerRows.data || []) as StudbookNetworkEntity[],
-        sires: (sireRows.data || []) as StudbookNetworkEntity[],
-        dams: (damRows.data || []) as StudbookNetworkEntity[],
-        stats: {
-          breeders: breederCount.count || 0,
-          owners: ownerCount.count || 0,
-          sires: sireCount.count || 0,
-          dams: damCount.count || 0,
-        },
-      }
+      return networkRowsToOverview((data || []) as StudbookNetworkEntity[])
     } catch (error) {
       if (isMissingTable(error)) return emptyNetworkOverview
       throw error
@@ -764,32 +775,41 @@ export const studbookService = {
   async getNetworkDetail(
     kind: StudbookNetworkKind,
     name: string,
+    filters: StudbookFilters = {},
   ): Promise<StudbookNetworkDetail | null> {
     try {
-      const view = rankingViewByKind[kind]
       const nameColumn = entityNameColumnByKind[kind]
-      const { data: entity, error: entityError } = await db
-        .from(view)
-        .select('*')
-        .eq('name', name)
-        .maybeSingle()
+      const rankingResult = await db.rpc('get_studbook_network_rankings', {
+        ...networkRpcPayload(filters),
+        p_limit: 20,
+      })
 
-      if (entityError) throw entityError
+      if (rankingResult.error) throw rankingResult.error
+      const entity = (
+        (rankingResult.data || []) as StudbookNetworkEntity[]
+      ).find((row) => row.entity_kind === kind && row.name === name)
       if (!entity) return null
 
-      const { data: horses, error: horsesError } = await db
-        .from('studbook_horses_enriched')
-        .select(horseListColumns)
-        .eq(nameColumn, name)
-        .order('birth_year', { ascending: false, nullsFirst: false })
-        .order('data_quality_score', { ascending: false })
-        .limit(24)
+      const horseQuery = applyFilters(
+        db
+          .from('studbook_horses_enriched')
+          .select(horseListColumns)
+          .eq(nameColumn, name)
+          .order('birth_year', { ascending: false, nullsFirst: false })
+          .order('data_quality_score', { ascending: false })
+          .limit(24),
+        filters,
+      )
+
+      const [{ data: horses, error: horsesError }, crmContacts] =
+        await Promise.all([horseQuery, this.findCrmContactsByName(name)])
 
       if (horsesError) throw horsesError
 
       return {
         entity: entity as StudbookNetworkEntity,
         horses: (horses || []) as StudbookHorse[],
+        crmContacts,
       }
     } catch (error) {
       if (isMissingTable(error)) return null
@@ -851,6 +871,89 @@ export const studbookService = {
 
     if (error) throw error
     return data as AuctionCandidateList
+  },
+
+  async findCrmContactsByName(name: string): Promise<StudbookCrmContact[]> {
+    const token = name.split(/\s+/).find((part) => part.length > 3) || name
+    const { data, error } = await db
+      .from('contacts')
+      .select(
+        'id,name,email,phone,whatsapp,city,state,contact_tags(tags(id,name,color))',
+      )
+      .ilike('name', `%${token}%`)
+      .limit(20)
+
+    if (error) throw error
+
+    const normalized = normalizeName(name)
+    return ((data || []) as any[])
+      .filter((contact) => normalizeName(contact.name) === normalized)
+      .map((contact) => ({
+        ...contact,
+        tags:
+          contact.contact_tags?.map((item: any) => item.tags).filter(Boolean) ||
+          [],
+      }))
+  },
+
+  async createOrTagCrmContactFromEntity(entity: StudbookNetworkEntity) {
+    const tagName = entityTagName(entity)
+    const existingContacts = await this.findCrmContactsByName(entity.name)
+    let [contact] = existingContacts
+
+    if (!contact) {
+      const { data, error } = await db
+        .from('contacts')
+        .insert({
+          name: entity.name,
+          email: '',
+          phone: '',
+          whatsapp: null,
+          origin: 'Studbook ABCCH',
+          notes: prospectingThesis(entity),
+          preferences: {
+            source: 'studbook_network',
+            kind: entity.entity_kind,
+            horse_count: entity.horse_count,
+            recent_horse_count: entity.recent_horse_count || 0,
+          },
+        })
+        .select('id,name,email,phone,whatsapp,city,state')
+        .single()
+
+      if (error) throw error
+      contact = data as StudbookCrmContact
+    }
+
+    let { data: tag, error: tagError } = await db
+      .from('tags')
+      .select('id,name,color')
+      .eq('name', tagName)
+      .maybeSingle()
+
+    if (tagError) throw tagError
+
+    if (!tag) {
+      const created = await db
+        .from('tags')
+        .insert({
+          name: tagName,
+          color: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        })
+        .select('id,name,color')
+        .single()
+
+      if (created.error) throw created.error
+      tag = created.data
+    }
+
+    const { error: contactTagError } = await db
+      .from('contact_tags')
+      .upsert({ contact_id: contact.id, tag_id: tag.id })
+
+    if (contactTagError) throw contactTagError
+
+    return { contact, tag }
   },
 
   async addHorseToList(listId: string, horseId: string, reason: string) {

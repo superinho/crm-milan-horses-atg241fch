@@ -11,6 +11,7 @@ import {
   ExternalLink,
   FilterX,
   GitBranch,
+  Link2,
   Loader2,
   type LucideIcon,
   Plus,
@@ -18,8 +19,10 @@ import {
   ShieldCheck,
   SlidersHorizontal,
   Sparkles,
+  Tag,
   Trophy,
   Users,
+  UserPlus,
   UserRound,
   VenusAndMars,
 } from 'lucide-react'
@@ -61,6 +64,7 @@ import {
   type StudbookFilterOptions,
   type StudbookFilters,
   type StudbookHorse,
+  type StudbookCrmContact,
   type StudbookNetworkDetail,
   type StudbookNetworkEntity,
   type StudbookNetworkKind,
@@ -191,6 +195,8 @@ function NetworkEntityRow({
           <span>{formatNumber(entity.horse_count)} registros</span>
           <span>·</span>
           <span>{formatNumber(entity.female_count)} fêmeas</span>
+          <span>·</span>
+          <span>{formatNumber(entity.recent_horse_count || 0)} recentes</span>
           {entity.latest_birth_year ? (
             <>
               <span>·</span>
@@ -256,6 +262,37 @@ function NetworkPanel({
   )
 }
 
+function CrmContactPill({ contact }: { contact: StudbookCrmContact }) {
+  return (
+    <div className="rounded-md border bg-white p-3">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="truncate font-semibold text-foreground">
+            {contact.name}
+          </div>
+          <div className="mt-1 text-xs text-muted-foreground">
+            {[contact.email, contact.whatsapp || contact.phone]
+              .filter(Boolean)
+              .join(' · ') || 'Contato sem email/telefone'}
+          </div>
+        </div>
+        <Badge variant="secondary" className="shrink-0 rounded-md">
+          CRM
+        </Badge>
+      </div>
+      {contact.tags?.length ? (
+        <div className="mt-2 flex flex-wrap gap-1">
+          {contact.tags.map((tag) => (
+            <Badge key={tag.id} variant="outline" className="rounded-md">
+              {tag.name}
+            </Badge>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
 function NetworkDetailDialog({
   open,
   detail,
@@ -263,6 +300,7 @@ function NetworkDetailDialog({
   onOpenChange,
   onCreateList,
   onApplyFilter,
+  onCreateCrmContact,
 }: {
   open: boolean
   detail: StudbookNetworkDetail | null
@@ -270,6 +308,7 @@ function NetworkDetailDialog({
   onOpenChange: (open: boolean) => void
   onCreateList: (entity: StudbookNetworkEntity) => void
   onApplyFilter: (entity: StudbookNetworkEntity) => void
+  onCreateCrmContact: (entity: StudbookNetworkEntity) => void
 }) {
   const entity = detail?.entity
   const copy = entity ? networkKindCopy[entity.entity_kind] : null
@@ -321,17 +360,15 @@ function NetworkDetailDialog({
                 </div>
               </div>
               <div className="rounded-md border bg-muted/10 p-3">
-                <div className="text-xs text-muted-foreground">Jovens</div>
+                <div className="text-xs text-muted-foreground">Recentes</div>
                 <div className="mt-1 text-xl font-bold">
-                  {formatNumber(entity.young_count)}
+                  {formatNumber(entity.recent_horse_count || 0)}
                 </div>
               </div>
               <div className="rounded-md border bg-muted/10 p-3">
-                <div className="text-xs text-muted-foreground">
-                  Matrizes 3-18
-                </div>
+                <div className="text-xs text-muted-foreground">No CRM</div>
                 <div className="mt-1 text-xl font-bold">
-                  {formatNumber(entity.active_mare_count)}
+                  {formatNumber(entity.crm_contact_count || 0)}
                 </div>
               </div>
             </div>
@@ -353,6 +390,40 @@ function NetworkDetailDialog({
                           : 'Matriz com descendência relevante: bom ponto de partida para famílias maternas, narrativa de leilão e prospecção de lotes.'}
                   </p>
                 </div>
+              </div>
+            </div>
+
+            <div className="grid gap-3 md:grid-cols-[1fr_1fr]">
+              <div className="rounded-md border bg-muted/10 p-4">
+                <div className="mb-2 flex items-center gap-2 font-semibold text-foreground">
+                  <Link2 className="h-4 w-4 text-primary" />
+                  Cruzamento com CRM
+                </div>
+                {(detail?.crmContacts || []).length ? (
+                  <div className="space-y-2">
+                    {detail?.crmContacts.map((contact) => (
+                      <CrmContactPill key={contact.id} contact={contact} />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    Nenhum contato com o mesmo nome ainda. Crie um contato de
+                    prospecção e aplique a tag automaticamente.
+                  </p>
+                )}
+              </div>
+              <div className="rounded-md border bg-muted/10 p-4">
+                <div className="mb-2 flex items-center gap-2 font-semibold text-foreground">
+                  <Tag className="h-4 w-4 text-primary" />
+                  Próxima ação sugerida
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {entity.entity_kind === 'owner'
+                    ? 'Tratar como lead de proprietário: mapear telefone/email, taguear no CRM e convidar para leilões compatíveis com o plantel.'
+                    : entity.entity_kind === 'breeder'
+                      ? 'Tratar como lead de criador: abrir relacionamento para captação de lotes e convites curatoriais.'
+                      : 'Usar a linhagem para encontrar proprietários e criadores conectados antes de criar campanha.'}
+                </p>
               </div>
             </div>
 
@@ -402,6 +473,13 @@ function NetworkDetailDialog({
             </div>
 
             <DialogFooter className="gap-2 sm:space-x-0">
+              <Button
+                variant="outline"
+                onClick={() => onCreateCrmContact(entity)}
+              >
+                <UserPlus className="h-4 w-4" />
+                Criar/tag CRM
+              </Button>
               <Button variant="outline" onClick={() => onApplyFilter(entity)}>
                 Filtrar na base
                 <ArrowRight className="h-4 w-4" />
@@ -632,6 +710,8 @@ export default function Studbook() {
   const [reproductiveOnly, setReproductiveOnly] = useState(false)
   const [minOffspring, setMinOffspring] = useState('all')
   const [dataQualityMin, setDataQualityMin] = useState('all')
+  const [recentYears, setRecentYears] = useState('all')
+  const [rankMode, setRankMode] = useState<'volume' | 'recent'>('volume')
   const [sortBy, setSortBy] = useState<StudbookSortMode>('updated')
   const { toast } = useToast()
 
@@ -651,6 +731,8 @@ export default function Studbook() {
         minOffspring === 'all' ? undefined : Number(minOffspring || 0),
       dataQualityMin:
         dataQualityMin === 'all' ? undefined : Number(dataQualityMin || 0),
+      recentYears: recentYears === 'all' ? undefined : Number(recentYears || 0),
+      rankMode,
       sortBy,
     }),
     [
@@ -665,6 +747,8 @@ export default function Studbook() {
       includeUnknownAge,
       minOffspring,
       dataQualityMin,
+      recentYears,
+      rankMode,
       sortBy,
     ],
   )
@@ -700,7 +784,7 @@ export default function Studbook() {
   const loadNetwork = useCallback(async () => {
     setNetworkLoading(true)
     try {
-      setNetworkOverview(await studbookService.getNetworkOverview())
+      setNetworkOverview(await studbookService.getNetworkOverview(filters))
     } catch (error) {
       console.error(error)
       toast({
@@ -711,7 +795,7 @@ export default function Studbook() {
     } finally {
       setNetworkLoading(false)
     }
-  }, [toast])
+  }, [filters, toast])
 
   useEffect(() => {
     loadNetwork()
@@ -746,7 +830,9 @@ export default function Studbook() {
     (!includeUnknownAge ? 1 : 0) +
     (reproductiveOnly ? 1 : 0) +
     (minOffspring !== 'all' ? 1 : 0) +
-    (dataQualityMin !== 'all' ? 1 : 0)
+    (dataQualityMin !== 'all' ? 1 : 0) +
+    (recentYears !== 'all' ? 1 : 0) +
+    (rankMode !== 'volume' ? 1 : 0)
 
   const resetFilters = () => {
     setSearch('')
@@ -760,6 +846,8 @@ export default function Studbook() {
     setReproductiveOnly(false)
     setMinOffspring('all')
     setDataQualityMin('all')
+    setRecentYears('all')
+    setRankMode('volume')
     setSortBy('updated')
   }
 
@@ -784,6 +872,8 @@ export default function Studbook() {
     setAgeRange([0, 5])
     setIncludeUnknownAge(false)
     setMinOffspring('all')
+    setRecentYears('5')
+    setRankMode('recent')
     setSortBy('age_asc')
   }
 
@@ -843,6 +933,7 @@ export default function Studbook() {
       const detail = await studbookService.getNetworkDetail(
         entity.entity_kind,
         entity.name,
+        filters,
       )
       setNetworkDetail(detail)
     } catch (error) {
@@ -877,6 +968,32 @@ export default function Studbook() {
     }
   }
 
+  const createOrTagCrmContact = async (entity: StudbookNetworkEntity) => {
+    try {
+      const { contact, tag } =
+        await studbookService.createOrTagCrmContactFromEntity(entity)
+      toast({
+        title: 'CRM atualizado',
+        description: `${contact.name} recebeu a tag ${tag.name}.`,
+        variant: 'success',
+      })
+      const detail = await studbookService.getNetworkDetail(
+        entity.entity_kind,
+        entity.name,
+        filters,
+      )
+      setNetworkDetail(detail)
+      await loadNetwork()
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: 'Erro ao atualizar CRM',
+        description: 'Não foi possível criar ou taguear este contato agora.',
+        variant: 'destructive',
+      })
+    }
+  }
+
   const applyNetworkFilter = (entity: StudbookNetworkEntity) => {
     setSearch('')
     setSex('all')
@@ -889,6 +1006,8 @@ export default function Studbook() {
     setReproductiveOnly(false)
     setMinOffspring('all')
     setDataQualityMin('all')
+    setRecentYears('all')
+    setRankMode('volume')
     setSortBy('quality')
     setPage(1)
     setNetworkDialogOpen(false)
@@ -908,6 +1027,7 @@ export default function Studbook() {
         onOpenChange={setNetworkDialogOpen}
         onCreateList={createProspectingList}
         onApplyFilter={applyNetworkFilter}
+        onCreateCrmContact={createOrTagCrmContact}
       />
 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -971,70 +1091,6 @@ export default function Studbook() {
           icon={UserRound}
         />
       </div>
-
-      <Card className="border-primary/15 bg-white shadow-sm">
-        <CardHeader className="flex flex-col gap-3 border-b pb-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2 text-base text-primary">
-              <Users className="h-4 w-4" />
-              Rede Hípica
-            </CardTitle>
-            <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-              Clique em criadores, proprietários, garanhões ou matrizes para
-              abrir um card comercial com tese, registros conectados e criação
-              rápida de lista de prospecção.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground sm:grid-cols-4">
-            <Badge variant="outline" className="justify-center rounded-md">
-              {formatNumber(networkOverview?.stats.breeders || 0)} criadores
-            </Badge>
-            <Badge variant="outline" className="justify-center rounded-md">
-              {formatNumber(networkOverview?.stats.owners || 0)} proprietários
-            </Badge>
-            <Badge variant="outline" className="justify-center rounded-md">
-              {formatNumber(networkOverview?.stats.sires || 0)} garanhões
-            </Badge>
-            <Badge variant="outline" className="justify-center rounded-md">
-              {formatNumber(networkOverview?.stats.dams || 0)} matrizes
-            </Badge>
-          </div>
-        </CardHeader>
-        <CardContent className="p-4">
-          {networkLoading ? (
-            <div className="flex min-h-48 items-center justify-center rounded-md border bg-muted/10">
-              <Loader2 className="h-7 w-7 animate-spin text-primary" />
-            </div>
-          ) : (
-            <div className="grid gap-4 xl:grid-cols-2">
-              <NetworkPanel
-                kind="breeder"
-                entities={networkOverview?.breeders || []}
-                total={networkOverview?.stats.breeders || 0}
-                onOpen={openNetworkEntity}
-              />
-              <NetworkPanel
-                kind="owner"
-                entities={networkOverview?.owners || []}
-                total={networkOverview?.stats.owners || 0}
-                onOpen={openNetworkEntity}
-              />
-              <NetworkPanel
-                kind="sire"
-                entities={networkOverview?.sires || []}
-                total={networkOverview?.stats.sires || 0}
-                onOpen={openNetworkEntity}
-              />
-              <NetworkPanel
-                kind="dam"
-                entities={networkOverview?.dams || []}
-                total={networkOverview?.stats.dams || 0}
-                onOpen={openNetworkEntity}
-              />
-            </div>
-          )}
-        </CardContent>
-      </Card>
 
       <Card className="border-primary/15 bg-white shadow-sm">
         <CardHeader className="flex flex-col gap-3 border-b pb-4 lg:flex-row lg:items-center lg:justify-between">
@@ -1216,6 +1272,32 @@ export default function Studbook() {
                   <SelectItem value="85">85%+ completo</SelectItem>
                 </SelectContent>
               </Select>
+              <Select value={recentYears} onValueChange={setRecentYears}>
+                <SelectTrigger className="bg-white">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Qualquer recência</SelectItem>
+                  <SelectItem value="1">Ano atual</SelectItem>
+                  <SelectItem value="3">Últimos 3 anos</SelectItem>
+                  <SelectItem value="5">Últimos 5 anos</SelectItem>
+                  <SelectItem value="10">Últimos 10 anos</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select
+                value={rankMode}
+                onValueChange={(value) =>
+                  setRankMode(value as 'volume' | 'recent')
+                }
+              >
+                <SelectTrigger className="bg-white">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="volume">Rankear por volume</SelectItem>
+                  <SelectItem value="recent">Rankear por recência</SelectItem>
+                </SelectContent>
+              </Select>
               <Button
                 variant={reproductiveOnly ? 'default' : 'outline'}
                 onClick={() => setReproductiveOnly((current) => !current)}
@@ -1241,6 +1323,93 @@ export default function Studbook() {
               Jovens promessas
             </Button>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-primary/15 bg-white shadow-sm">
+        <CardHeader className="flex flex-col gap-3 border-b pb-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2 text-base text-primary">
+              <Users className="h-4 w-4" />
+              Rede Hípica
+            </CardTitle>
+            <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
+              Rankings recalculados pelos filtros acima. Use para encontrar quem
+              está criando, comprando ou influenciando o Studbook agora.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground sm:grid-cols-4">
+            <Badge variant="outline" className="justify-center rounded-md">
+              {formatNumber(networkOverview?.stats.breeders || 0)} criadores
+            </Badge>
+            <Badge variant="outline" className="justify-center rounded-md">
+              {formatNumber(networkOverview?.stats.owners || 0)} proprietários
+            </Badge>
+            <Badge variant="outline" className="justify-center rounded-md">
+              {formatNumber(networkOverview?.stats.sires || 0)} garanhões
+            </Badge>
+            <Badge variant="outline" className="justify-center rounded-md">
+              {formatNumber(networkOverview?.stats.dams || 0)} matrizes
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4 p-4">
+          <div className="grid gap-3 md:grid-cols-3">
+            <div className="rounded-md border bg-muted/10 p-3">
+              <div className="text-xs text-muted-foreground">Base filtrada</div>
+              <div className="mt-1 text-xl font-bold">
+                {formatNumber(horseTotal)}
+              </div>
+            </div>
+            <div className="rounded-md border bg-muted/10 p-3">
+              <div className="text-xs text-muted-foreground">
+                Recência usada
+              </div>
+              <div className="mt-1 text-xl font-bold">
+                {recentYears === 'all' ? 'Todas' : `${recentYears} anos`}
+              </div>
+            </div>
+            <div className="rounded-md border bg-muted/10 p-3">
+              <div className="text-xs text-muted-foreground">
+                Ordenação da rede
+              </div>
+              <div className="mt-1 text-xl font-bold">
+                {rankMode === 'recent' ? 'Recência' : 'Volume'}
+              </div>
+            </div>
+          </div>
+          {networkLoading ? (
+            <div className="flex min-h-48 items-center justify-center rounded-md border bg-muted/10">
+              <Loader2 className="h-7 w-7 animate-spin text-primary" />
+            </div>
+          ) : (
+            <div className="grid gap-4 xl:grid-cols-2">
+              <NetworkPanel
+                kind="breeder"
+                entities={networkOverview?.breeders || []}
+                total={networkOverview?.stats.breeders || 0}
+                onOpen={openNetworkEntity}
+              />
+              <NetworkPanel
+                kind="owner"
+                entities={networkOverview?.owners || []}
+                total={networkOverview?.stats.owners || 0}
+                onOpen={openNetworkEntity}
+              />
+              <NetworkPanel
+                kind="sire"
+                entities={networkOverview?.sires || []}
+                total={networkOverview?.stats.sires || 0}
+                onOpen={openNetworkEntity}
+              />
+              <NetworkPanel
+                kind="dam"
+                entities={networkOverview?.dams || []}
+                total={networkOverview?.stats.dams || 0}
+                onOpen={openNetworkEntity}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
 
