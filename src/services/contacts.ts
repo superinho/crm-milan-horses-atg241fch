@@ -608,14 +608,20 @@ export const contactsService = {
     return data as Purchase[]
   },
 
-  async getBirthdays(_month: number, _day: number) {
+  async getBirthdays(month: number, day: number) {
     const { data, error } = await db
       .from('contacts')
       .select('*')
       .not('birth_date', 'is', null)
 
     if (error) throw error
-    return data || []
+    return (data || []).filter((contact: any) => {
+      const [, birthMonth, birthDay] = String(contact.birth_date || '')
+        .split('-')
+        .map(Number)
+
+      return birthMonth === month && birthDay === day
+    })
   },
 
   async getInactiveContactsCount(daysThreshold: number) {
@@ -625,7 +631,9 @@ export const contactsService = {
     const { count, error } = await db
       .from('customer_rfmv_view')
       .select('*', { count: 'exact', head: true })
-      .lt('last_activity_date', thresholdDate.toISOString().slice(0, 10))
+      .or(
+        `last_activity_date.lt.${thresholdDate.toISOString().slice(0, 10)},last_activity_date.is.null`,
+      )
 
     if (error) throw error
     return count || 0

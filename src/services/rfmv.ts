@@ -35,14 +35,31 @@ export type MonetaryDashboardData = {
   highPotential: CustomerRfmv[]
 }
 
-export const rfmvService = {
-  async getMonetaryDashboard(): Promise<MonetaryDashboardData> {
+const fetchAllCustomerRfmvRows = async () => {
+  const pageSize = 1000
+  let from = 0
+  const rows: any[] = []
+
+  while (true) {
     const { data, error } = await db
       .from('customer_rfmv_view')
       .select('*')
       .order('monetary_value', { ascending: false })
+      .range(from, from + pageSize - 1)
 
     if (error) throw error
+
+    rows.push(...(data || []))
+    if (!data || data.length < pageSize) break
+    from += pageSize
+  }
+
+  return rows
+}
+
+export const rfmvService = {
+  async getMonetaryDashboard(): Promise<MonetaryDashboardData> {
+    const data = await fetchAllCustomerRfmvRows()
 
     const rows = (data || []).map((row: any) => ({
       ...row,
