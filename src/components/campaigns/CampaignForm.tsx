@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2, Save } from 'lucide-react'
+import { Loader2, Save, Wand2 } from 'lucide-react'
 
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import {
@@ -18,10 +20,22 @@ import {
 } from '@/components/ui/form'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { campaignsService } from '@/services/campaigns'
+import {
+  templatesService,
+  type MessageTemplate,
+  type TemplateType,
+} from '@/services/templates'
 import { useToast } from '@/hooks/use-toast'
 import { DatePicker } from '@/components/ui/date-picker'
 import { AudienceSelector } from './AudienceSelector'
 import { CampaignScheduler, ScheduleItem } from './CampaignScheduler'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 const campaignSchema = z.object({
   name: z.string().min(3, 'O nome deve ter pelo menos 3 caracteres'),
@@ -47,11 +61,26 @@ type CampaignFormValues = z.infer<typeof campaignSchema>
 interface CampaignFormProps {
   onSuccess: () => void
   onCancel: () => void
+  initialTemplateId?: string | null
 }
 
-export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
+const templateChannel = (type: TemplateType) =>
+  type === 'E-mail' ? 'email' : 'whatsapp'
+
+const stripHtml = (value: string) => value.replace(/<[^>]+>/g, ' ')
+
+export function CampaignForm({
+  onSuccess,
+  onCancel,
+  initialTemplateId,
+}: CampaignFormProps) {
   const [schedules, setSchedules] = useState<ScheduleItem[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [templates, setTemplates] = useState<MessageTemplate[]>([])
+  const [templatesLoading, setTemplatesLoading] = useState(true)
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>(
+    initialTemplateId || 'none',
+  )
   const { toast } = useToast()
 
   const form = useForm<CampaignFormValues>({
@@ -60,6 +89,10 @@ export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
       name: '',
       objective: '',
       channels: ['email'],
+      dates: {
+        start: new Date(),
+        end: new Date(),
+      },
       filters: {
         tags: [],
         segments: [],
@@ -69,6 +102,57 @@ export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
 
   const selectedChannels = form.watch('channels')
   const filters = form.watch('filters')
+  const selectedTemplate = useMemo(
+    () => templates.find((template) => template.id === selectedTemplateId),
+    [selectedTemplateId, templates],
+  )
+
+  const applyTemplateToCampaign = useCallback((template: MessageTemplate) => {
+    const channel = templateChannel(template.type)
+    setSelectedTemplateId(template.id)
+    form.setValue('channels', [channel])
+
+    if (!form.getValues('name')) {
+      form.setValue('name', template.title)
+    }
+
+    if (!form.getValues('objective')) {
+      form.setValue(
+        'objective',
+        `${template.category}: campanha criada a partir do Estúdio de Mensagens.`,
+      )
+    }
+  }, [form])
+
+  useEffect(() => {
+    let mounted = true
+
+    templatesService
+      .getTemplates()
+      .then((items) => {
+        if (!mounted) return
+        setTemplates(items)
+        const template = initialTemplateId
+          ? items.find((item) => item.id === initialTemplateId)
+          : null
+        if (template) applyTemplateToCampaign(template)
+      })
+      .catch((error) => {
+        console.error(error)
+        toast({
+          title: 'Erro ao carregar modelos',
+          description: 'Não foi possível buscar os modelos do Estúdio.',
+          variant: 'destructive',
+        })
+      })
+      .finally(() => {
+        if (mounted) setTemplatesLoading(false)
+      })
+
+    return () => {
+      mounted = false
+    }
+  }, [applyTemplateToCampaign, initialTemplateId, toast])
 
   const onSubmit = async (values: CampaignFormValues) => {
     if (
@@ -107,6 +191,8 @@ export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
         schedules.map((s) => ({
           channel_type: s.channel,
           scheduled_date: new Date(`${s.date}T${s.time}`).toISOString(), // Updated key
+          template_id: s.templateId,
+          subject: s.subject,
           content: s.content,
         })),
       )
@@ -249,11 +335,89 @@ export function CampaignForm({ onSuccess, onCancel }: CampaignFormProps) {
 
         {/* Scheduling */}
         <div className="space-y-4">
+          <h3 className="text-lg font-semibold border-b pb-2">
+            Mensagem do Estúdio
+          </h3>
+          <div className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
+            <div className="space-y-2">
+              <FormLabel>Modelo base</FormLabel>
+              <Select
+                value={selectedTemplateId}
+                onValueChange={(value) => {
+                  setSelectedTemplateId(value)
+                  const template = templates.find((item) => item.id === value)
+                  if (template) applyTemplateToCampaign(template)
+                }}
+                disabled={templatesLoading}
+              >
+                <SelectTrigger>
+                  <SelectValue
+                    placeholder={
+                      templatesLoading
+                        ? 'Carregando modelos...'
+                        : 'Selecione um modelo'
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Escolher no cronograma</SelectItem>
+                  {templates.map((template) => (
+                    <SelectItem key={template.id} value={template.id}>
+                      {template.title} · {template.type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormDescription>
+                O modelo selecionado define canal, assunto e texto inicial dos
+                envios.
+              </FormDescription>
+            </div>
+
+            <Card className="bg-muted/20">
+              <CardContent className="space-y-2 p-4">
+                {selectedTemplate ? (
+                  <>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant="outline" className="gap-1">
+                        <Wand2 className="h-3 w-3" />
+                        {selectedTemplate.type}
+                      </Badge>
+                      <Badge variant="secondary">
+                        {selectedTemplate.category}
+                      </Badge>
+                    </div>
+                    <div className="font-medium">{selectedTemplate.title}</div>
+                    {selectedTemplate.subject ? (
+                      <div className="text-sm text-muted-foreground">
+                        Assunto: {selectedTemplate.subject}
+                      </div>
+                    ) : null}
+                    <p className="line-clamp-3 text-sm text-muted-foreground">
+                      {stripHtml(selectedTemplate.body)}
+                    </p>
+                  </>
+                ) : (
+                  <div className="text-sm text-muted-foreground">
+                    Selecione um modelo salvo no Estúdio ou escreva a mensagem
+                    manualmente no cronograma.
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        <div className="space-y-4">
           <h3 className="text-lg font-semibold border-b pb-2">Cronograma</h3>
           <CampaignScheduler
             schedules={schedules}
             setSchedules={setSchedules}
             allowedChannels={selectedChannels}
+            templates={templates}
+            selectedTemplateId={
+              selectedTemplateId === 'none' ? undefined : selectedTemplateId
+            }
           />
         </div>
 

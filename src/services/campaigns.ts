@@ -17,6 +17,8 @@ export type CampaignSchedule = {
   campaign_id?: string
   scheduled_date: string
   channel_type?: string
+  template_id?: string | null
+  subject?: string | null
   content?: string | null
   status: string
 }
@@ -158,6 +160,8 @@ export const campaignsService = {
         campaign_id: newCampaign.id,
         channel_type: schedule.channel_type,
         scheduled_date: schedule.scheduled_date,
+        template_id: schedule.template_id || null,
+        subject: schedule.subject || null,
         content: schedule.content || '',
         status: 'Pendente',
       }))

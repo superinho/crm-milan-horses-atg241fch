@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Plus, Trash2, Calendar, Mail, MessageSquare } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Plus, Trash2, Calendar, Mail, MessageSquare, Wand2 } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Button } from '@/components/ui/button'
@@ -15,12 +15,15 @@ import {
 } from '@/components/ui/select'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import type { MessageTemplate } from '@/services/templates'
 
 export type ScheduleItem = {
   id: string // Temp id for UI list
   date: string // YYYY-MM-DD
   time: string // HH:mm
   channel: 'email' | 'whatsapp'
+  templateId?: string | null
+  subject?: string | null
   content: string
 }
 
@@ -28,18 +31,59 @@ interface CampaignSchedulerProps {
   schedules: ScheduleItem[]
   setSchedules: (schedules: ScheduleItem[]) => void
   allowedChannels: string[]
+  templates?: MessageTemplate[]
+  selectedTemplateId?: string
 }
 
 export function CampaignScheduler({
   schedules,
   setSchedules,
   allowedChannels,
+  templates = [],
+  selectedTemplateId,
 }: CampaignSchedulerProps) {
   // New item state
   const [newDate, setNewDate] = useState('')
   const [newTime, setNewTime] = useState('09:00')
   const [newChannel, setNewChannel] = useState<'email' | 'whatsapp'>('email')
+  const [newTemplateId, setNewTemplateId] = useState<string>('manual')
+  const [newSubject, setNewSubject] = useState('')
   const [newContent, setNewContent] = useState('')
+
+  const compatibleTemplates = templates.filter((template) =>
+    newChannel === 'email'
+      ? template.type === 'E-mail'
+      : template.type === 'WhatsApp',
+  )
+
+  useEffect(() => {
+    if (!allowedChannels.includes(newChannel)) {
+      setNewChannel(allowedChannels.includes('email') ? 'email' : 'whatsapp')
+    }
+  }, [allowedChannels, newChannel])
+
+  useEffect(() => {
+    if (!selectedTemplateId) return
+    const template = templates.find((item) => item.id === selectedTemplateId)
+    if (!template) return
+
+    setNewTemplateId(template.id)
+    setNewChannel(template.type === 'E-mail' ? 'email' : 'whatsapp')
+    setNewSubject(template.subject || '')
+    setNewContent(template.body)
+  }, [selectedTemplateId, templates])
+
+  const applyTemplate = (templateId: string) => {
+    setNewTemplateId(templateId)
+    if (templateId === 'manual') return
+
+    const template = templates.find((item) => item.id === templateId)
+    if (!template) return
+
+    setNewChannel(template.type === 'E-mail' ? 'email' : 'whatsapp')
+    setNewSubject(template.subject || '')
+    setNewContent(template.body)
+  }
 
   const handleAdd = () => {
     if (!newDate || !newTime || !newContent) return
@@ -49,6 +93,8 @@ export function CampaignScheduler({
       date: newDate,
       time: newTime,
       channel: newChannel,
+      templateId: newTemplateId === 'manual' ? null : newTemplateId,
+      subject: newChannel === 'email' ? newSubject : null,
       content: newContent,
     }
 
@@ -63,6 +109,8 @@ export function CampaignScheduler({
 
     // Reset form
     setNewContent('')
+    setNewSubject('')
+    setNewTemplateId('manual')
   }
 
   const handleRemove = (id: string) => {
@@ -135,13 +183,42 @@ export function CampaignScheduler({
             </Button>
           </div>
         </div>
+
+        <div className="space-y-2">
+          <Label>Modelo do Estúdio</Label>
+          <Select value={newTemplateId} onValueChange={applyTemplate}>
+            <SelectTrigger>
+              <SelectValue placeholder="Selecione um modelo" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="manual">Escrever manualmente</SelectItem>
+              {compatibleTemplates.map((template) => (
+                <SelectItem key={template.id} value={template.id}>
+                  {template.title} · {template.category}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {newChannel === 'email' ? (
+          <div className="space-y-2">
+            <Label>Assunto do e-mail</Label>
+            <Input
+              value={newSubject}
+              onChange={(event) => setNewSubject(event.target.value)}
+              placeholder="Assunto da campanha"
+            />
+          </div>
+        ) : null}
+
         <div className="space-y-2">
           <Label>Conteúdo da Mensagem</Label>
           <Textarea
-            placeholder="Digite o conteúdo ou selecione um template..."
+            placeholder="Digite o conteúdo ou selecione um modelo do Estúdio..."
             value={newContent}
             onChange={(e) => setNewContent(e.target.value)}
-            rows={2}
+            rows={4}
           />
         </div>
       </div>
@@ -170,6 +247,12 @@ export function CampaignScheduler({
                     <span className="font-semibold text-sm capitalize">
                       {schedule.channel}
                     </span>
+                    {schedule.templateId ? (
+                      <Badge variant="outline" className="gap-1">
+                        <Wand2 className="h-3 w-3" />
+                        Estúdio
+                      </Badge>
+                    ) : null}
                     <span className="text-xs text-muted-foreground flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {format(

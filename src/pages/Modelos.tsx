@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Check,
   Copy,
@@ -7,6 +8,7 @@ import {
   Eye,
   Loader2,
   Mail,
+  Megaphone,
   MessageSquare,
   Save,
   Send,
@@ -197,6 +199,7 @@ export default function Modelos() {
   const [testTarget, setTestTarget] = useState('11999427752')
   const [variations, setVariations] = useState<string[]>([])
   const { toast } = useToast()
+  const navigate = useNavigate()
 
   const loadTemplates = useCallback(async () => {
     setLoading(true)
@@ -286,14 +289,14 @@ export default function Modelos() {
     })
   }
 
-  const saveTemplate = async () => {
+  const saveTemplate = async (): Promise<MessageTemplate | null> => {
     if (!draft.title.trim() || !draft.body.trim()) {
       toast({
         title: 'Complete o modelo',
         description: 'Título e mensagem são obrigatórios.',
         variant: 'destructive',
       })
-      return
+      return null
     }
 
     if (draft.type === 'E-mail' && !draft.subject?.trim()) {
@@ -302,7 +305,7 @@ export default function Modelos() {
         description: 'E-mails precisam de assunto.',
         variant: 'destructive',
       })
-      return
+      return null
     }
 
     setSaving(true)
@@ -324,15 +327,23 @@ export default function Modelos() {
         description: 'A mensagem já pode ser usada em campanhas e contatos.',
         variant: 'success',
       })
+      return saved
     } catch (error: any) {
       toast({
         title: 'Erro ao salvar',
         description: error?.message || 'Não foi possível salvar o modelo.',
         variant: 'destructive',
       })
+      return null
     } finally {
       setSaving(false)
     }
+  }
+
+  const createCampaignFromTemplate = async () => {
+    const saved = await saveTemplate()
+    if (!saved) return
+    navigate(`/campanhas?template=${saved.id}`)
   }
 
   const deleteTemplate = async () => {
@@ -666,6 +677,14 @@ export default function Modelos() {
               <Button variant="outline" onClick={copyPreview}>
                 <Copy className="mr-2 h-4 w-4" />
                 Copiar
+              </Button>
+              <Button
+                variant="outline"
+                onClick={createCampaignFromTemplate}
+                disabled={saving || !draft.body}
+              >
+                <Megaphone className="mr-2 h-4 w-4" />
+                Criar campanha
               </Button>
               <Button onClick={saveTemplate} disabled={saving}>
                 {saving ? (

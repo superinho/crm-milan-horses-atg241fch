@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   ArrowLeft,
@@ -13,6 +13,7 @@ import {
   Rocket,
   Send,
   ShieldCheck,
+  Wand2,
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -44,7 +45,7 @@ export default function CampaignDetails() {
   const [testPhone, setTestPhone] = useState('11999427752')
   const [action, setAction] = useState<'test' | 'pilot' | 'full' | null>(null)
 
-  const fetchCampaign = async () => {
+  const fetchCampaign = useCallback(async () => {
     if (!id) return
     try {
       const data = await campaignsService.getCampaignById(id)
@@ -62,11 +63,11 @@ export default function CampaignDetails() {
       setRefreshing(false)
       setAction(null)
     }
-  }
+  }, [id, navigate, toast])
 
   useEffect(() => {
     fetchCampaign()
-  }, [id])
+  }, [fetchCampaign])
 
   const refreshSoon = () => setTimeout(fetchCampaign, 2000)
 
@@ -525,6 +526,17 @@ export default function CampaignDetails() {
                           { locale: ptBR },
                         )}
                       </p>
+                      {schedule.template_id ? (
+                        <div className="mt-1 inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs text-muted-foreground">
+                          <Wand2 className="h-3 w-3" />
+                          Modelo do Estúdio
+                        </div>
+                      ) : null}
+                      {schedule.subject ? (
+                        <p className="mt-1 text-xs text-muted-foreground truncate max-w-md">
+                          Assunto: {schedule.subject}
+                        </p>
+                      ) : null}
                       <p className="text-xs text-muted-foreground truncate max-w-md">
                         {schedule.content}
                       </p>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -12,6 +12,7 @@ import {
   Users,
   Loader2,
   ExternalLink,
+  Wand2,
 } from 'lucide-react'
 import {
   Dialog,
@@ -37,6 +38,8 @@ export default function Campanhas() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [loading, setLoading] = useState(true)
   const [isCreateOpen, setIsCreateOpen] = useState(false)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const templateId = searchParams.get('template')
 
   const fetchCampaigns = async () => {
     setLoading(true)
@@ -53,6 +56,10 @@ export default function Campanhas() {
   useEffect(() => {
     fetchCampaigns()
   }, [])
+
+  useEffect(() => {
+    if (templateId) setIsCreateOpen(true)
+  }, [templateId])
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -82,28 +89,50 @@ export default function Campanhas() {
           </p>
         </div>
 
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-primary hover:bg-primary/90 text-white shadow-md">
-              <Plus className="mr-2 h-4 w-4" /> Nova Campanha
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Criar Nova Campanha</DialogTitle>
-              <DialogDescription>
-                Configure os detalhes, público e cronograma da sua campanha.
-              </DialogDescription>
-            </DialogHeader>
-            <CampaignForm
-              onSuccess={() => {
-                setIsCreateOpen(false)
-                fetchCampaigns()
-              }}
-              onCancel={() => setIsCreateOpen(false)}
-            />
-          </DialogContent>
-        </Dialog>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" asChild>
+            <Link to="/modelos">
+              <Wand2 className="mr-2 h-4 w-4" />
+              Estúdio de mensagens
+            </Link>
+          </Button>
+
+          <Dialog
+            open={isCreateOpen}
+            onOpenChange={(open) => {
+              setIsCreateOpen(open)
+              if (!open && templateId) setSearchParams({})
+            }}
+          >
+            <DialogTrigger asChild>
+              <Button className="bg-primary hover:bg-primary/90 text-white shadow-md">
+                <Plus className="mr-2 h-4 w-4" /> Nova Campanha
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Criar Nova Campanha</DialogTitle>
+                <DialogDescription>
+                  Configure público, mensagem do Estúdio e cronograma da
+                  campanha.
+                </DialogDescription>
+              </DialogHeader>
+              <CampaignForm
+                key={templateId || 'blank-campaign'}
+                initialTemplateId={templateId}
+                onSuccess={() => {
+                  setIsCreateOpen(false)
+                  if (templateId) setSearchParams({})
+                  fetchCampaigns()
+                }}
+                onCancel={() => {
+                  setIsCreateOpen(false)
+                  if (templateId) setSearchParams({})
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {loading ? (
