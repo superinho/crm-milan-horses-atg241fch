@@ -2,18 +2,14 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Calculator,
-  Calendar,
-  CreditCard,
   Settings,
-  Smile,
   User,
   Users,
-  Briefcase,
-  CheckSquare,
   Megaphone,
-  Search,
   Loader2,
   Radar,
+  Gavel,
+  Wand2,
 } from 'lucide-react'
 
 import {
@@ -23,12 +19,9 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
   CommandShortcut,
 } from '@/components/ui/command'
 import { contactsService, Contact } from '@/services/contacts'
-import { dealsService, Deal } from '@/services/deals'
-import { tasksService, Task } from '@/services/tasks'
 import { campaignsService, Campaign } from '@/services/campaigns'
 
 interface GlobalSearchProps {
@@ -43,52 +36,25 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
 
   const [results, setResults] = useState<{
     contacts: Contact[]
-    deals: Deal[]
-    tasks: Task[]
     campaigns: Campaign[]
   }>({
     contacts: [],
-    deals: [],
-    tasks: [],
     campaigns: [],
   })
 
   useEffect(() => {
     const fetchResults = async () => {
       if (!query || query.length < 2) {
-        setResults({ contacts: [], deals: [], tasks: [], campaigns: [] })
+        setResults({ contacts: [], campaigns: [] })
         return
       }
 
       setLoading(true)
       try {
-        // Run searches in parallel
-        const [contactsRes, deals, tasks, campaigns] = await Promise.all([
-          // Search contacts via API (paginated/filtered)
+        const [contactsRes, campaigns] = await Promise.all([
           contactsService.getContacts({ search: query, pageSize: 5 }),
-          // Fetch others (assuming smaller datasets or client-side filter for now)
-          dealsService.getDeals(),
-          tasksService.getTasks(),
           campaignsService.getCampaigns(),
         ])
-
-        const filteredDeals = (deals || [])
-          .filter(
-            (d) =>
-              d.title.toLowerCase().includes(query.toLowerCase()) ||
-              d.value.toString().includes(query) ||
-              d.contact?.name.toLowerCase().includes(query.toLowerCase()),
-          )
-          .slice(0, 5)
-
-        const filteredTasks = (tasks || [])
-          .filter(
-            (t) =>
-              t.title.toLowerCase().includes(query.toLowerCase()) ||
-              (t.description &&
-                t.description.toLowerCase().includes(query.toLowerCase())),
-          )
-          .slice(0, 5)
 
         const filteredCampaigns = (campaigns || [])
           .filter(
@@ -101,8 +67,6 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
 
         setResults({
           contacts: contactsRes.data || [],
-          deals: filteredDeals,
-          tasks: filteredTasks,
           campaigns: filteredCampaigns,
         })
       } catch (error) {
@@ -150,13 +114,21 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
               <Users className="mr-2 h-4 w-4" />
               <span>Contatos</span>
             </CommandItem>
-            <CommandItem onSelect={() => handleSelect('/negocios')}>
-              <Briefcase className="mr-2 h-4 w-4" />
-              <span>Negócios</span>
-            </CommandItem>
             <CommandItem onSelect={() => handleSelect('/radar-vip')}>
               <Radar className="mr-2 h-4 w-4" />
               <span>Radar VIP</span>
+            </CommandItem>
+            <CommandItem onSelect={() => handleSelect('/campanhas')}>
+              <Megaphone className="mr-2 h-4 w-4" />
+              <span>Campanhas</span>
+            </CommandItem>
+            <CommandItem onSelect={() => handleSelect('/modelos')}>
+              <Wand2 className="mr-2 h-4 w-4" />
+              <span>Estúdio</span>
+            </CommandItem>
+            <CommandItem onSelect={() => handleSelect('/leiloes')}>
+              <Gavel className="mr-2 h-4 w-4" />
+              <span>Leilões</span>
             </CommandItem>
             <CommandItem onSelect={() => handleSelect('/configuracoes')}>
               <Settings className="mr-2 h-4 w-4" />
@@ -189,74 +161,19 @@ export function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
           </CommandGroup>
         )}
 
-        {/* Deals */}
-        {results.deals.length > 0 && (
-          <>
-            <CommandSeparator />
-            <CommandGroup heading="Negócios">
-              {results.deals.map((deal) => (
-                <CommandItem
-                  key={deal.id}
-                  onSelect={() => handleSelect(`/negocios/${deal.id}`)}
-                >
-                  <Briefcase className="mr-2 h-4 w-4 text-orange-500" />
-                  <span>{deal.title}</span>
-                  {deal.contact && (
-                    <span className="ml-2 text-xs text-muted-foreground">
-                      - {deal.contact.name}
-                    </span>
-                  )}
-                  <span className="ml-auto text-xs text-muted-foreground">
-                    {new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL',
-                    }).format(deal.value)}
-                  </span>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </>
-        )}
-
-        {/* Tasks */}
-        {results.tasks.length > 0 && (
-          <>
-            <CommandSeparator />
-            <CommandGroup heading="Tarefas">
-              {results.tasks.map((task) => (
-                <CommandItem
-                  key={task.id}
-                  onSelect={() => handleSelect('/tarefas')}
-                >
-                  <CheckSquare className="mr-2 h-4 w-4 text-green-500" />
-                  <span>{task.title}</span>
-                  {task.due_date && (
-                    <span className="ml-2 text-xs text-muted-foreground">
-                      {new Date(task.due_date).toLocaleDateString()}
-                    </span>
-                  )}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </>
-        )}
-
         {/* Campaigns */}
         {results.campaigns.length > 0 && (
-          <>
-            <CommandSeparator />
-            <CommandGroup heading="Campanhas">
-              {results.campaigns.map((campaign) => (
-                <CommandItem
-                  key={campaign.id}
-                  onSelect={() => handleSelect(`/campanhas/${campaign.id}`)}
-                >
-                  <Megaphone className="mr-2 h-4 w-4 text-purple-500" />
-                  <span>{campaign.name}</span>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </>
+          <CommandGroup heading="Campanhas">
+            {results.campaigns.map((campaign) => (
+              <CommandItem
+                key={campaign.id}
+                onSelect={() => handleSelect(`/campanhas/${campaign.id}`)}
+              >
+                <Megaphone className="mr-2 h-4 w-4 text-purple-500" />
+                <span>{campaign.name}</span>
+              </CommandItem>
+            ))}
+          </CommandGroup>
         )}
       </CommandList>
     </CommandDialog>

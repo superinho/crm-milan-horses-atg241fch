@@ -21,17 +21,11 @@ import {
 import {
   LayoutDashboard,
   Users,
-  Briefcase,
   Megaphone,
-  Zap,
-  CheckSquare,
   BarChart3,
   Search,
-  Bell,
   LogOut,
-  Tag as TagIcon,
   Settings,
-  Keyboard,
   Menu,
   Gavel,
   Radar,
@@ -39,43 +33,22 @@ import {
 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import logoImg from '@/assets/editedimage_1769630541473-88067.png'
 import { useAuth } from '@/hooks/use-auth'
 
 // Modals & Search
 import { GlobalSearch } from '@/components/search/GlobalSearch'
-import { ShortcutsHelp } from '@/components/help/ShortcutsHelp'
-import { ContactForm } from '@/components/contacts/ContactForm'
-import { DealForm } from '@/components/deals/DealForm'
-import { TaskForm } from '@/components/tasks/TaskForm'
 
 const NAV_ITEMS = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/' },
   { label: 'Contatos', icon: Users, path: '/contatos' },
-  { label: 'Negócios', icon: Briefcase, path: '/negocios' },
-  { label: 'Campanhas', icon: Megaphone, path: '/campanhas' },
-  { label: 'Automações', icon: Zap, path: '/automacoes' },
-  { label: 'Tarefas', icon: CheckSquare, path: '/tarefas' },
-  { label: 'Relatórios', icon: BarChart3, path: '/relatorios' },
-  { label: 'Leilões', icon: Gavel, path: '/leiloes' },
   { label: 'Radar VIP', icon: Radar, path: '/radar-vip' },
-  { label: 'Tags', icon: TagIcon, path: '/tags' },
+  { label: 'Campanhas', icon: Megaphone, path: '/campanhas' },
   { label: 'Estúdio', icon: Wand2, path: '/modelos' },
+  { label: 'Leilões', icon: Gavel, path: '/leiloes' },
+  { label: 'Relatórios', icon: BarChart3, path: '/relatorios' },
   { label: 'Configurações', icon: Settings, path: '/configuracoes' },
 ]
 
@@ -160,13 +133,7 @@ function AppSidebar() {
   )
 }
 
-function TopHeader({
-  onSearchClick,
-  onHelpClick,
-}: {
-  onSearchClick: () => void
-  onHelpClick: () => void
-}) {
+function TopHeader({ onSearchClick }: { onSearchClick: () => void }) {
   const navigate = useNavigate()
   const location = useLocation()
   const { user, signOut } = useAuth()
@@ -261,7 +228,7 @@ function TopHeader({
           <Input
             type="search"
             readOnly
-            placeholder="Buscar globalmente... (Ctrl+K)"
+            placeholder="Buscar contatos, campanhas e leilões..."
             className="w-full bg-gray-50 pl-9 focus-visible:ring-primary/20 cursor-pointer pointer-events-none h-9"
           />
           <div className="absolute right-2.5 top-2.5 pointer-events-none">
@@ -281,16 +248,6 @@ function TopHeader({
           onClick={onSearchClick}
         >
           <Search className="h-5 w-5 text-muted-foreground" />
-        </Button>
-
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onHelpClick}
-          title="Atalhos de Teclado (Ctrl + /)"
-          className="hidden md:flex"
-        >
-          <Keyboard className="h-5 w-5 text-muted-foreground" />
         </Button>
 
         <Button
@@ -320,11 +277,6 @@ function TopHeader({
             <LogOut className="h-4 w-4 text-muted-foreground" />
           </Button>
         </div>
-
-        <div className="relative">
-          <Bell className="h-5 w-5 text-muted-foreground hover:text-primary cursor-pointer transition-colors" />
-          <span className="absolute -top-1 -right-1 flex h-2 w-2 rounded-full bg-secondary"></span>
-        </div>
       </div>
     </header>
   )
@@ -333,32 +285,12 @@ function TopHeader({
 export default function Layout() {
   // Global States
   const [showSearch, setShowSearch] = useState(false)
-  const [showHelp, setShowHelp] = useState(false)
-  const [showContactModal, setShowContactModal] = useState(false)
-  const [showDealModal, setShowDealModal] = useState(false)
-  const [showTaskModal, setShowTaskModal] = useState(false)
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
         setShowSearch((open) => !open)
-      }
-      if (e.key === '/' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setShowHelp((open) => !open)
-      }
-      if (e.key === 'n' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setShowContactModal((open) => !open)
-      }
-      if (e.key === 'd' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setShowDealModal((open) => !open)
-      }
-      if (e.key === 't' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setShowTaskModal((open) => !open)
       }
     }
 
@@ -371,56 +303,14 @@ export default function Layout() {
       <div className="flex min-h-screen w-full bg-gray-50/50">
         <AppSidebar />
         <div className="flex flex-1 flex-col overflow-hidden w-full">
-          <TopHeader
-            onSearchClick={() => setShowSearch(true)}
-            onHelpClick={() => setShowHelp(true)}
-          />
+          <TopHeader onSearchClick={() => setShowSearch(true)} />
           <main className="flex-1 overflow-y-auto p-4 md:p-8 animate-fade-in print:overflow-visible print:h-auto min-w-0">
             <Outlet />
           </main>
         </div>
       </div>
 
-      {/* Global Modals */}
       <GlobalSearch open={showSearch} onOpenChange={setShowSearch} />
-      <ShortcutsHelp open={showHelp} onOpenChange={setShowHelp} />
-
-      {/* Quick Action Modals */}
-      <Sheet open={showContactModal} onOpenChange={setShowContactModal}>
-        <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-          <SheetHeader>
-            <SheetTitle>Novo Contato (Global)</SheetTitle>
-            <SheetDescription>
-              Adicione um novo cliente ou lead.
-            </SheetDescription>
-          </SheetHeader>
-          <ContactForm onSuccess={() => setShowContactModal(false)} />
-        </SheetContent>
-      </Sheet>
-
-      <Dialog open={showDealModal} onOpenChange={setShowDealModal}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Novo Negócio (Global)</DialogTitle>
-          </DialogHeader>
-          <DealForm
-            onSuccess={() => setShowDealModal(false)}
-            onCancel={() => setShowDealModal(false)}
-          />
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={showTaskModal} onOpenChange={setShowTaskModal}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Nova Tarefa (Global)</DialogTitle>
-          </DialogHeader>
-          <TaskForm
-            onSuccess={() => setShowTaskModal(false)}
-            onCancel={() => setShowTaskModal(false)}
-          />
-        </DialogContent>
-      </Dialog>
     </SidebarProvider>
   )
 }

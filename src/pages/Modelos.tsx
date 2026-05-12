@@ -67,15 +67,15 @@ type Recipe = {
 }
 
 const SAMPLE_CONTEXT = {
-  nome: 'Guilherme',
-  leilao: 'LEILÃO QUATTRO BLOODLINES',
-  data_leilao: '19/05/2026',
-  ticket_medio: 'R$ 250.000',
-  cidade: 'São Paulo',
-  segmento: 'VIP ativo',
+  nome: 'Nome do cliente',
+  leilao: 'Leilão selecionado',
+  data_leilao: 'Data do leilão',
+  ticket_medio: 'Ticket do histórico',
+  cidade: 'Cidade do cliente',
+  segmento: 'Segmento RFMV',
   curador: 'Equipe Milan Horses',
-  lote: '12',
-  valor: 'R$ 280.000',
+  lote: 'Lote indicado',
+  valor: 'Faixa de valor',
 }
 
 const VARIABLES = [
@@ -176,8 +176,8 @@ const RECIPES: Recipe[] = [
 const emptyDraft: DraftTemplate = {
   title: '',
   category: 'Radar VIP',
-  type: 'WhatsApp',
-  subject: '',
+  type: 'E-mail',
+  subject: 'Curadoria Milan Horses: {{leilao}}',
   body: '',
   variables: ['nome', 'leilao'],
 }
@@ -196,6 +196,12 @@ const whatsappLengthHint = (body: string) => {
   if (body.length <= 280) return 'Ideal para WhatsApp'
   if (body.length <= 520) return 'Funciona, mas vale encurtar'
   return 'Longa demais para WhatsApp consultivo'
+}
+
+const messageLengthHint = (type: TemplateType, body: string) => {
+  if (type === 'WhatsApp') return whatsappLengthHint(body)
+  if (body.length <= 1200) return 'Bom tamanho para e-mail consultivo'
+  return 'E-mail longo; revise para manter a curadoria objetiva'
 }
 
 const escapeHtml = (value: string) =>
@@ -294,7 +300,7 @@ export default function Modelos() {
   const [search, setSearch] = useState('')
   const [channel, setChannel] = useState<TemplateType | 'Todos'>('Todos')
   const [category, setCategory] = useState<TemplateCategory | 'Todas'>('Todas')
-  const [testTarget, setTestTarget] = useState('11999427752')
+  const [testTarget, setTestTarget] = useState('')
   const [variations, setVariations] = useState<string[]>([])
   const [assetUrl, setAssetUrl] = useState('')
   const [assetAlt, setAssetAlt] = useState('Imagem Milan Horses')
@@ -353,7 +359,7 @@ export default function Modelos() {
     setVariations([])
   }
 
-  const startNew = (type: TemplateType = 'WhatsApp') => {
+  const startNew = (type: TemplateType = 'E-mail') => {
     setSelectedId(null)
     setVariations([])
     setDraft({
@@ -684,13 +690,13 @@ export default function Modelos() {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" onClick={() => startNew('WhatsApp')}>
-            <MessageSquare className="mr-2 h-4 w-4" />
-            Novo WhatsApp
-          </Button>
           <Button onClick={() => startNew('E-mail')}>
             <Mail className="mr-2 h-4 w-4" />
             Novo e-mail
+          </Button>
+          <Button variant="outline" onClick={() => startNew('WhatsApp')}>
+            <MessageSquare className="mr-2 h-4 w-4" />
+            Novo WhatsApp
           </Button>
         </div>
       </div>
@@ -870,7 +876,9 @@ export default function Modelos() {
           <CardHeader className="flex flex-row items-center justify-between gap-3 pb-3">
             <CardTitle className="flex items-center gap-2">
               {channelIcon}
-              Editor
+              {draft.type === 'E-mail'
+                ? 'Editor de e-mail premium'
+                : 'Editor de WhatsApp'}
             </CardTitle>
             <div className="flex gap-2">
               {selectedId ? (
@@ -1152,7 +1160,7 @@ export default function Modelos() {
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
                 <span>
                   {draft.body.length} caracteres ·{' '}
-                  {whatsappLengthHint(draft.body)}
+                  {messageLengthHint(draft.type, draft.body)}
                 </span>
                 <span>
                   Variáveis:{' '}
@@ -1238,7 +1246,7 @@ export default function Modelos() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <div className="text-sm font-medium">Cliente de exemplo</div>
+              <div className="text-sm font-medium">Campos dinâmicos</div>
               <div className="rounded-md border p-3 text-sm">
                 <div className="font-semibold">{SAMPLE_CONTEXT.nome}</div>
                 <div className="text-muted-foreground">
@@ -1257,7 +1265,8 @@ export default function Modelos() {
                   WhatsApp
                 </div>
                 <div className="rounded-md bg-white p-3 text-sm leading-relaxed shadow-sm">
-                  {previewBody || 'Sua mensagem aparecerá aqui.'}
+                  {previewBody ||
+                    'Selecione uma receita ou escreva a mensagem.'}
                 </div>
               </div>
             ) : (
@@ -1275,7 +1284,9 @@ export default function Modelos() {
                 <div
                   className="prose prose-sm mt-3 max-w-none text-sm leading-relaxed"
                   dangerouslySetInnerHTML={{
-                    __html: previewBody || 'Sua mensagem aparecerá aqui.',
+                    __html:
+                      previewBody ||
+                      'Selecione uma receita ou escreva a mensagem.',
                   }}
                 />
               </div>
