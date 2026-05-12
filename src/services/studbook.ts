@@ -497,6 +497,78 @@ const entityNameColumnByKind: Record<StudbookNetworkKind, keyof StudbookHorse> =
     dam: 'dam_name',
   }
 
+const legacyRankingQueries = async () => {
+  const [
+    breederRows,
+    ownerRows,
+    sireRows,
+    damRows,
+    breederCount,
+    ownerCount,
+    sireCount,
+    damCount,
+  ] = await Promise.all([
+    db
+      .from('studbook_breeder_rankings')
+      .select('*')
+      .order('horse_count', { ascending: false })
+      .limit(6),
+    db
+      .from('studbook_owner_rankings')
+      .select('*')
+      .order('horse_count', { ascending: false })
+      .limit(6),
+    db
+      .from('studbook_sire_rankings')
+      .select('*')
+      .order('horse_count', { ascending: false })
+      .limit(6),
+    db
+      .from('studbook_dam_rankings')
+      .select('*')
+      .order('horse_count', { ascending: false })
+      .limit(6),
+    db
+      .from('studbook_breeder_rankings')
+      .select('entity_id', { count: 'exact', head: true }),
+    db
+      .from('studbook_owner_rankings')
+      .select('entity_id', { count: 'exact', head: true }),
+    db
+      .from('studbook_sire_rankings')
+      .select('entity_id', { count: 'exact', head: true }),
+    db
+      .from('studbook_dam_rankings')
+      .select('entity_id', { count: 'exact', head: true }),
+  ])
+
+  const results = [
+    breederRows,
+    ownerRows,
+    sireRows,
+    damRows,
+    breederCount,
+    ownerCount,
+    sireCount,
+    damCount,
+  ]
+  const failed = results.find((result) => result.error)
+  if (failed?.error) throw failed.error
+
+  return {
+    breeders: (breederRows.data || []) as StudbookNetworkEntity[],
+    owners: (ownerRows.data || []) as StudbookNetworkEntity[],
+    sires: (sireRows.data || []) as StudbookNetworkEntity[],
+    dams: (damRows.data || []) as StudbookNetworkEntity[],
+    stats: {
+      breeders: breederCount.count || 0,
+      owners: ownerCount.count || 0,
+      sires: sireCount.count || 0,
+      dams: damCount.count || 0,
+    },
+  }
+}
+
 const networkRowsToOverview = (
   rows: StudbookNetworkEntity[],
 ): StudbookNetworkOverview => {
@@ -767,8 +839,16 @@ export const studbookService = {
 
       return networkRowsToOverview((data || []) as StudbookNetworkEntity[])
     } catch (error) {
-      if (isMissingTable(error)) return emptyNetworkOverview
-      throw error
+      console.warn(
+        'Filtered Studbook rankings unavailable, using fallback.',
+        error,
+      )
+      try {
+        return await legacyRankingQueries()
+      } catch (fallbackError) {
+        if (isMissingTable(fallbackError)) return emptyNetworkOverview
+        throw fallbackError
+      }
     }
   },
 
