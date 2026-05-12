@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ChangeEvent,
+} from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Check,
@@ -6,14 +12,20 @@ import {
   Crown,
   Edit,
   Eye,
+  Image,
+  Link as LinkIcon,
   Loader2,
   Mail,
   Megaphone,
   MessageSquare,
+  MousePointer2,
+  PanelTop,
+  Rows3,
   Save,
   Send,
   Sparkles,
   Trash2,
+  Upload,
   Wand2,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -186,6 +198,92 @@ const whatsappLengthHint = (body: string) => {
   return 'Longa demais para WhatsApp consultivo'
 }
 
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+
+const emailShell = (content: string) => {
+  if (content.includes('data-milan-email="true"')) return content
+
+  return `<div data-milan-email="true" style="margin:0;background:#f6f3ee;padding:32px 16px;font-family:Georgia,'Times New Roman',serif;color:#1f2f46;">
+  <div style="display:none;max-height:0;overflow:hidden;color:transparent;">Curadoria Milan Horses preparada para {{nome}}.</div>
+  <div style="max-width:680px;margin:0 auto;background:#ffffff;border:1px solid #e5dfd6;">
+    <div style="padding:28px 34px 18px;text-align:center;border-bottom:1px solid #e5dfd6;">
+      <div style="font-size:11px;letter-spacing:2.4px;text-transform:uppercase;color:#9a7a3f;">Milan Horses Leilões</div>
+      <div style="margin-top:8px;font-size:22px;line-height:1.2;color:#12284c;">Curadoria privada</div>
+    </div>
+    <div style="padding:32px 34px;font-size:16px;line-height:1.65;color:#26364f;">
+      ${content || '<p>Olá, {{nome}}.</p><p>Preparei uma curadoria especial para você.</p>'}
+    </div>
+    <div style="padding:22px 34px;border-top:1px solid #e5dfd6;font-family:Arial,sans-serif;font-size:12px;line-height:1.6;color:#6c7280;">
+      Milan Horses Leilões<br />
+      Atendimento consultivo para leilões de cavalos de hipismo.
+    </div>
+  </div>
+</div>`
+}
+
+const editorialHeaderBlock =
+  () => `<div style="margin:0 0 28px;text-align:center;">
+  <div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:#9a7a3f;">Seleção editorial</div>
+  <h2 style="margin:10px 0 8px;font-family:Georgia,'Times New Roman',serif;font-size:30px;line-height:1.15;font-weight:400;color:#12284c;">{{leilao}}</h2>
+  <div style="font-family:Arial,sans-serif;font-size:13px;color:#6c7280;">{{data_leilao}} · Curadoria Milan Horses</div>
+</div>`
+
+const dividerBlock = () =>
+  '<div style="height:1px;background:#e5dfd6;margin:30px 0;"></div>'
+
+const ctaBlock = (
+  label: string,
+  url: string,
+) => `<div style="margin:30px 0;text-align:center;">
+  <a href="${escapeHtml(url || 'https://www.milanhorses.com.br')}" style="display:inline-block;background:#12284c;color:#ffffff;text-decoration:none;padding:13px 24px;font-family:Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;">${escapeHtml(label || 'Ver curadoria')}</a>
+</div>`
+
+const signatureBlock =
+  () => `<div style="margin-top:32px;font-family:Arial,sans-serif;font-size:14px;line-height:1.7;color:#4f5b6d;">
+  <p style="margin:0 0 10px;">Fico à disposição para te enviar uma seleção objetiva dos lotes mais alinhados ao seu perfil.</p>
+  <p style="margin:0;"><strong style="color:#12284c;">{{curador}}</strong><br />Milan Horses Leilões</p>
+</div>`
+
+const imageBlock = ({
+  src,
+  alt,
+  caption,
+  variant,
+}: {
+  src: string
+  alt: string
+  caption: string
+  variant: 'banner' | 'photo' | 'feature'
+}) => {
+  if (variant === 'feature') {
+    return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:28px 0;border:1px solid #e5dfd6;border-collapse:collapse;">
+  <tr>
+    <td style="padding:0;">
+      <img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" width="100%" style="display:block;width:100%;max-width:100%;height:auto;border:0;" />
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:18px 20px;background:#fbfaf7;font-family:Arial,sans-serif;font-size:13px;line-height:1.55;color:#5f6878;">${escapeHtml(caption || 'Imagem selecionada pela curadoria Milan Horses.')}</td>
+  </tr>
+</table>`
+  }
+
+  return `<figure style="margin:${variant === 'banner' ? '0 0 30px' : '28px 0'};">
+  <img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" width="100%" style="display:block;width:100%;max-width:100%;height:auto;border:0;${variant === 'photo' ? 'border:1px solid #e5dfd6;' : ''}" />
+  ${
+    caption
+      ? `<figcaption style="margin-top:10px;font-family:Arial,sans-serif;font-size:12px;line-height:1.5;color:#6c7280;">${escapeHtml(caption)}</figcaption>`
+      : ''
+  }
+</figure>`
+}
+
 export default function Modelos() {
   const [templates, setTemplates] = useState<MessageTemplate[]>([])
   const [draft, setDraft] = useState<DraftTemplate>(emptyDraft)
@@ -198,6 +296,15 @@ export default function Modelos() {
   const [category, setCategory] = useState<TemplateCategory | 'Todas'>('Todas')
   const [testTarget, setTestTarget] = useState('11999427752')
   const [variations, setVariations] = useState<string[]>([])
+  const [assetUrl, setAssetUrl] = useState('')
+  const [assetAlt, setAssetAlt] = useState('Imagem Milan Horses')
+  const [assetCaption, setAssetCaption] = useState('')
+  const [ctaLabel, setCtaLabel] = useState('Ver curadoria')
+  const [ctaUrl, setCtaUrl] = useState('https://www.milanhorses.com.br')
+  const [assetVariant, setAssetVariant] = useState<
+    'banner' | 'photo' | 'feature'
+  >('banner')
+  const [uploadingAsset, setUploadingAsset] = useState(false)
   const { toast } = useToast()
   const navigate = useNavigate()
 
@@ -287,6 +394,103 @@ export default function Modelos() {
     updateDraft({
       body: `${draft.body}${draft.body.endsWith(' ') || !draft.body ? '' : ' '}${variable}`,
     })
+  }
+
+  const ensureEmailDraft = () => {
+    if (draft.type === 'E-mail') return true
+    toast({
+      title: 'Blocos visuais são para e-mail',
+      description: 'Troque o canal para E-mail para usar banners e fotos.',
+      variant: 'destructive',
+    })
+    return false
+  }
+
+  const appendEmailBlock = (html: string) => {
+    if (!ensureEmailDraft()) return
+    updateDraft({
+      body: `${draft.body ? `${draft.body}\n\n` : ''}${html}`,
+    })
+  }
+
+  const applyPremiumLayout = () => {
+    if (!ensureEmailDraft()) return
+    updateDraft({ body: emailShell(draft.body) })
+    toast({
+      title: 'Layout premium aplicado',
+      description: 'O e-mail ganhou estrutura editorial e footer de marca.',
+      variant: 'success',
+    })
+  }
+
+  const insertImageAsset = () => {
+    if (!ensureEmailDraft()) return
+    if (!assetUrl.trim()) {
+      toast({
+        title: 'Adicione uma imagem',
+        description: 'Faça upload ou cole uma URL pública da imagem.',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    appendEmailBlock(
+      imageBlock({
+        src: assetUrl.trim(),
+        alt: assetAlt || 'Imagem Milan Horses',
+        caption: assetCaption,
+        variant: assetVariant,
+      }),
+    )
+  }
+
+  const uploadEmailAsset = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: 'Arquivo inválido',
+        description: 'Envie apenas imagens para banners e fotos.',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    setUploadingAsset(true)
+    try {
+      const extension = file.name.split('.').pop() || 'jpg'
+      const safeName = file.name
+        .replace(/\.[^/.]+$/, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '')
+      const path = `studio/${Date.now()}-${safeName || 'imagem'}.${extension}`
+
+      const { error } = await supabase.storage
+        .from('email-assets')
+        .upload(path, file, { cacheControl: '31536000', upsert: false })
+
+      if (error) throw error
+
+      const { data } = supabase.storage.from('email-assets').getPublicUrl(path)
+      setAssetUrl(data.publicUrl)
+      setAssetAlt(file.name.replace(/\.[^/.]+$/, '') || 'Imagem Milan Horses')
+      toast({
+        title: 'Imagem pronta',
+        description: 'Agora você pode inserir a imagem no corpo do e-mail.',
+        variant: 'success',
+      })
+    } catch (error: any) {
+      toast({
+        title: 'Erro no upload',
+        description: error?.message || 'Não foi possível enviar a imagem.',
+        variant: 'destructive',
+      })
+    } finally {
+      setUploadingAsset(false)
+      event.target.value = ''
+    }
   }
 
   const saveTemplate = async (): Promise<MessageTemplate | null> => {
@@ -766,6 +970,157 @@ export default function Modelos() {
                   }
                   placeholder="Curadoria Milan Horses: {{leilao}}"
                 />
+              </div>
+            ) : null}
+
+            {draft.type === 'E-mail' ? (
+              <div className="space-y-4 rounded-md border bg-muted/10 p-4">
+                <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 text-sm font-medium">
+                      <Image className="h-4 w-4 text-primary" />
+                      Blocos editoriais
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Monte e-mails visuais com imagens públicas, layout de casa
+                      de leilão e CTAs.
+                    </p>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={applyPremiumLayout}
+                  >
+                    <PanelTop className="mr-2 h-4 w-4" />
+                    Aplicar layout premium
+                  </Button>
+                </div>
+
+                <div className="grid gap-3 lg:grid-cols-[1.2fr_0.8fr]">
+                  <div className="space-y-3">
+                    <div className="grid gap-2 md:grid-cols-[1fr_auto]">
+                      <Input
+                        value={assetUrl}
+                        onChange={(event) => setAssetUrl(event.target.value)}
+                        placeholder="URL pública da imagem ou banner"
+                      />
+                      <Button type="button" variant="outline" asChild>
+                        <label className="cursor-pointer">
+                          {uploadingAsset ? (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            <Upload className="mr-2 h-4 w-4" />
+                          )}
+                          Upload
+                          <input
+                            type="file"
+                            accept="image/png,image/jpeg,image/jpg,image/webp"
+                            className="hidden"
+                            onChange={uploadEmailAsset}
+                            disabled={uploadingAsset}
+                          />
+                        </label>
+                      </Button>
+                    </div>
+
+                    <div className="grid gap-2 md:grid-cols-2">
+                      <Input
+                        value={assetAlt}
+                        onChange={(event) => setAssetAlt(event.target.value)}
+                        placeholder="Texto alternativo"
+                      />
+                      <Input
+                        value={assetCaption}
+                        onChange={(event) =>
+                          setAssetCaption(event.target.value)
+                        }
+                        placeholder="Legenda opcional"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Select
+                      value={assetVariant}
+                      onValueChange={(value) =>
+                        setAssetVariant(value as 'banner' | 'photo' | 'feature')
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="banner">
+                          Banner full width
+                        </SelectItem>
+                        <SelectItem value="photo">Foto com legenda</SelectItem>
+                        <SelectItem value="feature">
+                          Imagem editorial
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      type="button"
+                      className="w-full"
+                      onClick={insertImageAsset}
+                    >
+                      <Image className="mr-2 h-4 w-4" />
+                      Inserir imagem
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="grid gap-2 sm:grid-cols-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => appendEmailBlock(editorialHeaderBlock())}
+                  >
+                    <PanelTop className="mr-2 h-4 w-4" />
+                    Cabeçalho
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => appendEmailBlock(dividerBlock())}
+                  >
+                    <Rows3 className="mr-2 h-4 w-4" />
+                    Divisor
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => appendEmailBlock(signatureBlock())}
+                  >
+                    <LinkIcon className="mr-2 h-4 w-4" />
+                    Assinatura
+                  </Button>
+                </div>
+
+                <div className="grid gap-2 lg:grid-cols-[0.7fr_1fr_auto]">
+                  <Input
+                    value={ctaLabel}
+                    onChange={(event) => setCtaLabel(event.target.value)}
+                    placeholder="Texto do CTA"
+                  />
+                  <Input
+                    value={ctaUrl}
+                    onChange={(event) => setCtaUrl(event.target.value)}
+                    placeholder="Link do CTA"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => appendEmailBlock(ctaBlock(ctaLabel, ctaUrl))}
+                  >
+                    <MousePointer2 className="mr-2 h-4 w-4" />
+                    Inserir CTA
+                  </Button>
+                </div>
               </div>
             ) : null}
 
