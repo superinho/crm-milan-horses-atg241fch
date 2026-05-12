@@ -804,7 +804,7 @@ export default function Studbook() {
             <CardContent className="space-y-3 p-4 text-sm text-muted-foreground">
               <div className="rounded-md border bg-muted/10 p-3">
                 <div className="font-semibold text-foreground">
-                  {displayedHorses.length} candidatos visíveis
+                  {horses.length} candidatos visíveis
                 </div>
                 <p className="mt-1 text-xs leading-relaxed">
                   Use a lista para montar um leilão por família materna, por
@@ -817,7 +817,7 @@ export default function Studbook() {
                   <span>Com genealogia</span>
                   <strong className="text-foreground">
                     {
-                      displayedHorses.filter(
+                      horses.filter(
                         (horse) => horse.sire_name && horse.dam_name,
                       ).length
                     }
@@ -826,14 +826,14 @@ export default function Studbook() {
                 <div className="flex items-center justify-between text-xs">
                   <span>Com proprietário</span>
                   <strong className="text-foreground">
-                    {displayedHorses.filter((horse) => horse.owner_name).length}
+                    {horses.filter((horse) => horse.owner_name).length}
                   </strong>
                 </div>
                 <div className="flex items-center justify-between text-xs">
                   <span>Com filhos</span>
                   <strong className="text-foreground">
                     {
-                      displayedHorses.filter(
+                      horses.filter(
                         (horse) => Number(horse.offspring_count || 0) > 0,
                       ).length
                     }

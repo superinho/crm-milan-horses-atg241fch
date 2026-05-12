@@ -132,6 +132,35 @@ const searchColumns = [
   'dam_name',
 ]
 
+const horseListColumns = [
+  'id',
+  'name',
+  'registration',
+  'original_registration',
+  'ueln',
+  'microchip',
+  'breed',
+  'sex',
+  'birth_date',
+  'birth_year',
+  'age_years',
+  'age_band',
+  'coat',
+  'status',
+  'dna',
+  'sire_name',
+  'dam_name',
+  'breeder_name',
+  'owner_name',
+  'birthplace',
+  'source_url',
+  'data_quality_score',
+  'offspring_count',
+  'is_reproductive_mare',
+  'last_synced_at',
+  'updated_at',
+].join(',')
+
 const searchStopwords = new Set([
   'a',
   'as',
@@ -268,6 +297,19 @@ const applySort = (query: any, sortBy: StudbookSortMode = 'updated') => {
     return query.order('data_quality_score', { ascending: false })
   return query.order('updated_at', { ascending: false })
 }
+
+const hasActiveHorseFilters = (filters: StudbookFilters) =>
+  searchTokens(filters.search).length > 0 ||
+  Boolean(filters.sex && filters.sex !== 'all') ||
+  Boolean(filters.ageBand && filters.ageBand !== 'all') ||
+  filters.includeUnknownAge === false ||
+  Boolean(filters.reproductiveOnly) ||
+  Boolean(filters.breederNames?.length) ||
+  Boolean(filters.ownerNames?.length) ||
+  Boolean(filters.sireNames?.length) ||
+  Boolean(filters.damNames?.length) ||
+  Boolean(filters.minOffspring && filters.minOffspring > 0) ||
+  Boolean(filters.dataQualityMin && filters.dataQualityMin > 0)
 
 const searchableText = (horse: StudbookHorse) =>
   normalizeSearchText(
@@ -463,6 +505,7 @@ export const studbookService = {
   ): Promise<StudbookHorsePage> {
     try {
       const hasSearch = searchTokens(filters.search).length > 0
+      const hasFilters = hasActiveHorseFilters(filters)
       const page = Math.max(1, pagination.page || 1)
       const pageSize = Math.min(100, Math.max(10, pagination.pageSize || 50))
       const from = (page - 1) * pageSize
@@ -471,21 +514,38 @@ export const studbookService = {
         applySort(
           db
             .from('studbook_horses_enriched')
-            .select('*', { count: 'exact' }),
+            .select(horseListColumns),
           filters.sortBy || 'updated',
         ).range(from, to),
         filters,
       )
 
-      const { data, error, count } = await query
+      const { data, error } = await query
       if (error) throw error
 
       const rows = (data || []) as StudbookHorse[]
+      let total = rows.length
+
+      if (!hasFilters) {
+        const countResult = await db
+          .from('studbook_horses')
+          .select('id', { count: 'exact', head: true })
+        if (countResult.error) throw countResult.error
+        total = countResult.count || 0
+      } else {
+        const countResult = await applyFilters(
+          db
+            .from('studbook_horses_enriched')
+            .select('id', { count: 'exact', head: true }),
+          filters,
+        )
+        if (!countResult.error) total = countResult.count || rows.length
+      }
 
       if (!hasSearch) {
         return {
           rows,
-          total: count || 0,
+          total,
         }
       }
 
@@ -504,7 +564,7 @@ export const studbookService = {
 
       return {
         rows: scoredRows,
-        total: count || scoredRows.length,
+        total,
       }
     } catch (error) {
       if (isMissingTable(error)) return { rows: [], total: 0 }

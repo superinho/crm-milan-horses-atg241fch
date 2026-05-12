@@ -8,6 +8,9 @@ import React, {
 import type { Session, User } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase/client'
 
+const allowAnonTestMode =
+  import.meta.env.VITE_ALLOW_ANON_TEST_MODE === 'true'
+
 type AppUser = {
   id: string
   email: string
@@ -69,7 +72,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const value = useMemo<AuthContextValue>(
     () => ({
       session,
-      user: toAppUser(session?.user ?? null),
+      user:
+        toAppUser(session?.user ?? null) ||
+        (allowAnonTestMode
+          ? {
+              id: 'local-test-user',
+              email: 'melanasvaz@gmail.com',
+              name: 'Milan Horses',
+            }
+          : null),
       loading,
       signIn: async (email, password) => {
         const { error } = await supabase.auth.signInWithPassword({
