@@ -1,8 +1,11 @@
 {
-  "nodeModulesDir": "auto",
   "_versions": {
-    "process-automation-tasks": 1,
-    "sync-smartleiloes": 1,
-    "send-contact-email": 1
+    "process-automation-tasks": 3,
+    "send-contact-email": 5,
+    "process-campaigns": 6,
+    "dispatch-campaign": 4,
+    "send-whatsapp-botconversa": 5,
+    "resend-webhook": 3,
+    "botconversa-webhook": 3
   }
 }
