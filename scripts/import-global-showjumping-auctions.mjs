@@ -2,6 +2,22 @@ import crypto from 'node:crypto'
 import fs from 'node:fs'
 
 const GORESBRIDGE_RESULTS_URL = 'https://goresbridge.com/showjumping/results/'
+const FLANDERS_BASE_URL = 'https://flandersfoalauction.be'
+const FLANDERS_AUCTION_URLS = [
+  '/en/veiling/Flanders-Foal-Auction-at-Sentower-Park-87',
+  '/en/veiling/Flanders-Foal-Auction-at-Sentower-Park-88',
+  '/en/veiling/Flanders-Foal-Auction-at-Sentower-Park-89',
+  '/en/veiling/Flanders-Foal-Auction-at-Sentower-Park-90',
+  '/en/veiling/Flanders-Foal-Auction-at-Hetzel-Stables',
+  '/en/veiling/Flanders-Foal-Auction-95',
+  '/en/veiling/Flanders-Foal-Auction-1000',
+  '/en/veiling/Flanders-Foal-Auction-OpglabbeekAugust2024',
+].map((path) => `${FLANDERS_BASE_URL}${path}`)
+const ZANGERSHEIDE_BASE_URL = 'https://www.zangersheide.com'
+const ZANGERSHEIDE_AUCTION_URLS = [
+  '/en/auctions/zangersheide-quality-auction-friday-foals-2',
+  '/en/auctions/zangersheide-quality-auction-saturday-foals-2',
+].map((path) => `${ZANGERSHEIDE_BASE_URL}${path}`)
 const USER_AGENT =
   'CRM Milan Horses market research importer (+https://milan.horses)'
 
@@ -77,7 +93,18 @@ const textOrNull = (value) => {
 const numberFromPrice = (value) => {
   const text = String(value || '').trim()
   if (!text || /^(n\/s|not sold|withdrawn)$/i.test(text)) return null
-  const clean = text.replace(/[€£$(),\s]/g, '')
+  let clean = text.replace(/[€£$]/g, '').replace(/\s+/g, '').trim()
+
+  if (clean.includes('.') && clean.includes(',')) {
+    clean = clean.replace(/\./g, '').replace(',', '.')
+  } else if (clean.includes(',') && /,\d{3}$/.test(clean)) {
+    clean = clean.replace(/,/g, '')
+  } else if (clean.includes(',')) {
+    clean = clean.replace(',', '.')
+  } else if (clean.includes('.') && /\.\d{3}$/.test(clean)) {
+    clean = clean.replace(/\./g, '')
+  }
+
   const valueNumber = Number(clean)
   return Number.isFinite(valueNumber) ? valueNumber : null
 }
@@ -128,7 +155,7 @@ const upsertOne = async (path, payload, onConflict) => {
   return data?.[0]
 }
 
-const createRun = async (sourceId, sourceUrl) => {
+const createRun = async (sourceId, sourceUrl, importer) => {
   const [run] = await supabaseRequest('global_auction_import_runs', {
     method: 'POST',
     headers: { Prefer: 'return=representation' },
@@ -136,7 +163,7 @@ const createRun = async (sourceId, sourceUrl) => {
       source_id: sourceId,
       source_url: sourceUrl,
       status: 'running',
-      metadata: { importer: 'goresbridge-html-v1' },
+      metadata: { importer },
     }),
   })
   return run
@@ -241,7 +268,490 @@ const rowToLot = ({ row, auction, sourceId, sourceUrl }) => {
   }
 }
 
-const main = async () => {
+const textBetween = (html, regex) => {
+  const match = String(html || '').match(regex)
+  return match ? textOrNull(match[1]) : null
+}
+
+const inferFlandersYear = ({ html, title, url }) => {
+  const whenText = decodeHtml(
+    String(html || '').match(/When:[\s\S]{0,800}/i)?.[0] || '',
+  )
+  const directMatch = `${title || ''} ${whenText} ${url || ''}`.match(
+    /\b(202[0-9])\b/,
+  )
+  if (directMatch) return Number(directMatch[1])
+
+  const imageYearMatch = String(html || '').match(
+    /paard[^"']*?(202[0-9])-\d{2}-\d{2}/i,
+  )
+  if (imageYearMatch) return Number(imageYearMatch[1])
+
+  if (url.includes('Sentower-Park-87')) return 2023
+  if (url.includes('Sentower-Park-88')) return 2025
+  if (url.includes('Sentower-Park-89')) return 2025
+  if (url.includes('Sentower-Park-90')) return 2025
+  if (url.includes('Flanders-Foal-Auction-at-Hetzel-Stables')) return 2025
+  if (url.includes('Flanders-Foal-Auction-95')) return 2024
+  if (url.includes('Flanders-Foal-Auction-1000')) return 2024
+  if (url.includes('OpglabbeekAugust2024')) return 2024
+  return null
+}
+
+const inferZangersheideYear = (html) => {
+  const endedMatch = String(html || '').match(
+    /Auction ended on[\s\S]*?(\d{2})\/(\d{2})\/(\d{2})/i,
+  )
+  if (endedMatch) return 2000 + Number(endedMatch[3])
+  return yearFromTitle(html) || 2025
+}
+
+const parseFlandersCards = (html) =>
+  [
+    ...html.matchAll(
+      /<div class="single-item collectie-single-item[\s\S]*?<\/a>\s*<\/div>\s*<\/div>/gi,
+    ),
+  ]
+    .map((match) => match[0])
+    .map((card) => {
+      const href = textBetween(card, /<a href="([^"]+)"/i)
+      const lotNumber = textBetween(
+        card,
+        /<p class="catnr[^"]*">([\s\S]*?)<\/p>/i,
+      )
+      const horseName = textBetween(
+        card,
+        /<h3 class="paard_naam">([\s\S]*?)<\/h3>/i,
+      )
+      const slogan = textBetween(
+        card,
+        /<p class="text-slogan[^"]*">([\s\S]*?)<\/p>/i,
+      )
+      const pedigree = textBetween(
+        card,
+        /<p class="font-weight-600 paard_pedigree">([\s\S]*?)<\/p>/i,
+      )
+      const sex = textBetween(card, /<p class="mb-0"><b>([\s\S]*?)<\/b><\/p>/i)
+      const priceText =
+        textBetween(card, /<b>Selling price:<\/b>\s*([\s\S]*?)<\/p>/i) ||
+        (card.match(/Not sold/i) ? 'Not sold' : null)
+      const [sireName, damSireName] = String(pedigree || '')
+        .split(/\s+x\s+/i)
+        .map((part) => part.trim())
+
+      return {
+        href,
+        lotNumber,
+        horseName,
+        slogan,
+        pedigree,
+        sex,
+        sireName: sireName || null,
+        damSireName: damSireName || null,
+        priceText,
+      }
+    })
+    .filter((lot) => lot.horseName)
+
+const importFlandersFoalAuctions = async () => {
+  const source = await upsertOne(
+    'global_auction_sources',
+    {
+      name: 'Flanders Foal Auction',
+      source_type: 'auction_house',
+      country: 'Belgium',
+      website_url: FLANDERS_BASE_URL,
+      results_url: `${FLANDERS_BASE_URL}/en/veilingen`,
+      discipline_scope: 'show_jumping',
+      scrape_strategy: 'html_cards',
+      access_level: 'public',
+      status: 'active',
+      notes:
+        'Public Flanders foal auction pages with lot cards, pedigree and selling price.',
+    },
+    'name',
+  )
+
+  const house = await upsertOne(
+    'global_auction_houses',
+    {
+      source_id: source.id,
+      name: 'Flanders Foal Auction',
+      normalized_name: normalize('Flanders Foal Auction'),
+      country: 'Belgium',
+      website_url: FLANDERS_BASE_URL,
+    },
+    'normalized_name',
+  )
+
+  const run = await createRun(
+    source.id,
+    FLANDERS_BASE_URL,
+    'flanders-foal-html-v1',
+  )
+
+  try {
+    let rowsSeen = 0
+    let rowsSkipped = 0
+    let rowsImported = 0
+    let auctionsImported = 0
+
+    for (const sourceUrl of FLANDERS_AUCTION_URLS) {
+      const res = await fetch(sourceUrl, {
+        headers: { 'user-agent': USER_AGENT },
+      })
+      const html = await res.text()
+      if (!res.ok) {
+        rowsSkipped += 1
+        continue
+      }
+
+      await upsertOne(
+        'global_auction_source_snapshots',
+        {
+          source_id: source.id,
+          import_run_id: run.id,
+          source_url: sourceUrl,
+          content_type: res.headers.get('content-type'),
+          checksum: checksum(html),
+          metadata: { bytes: html.length },
+        },
+        'source_url,checksum',
+      )
+
+      const headings = [...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/gi)]
+        .map((match) => textOrNull(match[1]))
+        .filter(Boolean)
+      const title = headings[0] || headings[1] || 'Flanders Foal Auction'
+      const year = inferFlandersYear({ html, title, url: sourceUrl })
+      const lots = parseFlandersCards(html)
+      rowsSeen += lots.length
+
+      if (!lots.length) continue
+
+      const auction = await upsertOne(
+        'global_auctions',
+        {
+          house_id: house.id,
+          source_id: source.id,
+          name: title,
+          normalized_name: normalize(`${title} ${sourceUrl.split('/').pop()}`),
+          auction_year: year,
+          country: 'Belgium',
+          discipline: 'show_jumping',
+          category: 'foal',
+          source_url: sourceUrl,
+          source_payload: {
+            importer: 'flanders-foal-html-v1',
+            headings,
+          },
+        },
+        'source_id,normalized_name,auction_year',
+      )
+      auctionsImported += 1
+
+      const payload = lots
+        .map((lot) => {
+          const status = soldStatus({ buyer: null, price: lot.priceText })
+          return {
+            auction_id: auction.id,
+            source_id: source.id,
+            lot_number: lot.lotNumber,
+            horse_name: lot.horseName,
+            normalized_horse_name: normalize(lot.horseName),
+            birth_year: year,
+            age: year ? 0 : null,
+            sex: lot.sex,
+            sire_name: lot.sireName,
+            dam_sire_name: lot.damSireName,
+            sold_status: status,
+            hammer_price:
+              status === 'sold' ? numberFromPrice(lot.priceText) : null,
+            currency: 'EUR',
+            price_text: lot.priceText,
+            discipline: 'show_jumping',
+            source_url: lot.href?.startsWith('http')
+              ? lot.href
+              : `${FLANDERS_BASE_URL}${lot.href || ''}`,
+            source_payload: {
+              importer: 'flanders-foal-html-v1',
+              pedigree: lot.pedigree,
+              slogan: lot.slogan,
+              auction_url: sourceUrl,
+            },
+            confidence_score: 78,
+          }
+        })
+        .filter((lot) => lot.horse_name)
+
+      const imported = await supabaseRequest(
+        'global_auction_lots?on_conflict=auction_id,lot_number,normalized_horse_name',
+        {
+          method: 'POST',
+          headers: {
+            Prefer: 'resolution=merge-duplicates,return=representation',
+          },
+          body: JSON.stringify(payload),
+        },
+      )
+      rowsImported += imported?.length || 0
+      rowsSkipped += lots.length - payload.length
+    }
+
+    await finishRun(run.id, {
+      status: 'finished',
+      rows_seen: rowsSeen,
+      rows_imported: rowsImported,
+      rows_skipped: rowsSkipped,
+      metadata: { auctions_imported: auctionsImported },
+    })
+
+    return {
+      source: source.name,
+      status: 'finished',
+      auctionsImported,
+      rowsSeen,
+      rowsImported,
+      rowsSkipped,
+    }
+  } catch (error) {
+    await finishRun(run.id, {
+      status: 'failed',
+      error_message: error.message,
+    })
+    throw error
+  }
+}
+
+const parseZangersheideTiles = (html) =>
+  [
+    ...String(html).matchAll(
+      /<div\s+data-price="[^"]*"[\s\S]*?(?=<div\s+data-price="[^"]*"|$)/gi,
+    ),
+  ]
+    .map((match) => match[0])
+    .map((tile) => {
+      const itemJson = tile.match(
+        /data-datalayer--action-event-data-value="([^"]+)"/i,
+      )?.[1]
+      const decodedJson = itemJson
+        ? decodeHtml(itemJson)
+            .replace(/&quot;/g, '"')
+            .replace(/&amp;/g, '&')
+        : null
+      let itemName = null
+      try {
+        itemName = decodedJson
+          ? JSON.parse(decodedJson)?.items?.[0]?.item_name
+          : null
+      } catch {
+        itemName = null
+      }
+
+      const title =
+        itemName ||
+        textBetween(tile, /<h3[\s\S]*?title="([^"]+)"/i) ||
+        textBetween(tile, /<h3[\s\S]*?>([\s\S]*?)<\/h3>/i)?.replace(
+          /^\d+\.\s*/,
+          '',
+        )
+      const lotNumber = textBetween(tile, /<h3[\s\S]*?>\s*[\s\S]*?(\d+)\.\s*/i)
+      const pedigree = textBetween(
+        tile,
+        /<span\s+class="text-skin-base[^"]*">[\s\S]*?<span[^>]*>([\s\S]*?)<\/span>/i,
+      )
+      const [sireName, damSireName] = String(pedigree || '')
+        .split(/\s+-\s+/)
+        .map((part) => part.trim())
+      const sex = textBetween(
+        tile,
+        /<h5[\s\S]*?<span>\s*([A-Za-z]+)\s*<\/span>/i,
+      )
+      const birthYear = Number(
+        textBetween(tile, /°<span[^>]*>\s*(20\d{2})\s*<\/span>/i),
+      )
+      const priceText = textBetween(
+        tile,
+        /Selling price[\s\S]*?<span\s+class="">\s*([^<]+)\s*<\/span>/i,
+      )
+      const soldTo = textBetween(tile, /Sold to[\s\S]*?title="([^"]+)"/i)
+      const notAuctioned = /Not auctioned/i.test(tile)
+      const status = notAuctioned
+        ? 'withdrawn'
+        : soldStatus({ buyer: soldTo, price: priceText })
+
+      return {
+        lotNumber,
+        horseName: title,
+        birthYear: Number.isFinite(birthYear) ? birthYear : null,
+        sex,
+        sireName: sireName || null,
+        damSireName: damSireName || null,
+        priceText,
+        soldTo,
+        status,
+      }
+    })
+    .filter((lot) => lot.horseName)
+
+const importZangersheideAuctions = async () => {
+  const source = await upsertOne(
+    'global_auction_sources',
+    {
+      name: 'Zangersheide Auctions',
+      source_type: 'studbook_auction',
+      country: 'Belgium',
+      website_url: ZANGERSHEIDE_BASE_URL,
+      results_url: `${ZANGERSHEIDE_BASE_URL}/en/auctions`,
+      discipline_scope: 'show_jumping',
+      scrape_strategy: 'html_cards',
+      access_level: 'public',
+      status: 'active',
+      notes:
+        'Public Zangersheide auction pages with selling price, pedigree and buyer country.',
+    },
+    'name',
+  )
+
+  const house = await upsertOne(
+    'global_auction_houses',
+    {
+      source_id: source.id,
+      name: 'Zangersheide Auctions',
+      normalized_name: normalize('Zangersheide Auctions'),
+      country: 'Belgium',
+      website_url: ZANGERSHEIDE_BASE_URL,
+    },
+    'normalized_name',
+  )
+
+  const run = await createRun(
+    source.id,
+    ZANGERSHEIDE_BASE_URL,
+    'zangersheide-auction-html-v1',
+  )
+
+  try {
+    let rowsSeen = 0
+    let rowsSkipped = 0
+    let rowsImported = 0
+    let auctionsImported = 0
+
+    for (const sourceUrl of ZANGERSHEIDE_AUCTION_URLS) {
+      const res = await fetch(sourceUrl, {
+        headers: { 'user-agent': USER_AGENT },
+      })
+      const html = await res.text()
+      if (!res.ok) {
+        rowsSkipped += 1
+        continue
+      }
+
+      await upsertOne(
+        'global_auction_source_snapshots',
+        {
+          source_id: source.id,
+          import_run_id: run.id,
+          source_url: sourceUrl,
+          content_type: res.headers.get('content-type'),
+          checksum: checksum(html),
+          metadata: { bytes: html.length },
+        },
+        'source_url,checksum',
+      )
+
+      const pageTitle =
+        textBetween(html, /<h1[^>]*>([\s\S]*?)<\/h1>/i) ||
+        textBetween(html, /<title[^>]*>([\s\S]*?)<\/title>/i) ||
+        sourceUrl.split('/').pop()
+      const lots = parseZangersheideTiles(html)
+      rowsSeen += lots.length
+
+      if (!lots.length) continue
+
+      const auction = await upsertOne(
+        'global_auctions',
+        {
+          house_id: house.id,
+          source_id: source.id,
+          name: pageTitle,
+          normalized_name: normalize(pageTitle),
+          auction_year: inferZangersheideYear(html),
+          country: 'Belgium',
+          discipline: 'show_jumping',
+          category: 'foal',
+          source_url: sourceUrl,
+          source_payload: { importer: 'zangersheide-auction-html-v1' },
+        },
+        'source_id,normalized_name,auction_year',
+      )
+      auctionsImported += 1
+
+      const payload = lots.map((lot) => ({
+        auction_id: auction.id,
+        source_id: source.id,
+        lot_number: lot.lotNumber,
+        horse_name: lot.horseName,
+        normalized_horse_name: normalize(lot.horseName),
+        birth_year: lot.birthYear,
+        age: lot.birthYear ? 0 : null,
+        sex: lot.sex,
+        studbook: 'Zangersheide',
+        sire_name: lot.sireName,
+        dam_sire_name: lot.damSireName,
+        buyer_country: lot.soldTo,
+        sold_status: lot.status,
+        hammer_price:
+          lot.status === 'sold' ? numberFromPrice(lot.priceText) : null,
+        currency: 'EUR',
+        price_text: lot.priceText,
+        discipline: 'show_jumping',
+        source_url: sourceUrl,
+        source_payload: {
+          importer: 'zangersheide-auction-html-v1',
+        },
+        confidence_score: 80,
+      }))
+
+      const imported = await supabaseRequest(
+        'global_auction_lots?on_conflict=auction_id,lot_number,normalized_horse_name',
+        {
+          method: 'POST',
+          headers: {
+            Prefer: 'resolution=merge-duplicates,return=representation',
+          },
+          body: JSON.stringify(payload),
+        },
+      )
+      rowsImported += imported?.length || 0
+    }
+
+    await finishRun(run.id, {
+      status: 'finished',
+      rows_seen: rowsSeen,
+      rows_imported: rowsImported,
+      rows_skipped: rowsSkipped,
+      metadata: { auctions_imported: auctionsImported },
+    })
+
+    return {
+      source: source.name,
+      status: 'finished',
+      auctionsImported,
+      rowsSeen,
+      rowsImported,
+      rowsSkipped,
+    }
+  } catch (error) {
+    await finishRun(run.id, {
+      status: 'failed',
+      error_message: error.message,
+    })
+    throw error
+  }
+}
+
+const importGoresbridge = async () => {
   const source = await upsertOne(
     'global_auction_sources',
     {
@@ -272,7 +782,11 @@ const main = async () => {
     'normalized_name',
   )
 
-  const run = await createRun(source.id, GORESBRIDGE_RESULTS_URL)
+  const run = await createRun(
+    source.id,
+    GORESBRIDGE_RESULTS_URL,
+    'goresbridge-html-v1',
+  )
 
   try {
     const res = await fetch(GORESBRIDGE_RESULTS_URL, {
@@ -359,19 +873,13 @@ const main = async () => {
       rows_skipped: rowsSkipped,
     })
 
-    console.log(
-      JSON.stringify(
-        {
-          source: source.name,
-          status: 'finished',
-          rowsSeen,
-          rowsImported,
-          rowsSkipped,
-        },
-        null,
-        2,
-      ),
-    )
+    return {
+      source: source.name,
+      status: 'finished',
+      rowsSeen,
+      rowsImported,
+      rowsSkipped,
+    }
   } catch (error) {
     await finishRun(run.id, {
       status: 'failed',
@@ -379,6 +887,24 @@ const main = async () => {
     })
     throw error
   }
+}
+
+const main = async () => {
+  const summaries = []
+  summaries.push(await importGoresbridge())
+  summaries.push(await importFlandersFoalAuctions())
+  summaries.push(await importZangersheideAuctions())
+
+  console.log(
+    JSON.stringify(
+      {
+        status: 'finished',
+        summaries,
+      },
+      null,
+      2,
+    ),
+  )
 }
 
 await main()
