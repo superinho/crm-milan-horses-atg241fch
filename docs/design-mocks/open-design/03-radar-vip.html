@@ -1,400 +1,735 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mock 03 - Radar VIP</title>
-  <style>
-:root {
-  --paper: #f1eadb;
-  --paper-2: #fbf7ee;
-  --paper-3: #e6dcc6;
-  --ink: #111827;
-  --ink-2: #26364d;
-  --muted: #667085;
-  --hair: rgba(17, 24, 39, 0.14);
-  --navy: #061b3f;
-  --bronze: #a87635;
-  --bronze-2: #d8b36c;
-  --cream: #e9e5dd;
-  --coral: #ed6f5c;
-  --success: #16784d;
-  --warn: #b56b12;
-  --danger: #b23b36;
-  --space: 8px;
-}
-* { box-sizing: border-box; }
-html, body { margin: 0; min-height: 100%; }
-body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  letter-spacing: 0;
-}
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: .42;
-  background-image:
-    radial-gradient(circle at 12% 18%, rgba(168,118,53,.12), transparent 25%),
-    radial-gradient(circle at 84% 8%, rgba(6,27,63,.08), transparent 30%),
-    linear-gradient(rgba(17,24,39,.025) 1px, transparent 1px);
-  background-size: auto, auto, 100% 7px;
-  mix-blend-mode: multiply;
-}
-.screen {
-  position: relative;
-  width: 1440px;
-  min-height: 1040px;
-  margin: 0 auto;
-  overflow: hidden;
-  background: var(--paper);
-}
-.meta-bar {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  height: 38px;
-  padding: 0 34px;
-  border-bottom: 1px solid var(--hair);
-  color: #746b5d;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-.meta-bar span:nth-child(2) { color: var(--bronze); font-weight: 800; }
-.meta-bar span:last-child { text-align: right; }
-.app-shell {
-  display: grid;
-  grid-template-columns: 252px 1fr;
-  min-height: calc(1040px - 38px);
-}
-.sidebar {
-  border-right: 1px solid var(--hair);
-  background: rgba(251,247,238,.72);
-  padding: 28px 22px;
-}
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 34px;
-  color: var(--navy);
-  font-weight: 860;
-  font-size: 18px;
-}
-.mark {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  background: var(--navy);
-  color: var(--bronze-2);
-  font-family: Georgia, serif;
-  font-size: 19px;
-}
-.nav-group { margin-bottom: 24px; }
-.nav-label {
-  margin: 0 0 8px 10px;
-  color: #8a8071;
-  font-size: 10px;
-  font-weight: 850;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-}
-.nav-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 38px;
-  padding: 0 12px;
-  border-radius: 10px;
-  color: #4f5d71;
-  font-size: 13px;
-  font-weight: 720;
-}
-.nav-item.active {
-  background: var(--navy);
-  color: #fffaf0;
-}
-.nav-count { color: inherit; opacity: .66; font-family: ui-monospace, monospace; font-size: 11px; }
-.main { padding: 28px 32px 34px; }
-.page-head {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 26px;
-  align-items: start;
-  margin-bottom: 26px;
-}
-.eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--bronze);
-  font-size: 11px;
-  font-weight: 850;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-}
-.eyebrow::before { content:""; width: 24px; height: 1px; background: var(--bronze); }
-h1 {
-  margin: 8px 0 0;
-  color: var(--navy);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 54px;
-  line-height: .96;
-  font-weight: 500;
-  letter-spacing: -.018em;
-}
-.head-copy {
-  max-width: 530px;
-  margin: 12px 0 0;
-  color: #4d5b70;
-  font-size: 15px;
-  line-height: 1.52;
-}
-.actions { display: flex; gap: 10px; align-items: center; }
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 38px;
-  padding: 0 15px;
-  border: 1px solid rgba(17,24,39,.16);
-  border-radius: 10px;
-  background: rgba(255,255,255,.48);
-  color: var(--navy);
-  font-size: 13px;
-  font-weight: 800;
-}
-.btn.primary {
-  border-color: var(--navy);
-  background: var(--navy);
-  color: #fffaf0;
-}
-.btn.bronze {
-  border-color: var(--bronze);
-  background: var(--bronze);
-  color: #fffaf0;
-}
-.rule {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
-  color: #887b67;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-}
-.rule::before, .rule::after { content:""; height: 1px; background: var(--hair); }
-.card, .panel {
-  border: 1px solid rgba(17,24,39,.13);
-  border-radius: 18px;
-  background: rgba(251,247,238,.82);
-  box-shadow: 0 24px 60px rgba(23, 31, 45, .08);
-}
-.panel-head {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  min-height: 52px;
-  padding: 0 18px;
-  border-bottom: 1px solid var(--hair);
-  color: var(--navy);
-  font-size: 14px;
-  font-weight: 850;
-}
-.pill {
-  display:inline-flex;
-  align-items:center;
-  min-height: 25px;
-  padding: 0 10px;
-  border: 1px solid rgba(17,24,39,.11);
-  border-radius: 999px;
-  background: rgba(255,255,255,.55);
-  color: #46576d;
-  font-size: 11px;
-  font-weight: 780;
-}
-.pill.gold { border-color: rgba(168,118,53,.34); background: rgba(216,179,108,.22); color: #75501c; }
-.pill.green { border-color: rgba(22,120,77,.28); background: rgba(22,120,77,.12); color: #12613e; }
-.pill.red { border-color: rgba(178,59,54,.22); background: rgba(178,59,54,.1); color: #8f2e2a; }
-.metrics { display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
-.metric { padding: 16px; min-height: 104px; }
-.metric .label {
-  color: #758196;
-  font-size: 11px;
-  font-weight: 820;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-.metric .value {
-  margin-top: 10px;
-  color: var(--navy);
-  font-size: 32px;
-  line-height: 1;
-  font-weight: 880;
-  letter-spacing: -.02em;
-}
-.metric .hint { margin-top: 8px; color:#68758a; font-size: 12px; }
-table { width:100%; border-collapse: collapse; table-layout: fixed; }
-th, td {
-  padding: 14px 16px;
-  border-bottom: 1px solid rgba(17,24,39,.09);
-  color: #23344f;
-  font-size: 13px;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-th {
-  color: #7b8798;
-  font-size: 10px;
-  font-weight: 880;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-.person { display:flex; align-items:center; gap:10px; min-width:0; }
-.avatar {
-  display:grid; place-items:center; flex:0 0 auto;
-  width:32px; height:32px; border-radius:50%;
-  background:#e5edf7; color:var(--navy);
-  font-size:11px; font-weight:900;
-}
-.sheet {
-  padding: 18px;
-}
-.sheet-title {
-  margin: 10px 0 2px;
-  color: var(--navy);
-  font-size: 25px;
-  font-weight: 860;
-}
-.data-list { margin-top: 18px; display:grid; gap: 0; }
-.data-row {
-  display:flex; justify-content:space-between; gap:16px;
-  padding: 11px 0;
-  border-bottom: 1px solid rgba(17,24,39,.1);
-  color:#667085; font-size:12px;
-}
-.data-row strong { color:#1c2e48; }
-.ph-img {
-  position: relative;
-  overflow:hidden;
-  background:
-    linear-gradient(135deg, rgba(6,27,63,.88), rgba(168,118,53,.5)),
-    repeating-linear-gradient(90deg, rgba(255,255,255,.08), rgba(255,255,255,.08) 1px, transparent 1px, transparent 22px);
-}
-.ph-img::after {
-  content:"Milan Horses / imagem de campanha";
-  position:absolute; left:18px; bottom:16px;
-  color: rgba(255,255,255,.8);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px; letter-spacing:.12em; text-transform:uppercase;
-}
-.dark-screen {
-  --bg: #0b1120;
-  --surface: #111827;
-  --surface-2: #162035;
-  --border: #1e3a5f;
-  --data: #ffb800;
-  --cyan: #00d4ff;
-  --fg: #e8f0fe;
-  --fg-2: #8ba3c7;
-  background: var(--bg);
-  color: var(--fg);
-}
-.dark-screen::before { display:none; }
-.dark-screen .meta-bar { border-color: var(--border); color: var(--fg-2); background:#070d19; }
-.dark-screen .app-shell { grid-template-columns: 238px 1fr; }
-.dark-screen .sidebar { background:#08101f; border-color:var(--border); }
-.dark-screen .brand { color:var(--fg); }
-.dark-screen .mark { background: var(--data); color:#07111f; }
-.dark-screen .nav-label { color: #4a6080; }
-.dark-screen .nav-item { color:var(--fg-2); border-radius:4px; }
-.dark-screen .nav-item.active { background: rgba(255,184,0,.14); color: var(--data); border: 1px solid rgba(255,184,0,.22); }
-.dark-screen .eyebrow { color:var(--data); }
-.dark-screen .eyebrow::before { background:var(--data); }
-.dark-screen h1 { color:var(--fg); font-family: Inter, system-ui, sans-serif; font-size:34px; letter-spacing:0; line-height:1.08; font-weight:800; }
-.dark-screen .head-copy { color:var(--fg-2); }
-.dark-screen .btn { border-color:var(--border); background:var(--surface); color:var(--fg); border-radius:4px; }
-.dark-screen .btn.primary { border-color:rgba(255,184,0,.48); background:var(--data); color:#07111f; }
-.dark-screen .rule { color:#4a6080; }
-.dark-screen .rule::before, .dark-screen .rule::after { background:var(--border); }
-.dark-screen .card, .dark-screen .panel { border-color:var(--border); border-radius:6px; background:var(--surface); box-shadow:none; }
-.dark-screen .panel-head { border-color:var(--border); color:var(--fg); }
-.dark-screen .metric .label { color:var(--fg-2); }
-.dark-screen .metric .value { color:var(--data); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-.dark-screen .metric .hint { color:#667fa6; }
-.dark-screen th { color:#4a6080; }
-.dark-screen td { color:var(--fg); border-color:#162035; }
-.dark-screen .pill { background:rgba(139,163,199,.11); color:var(--fg-2); border-color:rgba(139,163,199,.2); border-radius:2px; }
-.dark-screen .pill.gold { background:rgba(255,184,0,.13); color:var(--data); border-color:rgba(255,184,0,.3); }
-.dark-screen .pill.green { background:rgba(38,222,129,.13); color:#26de81; border-color:rgba(38,222,129,.28); }
-.dark-screen .pill.red { background:rgba(255,71,87,.14); color:#ff7b86; border-color:rgba(255,71,87,.28); }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mock 03 - Radar VIP</title>
+    <style>
+      :root {
+        --paper: #f1eadb;
+        --paper-2: #fbf7ee;
+        --paper-3: #e6dcc6;
+        --ink: #111827;
+        --ink-2: #26364d;
+        --muted: #667085;
+        --hair: rgba(17, 24, 39, 0.14);
+        --navy: #061b3f;
+        --bronze: #a87635;
+        --bronze-2: #d8b36c;
+        --cream: #e9e5dd;
+        --coral: #ed6f5c;
+        --success: #16784d;
+        --warn: #b56b12;
+        --danger: #b23b36;
+        --space: 8px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+        letter-spacing: 0;
+      }
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.42;
+        background-image:
+          radial-gradient(
+            circle at 12% 18%,
+            rgba(168, 118, 53, 0.12),
+            transparent 25%
+          ),
+          radial-gradient(
+            circle at 84% 8%,
+            rgba(6, 27, 63, 0.08),
+            transparent 30%
+          ),
+          linear-gradient(rgba(17, 24, 39, 0.025) 1px, transparent 1px);
+        background-size:
+          auto,
+          auto,
+          100% 7px;
+        mix-blend-mode: multiply;
+      }
+      .screen {
+        position: relative;
+        width: 1440px;
+        min-height: 1040px;
+        margin: 0 auto;
+        overflow: hidden;
+        background: var(--paper);
+      }
+      .meta-bar {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        height: 38px;
+        padding: 0 34px;
+        border-bottom: 1px solid var(--hair);
+        color: #746b5d;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .meta-bar span:nth-child(2) {
+        color: var(--bronze);
+        font-weight: 800;
+      }
+      .meta-bar span:last-child {
+        text-align: right;
+      }
+      .app-shell {
+        display: grid;
+        grid-template-columns: 252px 1fr;
+        min-height: calc(1040px - 38px);
+      }
+      .sidebar {
+        border-right: 1px solid var(--hair);
+        background: rgba(251, 247, 238, 0.72);
+        padding: 28px 22px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 34px;
+        color: var(--navy);
+        font-weight: 860;
+        font-size: 18px;
+      }
+      .mark {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        background: var(--navy);
+        color: var(--bronze-2);
+        font-family: Georgia, serif;
+        font-size: 19px;
+      }
+      .nav-group {
+        margin-bottom: 24px;
+      }
+      .nav-label {
+        margin: 0 0 8px 10px;
+        color: #8a8071;
+        font-size: 10px;
+        font-weight: 850;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 38px;
+        padding: 0 12px;
+        border-radius: 10px;
+        color: #4f5d71;
+        font-size: 13px;
+        font-weight: 720;
+      }
+      .nav-item.active {
+        background: var(--navy);
+        color: #fffaf0;
+      }
+      .nav-count {
+        color: inherit;
+        opacity: 0.66;
+        font-family: ui-monospace, monospace;
+        font-size: 11px;
+      }
+      .main {
+        padding: 28px 32px 34px;
+      }
+      .page-head {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 26px;
+        align-items: start;
+        margin-bottom: 26px;
+      }
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--bronze);
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .eyebrow::before {
+        content: '';
+        width: 24px;
+        height: 1px;
+        background: var(--bronze);
+      }
+      h1 {
+        margin: 8px 0 0;
+        color: var(--navy);
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 54px;
+        line-height: 0.96;
+        font-weight: 500;
+        letter-spacing: -0.018em;
+      }
+      .head-copy {
+        max-width: 530px;
+        margin: 12px 0 0;
+        color: #4d5b70;
+        font-size: 15px;
+        line-height: 1.52;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 38px;
+        padding: 0 15px;
+        border: 1px solid rgba(17, 24, 39, 0.16);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.48);
+        color: var(--navy);
+        font-size: 13px;
+        font-weight: 800;
+      }
+      .btn.primary {
+        border-color: var(--navy);
+        background: var(--navy);
+        color: #fffaf0;
+      }
+      .btn.bronze {
+        border-color: var(--bronze);
+        background: var(--bronze);
+        color: #fffaf0;
+      }
+      .rule {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+        color: #887b67;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 10px;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+      .rule::before,
+      .rule::after {
+        content: '';
+        height: 1px;
+        background: var(--hair);
+      }
+      .card,
+      .panel {
+        border: 1px solid rgba(17, 24, 39, 0.13);
+        border-radius: 18px;
+        background: rgba(251, 247, 238, 0.82);
+        box-shadow: 0 24px 60px rgba(23, 31, 45, 0.08);
+      }
+      .panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 52px;
+        padding: 0 18px;
+        border-bottom: 1px solid var(--hair);
+        color: var(--navy);
+        font-size: 14px;
+        font-weight: 850;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 25px;
+        padding: 0 10px;
+        border: 1px solid rgba(17, 24, 39, 0.11);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.55);
+        color: #46576d;
+        font-size: 11px;
+        font-weight: 780;
+      }
+      .pill.gold {
+        border-color: rgba(168, 118, 53, 0.34);
+        background: rgba(216, 179, 108, 0.22);
+        color: #75501c;
+      }
+      .pill.green {
+        border-color: rgba(22, 120, 77, 0.28);
+        background: rgba(22, 120, 77, 0.12);
+        color: #12613e;
+      }
+      .pill.red {
+        border-color: rgba(178, 59, 54, 0.22);
+        background: rgba(178, 59, 54, 0.1);
+        color: #8f2e2a;
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+      .metric {
+        padding: 16px;
+        min-height: 104px;
+      }
+      .metric .label {
+        color: #758196;
+        font-size: 11px;
+        font-weight: 820;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .metric .value {
+        margin-top: 10px;
+        color: var(--navy);
+        font-size: 32px;
+        line-height: 1;
+        font-weight: 880;
+        letter-spacing: -0.02em;
+      }
+      .metric .hint {
+        margin-top: 8px;
+        color: #68758a;
+        font-size: 12px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+      th,
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid rgba(17, 24, 39, 0.09);
+        color: #23344f;
+        font-size: 13px;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      th {
+        color: #7b8798;
+        font-size: 10px;
+        font-weight: 880;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .person {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .avatar {
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #e5edf7;
+        color: var(--navy);
+        font-size: 11px;
+        font-weight: 900;
+      }
+      .sheet {
+        padding: 18px;
+      }
+      .sheet-title {
+        margin: 10px 0 2px;
+        color: var(--navy);
+        font-size: 25px;
+        font-weight: 860;
+      }
+      .data-list {
+        margin-top: 18px;
+        display: grid;
+        gap: 0;
+      }
+      .data-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 11px 0;
+        border-bottom: 1px solid rgba(17, 24, 39, 0.1);
+        color: #667085;
+        font-size: 12px;
+      }
+      .data-row strong {
+        color: #1c2e48;
+      }
+      .ph-img {
+        position: relative;
+        overflow: hidden;
+        background:
+          linear-gradient(
+            135deg,
+            rgba(6, 27, 63, 0.88),
+            rgba(168, 118, 53, 0.5)
+          ),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.08),
+            rgba(255, 255, 255, 0.08) 1px,
+            transparent 1px,
+            transparent 22px
+          );
+      }
+      .ph-img::after {
+        content: 'Milan Horses / imagem de campanha';
+        position: absolute;
+        left: 18px;
+        bottom: 16px;
+        color: rgba(255, 255, 255, 0.8);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .dark-screen {
+        --bg: #0b1120;
+        --surface: #111827;
+        --surface-2: #162035;
+        --border: #1e3a5f;
+        --data: #ffb800;
+        --cyan: #00d4ff;
+        --fg: #e8f0fe;
+        --fg-2: #8ba3c7;
+        background: var(--bg);
+        color: var(--fg);
+      }
+      .dark-screen::before {
+        display: none;
+      }
+      .dark-screen .meta-bar {
+        border-color: var(--border);
+        color: var(--fg-2);
+        background: #070d19;
+      }
+      .dark-screen .app-shell {
+        grid-template-columns: 238px 1fr;
+      }
+      .dark-screen .sidebar {
+        background: #08101f;
+        border-color: var(--border);
+      }
+      .dark-screen .brand {
+        color: var(--fg);
+      }
+      .dark-screen .mark {
+        background: var(--data);
+        color: #07111f;
+      }
+      .dark-screen .nav-label {
+        color: #4a6080;
+      }
+      .dark-screen .nav-item {
+        color: var(--fg-2);
+        border-radius: 4px;
+      }
+      .dark-screen .nav-item.active {
+        background: rgba(255, 184, 0, 0.14);
+        color: var(--data);
+        border: 1px solid rgba(255, 184, 0, 0.22);
+      }
+      .dark-screen .eyebrow {
+        color: var(--data);
+      }
+      .dark-screen .eyebrow::before {
+        background: var(--data);
+      }
+      .dark-screen h1 {
+        color: var(--fg);
+        font-family: Inter, system-ui, sans-serif;
+        font-size: 34px;
+        letter-spacing: 0;
+        line-height: 1.08;
+        font-weight: 800;
+      }
+      .dark-screen .head-copy {
+        color: var(--fg-2);
+      }
+      .dark-screen .btn {
+        border-color: var(--border);
+        background: var(--surface);
+        color: var(--fg);
+        border-radius: 4px;
+      }
+      .dark-screen .btn.primary {
+        border-color: rgba(255, 184, 0, 0.48);
+        background: var(--data);
+        color: #07111f;
+      }
+      .dark-screen .rule {
+        color: #4a6080;
+      }
+      .dark-screen .rule::before,
+      .dark-screen .rule::after {
+        background: var(--border);
+      }
+      .dark-screen .card,
+      .dark-screen .panel {
+        border-color: var(--border);
+        border-radius: 6px;
+        background: var(--surface);
+        box-shadow: none;
+      }
+      .dark-screen .panel-head {
+        border-color: var(--border);
+        color: var(--fg);
+      }
+      .dark-screen .metric .label {
+        color: var(--fg-2);
+      }
+      .dark-screen .metric .value {
+        color: var(--data);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      .dark-screen .metric .hint {
+        color: #667fa6;
+      }
+      .dark-screen th {
+        color: #4a6080;
+      }
+      .dark-screen td {
+        color: var(--fg);
+        border-color: #162035;
+      }
+      .dark-screen .pill {
+        background: rgba(139, 163, 199, 0.11);
+        color: var(--fg-2);
+        border-color: rgba(139, 163, 199, 0.2);
+        border-radius: 2px;
+      }
+      .dark-screen .pill.gold {
+        background: rgba(255, 184, 0, 0.13);
+        color: var(--data);
+        border-color: rgba(255, 184, 0, 0.3);
+      }
+      .dark-screen .pill.green {
+        background: rgba(38, 222, 129, 0.13);
+        color: #26de81;
+        border-color: rgba(38, 222, 129, 0.28);
+      }
+      .dark-screen .pill.red {
+        background: rgba(255, 71, 87, 0.14);
+        color: #ff7b86;
+        border-color: rgba(255, 71, 87, 0.28);
+      }
 
-.lanes { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-.lane { min-height:520px; padding-bottom:12px; }
-.vip {
-  margin:12px; padding:16px; min-height:126px;
-  border:1px solid #1e3a5f; border-radius:6px; background:#0c1729;
-}
-.vip b { display:block; color:#e8f0fe; font-size:15px; line-height:1.12; }
-.vip span { display:block; margin-top:10px; color:#8ba3c7; font-size:13px; line-height:1.38; }
-.vip em { display:inline-flex; margin-top:14px; padding:4px 8px; border:1px solid rgba(255,184,0,.3); border-radius:2px; color:#ffb800; font-style:normal; font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
-</style>
-</head>
-<body>
-<main class="screen dark-screen">
-  <div class="meta-bar"><span>Operations / Milan Horses</span><span>Open Design: Mission Control + Linear</span><span>003 / 004</span></div>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <div class="brand"><span class="mark">M</span><span>Radar VIP</span></div>
-      <div class="nav-group"><p class="nav-label">Leilão ativo</p><div class="nav-item active">Elite BH</div><div class="nav-item">Lotes abertos</div><div class="nav-item">Segmentos</div><div class="nav-item">Mensagens</div><div class="nav-item">Follow-up</div></div>
-      <div class="nav-group"><p class="nav-label">Status</p><div class="nav-item">BotConversa <span class="nav-count">ON</span></div><div class="nav-item">Resend <span class="nav-count">ON</span></div></div>
-    </aside>
-    <section class="main">
-      <header class="page-head">
-        <div>
-          <div class="eyebrow">Sala de ação</div>
-          <h1>Leilão Elite BH: quem deve receber qual lote, agora.</h1>
-          <p class="head-copy">Visão operacional para transformar leilões abertos em mensagens priorizadas, com follow-up e score comercial.</p>
-        </div>
-        <div class="actions"><span class="btn">Atualizar lotes</span><span class="btn primary">Disparar VIP</span></div>
-      </header>
-      <section class="metrics">
-        <div class="card metric"><div class="label">VIPs compatíveis</div><div class="value">086</div><div class="hint">prioridade alta</div></div>
-        <div class="card metric"><div class="label">Lotes quentes</div><div class="value">019</div><div class="hint">abertos no site</div></div>
-        <div class="card metric"><div class="label">Potencial</div><div class="value">8.7M</div><div class="hint">RFMV estimado</div></div>
-        <div class="card metric"><div class="label">Sem contato</div><div class="value">031</div><div class="hint">ação imediata</div></div>
-      </section>
-      <div class="rule"><span>II. Action lanes</span><span></span><span>T-04 dias para encerramento</span></div>
-      <section class="lanes">
-        <div class="lane panel"><div class="panel-head">Selecionar <span class="pill gold">31</span></div>
-          <div class="vip"><b>Petronio Cabral</b><span>Compra recorrente; interesse em matrizes. Enviar lote 07 e 18.</span><em>R$ 2,8 mi</em></div>
-          <div class="vip"><b>Aline Prado</b><span>Interage no WhatsApp, sem compra nos últimos 90 dias.</span><em>RFMV 82</em></div>
-          <div class="vip"><b>Rafael Ferreira</b><span>Comprador novo com lances em potros BH.</span><em>1 compra</em></div>
-        </div>
-        <div class="lane panel"><div class="panel-head">Mensagem pronta <span class="pill green">42</span></div>
-          <div class="vip"><b>Comércio Horses</b><span>Email premium aprovado. WhatsApp com CTA para catálogo.</span><em>VIP</em></div>
-          <div class="vip"><b>Matheus Souza</b><span>Recomendação baseada em histórico de lances.</span><em>Potro BH</em></div>
-          <div class="vip"><b>Daniel</b><span>Copy curta de reativação pronta para envio.</span><em>Reativar</em></div>
-        </div>
-        <div class="lane panel"><div class="panel-head">Follow-up <span class="pill red">13</span></div>
-          <div class="vip"><b>Mariana G.</b><span>Quer vídeo do lote e pedigree materno antes de decidir.</span><em>Respondeu</em></div>
-          <div class="vip"><b>Daniel</b><span>Responder amanhã se abrir catálogo e não clicar.</span><em>T+1</em></div>
-          <div class="vip"><b>Haras Norte</b><span>Pedir confirmação do melhor horário para ligação.</span><em>Ligação</em></div>
-        </div>
-      </section>
-    </section>
-  </div>
-</main></body>
+      .lanes {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+      .lane {
+        min-height: 520px;
+        padding-bottom: 12px;
+      }
+      .vip {
+        margin: 12px;
+        padding: 16px;
+        min-height: 126px;
+        border: 1px solid #1e3a5f;
+        border-radius: 6px;
+        background: #0c1729;
+      }
+      .vip b {
+        display: block;
+        color: #e8f0fe;
+        font-size: 15px;
+        line-height: 1.12;
+      }
+      .vip span {
+        display: block;
+        margin-top: 10px;
+        color: #8ba3c7;
+        font-size: 13px;
+        line-height: 1.38;
+      }
+      .vip em {
+        display: inline-flex;
+        margin-top: 14px;
+        padding: 4px 8px;
+        border: 1px solid rgba(255, 184, 0, 0.3);
+        border-radius: 2px;
+        color: #ffb800;
+        font-style: normal;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="screen dark-screen">
+      <div class="meta-bar">
+        <span>Operations / Milan Horses</span
+        ><span>Open Design: Mission Control + Linear</span
+        ><span>003 / 004</span>
+      </div>
+      <div class="app-shell">
+        <aside class="sidebar">
+          <div class="brand">
+            <span class="mark">M</span><span>Radar VIP</span>
+          </div>
+          <div class="nav-group">
+            <p class="nav-label">Leilão ativo</p>
+            <div class="nav-item active">Elite BH</div>
+            <div class="nav-item">Lotes abertos</div>
+            <div class="nav-item">Segmentos</div>
+            <div class="nav-item">Mensagens</div>
+            <div class="nav-item">Follow-up</div>
+          </div>
+          <div class="nav-group">
+            <p class="nav-label">Status</p>
+            <div class="nav-item">
+              BotConversa <span class="nav-count">ON</span>
+            </div>
+            <div class="nav-item">Resend <span class="nav-count">ON</span></div>
+          </div>
+        </aside>
+        <section class="main">
+          <header class="page-head">
+            <div>
+              <div class="eyebrow">Sala de ação</div>
+              <h1>Leilão Elite BH: quem deve receber qual lote, agora.</h1>
+              <p class="head-copy">
+                Visão operacional para transformar leilões abertos em mensagens
+                priorizadas, com follow-up e score comercial.
+              </p>
+            </div>
+            <div class="actions">
+              <span class="btn">Atualizar lotes</span
+              ><span class="btn primary">Disparar VIP</span>
+            </div>
+          </header>
+          <section class="metrics">
+            <div class="card metric">
+              <div class="label">VIPs compatíveis</div>
+              <div class="value">086</div>
+              <div class="hint">prioridade alta</div>
+            </div>
+            <div class="card metric">
+              <div class="label">Lotes quentes</div>
+              <div class="value">019</div>
+              <div class="hint">abertos no site</div>
+            </div>
+            <div class="card metric">
+              <div class="label">Potencial</div>
+              <div class="value">8.7M</div>
+              <div class="hint">RFMV estimado</div>
+            </div>
+            <div class="card metric">
+              <div class="label">Sem contato</div>
+              <div class="value">031</div>
+              <div class="hint">ação imediata</div>
+            </div>
+          </section>
+          <div class="rule">
+            <span>II. Action lanes</span><span></span
+            ><span>T-04 dias para encerramento</span>
+          </div>
+          <section class="lanes">
+            <div class="lane panel">
+              <div class="panel-head">
+                Selecionar <span class="pill gold">31</span>
+              </div>
+              <div class="vip">
+                <b>Petronio Cabral</b
+                ><span
+                  >Compra recorrente; interesse em matrizes. Enviar lote 07 e
+                  18.</span
+                ><em>R$ 2,8 mi</em>
+              </div>
+              <div class="vip">
+                <b>Aline Prado</b
+                ><span
+                  >Interage no WhatsApp, sem compra nos últimos 90 dias.</span
+                ><em>RFMV 82</em>
+              </div>
+              <div class="vip">
+                <b>Rafael Ferreira</b
+                ><span>Comprador novo com lances em potros BH.</span
+                ><em>1 compra</em>
+              </div>
+            </div>
+            <div class="lane panel">
+              <div class="panel-head">
+                Mensagem pronta <span class="pill green">42</span>
+              </div>
+              <div class="vip">
+                <b>Comércio Horses</b
+                ><span
+                  >Email premium aprovado. WhatsApp com CTA para catálogo.</span
+                ><em>VIP</em>
+              </div>
+              <div class="vip">
+                <b>Matheus Souza</b
+                ><span>Recomendação baseada em histórico de lances.</span
+                ><em>Potro BH</em>
+              </div>
+              <div class="vip">
+                <b>Daniel</b
+                ><span>Copy curta de reativação pronta para envio.</span
+                ><em>Reativar</em>
+              </div>
+            </div>
+            <div class="lane panel">
+              <div class="panel-head">
+                Follow-up <span class="pill red">13</span>
+              </div>
+              <div class="vip">
+                <b>Mariana G.</b
+                ><span
+                  >Quer vídeo do lote e pedigree materno antes de decidir.</span
+                ><em>Respondeu</em>
+              </div>
+              <div class="vip">
+                <b>Daniel</b
+                ><span>Responder amanhã se abrir catálogo e não clicar.</span
+                ><em>T+1</em>
+              </div>
+              <div class="vip">
+                <b>Haras Norte</b
+                ><span>Pedir confirmação do melhor horário para ligação.</span
+                ><em>Ligação</em>
+              </div>
+            </div>
+          </section>
+        </section>
+      </div>
+    </main>
+  </body>
 </html>

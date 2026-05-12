@@ -28,11 +28,20 @@
       body {
         margin: 0;
         background:
-          radial-gradient(circle at 6% 0%, rgba(167, 123, 56, 0.12), transparent 30%),
+          radial-gradient(
+            circle at 6% 0%,
+            rgba(167, 123, 56, 0.12),
+            transparent 30%
+          ),
           linear-gradient(180deg, #fbfaf7 0%, #eef3f7 100%);
         color: var(--ink);
         font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
           sans-serif;
         letter-spacing: 0;
       }
@@ -64,7 +73,7 @@
         max-width: 1050px;
         margin: 0;
         color: #061a36;
-        font-family: Georgia, "Times New Roman", serif;
+        font-family: Georgia, 'Times New Roman', serif;
         font-size: 66px;
         font-weight: 500;
         line-height: 0.98;
@@ -615,7 +624,13 @@
         border: 1px solid #dce5ef;
         border-radius: 13px;
         background:
-          linear-gradient(90deg, transparent 48%, #e7eef7 48%, #e7eef7 52%, transparent 52%),
+          linear-gradient(
+            90deg,
+            transparent 48%,
+            #e7eef7 48%,
+            #e7eef7 52%,
+            transparent 52%
+          ),
           white;
       }
 
@@ -756,11 +771,15 @@
       <section class="masthead">
         <div>
           <div class="kicker">Novo norte visual - CRM Milan Horses</div>
-          <h1>Quatro mocks 10/10 para transformar o CRM em cockpit de leilões premium</h1>
+          <h1>
+            Quatro mocks 10/10 para transformar o CRM em cockpit de leilões
+            premium
+          </h1>
         </div>
         <p>
-          Cada proposta parte de uma referência real de SaaS e adapta para Milan Horses:
-          menos clutter, mais operação, mensagens sofisticadas e inteligência hípica acionável.
+          Cada proposta parte de uma referência real de SaaS e adapta para Milan
+          Horses: menos clutter, mais operação, mensagens sofisticadas e
+          inteligência hípica acionável.
         </p>
       </section>
 
@@ -770,14 +789,19 @@
             <div>
               <h2 class="direction-title">01. Milan Objects CRM</h2>
               <p class="direction-sub">
-                Benchmark: Twenty CRM. Melhor para organizar contatos, compras, WhatsApp e histórico em uma tela objetiva.
+                Benchmark: Twenty CRM. Melhor para organizar contatos, compras,
+                WhatsApp e histórico em uma tela objetiva.
               </p>
             </div>
             <span class="badge">Escolha mais segura</span>
           </header>
 
           <div class="app">
-            <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">crm.milan/contatos</span></div>
+            <div class="chrome">
+              <span class="dot"></span><span class="dot"></span
+              ><span class="dot"></span
+              ><span class="url">crm.milan/contatos</span>
+            </div>
             <div class="shell">
               <aside class="side">
                 <div class="brand"><span class="brand-mark">M</span>Milan</div>
@@ -794,25 +818,98 @@
               <section class="main">
                 <div class="topbar">
                   <h3 class="page-title">Contatos</h3>
-                  <div class="actions"><span class="btn">Filtros</span><span class="btn primary">Sincronizar Smart</span></div>
+                  <div class="actions">
+                    <span class="btn">Filtros</span
+                    ><span class="btn primary">Sincronizar Smart</span>
+                  </div>
                 </div>
                 <div class="metric-row">
-                  <div class="metric"><div class="label">Contatos</div><div class="value">1.837</div><div class="hint">último sync 11:03</div></div>
-                  <div class="metric"><div class="label">Compradores</div><div class="value">412</div><div class="hint">R$ 136,6 mi</div></div>
-                  <div class="metric"><div class="label">WhatsApp pronto</div><div class="value">1.717</div><div class="hint">93% acionável</div></div>
-                  <div class="metric"><div class="label">VIP ativo</div><div class="value">86</div><div class="hint">alto potencial</div></div>
+                  <div class="metric">
+                    <div class="label">Contatos</div>
+                    <div class="value">1.837</div>
+                    <div class="hint">último sync 11:03</div>
+                  </div>
+                  <div class="metric">
+                    <div class="label">Compradores</div>
+                    <div class="value">412</div>
+                    <div class="hint">R$ 136,6 mi</div>
+                  </div>
+                  <div class="metric">
+                    <div class="label">WhatsApp pronto</div>
+                    <div class="value">1.717</div>
+                    <div class="hint">93% acionável</div>
+                  </div>
+                  <div class="metric">
+                    <div class="label">VIP ativo</div>
+                    <div class="value">86</div>
+                    <div class="hint">alto potencial</div>
+                  </div>
                 </div>
                 <div class="split">
                   <div class="panel">
-                    <div class="panel-head">Base de clientes <span class="pill">Compradores</span></div>
+                    <div class="panel-head">
+                      Base de clientes <span class="pill">Compradores</span>
+                    </div>
                     <table>
-                      <thead><tr><th>Cliente</th><th>Compras</th><th>Total</th><th>Status</th></tr></thead>
+                      <thead>
+                        <tr>
+                          <th>Cliente</th>
+                          <th>Compras</th>
+                          <th>Total</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
                       <tbody>
-                        <tr><td><div class="person"><span class="avatar">CO</span>Comércio Horses</div></td><td>18</td><td>R$ 4,2 mi</td><td><span class="pill green">VIP</span></td></tr>
-                        <tr><td><div class="person"><span class="avatar">PE</span>Petronio Cabral</div></td><td>11</td><td>R$ 2,8 mi</td><td><span class="pill gold">Leilão alvo</span></td></tr>
-                        <tr><td><div class="person"><span class="avatar">MS</span>Matheus Souza</div></td><td>7</td><td>R$ 1,6 mi</td><td><span class="pill">Nutrir</span></td></tr>
-                        <tr><td><div class="person"><span class="avatar">DA</span>Daniel</div></td><td>3</td><td>R$ 842 mil</td><td><span class="pill red">Reativar</span></td></tr>
-                        <tr><td><div class="person"><span class="avatar">AL</span>Aline Prado</div></td><td>2</td><td>R$ 610 mil</td><td><span class="pill">Interessado</span></td></tr>
+                        <tr>
+                          <td>
+                            <div class="person">
+                              <span class="avatar">CO</span>Comércio Horses
+                            </div>
+                          </td>
+                          <td>18</td>
+                          <td>R$ 4,2 mi</td>
+                          <td><span class="pill green">VIP</span></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="person">
+                              <span class="avatar">PE</span>Petronio Cabral
+                            </div>
+                          </td>
+                          <td>11</td>
+                          <td>R$ 2,8 mi</td>
+                          <td><span class="pill gold">Leilão alvo</span></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="person">
+                              <span class="avatar">MS</span>Matheus Souza
+                            </div>
+                          </td>
+                          <td>7</td>
+                          <td>R$ 1,6 mi</td>
+                          <td><span class="pill">Nutrir</span></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="person">
+                              <span class="avatar">DA</span>Daniel
+                            </div>
+                          </td>
+                          <td>3</td>
+                          <td>R$ 842 mil</td>
+                          <td><span class="pill red">Reativar</span></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="person">
+                              <span class="avatar">AL</span>Aline Prado
+                            </div>
+                          </td>
+                          <td>2</td>
+                          <td>R$ 610 mil</td>
+                          <td><span class="pill">Interessado</span></td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -821,12 +918,23 @@
                     <div class="profile-name">Comércio Horses</div>
                     <div class="hint">São Paulo, SP - WhatsApp validado</div>
                     <div class="mini-list">
-                      <div class="mini-row"><span>Ticket médio</span><strong>R$ 233 mil</strong></div>
-                      <div class="mini-row"><span>Preferência</span><strong>Matrizes BH</strong></div>
-                      <div class="mini-row"><span>Última compra</span><strong>Leilão Elite</strong></div>
-                      <div class="mini-row"><span>Próxima ação</span><strong>Enviar preview</strong></div>
+                      <div class="mini-row">
+                        <span>Ticket médio</span><strong>R$ 233 mil</strong>
+                      </div>
+                      <div class="mini-row">
+                        <span>Preferência</span><strong>Matrizes BH</strong>
+                      </div>
+                      <div class="mini-row">
+                        <span>Última compra</span><strong>Leilão Elite</strong>
+                      </div>
+                      <div class="mini-row">
+                        <span>Próxima ação</span><strong>Enviar preview</strong>
+                      </div>
                     </div>
-                    <div class="actions" style="margin-top: 18px"><span class="btn primary">WhatsApp</span><span class="btn">Email</span></div>
+                    <div class="actions" style="margin-top: 18px">
+                      <span class="btn primary">WhatsApp</span
+                      ><span class="btn">Email</span>
+                    </div>
                   </aside>
                 </div>
               </section>
@@ -839,14 +947,19 @@
             <div>
               <h2 class="direction-title">02. Concierge Studio</h2>
               <p class="direction-sub">
-                Benchmark: Resend + Superhuman. Melhor para criar emails e WhatsApps premium com banners, blocos e personalização.
+                Benchmark: Resend + Superhuman. Melhor para criar emails e
+                WhatsApps premium com banners, blocos e personalização.
               </p>
             </div>
             <span class="badge">Mais impacto comercial</span>
           </header>
 
           <div class="app">
-            <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">crm.milan/estudio</span></div>
+            <div class="chrome">
+              <span class="dot"></span><span class="dot"></span
+              ><span class="dot"></span
+              ><span class="url">crm.milan/estudio</span>
+            </div>
             <div class="shell" style="grid-template-columns: 150px 1fr">
               <aside class="side">
                 <div class="brand"><span class="brand-mark">M</span>Studio</div>
@@ -862,17 +975,38 @@
               <section class="main">
                 <div class="topbar">
                   <h3 class="page-title">Email de convite VIP</h3>
-                  <div class="actions"><span class="btn">Prévia mobile</span><span class="btn primary">Criar campanha</span></div>
+                  <div class="actions">
+                    <span class="btn">Prévia mobile</span
+                    ><span class="btn primary">Criar campanha</span>
+                  </div>
                 </div>
                 <div class="toolbar">
-                  <span class="tool">Banner</span><span class="tool">Lote</span><span class="tool">Matriz</span><span class="tool">CTA</span><span class="tool">Personalizar</span><span class="tool">A/B</span>
+                  <span class="tool">Banner</span><span class="tool">Lote</span
+                  ><span class="tool">Matriz</span><span class="tool">CTA</span
+                  ><span class="tool">Personalizar</span
+                  ><span class="tool">A/B</span>
                 </div>
                 <div class="canvas">
                   <aside class="rail">
                     <div class="label">Blocos</div>
-                    <div class="block"><div class="block-title">Banner editorial</div><div class="block-copy">Foto do lote, data e chamada principal.</div></div>
-                    <div class="block"><div class="block-title">Seleção VIP</div><div class="block-copy">3 animais filtrados por perfil RFMV.</div></div>
-                    <div class="block"><div class="block-title">WhatsApp rápido</div><div class="block-copy">CTA rastreado para BotConversa.</div></div>
+                    <div class="block">
+                      <div class="block-title">Banner editorial</div>
+                      <div class="block-copy">
+                        Foto do lote, data e chamada principal.
+                      </div>
+                    </div>
+                    <div class="block">
+                      <div class="block-title">Seleção VIP</div>
+                      <div class="block-copy">
+                        3 animais filtrados por perfil RFMV.
+                      </div>
+                    </div>
+                    <div class="block">
+                      <div class="block-title">WhatsApp rápido</div>
+                      <div class="block-copy">
+                        CTA rastreado para BotConversa.
+                      </div>
+                    </div>
                   </aside>
                   <article class="email">
                     <div class="email-hero">
@@ -880,22 +1014,49 @@
                       <h3>Uma seleção rara para sua próxima temporada</h3>
                     </div>
                     <div class="email-body">
-                      <p>Olá, {{primeiro_nome}}. Separamos uma curadoria com animais que combinam com seu histórico de interesse e compras recentes.</p>
-                      <p>O leilão abre nesta semana, com oportunidades de matrizes e potros BH de linhagens competitivas.</p>
+                      <p>
+                        Olá, {{primeiro_nome}}. Separamos uma curadoria com
+                        animais que combinam com seu histórico de interesse e
+                        compras recentes.
+                      </p>
+                      <p>
+                        O leilão abre nesta semana, com oportunidades de
+                        matrizes e potros BH de linhagens competitivas.
+                      </p>
                       <div class="lot-strip">
-                        <div class="lot-card"><div class="label">Lote 07</div><div class="block-title">Matriz importada</div><div class="hint">alto valor genético</div></div>
-                        <div class="lot-card"><div class="label">Lote 11</div><div class="block-title">Potro BH</div><div class="hint">linha de performance</div></div>
-                        <div class="lot-card"><div class="label">Lote 18</div><div class="block-title">Embrião</div><div class="hint">cross recomendado</div></div>
+                        <div class="lot-card">
+                          <div class="label">Lote 07</div>
+                          <div class="block-title">Matriz importada</div>
+                          <div class="hint">alto valor genético</div>
+                        </div>
+                        <div class="lot-card">
+                          <div class="label">Lote 11</div>
+                          <div class="block-title">Potro BH</div>
+                          <div class="hint">linha de performance</div>
+                        </div>
+                        <div class="lot-card">
+                          <div class="label">Lote 18</div>
+                          <div class="block-title">Embrião</div>
+                          <div class="hint">cross recomendado</div>
+                        </div>
                       </div>
                     </div>
                   </article>
                   <aside class="rail">
                     <div class="label">Qualidade</div>
                     <div class="mini-list">
-                      <div class="mini-row"><span>Tom</span><strong>Luxo direto</strong></div>
-                      <div class="mini-row"><span>Segmento</span><strong>VIP matrizes</strong></div>
-                      <div class="mini-row"><span>Variáveis</span><strong>8 válidas</strong></div>
-                      <div class="mini-row"><span>Score</span><strong>94/100</strong></div>
+                      <div class="mini-row">
+                        <span>Tom</span><strong>Luxo direto</strong>
+                      </div>
+                      <div class="mini-row">
+                        <span>Segmento</span><strong>VIP matrizes</strong>
+                      </div>
+                      <div class="mini-row">
+                        <span>Variáveis</span><strong>8 válidas</strong>
+                      </div>
+                      <div class="mini-row">
+                        <span>Score</span><strong>94/100</strong>
+                      </div>
                     </div>
                   </aside>
                 </div>
@@ -909,14 +1070,19 @@
             <div>
               <h2 class="direction-title">03. Auction War Room</h2>
               <p class="direction-sub">
-                Benchmark: Plane. Melhor para operação semanal: leilões abertos, segmentos VIP, tarefas e disparos.
+                Benchmark: Plane. Melhor para operação semanal: leilões abertos,
+                segmentos VIP, tarefas e disparos.
               </p>
             </div>
             <span class="badge">Mais operacional</span>
           </header>
 
           <div class="app">
-            <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">crm.milan/radar-vip</span></div>
+            <div class="chrome">
+              <span class="dot"></span><span class="dot"></span
+              ><span class="dot"></span
+              ><span class="url">crm.milan/radar-vip</span>
+            </div>
             <div class="shell" style="grid-template-columns: 160px 1fr">
               <aside class="side">
                 <div class="brand"><span class="brand-mark">M</span>Radar</div>
@@ -932,29 +1098,93 @@
               <section class="main">
                 <div class="topbar">
                   <h3 class="page-title">Leilão Elite - sala de ação</h3>
-                  <div class="actions"><span class="btn">Atualizar lotes</span><span class="btn primary">Disparar VIP</span></div>
+                  <div class="actions">
+                    <span class="btn">Atualizar lotes</span
+                    ><span class="btn primary">Disparar VIP</span>
+                  </div>
                 </div>
                 <div class="metric-row">
-                  <div class="metric"><div class="label">VIPs compatíveis</div><div class="value">86</div><div class="hint">prioridade alta</div></div>
-                  <div class="metric"><div class="label">Lotes quentes</div><div class="value">19</div><div class="hint">abertos no site</div></div>
-                  <div class="metric"><div class="label">Potencial</div><div class="value">R$ 8,7 mi</div><div class="hint">baseado em RFMV</div></div>
-                  <div class="metric"><div class="label">Sem contato</div><div class="value">31</div><div class="hint">ação imediata</div></div>
+                  <div class="metric">
+                    <div class="label">VIPs compatíveis</div>
+                    <div class="value">86</div>
+                    <div class="hint">prioridade alta</div>
+                  </div>
+                  <div class="metric">
+                    <div class="label">Lotes quentes</div>
+                    <div class="value">19</div>
+                    <div class="hint">abertos no site</div>
+                  </div>
+                  <div class="metric">
+                    <div class="label">Potencial</div>
+                    <div class="value">R$ 8,7 mi</div>
+                    <div class="hint">baseado em RFMV</div>
+                  </div>
+                  <div class="metric">
+                    <div class="label">Sem contato</div>
+                    <div class="value">31</div>
+                    <div class="hint">ação imediata</div>
+                  </div>
                 </div>
                 <div class="board-columns">
                   <div class="lane">
                     <div class="lane-title">Selecionar <span>31</span></div>
-                    <div class="vip-card"><div class="vip-top">Petronio Cabral <span class="pill gold">R$ 2,8 mi</span></div><div class="vip-copy">Compra recorrente, interesse em matrizes. Enviar lote 07 e 18.</div></div>
-                    <div class="vip-card"><div class="vip-top">Aline Prado <span class="pill">RFMV 82</span></div><div class="vip-copy">Interage em WhatsApp, sem compra nos últimos 90 dias.</div></div>
+                    <div class="vip-card">
+                      <div class="vip-top">
+                        Petronio Cabral <span class="pill gold">R$ 2,8 mi</span>
+                      </div>
+                      <div class="vip-copy">
+                        Compra recorrente, interesse em matrizes. Enviar lote 07
+                        e 18.
+                      </div>
+                    </div>
+                    <div class="vip-card">
+                      <div class="vip-top">
+                        Aline Prado <span class="pill">RFMV 82</span>
+                      </div>
+                      <div class="vip-copy">
+                        Interage em WhatsApp, sem compra nos últimos 90 dias.
+                      </div>
+                    </div>
                   </div>
                   <div class="lane">
-                    <div class="lane-title">Mensagem pronta <span>42</span></div>
-                    <div class="vip-card"><div class="vip-top">Comércio Horses <span class="pill green">VIP</span></div><div class="vip-copy">Email premium aprovado. WhatsApp com CTA para catálogo.</div></div>
-                    <div class="vip-card"><div class="vip-top">Matheus Souza <span class="pill">Potro BH</span></div><div class="vip-copy">Sugestão baseada em histórico de lances.</div></div>
+                    <div class="lane-title">
+                      Mensagem pronta <span>42</span>
+                    </div>
+                    <div class="vip-card">
+                      <div class="vip-top">
+                        Comércio Horses <span class="pill green">VIP</span>
+                      </div>
+                      <div class="vip-copy">
+                        Email premium aprovado. WhatsApp com CTA para catálogo.
+                      </div>
+                    </div>
+                    <div class="vip-card">
+                      <div class="vip-top">
+                        Matheus Souza <span class="pill">Potro BH</span>
+                      </div>
+                      <div class="vip-copy">
+                        Sugestão baseada em histórico de lances.
+                      </div>
+                    </div>
                   </div>
                   <div class="lane">
                     <div class="lane-title">Follow-up <span>13</span></div>
-                    <div class="vip-card"><div class="vip-top">Daniel <span class="pill red">reativar</span></div><div class="vip-copy">Responder amanhã se abrir catálogo e não clicar.</div></div>
-                    <div class="vip-card"><div class="vip-top">Mariana G. <span class="pill gold">respondeu</span></div><div class="vip-copy">Quer vídeo do lote e pedigree materno.</div></div>
+                    <div class="vip-card">
+                      <div class="vip-top">
+                        Daniel <span class="pill red">reativar</span>
+                      </div>
+                      <div class="vip-copy">
+                        Responder amanhã se abrir catálogo e não clicar.
+                      </div>
+                    </div>
+                    <div class="vip-card">
+                      <div class="vip-top">
+                        Mariana G. <span class="pill gold">respondeu</span>
+                      </div>
+                      <div class="vip-copy">
+                        Quer vídeo do lote e pedigree materno.
+                      </div>
+                    </div>
                   </div>
                 </div>
               </section>
@@ -967,17 +1197,24 @@
             <div>
               <h2 class="direction-title">04. Haras Intelligence</h2>
               <p class="direction-sub">
-                Criação livre. Melhor para Studbook BH, genética, matrizes e montagem de leilões sem misturar com CRM de clientes.
+                Criação livre. Melhor para Studbook BH, genética, matrizes e
+                montagem de leilões sem misturar com CRM de clientes.
               </p>
             </div>
             <span class="badge">Mais estratégico</span>
           </header>
 
           <div class="app">
-            <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">crm.milan/studbook</span></div>
+            <div class="chrome">
+              <span class="dot"></span><span class="dot"></span
+              ><span class="dot"></span
+              ><span class="url">crm.milan/studbook</span>
+            </div>
             <div class="shell" style="grid-template-columns: 168px 1fr">
               <aside class="side">
-                <div class="brand"><span class="brand-mark">M</span>Studbook</div>
+                <div class="brand">
+                  <span class="brand-mark">M</span>Studbook
+                </div>
                 <div class="nav">
                   <div class="active">Cavalos</div>
                   <div>Matrizes</div>
@@ -990,24 +1227,60 @@
               <section class="main">
                 <div class="topbar">
                   <h3 class="page-title">Base secundária BH</h3>
-                  <div class="actions"><span class="btn">Importar ABCCH</span><span class="btn primary">Montar leilão</span></div>
+                  <div class="actions">
+                    <span class="btn">Importar ABCCH</span
+                    ><span class="btn primary">Montar leilão</span>
+                  </div>
                 </div>
                 <div class="metric-row">
-                  <div class="metric"><div class="label">Cavalos</div><div class="value">128k</div><div class="hint">base pública</div></div>
-                  <div class="metric"><div class="label">Matrizes</div><div class="value">41k</div><div class="hint">com idade</div></div>
-                  <div class="metric"><div class="label">Haras</div><div class="value">2.4k</div><div class="hint">criadores</div></div>
-                  <div class="metric"><div class="label">Candidatos</div><div class="value">312</div><div class="hint">listas ativas</div></div>
+                  <div class="metric">
+                    <div class="label">Cavalos</div>
+                    <div class="value">128k</div>
+                    <div class="hint">base pública</div>
+                  </div>
+                  <div class="metric">
+                    <div class="label">Matrizes</div>
+                    <div class="value">41k</div>
+                    <div class="hint">com idade</div>
+                  </div>
+                  <div class="metric">
+                    <div class="label">Haras</div>
+                    <div class="value">2.4k</div>
+                    <div class="hint">criadores</div>
+                  </div>
+                  <div class="metric">
+                    <div class="label">Candidatos</div>
+                    <div class="value">312</div>
+                    <div class="hint">listas ativas</div>
+                  </div>
                 </div>
                 <div class="gene-grid">
                   <div class="ranking">
                     <h4>Matrizes com maior potencial comercial</h4>
-                    <div class="rank-row"><span class="rank-num">1</span><span>Jolie Van'T Haras</span><strong>R$ 1,8 mi</strong></div>
-                    <div class="rank-row"><span class="rank-num">2</span><span>Carisma JMen</span><strong>14 lances</strong></div>
-                    <div class="rank-row"><span class="rank-num">3</span><span>Donna Bella BH</span><strong>9 vendas</strong></div>
-                    <div class="rank-row"><span class="rank-num">4</span><span>Quinta do Lago</span><strong>RFMV 87</strong></div>
+                    <div class="rank-row">
+                      <span class="rank-num">1</span
+                      ><span>Jolie Van'T Haras</span><strong>R$ 1,8 mi</strong>
+                    </div>
+                    <div class="rank-row">
+                      <span class="rank-num">2</span><span>Carisma JMen</span
+                      ><strong>14 lances</strong>
+                    </div>
+                    <div class="rank-row">
+                      <span class="rank-num">3</span><span>Donna Bella BH</span
+                      ><strong>9 vendas</strong>
+                    </div>
+                    <div class="rank-row">
+                      <span class="rank-num">4</span><span>Quinta do Lago</span
+                      ><strong>RFMV 87</strong>
+                    </div>
                   </div>
                   <div class="lineage">
-                    <div class="panel-head" style="border: 0; padding: 0; min-height: auto">Pedigree e idade</div>
+                    <div
+                      class="panel-head"
+                      style="border: 0; padding: 0; min-height: auto"
+                    >
+                      Pedigree e idade
+                    </div>
                     <div class="family">
                       <div>
                         <div class="node">Matriz - 12 anos</div>
@@ -1023,13 +1296,46 @@
                   </div>
                 </div>
                 <div class="matrix">
-                  <div class="panel-head">Candidatas para próximo leilão <span class="pill gold">não mistura com clientes</span></div>
+                  <div class="panel-head">
+                    Candidatas para próximo leilão
+                    <span class="pill gold">não mistura com clientes</span>
+                  </div>
                   <table>
-                    <thead><tr><th>Animal</th><th>Sexo</th><th>Idade</th><th>Haras</th><th>Proprietário</th><th>Ação</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Animal</th>
+                        <th>Sexo</th>
+                        <th>Idade</th>
+                        <th>Haras</th>
+                        <th>Proprietário</th>
+                        <th>Ação</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr><td>Jolie Van'T Haras</td><td>Fêmea</td><td>12</td><td>Haras Milan</td><td>Atual no ABCCH</td><td><span class="pill green">Adicionar</span></td></tr>
-                      <tr><td>Donna Bella BH</td><td>Fêmea</td><td>9</td><td>JMen</td><td>Atual no ABCCH</td><td><span class="pill">Pesquisar</span></td></tr>
-                      <tr><td>Quinta do Lago</td><td>Fêmea</td><td>15</td><td>Lagoinha</td><td>Atual no ABCCH</td><td><span class="pill gold">Contato</span></td></tr>
+                      <tr>
+                        <td>Jolie Van'T Haras</td>
+                        <td>Fêmea</td>
+                        <td>12</td>
+                        <td>Haras Milan</td>
+                        <td>Atual no ABCCH</td>
+                        <td><span class="pill green">Adicionar</span></td>
+                      </tr>
+                      <tr>
+                        <td>Donna Bella BH</td>
+                        <td>Fêmea</td>
+                        <td>9</td>
+                        <td>JMen</td>
+                        <td>Atual no ABCCH</td>
+                        <td><span class="pill">Pesquisar</span></td>
+                      </tr>
+                      <tr>
+                        <td>Quinta do Lago</td>
+                        <td>Fêmea</td>
+                        <td>15</td>
+                        <td>Lagoinha</td>
+                        <td>Atual no ABCCH</td>
+                        <td><span class="pill gold">Contato</span></td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -1040,10 +1346,11 @@
       </section>
 
       <section class="footer">
-        <strong>Minha recomendação:</strong> seguir com a direção 01 como base do CRM inteiro,
-        incorporar o Estúdio da direção 02, usar o War Room da direção 03 para Radar VIP e manter
-        a direção 04 como área separada de inteligência genética. Isso evita uma interface “bonita
-        mas inútil” e cria um sistema coeso, elegante e operacional.
+        <strong>Minha recomendação:</strong> seguir com a direção 01 como base
+        do CRM inteiro, incorporar o Estúdio da direção 02, usar o War Room da
+        direção 03 para Radar VIP e manter a direção 04 como área separada de
+        inteligência genética. Isso evita uma interface “bonita mas inútil” e
+        cria um sistema coeso, elegante e operacional.
       </section>
     </main>
   </body>

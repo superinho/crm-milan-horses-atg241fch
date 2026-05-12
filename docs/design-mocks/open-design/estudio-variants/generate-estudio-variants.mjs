@@ -145,7 +145,10 @@ function cssVars(root) {
 
 function appShell(v) {
   const navHtml = nav
-    .map((item) => `<div class="nav-item ${item === 'Estúdio' ? 'active' : ''}"><span>${item}</span><i></i></div>`)
+    .map(
+      (item) =>
+        `<div class="nav-item ${item === 'Estúdio' ? 'active' : ''}"><span>${item}</span><i></i></div>`,
+    )
     .join('')
 
   const sectionHtml = sections
@@ -630,7 +633,8 @@ function appShell(v) {
 function indexPage() {
   const cards = variants
     .map(
-      (v) => `<a href="${v.id}.html"><img src="${v.id}.png" alt="${v.title}" /><strong>${v.title}</strong><span>${v.mood}</span></a>`,
+      (v) =>
+        `<a href="${v.id}.html"><img src="${v.id}.png" alt="${v.title}" /><strong>${v.title}</strong><span>${v.mood}</span></a>`,
     )
     .join('')
 
@@ -723,7 +727,9 @@ function indexPage() {
 }
 
 await Promise.all([
-  ...variants.map((variant) => fs.writeFile(new URL(`${variant.id}.html`, outDir), appShell(variant))),
+  ...variants.map((variant) =>
+    fs.writeFile(new URL(`${variant.id}.html`, outDir), appShell(variant)),
+  ),
   fs.writeFile(new URL('index.html', outDir), indexPage()),
 ])
 

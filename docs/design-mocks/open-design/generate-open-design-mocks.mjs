@@ -682,4 +682,6 @@ await Promise.all(
   ),
 )
 
-console.log(`Wrote ${Object.keys(files).length} Open Design mock files to ${fileURLToPath(outDir)}`)
+console.log(
+  `Wrote ${Object.keys(files).length} Open Design mock files to ${fileURLToPath(outDir)}`,
+)

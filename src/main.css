@@ -107,10 +107,21 @@
     /* Apply font-sans globally, which now maps to Inter. Antialiased for crisp text */
     @apply bg-background text-foreground font-sans antialiased;
     background-image:
-      radial-gradient(circle at 8% 0%, hsl(var(--secondary) / 0.06), transparent 26rem),
-      radial-gradient(circle at 92% 8%, hsl(var(--primary) / 0.045), transparent 28rem),
+      radial-gradient(
+        circle at 8% 0%,
+        hsl(var(--secondary) / 0.06),
+        transparent 26rem
+      ),
+      radial-gradient(
+        circle at 92% 8%,
+        hsl(var(--primary) / 0.045),
+        transparent 28rem
+      ),
       linear-gradient(hsl(var(--primary) / 0.018) 1px, transparent 1px);
-    background-size: auto, auto, 100% 8px;
+    background-size:
+      auto,
+      auto,
+      100% 8px;
   }
   /* Headings also use Inter via font-display mapping in tailwind config */
   h1,
