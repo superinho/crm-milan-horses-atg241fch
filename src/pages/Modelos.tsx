@@ -1021,6 +1021,22 @@ export default function Modelos() {
     ) : (
       <Mail className="h-4 w-4" />
     )
+  const selectedGoal =
+    GOAL_PRESETS.find((item) => item.id === wizard.goal) || GOAL_PRESETS[0]
+  const selectedTone = TONE_PRESETS.find((item) => item.id === wizard.tone)
+  const wizardPreviewSubject = selectedGoal.subject
+    .replaceAll('{{leilao}}', wizard.auctionName || 'Leilão selecionado')
+    .replaceAll('{{data_leilao}}', wizard.auctionDate || 'Data do leilão')
+  const readyItems = [
+    { label: 'Objetivo definido', done: Boolean(wizard.goal) },
+    { label: 'Leilão escolhido', done: Boolean(wizard.auctionName.trim()) },
+    { label: 'Visual selecionado', done: Boolean(wizard.visual) },
+    {
+      label: 'CTA configurado',
+      done: Boolean(wizard.ctaLabel && wizard.ctaUrl),
+    },
+  ]
+  const readyCount = readyItems.filter((item) => item.done).length
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -1051,33 +1067,54 @@ export default function Modelos() {
         </div>
       </div>
 
-      <Card className="border-t-4 border-t-primary shadow-sm">
-        <CardHeader className="pb-3">
+      <Card className="overflow-hidden border-0 shadow-sm ring-1 ring-border/80">
+        <CardHeader className="border-b bg-white pb-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div>
-              <CardTitle className="flex items-center gap-2 text-xl text-primary">
-                <Sparkles className="h-5 w-5" />
-                Criador Milan
+              <div className="mb-2 inline-flex items-center gap-2 rounded-md bg-primary/10 px-2 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                <Sparkles className="h-3.5 w-3.5" />
+                Fluxo guiado
+              </div>
+              <CardTitle className="text-xl text-primary">
+                Criador Milan de e-mails premium
               </CardTitle>
               <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-                Escolha a intenção, o leilão, o visual e o CTA. O CRM monta um
-                e-mail editorial com banner, personalização e HTML pronto para
-                campanha.
+                Um caminho guiado para sair de objetivo, leilão e banner para um
+                e-mail editorial pronto para teste, sem tocar em HTML.
               </p>
             </div>
-            <Button onClick={generatePremiumEmail}>
+            <Button onClick={generatePremiumEmail} size="lg">
               <Wand2 className="mr-2 h-4 w-4" />
               Gerar e-mail premium
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="space-y-5">
-          <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-sm font-medium">
+        <CardContent className="p-0">
+          <div className="grid gap-0 xl:grid-cols-[minmax(0,1fr)_420px]">
+            <div className="space-y-5 p-4 lg:p-5">
+              <div className="grid gap-2 md:grid-cols-4">
+                {[
+                  ['1', 'Objetivo'],
+                  ['2', 'Leilão'],
+                  ['3', 'Visual'],
+                  ['4', 'Preview'],
+                ].map(([step, label]) => (
+                  <div
+                    key={step}
+                    className="flex items-center gap-2 rounded-md border bg-muted/20 px-3 py-2 text-sm"
+                  >
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-semibold text-white">
+                      {step}
+                    </span>
+                    <span className="font-medium text-foreground">{label}</span>
+                  </div>
+                ))}
+              </div>
+
+              <section className="space-y-2">
+                <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
                   <FileText className="h-4 w-4 text-primary" />
-                  Objetivo
+                  1. Escolha a intenção
                 </div>
                 <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
                   {GOAL_PRESETS.map((goal) => (
@@ -1096,20 +1133,20 @@ export default function Modelos() {
                         })
                       }
                     >
-                      <div className="font-medium">{goal.title}</div>
+                      <div className="font-semibold">{goal.title}</div>
                       <div className="mt-1 text-xs text-muted-foreground">
                         {goal.description}
                       </div>
                     </button>
                   ))}
                 </div>
-              </div>
+              </section>
 
-              <div className="grid gap-4 lg:grid-cols-2">
+              <section className="grid gap-4 lg:grid-cols-2">
                 <div className="space-y-2">
-                  <Label className="flex items-center gap-2">
+                  <Label className="flex items-center gap-2 font-semibold">
                     <Gavel className="h-4 w-4 text-primary" />
-                    Leilão real
+                    2. Leilão real
                   </Label>
                   <Select
                     value={wizard.auctionId || 'manual'}
@@ -1161,7 +1198,7 @@ export default function Modelos() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="flex items-center gap-2">
+                  <Label className="flex items-center gap-2 font-semibold">
                     <UsersRound className="h-4 w-4 text-primary" />
                     Público e tom
                   </Label>
@@ -1209,17 +1246,16 @@ export default function Modelos() {
                     </Select>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    {TONE_PRESETS.find((tone) => tone.id === wizard.tone)
-                      ?.description || ''}
+                    {selectedTone?.description || ''}
                   </p>
                 </div>
-              </div>
+              </section>
 
-              <div className="grid gap-4 lg:grid-cols-2">
+              <section className="grid gap-4 lg:grid-cols-2">
                 <div className="space-y-2">
-                  <Label className="flex items-center gap-2">
+                  <Label className="flex items-center gap-2 font-semibold">
                     <Paintbrush className="h-4 w-4 text-primary" />
-                    Visual e banner
+                    3. Visual e banner
                   </Label>
                   <div className="grid gap-2 md:grid-cols-3">
                     {VISUAL_PRESETS.map((visual) => (
@@ -1269,7 +1305,7 @@ export default function Modelos() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Texto de destaque</Label>
+                  <Label className="font-semibold">Texto de destaque</Label>
                   <Input
                     value={wizard.headline}
                     onChange={(event) =>
@@ -1310,15 +1346,87 @@ export default function Modelos() {
                     />
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
 
-            <div className="space-y-3 rounded-md border bg-muted/10 p-4">
-              <div className="flex items-center gap-2 text-sm font-medium">
-                <UserRound className="h-4 w-4 text-primary" />
-                Preview personalizado
+            <aside className="space-y-4 border-t bg-muted/10 p-4 lg:p-5 xl:border-l xl:border-t-0">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 text-sm font-semibold">
+                    <Eye className="h-4 w-4 text-primary" />
+                    Preview instantâneo
+                  </div>
+                  <Badge variant="secondary" className="border-0">
+                    {readyCount}/4 pronto
+                  </Badge>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Veja a peça tomando forma antes de gerar o modelo editável.
+                </p>
               </div>
-              <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-1">
+
+              <div className="overflow-hidden rounded-md border bg-white shadow-sm">
+                {wizard.bannerUrl ? (
+                  <img
+                    src={wizard.bannerUrl}
+                    alt={wizard.bannerAlt || 'Banner Milan Horses'}
+                    className="aspect-[16/7] w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex aspect-[16/7] items-center justify-center bg-[#f6f3ee] text-center">
+                    <div>
+                      <Image className="mx-auto h-6 w-6 text-primary/60" />
+                      <div className="mt-2 text-xs font-medium text-muted-foreground">
+                        Banner ou foto do leilão
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div className="space-y-3 p-4">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#9a7a3f]">
+                    {selectedGoal.title}
+                  </div>
+                  <div className="font-display text-xl leading-tight text-primary">
+                    {wizard.headline || 'Curadoria privada Milan Horses'}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {wizard.auctionName || 'Leilão selecionado'}
+                    {wizard.auctionDate ? ` · ${wizard.auctionDate}` : ''}
+                  </div>
+                  <div className="rounded-md bg-muted/20 px-2 py-1 text-xs text-muted-foreground">
+                    Assunto: {wizardPreviewSubject}
+                  </div>
+                  <div className="border-t pt-3 text-sm leading-relaxed text-foreground">
+                    Olá, {previewContext.nome}.{' '}
+                    {paragraphForGoal(wizard.goal, wizard.tone, wizard)
+                      .replace(/<[^>]+>/g, '')
+                      .replaceAll('{{leilao}}', wizard.auctionName)
+                      .replaceAll('{{data_leilao}}', wizard.auctionDate)
+                      .replaceAll('{{lote}}', wizard.lot || previewContext.lote)
+                      .replaceAll(
+                        '{{valor}}',
+                        wizard.valueRange || previewContext.valor,
+                      )}
+                  </div>
+                  {wizard.lot || wizard.valueRange ? (
+                    <div className="rounded-md border bg-muted/20 p-3 text-xs text-muted-foreground">
+                      {wizard.lot ? <div>Lote: {wizard.lot}</div> : null}
+                      {wizard.valueRange ? (
+                        <div>Faixa: {wizard.valueRange}</div>
+                      ) : null}
+                    </div>
+                  ) : null}
+                  <Button size="sm" className="w-full">
+                    {wizard.ctaLabel || 'Ver curadoria'}
+                  </Button>
+                </div>
+              </div>
+
+              <div className="space-y-2 rounded-md border bg-white p-3">
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <UserRound className="h-4 w-4 text-primary" />
+                  Campos do preview
+                </div>
                 <Input
                   value={previewContext.nome}
                   onChange={(event) =>
@@ -1348,12 +1456,40 @@ export default function Modelos() {
                   placeholder="Ticket médio"
                 />
               </div>
-              <div className="rounded-md bg-white p-3 text-xs text-muted-foreground">
-                O preview usa estes campos para simular personalização. Na
-                campanha, os dados entram pelo contato e pelo segmento
-                escolhido.
+
+              <div className="space-y-2 rounded-md border bg-white p-3">
+                <div className="text-sm font-medium">Prontidão</div>
+                <div className="space-y-2">
+                  {readyItems.map((item) => (
+                    <div
+                      key={item.label}
+                      className="flex items-center gap-2 text-xs text-muted-foreground"
+                    >
+                      <Check
+                        className={cn(
+                          'h-3.5 w-3.5',
+                          item.done ? 'text-emerald-700' : 'text-muted',
+                        )}
+                      />
+                      {item.label}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+
+              <Button
+                onClick={generatePremiumEmail}
+                className="w-full"
+                size="lg"
+              >
+                <Wand2 className="mr-2 h-4 w-4" />
+                Gerar modelo editável
+              </Button>
+              <div className="text-center text-xs text-muted-foreground">
+                Depois de gerar, você pode editar detalhes, enviar teste, salvar
+                e transformar em campanha.
+              </div>
+            </aside>
           </div>
         </CardContent>
       </Card>
