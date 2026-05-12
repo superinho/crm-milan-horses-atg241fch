@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { dashboardService, DashboardData } from '@/services/dashboard'
@@ -9,10 +9,10 @@ import { useRealtime } from '@/hooks/use-realtime'
 import { GoalCard } from '@/components/dashboard/GoalCard'
 import { UrgentTasksWidget } from '@/components/dashboard/UrgentTasksWidget'
 import { PipelineOverview } from '@/components/dashboard/PipelineOverview'
-import { SmartAlerts } from '@/components/dashboard/SmartAlerts'
 import { SalesComparisonChart } from '@/components/dashboard/SalesComparisonChart'
 import { QuickActions } from '@/components/dashboard/QuickActions'
 import { MonetaryDashboard } from '@/components/dashboard/MonetaryDashboard'
+import { ExecutiveSnapshot } from '@/components/dashboard/ExecutiveSnapshot'
 
 // Dialogs
 import {
@@ -46,7 +46,7 @@ export default function Index() {
     day: 'numeric',
   })
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const result = await dashboardService.getDashboardData()
       setData(result)
@@ -60,11 +60,11 @@ export default function Index() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [toast])
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [fetchData])
 
   useRealtime('campaigns', () => fetchData())
   useRealtime('deals', () => fetchData())
@@ -129,8 +129,7 @@ export default function Index() {
         <p className="text-muted-foreground capitalize">{currentDate}</p>
       </div>
 
-      {/* Smart Alerts */}
-      {data && <SmartAlerts alerts={data.alerts} />}
+      {data && <ExecutiveSnapshot snapshot={data.snapshot} />}
 
       <MonetaryDashboard />
 
