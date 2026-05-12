@@ -389,7 +389,7 @@ export default function Contatos() {
   const handleSmartLeiloesSync = async () => {
     setSyncingSmartLeiloes(true)
     try {
-      const summary = await smartLeiloesSyncService.syncAll()
+      const summary = await smartLeiloesSyncService.syncContacts()
       const savedCount = getSyncSavedCount(summary)
 
       toast({
