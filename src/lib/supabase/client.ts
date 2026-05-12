@@ -1,20 +1,17 @@
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from './types'
+// AVOID UPDATING THIS FILE DIRECTLY. It is automatically generated.
+import { createClient } from '@supabase/supabase-js';
+import type { Database } from './types';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseKey =
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
-  import.meta.env.VITE_SUPABASE_ANON_KEY
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
 
-if (!supabaseUrl || !supabaseKey) {
-  console.warn(
-    'Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY.',
-  )
-}
+// Import the supabase client like this:
+// import { supabase } from "@/lib/supabase/client";
 
-export const supabase = createClient<Database>(
-  supabaseUrl || 'http://localhost:54321',
-  supabaseKey || 'missing-publishable-key',
-)
-
-export default supabase
+export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: {
+    storage: localStorage,
+    persistSession: true,
+    autoRefreshToken: true,
+  }
+});
