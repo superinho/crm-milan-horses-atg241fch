@@ -454,7 +454,7 @@ export default function CampaignDetails() {
               <CardContent className="space-y-4">
                 <div>
                   <h4 className="text-sm font-medium text-muted-foreground mb-2">
-                    Segmentos Alvo
+                    Listas selecionadas
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {campaign.audience_filters?.segments?.length > 0 ? (
@@ -465,14 +465,14 @@ export default function CampaignDetails() {
                       ))
                     ) : (
                       <span className="text-sm text-muted-foreground">
-                        Todos os segmentos
+                        Todas as listas
                       </span>
                     )}
                   </div>
                 </div>
                 <div>
                   <h4 className="text-sm font-medium text-muted-foreground mb-2">
-                    Tags Filtradas
+                    Tags selecionadas
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {campaign.audience_filters?.tags?.length > 0 ? (

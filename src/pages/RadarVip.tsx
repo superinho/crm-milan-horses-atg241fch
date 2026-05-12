@@ -14,6 +14,8 @@ import {
   RefreshCw,
   Sparkles,
   Target,
+  Flame,
+  ShieldAlert,
   UserCheck,
   Users,
 } from 'lucide-react'
@@ -50,9 +52,10 @@ import { cn } from '@/lib/utils'
 
 const SEGMENTS: Array<{ value: VipRadarSegment | 'Todos'; label: string }> = [
   { value: 'Todos', label: 'Todos' },
+  { value: 'Comprador quente', label: 'Compradores quentes' },
   { value: 'VIP ativo', label: 'VIP ativo' },
   { value: 'Underbidder premium', label: 'Underbidders' },
-  { value: 'Alto potencial sem compra', label: 'Alto potencial' },
+  { value: 'Bidder fantasma', label: 'Bidders fantasma' },
   { value: 'Reativação VIP', label: 'Reativação VIP' },
   { value: 'Comprador compatível', label: 'Compatíveis' },
 ]
@@ -77,8 +80,10 @@ const segmentClassName = (segment: VipRadarSegment) => {
     return 'bg-amber-100 text-amber-900 border-amber-200'
   if (segment === 'Underbidder premium')
     return 'bg-blue-100 text-blue-900 border-blue-200'
-  if (segment === 'Alto potencial sem compra')
-    return 'bg-emerald-100 text-emerald-900 border-emerald-200'
+  if (segment === 'Comprador quente')
+    return 'bg-orange-100 text-orange-900 border-orange-200'
+  if (segment === 'Bidder fantasma')
+    return 'bg-slate-100 text-slate-900 border-slate-200'
   if (segment === 'Reativação VIP')
     return 'bg-rose-100 text-rose-900 border-rose-200'
   return 'bg-slate-100 text-slate-800 border-slate-200'
@@ -171,6 +176,16 @@ function RecommendationRow({
         <div className="text-xs text-muted-foreground">
           {item.purchaseCount} compras · {item.bidCount} lances
         </div>
+        {item.segment === 'Comprador quente' ? (
+          <div className="mt-1 text-xs font-medium text-orange-700">
+            Heat {item.heatScore} · streak {item.streakCount}
+          </div>
+        ) : null}
+        {item.segment === 'Bidder fantasma' ? (
+          <div className="mt-1 text-xs font-medium text-slate-700">
+            Ghost {item.ghostScore} · validar intenção
+          </div>
+        ) : null}
       </TableCell>
 
       <TableCell className="min-w-[320px]">
@@ -493,6 +508,17 @@ export default function RadarVip() {
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-base">
+                  <Flame className="h-4 w-4 text-orange-700" />
+                  Compradores quentes
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-2xl font-semibold">
+                {data.summary.bySegment['Comprador quente']}
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-base">
                   <Gem className="h-4 w-4 text-blue-700" />
                   Underbidders
                 </CardTitle>
@@ -504,23 +530,12 @@ export default function RadarVip() {
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-base">
-                  <Sparkles className="h-4 w-4 text-emerald-700" />
-                  Alto potencial
+                  <ShieldAlert className="h-4 w-4 text-slate-700" />
+                  Bidders fantasma
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-2xl font-semibold">
-                {data.summary.bySegment['Alto potencial sem compra']}
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2 text-base">
-                  <RefreshCw className="h-4 w-4 text-rose-700" />
-                  Reativação
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-2xl font-semibold">
-                {data.summary.bySegment['Reativação VIP']}
+                {data.summary.bySegment['Bidder fantasma']}
               </CardContent>
             </Card>
           </div>

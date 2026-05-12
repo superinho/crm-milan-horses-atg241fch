@@ -347,9 +347,19 @@ export default function Campanhas() {
                       <div className="flex items-center gap-2 text-sm">
                         <Users className="h-4 w-4 text-muted-foreground" />
                         <span>
-                          {campaign.audience_filters?.segments?.length > 0
-                            ? campaign.audience_filters.segments.join(', ')
-                            : 'Todos'}
+                          {[
+                            ...(campaign.audience_filters?.segments || []),
+                            ...(campaign.audience_filters?.tags || []).map(
+                              (tag) => `#${tag}`,
+                            ),
+                          ].length > 0
+                            ? [
+                                ...(campaign.audience_filters?.segments || []),
+                                ...(campaign.audience_filters?.tags || []).map(
+                                  (tag) => `#${tag}`,
+                                ),
+                              ].join(', ')
+                            : 'Todas as listas'}
                         </span>
                       </div>
                     </TableCell>
