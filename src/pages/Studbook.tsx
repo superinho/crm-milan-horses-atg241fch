@@ -115,13 +115,25 @@ function StatCard({
 
 function HorseTable({
   horses,
+  total,
+  page,
+  pageSize,
   lists,
   onAddToList,
+  onPageChange,
 }: {
   horses: StudbookHorse[]
+  total: number
+  page: number
+  pageSize: number
   lists: AuctionCandidateList[]
   onAddToList: (horse: StudbookHorse) => void
+  onPageChange: (page: number) => void
 }) {
+  const totalPages = Math.max(1, Math.ceil(total / pageSize))
+  const from = total === 0 ? 0 : (page - 1) * pageSize + 1
+  const to = Math.min(total, page * pageSize)
+
   return (
     <Card className="shadow-sm">
       <CardHeader className="flex flex-col gap-2 border-b pb-4 md:flex-row md:items-center md:justify-between">
@@ -130,11 +142,11 @@ function HorseTable({
             Registros do Studbook
           </CardTitle>
           <p className="mt-1 text-sm text-muted-foreground">
-            {horses.length} registros visíveis para curadoria.
+            {formatNumber(total)} registros encontrados. Exibindo {from}-{to}.
           </p>
         </div>
         <Badge variant="secondary" className="w-fit rounded-md">
-          Base secundária
+          Página {page} de {totalPages}
         </Badge>
       </CardHeader>
       <CardContent className="p-0">
@@ -259,6 +271,29 @@ function HorseTable({
             )}
           </TableBody>
         </Table>
+        <div className="flex flex-col gap-3 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-sm text-muted-foreground">
+            {formatNumber(horses.length)} itens nesta página
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page <= 1}
+              onClick={() => onPageChange(page - 1)}
+            >
+              Anterior
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page >= totalPages}
+              onClick={() => onPageChange(page + 1)}
+            >
+              Próxima
+            </Button>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )
@@ -269,6 +304,9 @@ export default function Studbook() {
   const [filterOptions, setFilterOptions] =
     useState<StudbookFilterOptions>(emptyFilterOptions)
   const [horses, setHorses] = useState<StudbookHorse[]>([])
+  const [horseTotal, setHorseTotal] = useState(0)
+  const [page, setPage] = useState(1)
+  const pageSize = 50
   const [lists, setLists] = useState<AuctionCandidateList[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -324,11 +362,12 @@ export default function Studbook() {
     try {
       const [nextOverview, nextHorses, nextLists] = await Promise.all([
         studbookService.getOverview(),
-        studbookService.getHorses(filters),
+        studbookService.getHorses(filters, { page, pageSize }),
         studbookService.getCandidateLists(),
       ])
       setOverview(nextOverview)
-      setHorses(nextHorses)
+      setHorses(nextHorses.rows)
+      setHorseTotal(nextHorses.total)
       setLists(nextLists)
     } catch (error) {
       console.error(error)
@@ -340,11 +379,15 @@ export default function Studbook() {
     } finally {
       setLoading(false)
     }
-  }, [filters, toast])
+  }, [filters, page, toast])
 
   useEffect(() => {
     loadData()
   }, [loadData])
+
+  useEffect(() => {
+    setPage(1)
+  }, [filters])
 
   useEffect(() => {
     studbookService
@@ -359,17 +402,6 @@ export default function Studbook() {
         })
       })
   }, [toast])
-
-  const displayedHorses = useMemo(
-    () =>
-      horses.filter((horse) => {
-        if (horse.age_years === null || horse.age_years === undefined) {
-          return includeUnknownAge
-        }
-        return horse.age_years >= ageRange[0] && horse.age_years <= ageRange[1]
-      }),
-    [horses, ageRange, includeUnknownAge],
-  )
 
   const activeFilterCount =
     (search.trim() ? 1 : 0) +
@@ -751,9 +783,13 @@ export default function Studbook() {
             </div>
           ) : (
             <HorseTable
-              horses={displayedHorses}
+              horses={horses}
+              total={horseTotal}
+              page={page}
+              pageSize={pageSize}
               lists={lists}
               onAddToList={addToFirstList}
+              onPageChange={setPage}
             />
           )}
         </div>

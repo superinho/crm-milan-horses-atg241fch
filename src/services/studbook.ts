@@ -79,6 +79,16 @@ export type StudbookFilters = {
   sortBy?: StudbookSortMode
 }
 
+export type StudbookPagination = {
+  page?: number
+  pageSize?: number
+}
+
+export type StudbookHorsePage = {
+  rows: StudbookHorse[]
+  total: number
+}
+
 export type StudbookFilterOption = {
   value: string
   label: string
@@ -447,25 +457,39 @@ export const studbookService = {
     }
   },
 
-  async getHorses(filters: StudbookFilters = {}): Promise<StudbookHorse[]> {
+  async getHorses(
+    filters: StudbookFilters = {},
+    pagination: StudbookPagination = {},
+  ): Promise<StudbookHorsePage> {
     try {
       const hasSearch = searchTokens(filters.search).length > 0
+      const page = Math.max(1, pagination.page || 1)
+      const pageSize = Math.min(100, Math.max(10, pagination.pageSize || 50))
+      const from = (page - 1) * pageSize
+      const to = from + pageSize - 1
       const query = applyFilters(
         applySort(
-          db.from('studbook_horses_enriched').select('*'),
+          db
+            .from('studbook_horses_enriched')
+            .select('*', { count: 'exact' }),
           filters.sortBy || 'updated',
-        ).limit(hasSearch ? 600 : 160),
+        ).range(from, to),
         filters,
       )
 
-      const { data, error } = await query
+      const { data, error, count } = await query
       if (error) throw error
 
       const rows = (data || []) as StudbookHorse[]
 
-      if (!hasSearch) return rows
+      if (!hasSearch) {
+        return {
+          rows,
+          total: count || 0,
+        }
+      }
 
-      return rows
+      const scoredRows = rows
         .map((horse) => ({
           horse,
           score: scoreSearchResult(horse, filters.search),
@@ -476,10 +500,14 @@ export const studbookService = {
             b.score - a.score ||
             compareBySort(a.horse, b.horse, filters.sortBy || 'updated'),
         )
-        .slice(0, 160)
         .map((result) => result.horse)
+
+      return {
+        rows: scoredRows,
+        total: count || scoredRows.length,
+      }
     } catch (error) {
-      if (isMissingTable(error)) return []
+      if (isMissingTable(error)) return { rows: [], total: 0 }
       throw error
     }
   },
