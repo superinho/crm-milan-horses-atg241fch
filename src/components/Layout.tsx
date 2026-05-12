@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Outlet, useLocation, Link } from 'react-router-dom'
+import { Outlet, useLocation, Link, useNavigate } from 'react-router-dom'
 import {
   Sidebar,
   SidebarContent,
@@ -28,6 +28,7 @@ import {
   BarChart3,
   Search,
   Bell,
+  LogOut,
   Tag as TagIcon,
   Settings,
   Keyboard,
@@ -54,6 +55,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import logoImg from '@/assets/editedimage_1769630541473-88067.png'
+import { useAuth } from '@/hooks/use-auth'
 
 // Modals & Search
 import { GlobalSearch } from '@/components/search/GlobalSearch'
@@ -165,8 +167,15 @@ function TopHeader({
   onSearchClick: () => void
   onHelpClick: () => void
 }) {
+  const navigate = useNavigate()
   const location = useLocation()
+  const { user, signOut } = useAuth()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/login', { replace: true })
+  }
 
   // Breadcrumb logic
   const getBreadcrumbs = () => {
@@ -283,6 +292,34 @@ function TopHeader({
         >
           <Keyboard className="h-5 w-5 text-muted-foreground" />
         </Button>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleSignOut}
+          title="Sair"
+          className="md:hidden"
+        >
+          <LogOut className="h-5 w-5 text-muted-foreground" />
+        </Button>
+
+        <div className="hidden items-center gap-2 rounded-md border bg-white px-3 py-1.5 text-sm md:flex">
+          <div className="text-right leading-tight">
+            <div className="font-medium text-primary">{user?.name}</div>
+            <div className="max-w-40 truncate text-xs text-muted-foreground">
+              {user?.email}
+            </div>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleSignOut}
+            title="Sair"
+            className="h-8 w-8"
+          >
+            <LogOut className="h-4 w-4 text-muted-foreground" />
+          </Button>
+        </div>
 
         <div className="relative">
           <Bell className="h-5 w-5 text-muted-foreground hover:text-primary cursor-pointer transition-colors" />
