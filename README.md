@@ -25,6 +25,29 @@ Este projeto foi criado de ponta a ponta com o [Skip](https://goskip.dev).
 npm install
 ```
 
+## 🔌 Supabase
+
+O CRM usa o projeto Supabase `hllvhxwcgqsksjaudsdn`.
+
+Para rodar localmente, copie o arquivo de exemplo:
+
+```bash
+cp .env.example .env.local
+```
+
+No goskip.dev, configure estas variáveis de ambiente no projeto:
+
+```bash
+VITE_SUPABASE_URL=https://hllvhxwcgqsksjaudsdn.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_lj9HSTZHShUs5HFi2NvS-Q_jQOnVT6B
+VITE_SUPABASE_ANON_KEY=sb_publishable_lj9HSTZHShUs5HFi2NvS-Q_jQOnVT6B
+VITE_ALLOW_ANON_TEST_MODE=true
+```
+
+Não coloque chaves secretas no frontend. As chaves privadas da Resend,
+BotConversa, SmartLeilões e Supabase Service Role ficam apenas em Supabase
+Secrets/Edge Functions.
+
 ## 💻 Scripts Disponíveis
 
 ### Desenvolvimento
