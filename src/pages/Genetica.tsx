@@ -11,20 +11,27 @@ import {
 import {
   AlertTriangle,
   Brain,
+  Building2,
+  CalendarDays,
   Database,
   Dna,
   Download,
   ExternalLink,
+  FilterX,
   Loader2,
   type LucideIcon,
   Search,
+  SlidersHorizontal,
   Sparkles,
   Trophy,
+  VenusAndMars,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
+import { MultiSelect, type Option } from '@/components/ui/multi-select'
 import { Progress } from '@/components/ui/progress'
 import {
   Select,
@@ -49,7 +56,9 @@ import {
   type GeneticIntelligenceData,
   type GeneticMetricRow,
   type GeneticRankingMode,
+  type GeneticReproductiveType,
 } from '@/services/genetic-intelligence'
+import { Slider } from '@/components/ui/slider'
 
 const money = (value: number) =>
   new Intl.NumberFormat('pt-BR', {
@@ -70,6 +79,35 @@ const rankingLabel: Record<GeneticRankingMode, string> = {
   mare: 'Matrizes',
   sire: 'Garanhões',
   cross: 'Cruzamentos',
+}
+
+type SortMode = 'score' | 'sales' | 'bids' | 'conversion' | 'youngest'
+
+const reproductiveTypeLabel: Record<GeneticReproductiveType, string> = {
+  mare: 'Matriz/Fêmea',
+  stallion: 'Garanhão/Macho',
+  gelding: 'Castrado',
+  embryo: 'Embrião',
+  young: 'Potro/Potra',
+  unknown: 'Não informado',
+}
+
+const typeOrder: GeneticReproductiveType[] = [
+  'mare',
+  'stallion',
+  'gelding',
+  'embryo',
+  'young',
+  'unknown',
+]
+
+const scoreOf = (row: GeneticMetricRow) =>
+  row.salesValue * 3 + row.bidCount * 10000 + row.topBid
+
+const ageRangeLabel = (row: GeneticMetricRow) => {
+  if (row.age.knownLots === 0) return 'Idade não informada'
+  if (row.age.min === row.age.max) return `${row.age.min} anos`
+  return `${row.age.min}-${row.age.max} anos`
 }
 
 const csvEscape = (value: unknown) =>
@@ -115,6 +153,7 @@ function RankingTable({ rows }: { rows: GeneticMetricRow[] }) {
           <TableHeader>
             <TableRow>
               <TableHead>Genética</TableHead>
+              <TableHead>Perfil</TableHead>
               <TableHead>Atividade</TableHead>
               <TableHead>Vendas</TableHead>
               <TableHead>Conversão</TableHead>
@@ -160,6 +199,33 @@ function RankingTable({ rows }: { rows: GeneticMetricRow[] }) {
                           </Badge>
                         ))}
                       </div>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell className="min-w-[190px]">
+                  <div className="space-y-1.5 text-xs">
+                    <div className="flex items-center gap-1.5 text-foreground">
+                      <CalendarDays className="h-3.5 w-3.5 text-muted-foreground" />
+                      <span>{ageRangeLabel(row)}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-muted-foreground">
+                      <Building2 className="h-3.5 w-3.5" />
+                      <span className="line-clamp-1">
+                        {row.breeders.find(
+                          (breeder) => breeder !== 'Não informado',
+                        ) || 'Criador não informado'}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {row.reproductiveTypes.slice(0, 2).map((type) => (
+                        <Badge
+                          key={type}
+                          variant="secondary"
+                          className="rounded-md bg-secondary/20 text-primary"
+                        >
+                          {reproductiveTypeLabel[type]}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
                 </TableCell>
@@ -280,6 +346,13 @@ export default function Genetica() {
   const [mode, setMode] = useState<GeneticRankingMode>('mare')
   const [search, setSearch] = useState('')
   const [minActivity, setMinActivity] = useState('all')
+  const [selectedBreeders, setSelectedBreeders] = useState<string[]>([])
+  const [selectedTypes, setSelectedTypes] = useState<GeneticReproductiveType[]>(
+    [],
+  )
+  const [ageRange, setAgeRange] = useState<[number, number]>([0, 25])
+  const [includeUnknownAge, setIncludeUnknownAge] = useState(true)
+  const [sortBy, setSortBy] = useState<SortMode>('score')
   const { toast } = useToast()
 
   useEffect(() => {
@@ -308,22 +381,156 @@ export default function Genetica() {
     }
   }, [toast])
 
+  const sourceRows = useMemo(() => {
+    if (!data) return []
+    return mode === 'mare'
+      ? data.mares
+      : mode === 'sire'
+        ? data.sires
+        : data.crosses
+  }, [data, mode])
+
+  const breederOptions = useMemo<Option[]>(() => {
+    const counts = new Map<string, number>()
+    sourceRows.forEach((row) => {
+      row.breeders.forEach((breeder) => {
+        counts.set(breeder, (counts.get(breeder) || 0) + 1)
+      })
+    })
+
+    return [...counts.entries()]
+      .sort(([a], [b]) => {
+        if (a === 'Não informado') return 1
+        if (b === 'Não informado') return -1
+        return a.localeCompare(b, 'pt-BR')
+      })
+      .map(([breeder, count]) => ({
+        value: breeder,
+        label: `${breeder} (${count})`,
+      }))
+  }, [sourceRows])
+
+  const typeOptions = useMemo<Option[]>(() => {
+    const counts = new Map<GeneticReproductiveType, number>()
+    sourceRows.forEach((row) => {
+      row.reproductiveTypes.forEach((type) => {
+        counts.set(type, (counts.get(type) || 0) + 1)
+      })
+    })
+
+    return typeOrder
+      .filter((type) => counts.has(type))
+      .map((type) => ({
+        value: type,
+        label: `${reproductiveTypeLabel[type]} (${counts.get(type)})`,
+      }))
+  }, [sourceRows])
+
+  const topBreeders = useMemo(() => {
+    const totals = new Map<
+      string,
+      { breeder: string; rows: number; salesValue: number; bidCount: number }
+    >()
+
+    sourceRows.forEach((row) => {
+      row.breeders
+        .filter((breeder) => breeder !== 'Não informado')
+        .forEach((breeder) => {
+          const current =
+            totals.get(breeder) ||
+            ({ breeder, rows: 0, salesValue: 0, bidCount: 0 } as const)
+          totals.set(breeder, {
+            breeder,
+            rows: current.rows + 1,
+            salesValue: current.salesValue + row.salesValue,
+            bidCount: current.bidCount + row.bidCount,
+          })
+        })
+    })
+
+    return [...totals.values()]
+      .sort(
+        (a, b) =>
+          b.salesValue +
+          b.bidCount * 10000 -
+          (a.salesValue + a.bidCount * 10000),
+      )
+      .slice(0, 4)
+  }, [sourceRows])
+
   const activeRows = useMemo(() => {
     if (!data) return []
     const source =
       mode === 'mare' ? data.mares : mode === 'sire' ? data.sires : data.crosses
     const normalizedSearch = search.trim().toLowerCase()
 
-    return source.filter((row) => {
-      const activity = row.bidCount + row.salesCount
-      if (minActivity === 'active' && activity === 0) return false
-      if (minActivity === 'sold' && row.salesCount === 0) return false
-      if (!normalizedSearch) return true
-      return `${row.label} ${row.secondaryLabel} ${row.categories.join(' ')}`
-        .toLowerCase()
-        .includes(normalizedSearch)
-    })
-  }, [data, mode, search, minActivity])
+    return source
+      .filter((row) => {
+        const activity = row.bidCount + row.salesCount
+        if (minActivity === 'active' && activity === 0) return false
+        if (minActivity === 'sold' && row.salesCount === 0) return false
+        if (
+          selectedBreeders.length > 0 &&
+          !selectedBreeders.some((breeder) => row.breeders.includes(breeder))
+        ) {
+          return false
+        }
+        if (
+          selectedTypes.length > 0 &&
+          !selectedTypes.some((type) => row.reproductiveTypes.includes(type))
+        ) {
+          return false
+        }
+        if (row.age.knownLots === 0) {
+          if (!includeUnknownAge) return false
+        } else if (
+          (row.age.max || 0) < ageRange[0] ||
+          (row.age.min || 0) > ageRange[1]
+        ) {
+          return false
+        }
+        if (!normalizedSearch) return true
+        return `${row.label} ${row.secondaryLabel} ${row.categories.join(' ')} ${row.breeders.join(' ')} ${row.reproductiveTypes.map((type) => reproductiveTypeLabel[type]).join(' ')} ${row.representativeLot?.title || ''}`
+          .toLowerCase()
+          .includes(normalizedSearch)
+      })
+      .sort((a, b) => {
+        if (sortBy === 'sales') return b.salesValue - a.salesValue
+        if (sortBy === 'bids') return b.bidCount - a.bidCount
+        if (sortBy === 'conversion') return b.conversionRate - a.conversionRate
+        if (sortBy === 'youngest')
+          return (a.age.avg ?? 999) - (b.age.avg ?? 999)
+        return scoreOf(b) - scoreOf(a)
+      })
+  }, [
+    data,
+    mode,
+    search,
+    minActivity,
+    selectedBreeders,
+    selectedTypes,
+    ageRange,
+    includeUnknownAge,
+    sortBy,
+  ])
+
+  const activeFilterCount =
+    (search.trim() ? 1 : 0) +
+    (minActivity !== 'all' ? 1 : 0) +
+    selectedBreeders.length +
+    selectedTypes.length +
+    (ageRange[0] !== 0 || ageRange[1] !== 25 ? 1 : 0) +
+    (!includeUnknownAge ? 1 : 0)
+
+  const resetFilters = () => {
+    setSearch('')
+    setMinActivity('all')
+    setSelectedBreeders([])
+    setSelectedTypes([])
+    setAgeRange([0, 25])
+    setIncludeUnknownAge(true)
+    setSortBy('score')
+  }
 
   const chartRows = activeRows.slice(0, 8).map((row) => ({
     name: row.label.length > 18 ? `${row.label.slice(0, 18)}...` : row.label,
@@ -434,6 +641,164 @@ export default function Genetica() {
           icon={Brain}
         />
       </div>
+
+      <Card className="border-primary/15 bg-white shadow-sm">
+        <CardHeader className="flex flex-col gap-3 border-b pb-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2 text-base text-primary">
+              <SlidersHorizontal className="h-4 w-4" />
+              Filtros de seleção genética
+            </CardTitle>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Refine por idade, criador e perfil do animal sem perder a visão
+              comercial.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            {activeFilterCount > 0 && (
+              <Badge variant="secondary" className="rounded-md">
+                {activeFilterCount} filtros ativos
+              </Badge>
+            )}
+            <Button variant="outline" size="sm" onClick={resetFilters}>
+              <FilterX className="h-4 w-4" />
+              Limpar
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="grid gap-5 p-5 xl:grid-cols-[1.05fr_1fr_0.75fr]">
+          <div className="space-y-4">
+            <div>
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div>
+                  <div className="text-sm font-semibold text-foreground">
+                    Idade do animal
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {ageRange[0]} a {ageRange[1]} anos
+                  </div>
+                </div>
+                <CalendarDays className="h-4 w-4 text-primary" />
+              </div>
+              <Slider
+                value={ageRange}
+                min={0}
+                max={25}
+                step={1}
+                minStepsBetweenThumbs={1}
+                onValueChange={(value) =>
+                  setAgeRange([value[0] || 0, value[1] || 25])
+                }
+              />
+              <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+                <span>0 anos</span>
+                <span>25+ anos</span>
+              </div>
+            </div>
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Checkbox
+                checked={includeUnknownAge}
+                onCheckedChange={(checked) =>
+                  setIncludeUnknownAge(checked === true)
+                }
+              />
+              Incluir lotes sem data de nascimento informada
+            </label>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-1">
+            <div>
+              <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+                <Building2 className="h-4 w-4 text-primary" />
+                Criadores
+              </label>
+              <MultiSelect
+                options={breederOptions}
+                selected={selectedBreeders}
+                onChange={setSelectedBreeders}
+                placeholder={
+                  breederOptions.length
+                    ? 'Selecionar criadores'
+                    : 'Criador não veio da Smart'
+                }
+              />
+              {!breederOptions.some(
+                (option) => option.value !== 'Não informado',
+              ) && (
+                <p className="mt-2 text-xs text-muted-foreground">
+                  A Smart ainda não trouxe criador nesses lotes. Quando o
+                  Studbook for conciliado, este filtro fica muito mais poderoso.
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+                <VenusAndMars className="h-4 w-4 text-primary" />
+                Perfil do lote
+              </label>
+              <MultiSelect
+                options={typeOptions}
+                selected={selectedTypes}
+                onChange={(value) =>
+                  setSelectedTypes(value as GeneticReproductiveType[])
+                }
+                placeholder="Matriz, garanhão, castrado..."
+              />
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-foreground">
+                Ordenar por
+              </label>
+              <Select
+                value={sortBy}
+                onValueChange={(value) => setSortBy(value as SortMode)}
+              >
+                <SelectTrigger className="bg-white">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="score">Tração comercial</SelectItem>
+                  <SelectItem value="sales">Valor vendido</SelectItem>
+                  <SelectItem value="bids">Número de lances</SelectItem>
+                  <SelectItem value="conversion">Conversão</SelectItem>
+                  <SelectItem value="youngest">Mais jovens</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="rounded-md border bg-muted/10 p-3">
+              <div className="text-sm font-semibold text-primary">
+                Top criadores
+              </div>
+              {topBreeders.length ? (
+                <div className="mt-2 space-y-2">
+                  {topBreeders.map((breeder) => (
+                    <div
+                      key={breeder.breeder}
+                      className="flex items-center justify-between gap-3 text-xs"
+                    >
+                      <span className="truncate text-foreground">
+                        {breeder.breeder}
+                      </span>
+                      <span className="shrink-0 text-muted-foreground">
+                        {money(breeder.salesValue)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                  Sem criador confirmado nos dados sincronizados.
+                </p>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card className="overflow-hidden border-0 shadow-sm ring-1 ring-border/80">
         <CardContent className="p-0">

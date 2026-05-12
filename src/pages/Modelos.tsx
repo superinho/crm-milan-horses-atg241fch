@@ -50,6 +50,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
+import { formatCivilDate } from '@/lib/dates'
 import { supabase } from '@/lib/supabase/client'
 import {
   templatesService,
@@ -391,15 +392,7 @@ const emailShell = (content: string) => {
 }
 
 const formatAuctionDate = (value?: string | null) => {
-  if (!value) return ''
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return value
-
-  return date.toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  })
+  return value ? formatCivilDate(value, '') : ''
 }
 
 const editorialHeaderBlock =
