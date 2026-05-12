@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Loader2, Camera } from 'lucide-react'
-import supabase from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 
 export default function Perfil() {
   const { user } = useAuth()

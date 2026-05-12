@@ -1,5 +1,5 @@
 import { dealsService } from './deals'
-import supabase from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 
 const db = supabase as any
 

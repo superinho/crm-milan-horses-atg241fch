@@ -51,8 +51,14 @@ const renderTemplate = (
   String(value || '')
     .replaceAll('{{nome}}', contact?.name || '')
     .replaceAll('{{name}}', contact?.name || '')
-    .replaceAll('{{leilao}}', campaign?.metadata?.auction?.title || campaign?.name || '')
-    .replaceAll('{{auction}}', campaign?.metadata?.auction?.title || campaign?.name || '')
+    .replaceAll(
+      '{{leilao}}',
+      campaign?.metadata?.auction?.title || campaign?.name || '',
+    )
+    .replaceAll(
+      '{{auction}}',
+      campaign?.metadata?.auction?.title || campaign?.name || '',
+    )
 
 const normalizePhone = (value?: string | null) => {
   const digits = String(value || '').replace(/\D/g, '')
@@ -64,8 +70,8 @@ const normalizePhone = (value?: string | null) => {
 const shouldUseBotconversaAuthorization = () =>
   Boolean(
     BOTCONVERSA_API_KEY &&
-      BOTCONVERSA_WEBHOOK_URL &&
-      !BOTCONVERSA_WEBHOOK_URL.includes('/webhooks-automation/catch/'),
+    BOTCONVERSA_WEBHOOK_URL &&
+    !BOTCONVERSA_WEBHOOK_URL.includes('/webhooks-automation/catch/'),
   )
 
 const providerIdFrom = (payload: any) =>
@@ -178,18 +184,28 @@ const updateRecipient = async (
     .eq('id', campaignRecipientId)
 }
 
-const sendEmail = async (campaign: any, schedule: any, recipient: Recipient) => {
+const sendEmail = async (
+  campaign: any,
+  schedule: any,
+  recipient: Recipient,
+) => {
   const contact = recipient.contact
   const to = recipient.email || contact?.email
   if (!to) throw new Error('Contato sem e-mail válido.')
   if (!RESEND_API_KEY) throw new Error('RESEND_API_KEY não configurada.')
 
   const subject = renderTemplate(
-    recipient.subject || schedule.subject || `Curadoria Milan Horses: ${campaign.name}`,
+    recipient.subject ||
+      schedule.subject ||
+      `Curadoria Milan Horses: ${campaign.name}`,
     contact,
     campaign,
   )
-  const html = renderTemplate(recipient.message || schedule.content, contact, campaign)
+  const html = renderTemplate(
+    recipient.message || schedule.content,
+    contact,
+    campaign,
+  )
   const payload: Record<string, unknown> = {
     from: RESEND_FROM_EMAIL,
     to: [to],
@@ -239,13 +255,19 @@ const sendWhatsApp = async (
   recipient: Recipient,
 ) => {
   const contact = recipient.contact
-  const phone = normalizePhone(recipient.phone || contact?.whatsapp || contact?.phone)
+  const phone = normalizePhone(
+    recipient.phone || contact?.whatsapp || contact?.phone,
+  )
   if (!phone) throw new Error('Contato sem WhatsApp válido.')
   if (!BOTCONVERSA_WEBHOOK_URL) {
     throw new Error('BOTCONVERSA_WEBHOOK_URL não configurada.')
   }
 
-  const message = renderTemplate(recipient.message || schedule.content, contact, campaign)
+  const message = renderTemplate(
+    recipient.message || schedule.content,
+    contact,
+    campaign,
+  )
   const payload = {
     phone,
     telefone: phone,
@@ -307,7 +329,11 @@ const sendWhatsApp = async (
   }
 }
 
-const processRecipient = async (campaign: any, schedule: any, recipient: Recipient) => {
+const processRecipient = async (
+  campaign: any,
+  schedule: any,
+  recipient: Recipient,
+) => {
   const channel = schedule.channel_type as 'email' | 'whatsapp'
   const now = new Date().toISOString()
   const { data: sendLog, error: sendLogError } = await supabase
@@ -387,7 +413,11 @@ const processRecipient = async (campaign: any, schedule: any, recipient: Recipie
       to_address:
         channel === 'email'
           ? recipient.email || recipient.contact?.email || ''
-          : normalizePhone(recipient.phone || recipient.contact?.whatsapp || recipient.contact?.phone),
+          : normalizePhone(
+              recipient.phone ||
+                recipient.contact?.whatsapp ||
+                recipient.contact?.phone,
+            ),
       subject: recipient.subject || schedule.subject || null,
       body: recipient.message || schedule.content || '',
       status: 'failed',
@@ -454,7 +484,9 @@ const processSchedule = async (
     .update({
       status: results.remaining > 0 ? 'Piloto enviado' : 'Processado',
       processed_at:
-        results.remaining > 0 ? schedule.processed_at : new Date().toISOString(),
+        results.remaining > 0
+          ? schedule.processed_at
+          : new Date().toISOString(),
     })
     .eq('id', schedule.id)
 
@@ -475,7 +507,8 @@ const processSchedule = async (
 }
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
+  if (req.method === 'OPTIONS')
+    return new Response('ok', { headers: corsHeaders })
 
   try {
     const body = req.method === 'POST' ? await req.json().catch(() => ({})) : {}

@@ -1,4 +1,4 @@
-import supabase from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 import { Tag, tagsService } from './tags'
 
 const db = supabase as any

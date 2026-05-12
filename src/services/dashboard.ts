@@ -2,7 +2,7 @@ import { dealsService } from './deals'
 import { tasksService, Task } from './tasks'
 import { contactsService } from './contacts'
 import { settingsService } from './settings'
-import supabase from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 
 const db = supabase as any
 

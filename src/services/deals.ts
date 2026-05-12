@@ -1,4 +1,4 @@
-import supabase from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 import { Contact } from './contacts'
 
 const db = supabase as any
