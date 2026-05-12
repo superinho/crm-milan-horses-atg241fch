@@ -25,6 +25,7 @@ import SmartLeiloes from './pages/SmartLeiloes'
 import RadarVip from './pages/RadarVip'
 import Tags from './pages/Tags'
 import Modelos from './pages/Modelos'
+import Genetica from './pages/Genetica'
 import Configuracoes from './pages/Configuracoes'
 import Perfil from './pages/Perfil'
 import Login from './pages/Login'
@@ -69,6 +70,7 @@ const App = () => (
             <Route path="/tarefas" element={<Tarefas />} />
             <Route path="/relatorios" element={<Relatorios />} />
             <Route path="/leiloes" element={<SmartLeiloes />} />
+            <Route path="/genetica" element={<Genetica />} />
             <Route path="/radar-vip" element={<RadarVip />} />
             <Route path="/tags" element={<Tags />} />
             <Route path="/modelos" element={<Modelos />} />
