@@ -1,12 +1,12 @@
 {
   "_versions": {
-    "process-automation-tasks": 11,
-    "send-contact-email": 13,
-    "process-campaigns": 14,
-    "dispatch-campaign": 12,
-    "send-whatsapp-botconversa": 13,
-    "resend-webhook": 11,
-    "botconversa-webhook": 11,
-    "sync-smartleiloes": 14
+    "process-automation-tasks": 12,
+    "send-contact-email": 14,
+    "process-campaigns": 15,
+    "dispatch-campaign": 13,
+    "send-whatsapp-botconversa": 14,
+    "resend-webhook": 12,
+    "botconversa-webhook": 12,
+    "sync-smartleiloes": 15
   }
 }
