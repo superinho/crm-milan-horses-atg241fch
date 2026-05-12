@@ -11,6 +11,9 @@ ALTER TABLE studbook_horses
     ADD COLUMN IF NOT EXISTS dam_name TEXT,
     ADD COLUMN IF NOT EXISTS abcch_owner_token TEXT,
     ADD COLUMN IF NOT EXISTS abcch_breeder_token TEXT,
+    ADD COLUMN IF NOT EXISTS abcch_detail_synced_at TIMESTAMP WITH TIME ZONE,
+    ADD COLUMN IF NOT EXISTS abcch_detail_sync_status TEXT,
+    ADD COLUMN IF NOT EXISTS abcch_detail_error TEXT,
     ADD COLUMN IF NOT EXISTS import_batch_id UUID,
     ADD COLUMN IF NOT EXISTS source_checksum TEXT;
 
@@ -28,11 +31,23 @@ ON studbook_horses (abcch_token);
 CREATE INDEX IF NOT EXISTS idx_studbook_horses_registration
 ON studbook_horses (registration);
 
+CREATE INDEX IF NOT EXISTS idx_studbook_horses_updated_at
+ON studbook_horses (updated_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_studbook_offspring_parent
+ON studbook_offspring (parent_id);
+
 CREATE INDEX IF NOT EXISTS idx_studbook_horses_sire_name
 ON studbook_horses USING gin (to_tsvector('simple', COALESCE(sire_name, '')));
 
 CREATE INDEX IF NOT EXISTS idx_studbook_horses_dam_name
 ON studbook_horses USING gin (to_tsvector('simple', COALESCE(dam_name, '')));
+
+CREATE INDEX IF NOT EXISTS idx_studbook_horses_detail_synced
+ON studbook_horses (abcch_detail_synced_at);
+
+CREATE INDEX IF NOT EXISTS idx_studbook_horses_detail_status
+ON studbook_horses (abcch_detail_sync_status);
 
 CREATE TABLE IF NOT EXISTS studbook_import_runs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -57,7 +72,36 @@ ON studbook_import_runs;
 CREATE POLICY "Allow authenticated full access studbook_import_runs"
 ON studbook_import_runs FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Allow anon read studbook_people_orgs"
+ON studbook_people_orgs;
+
+CREATE POLICY "Allow anon read studbook_people_orgs"
+ON studbook_people_orgs FOR SELECT TO anon USING (true);
+
+DROP POLICY IF EXISTS "Allow anon read studbook_horses"
+ON studbook_horses;
+
+CREATE POLICY "Allow anon read studbook_horses"
+ON studbook_horses FOR SELECT TO anon USING (true);
+
+DROP POLICY IF EXISTS "Allow anon read studbook_pedigree_links"
+ON studbook_pedigree_links;
+
+CREATE POLICY "Allow anon read studbook_pedigree_links"
+ON studbook_pedigree_links FOR SELECT TO anon USING (true);
+
+DROP POLICY IF EXISTS "Allow anon read studbook_offspring"
+ON studbook_offspring;
+
+CREATE POLICY "Allow anon read studbook_offspring"
+ON studbook_offspring FOR SELECT TO anon USING (true);
+
 CREATE OR REPLACE VIEW studbook_horses_enriched AS
+WITH offspring_counts AS (
+    SELECT parent_id, COUNT(*)::integer AS offspring_count
+    FROM studbook_offspring
+    GROUP BY parent_id
+)
 SELECT
     h.*,
     breeder.name AS breeder_name,
@@ -79,13 +123,15 @@ SELECT
         AND h.birth_date IS NOT NULL
         AND DATE_PART('year', AGE(CURRENT_DATE, h.birth_date)) BETWEEN 3 AND 18
     ) AS is_reproductive_mare,
-    (
-        SELECT COUNT(*)
-        FROM studbook_offspring offspring
-        WHERE offspring.parent_id = h.id
-    )::integer AS offspring_count
+    COALESCE(offspring_counts.offspring_count, 0)::integer AS offspring_count
 FROM studbook_horses h
 LEFT JOIN studbook_people_orgs breeder ON breeder.id = h.breeder_id
-LEFT JOIN studbook_people_orgs owner ON owner.id = h.owner_id;
+LEFT JOIN studbook_people_orgs owner ON owner.id = h.owner_id
+LEFT JOIN offspring_counts ON offspring_counts.parent_id = h.id;
 
+GRANT SELECT ON studbook_people_orgs TO anon;
+GRANT SELECT ON studbook_horses TO anon;
+GRANT SELECT ON studbook_pedigree_links TO anon;
+GRANT SELECT ON studbook_offspring TO anon;
 GRANT SELECT ON studbook_horses_enriched TO authenticated;
+GRANT SELECT ON studbook_horses_enriched TO anon;

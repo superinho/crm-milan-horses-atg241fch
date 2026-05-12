@@ -70,6 +70,17 @@ type StudioGoalId =
   | 'pos-leilao'
 type StudioToneId = 'editorial' | 'exclusivo' | 'direto' | 'caloroso'
 type StudioVisualId = 'hero' | 'editorial' | 'lote'
+type PremiumLayoutId =
+  | 'convite-privado'
+  | 'curadoria-lotes'
+  | 'ultima-chamada'
+  | 'pos-leilao'
+  | 'alerta-pedigree'
+  | 'catalogo-aberto'
+  | 'underbidder-concierge'
+  | 'aniversario-premium'
+  | 'oportunidade-reservada'
+  | 'pos-compra'
 
 type WizardState = {
   goal: StudioGoalId
@@ -225,6 +236,140 @@ const VISUAL_PRESETS: Array<{
     id: 'lote',
     title: 'Lote em destaque',
     description: 'Imagem com legenda e bloco de recomendação.',
+  },
+]
+
+const PREMIUM_EMAIL_LAYOUTS: Array<{
+  id: PremiumLayoutId
+  title: string
+  badge: string
+  category: TemplateCategory
+  goal: StudioGoalId
+  subject: string
+  headline: string
+  ctaLabel: string
+  description: string
+  bestFor: string
+}> = [
+  {
+    id: 'convite-privado',
+    title: 'Convite Privado',
+    badge: 'VIP',
+    category: 'Convite VIP',
+    goal: 'convite-vip',
+    subject: 'Acesso reservado: {{leilao}}',
+    headline: 'Uma seleção reservada para o seu perfil',
+    ctaLabel: 'Ver curadoria privada',
+    description: 'Abertura sofisticada para clientes de alto valor.',
+    bestFor: 'Clientes VIP e compradores recorrentes',
+  },
+  {
+    id: 'curadoria-lotes',
+    title: 'Curadoria de Lotes',
+    badge: 'Curadoria',
+    category: 'Radar VIP',
+    goal: 'curadoria',
+    subject: 'Curadoria Milan Horses para {{leilao}}',
+    headline: 'Três lotes que merecem sua atenção',
+    ctaLabel: 'Abrir seleção completa',
+    description: 'Recomendação consultiva com destaque de lote e fit.',
+    bestFor: 'Radar VIP e compradores quentes',
+  },
+  {
+    id: 'ultima-chamada',
+    title: 'Última Chamada Elegante',
+    badge: 'Conversão',
+    category: 'Novo Leilão',
+    goal: 'ultima-chamada',
+    subject: 'Última chamada para {{leilao}}',
+    headline: 'Ainda há tempo para revisar com calma',
+    ctaLabel: 'Revisar lotes indicados',
+    description: 'Urgência sem pressão, boa para reta final do leilão.',
+    bestFor: 'Clientes engajados antes do fechamento',
+  },
+  {
+    id: 'pos-leilao',
+    title: 'Pós-Leilão Premium',
+    badge: 'Relação',
+    category: 'Pós-leilão',
+    goal: 'pos-leilao',
+    subject: 'Obrigado pela participação no leilão',
+    headline: 'Obrigado pela participação',
+    ctaLabel: 'Falar com a equipe Milan',
+    description: 'Follow-up elegante para manter o relacionamento vivo.',
+    bestFor: 'Participantes e compradores recentes',
+  },
+  {
+    id: 'alerta-pedigree',
+    title: 'Alerta de Pedigree',
+    badge: 'Genética',
+    category: 'Informações de Lote',
+    goal: 'curadoria',
+    subject: 'Ficha genética selecionada para você',
+    headline: 'Uma genealogia que vale olhar com lupa',
+    ctaLabel: 'Ver ficha genética',
+    description: 'Destaque técnico para matriz, garanhão e valor genético.',
+    bestFor: 'Clientes focados em genética e matrizes',
+  },
+  {
+    id: 'catalogo-aberto',
+    title: 'Catálogo Aberto',
+    badge: 'Leilão',
+    category: 'Novo Leilão',
+    goal: 'convite-vip',
+    subject: 'Catálogo aberto: {{leilao}}',
+    headline: '{{leilao}} já está disponível',
+    ctaLabel: 'Abrir catálogo',
+    description: 'Anúncio editorial para apresentar um leilão novo.',
+    bestFor: 'Toda lista qualificada',
+  },
+  {
+    id: 'underbidder-concierge',
+    title: 'Underbidder Concierge',
+    badge: 'Recuperação',
+    category: 'Underbidder',
+    goal: 'underbidder',
+    subject: 'Uma oportunidade próxima ao seu último lance',
+    headline: 'Uma oportunidade próxima ao seu último lance',
+    ctaLabel: 'Receber comparação',
+    description: 'Retoma clientes que disputaram forte e não compraram.',
+    bestFor: 'Underbidders reais',
+  },
+  {
+    id: 'aniversario-premium',
+    title: 'Aniversário Premium',
+    badge: 'Relacionamento',
+    category: 'Aniversário',
+    goal: 'reativacao',
+    subject: 'Feliz aniversário, {{nome}}',
+    headline: 'Um novo ciclo com boas conquistas',
+    ctaLabel: 'Responder à equipe Milan',
+    description: 'Mensagem pessoal, elegante e com cara de concierge.',
+    bestFor: 'Datas de relacionamento',
+  },
+  {
+    id: 'oportunidade-reservada',
+    title: 'Oportunidade Reservada',
+    badge: 'Private',
+    category: 'Convite VIP',
+    goal: 'convite-vip',
+    subject: 'Oportunidade reservada Milan Horses',
+    headline: 'Um lote que preferi te mostrar antes',
+    ctaLabel: 'Solicitar detalhes reservados',
+    description: 'Peça mais exclusiva para um lote específico.',
+    bestFor: 'VIPs com fit claro para um lote',
+  },
+  {
+    id: 'pos-compra',
+    title: 'Próximos Passos Pós-Compra',
+    badge: 'Comprador',
+    category: 'Agradecimento Pós-Compra',
+    goal: 'pos-leilao',
+    subject: 'Próximos passos da sua compra',
+    headline: 'Obrigado pela confiança na Milan Horses',
+    ctaLabel: 'Falar sobre próximos passos',
+    description: 'Organiza o pós-venda com tom premium e claro.',
+    bestFor: 'Compradores confirmados',
   },
 ]
 
@@ -459,6 +604,87 @@ ${signatureBlock()}
     .replaceAll('{{valor}}', wizard.valueRange || context.valor)
 }
 
+const premiumLayoutBodyBlock = (
+  layoutId: PremiumLayoutId,
+  wizard: WizardState,
+) => {
+  const lot = wizard.lot || '{{lote}}'
+  const value = wizard.valueRange || '{{valor}}'
+
+  if (layoutId === 'alerta-pedigree') {
+    return `<div style="margin:28px 0;padding:22px;background:#fbfaf7;border:1px solid #e5dfd6;font-family:Arial,sans-serif;color:#4f5b6d;">
+  <div style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:#9a7a3f;">Leitura genética</div>
+  <div style="margin-top:8px;font-size:18px;font-weight:700;color:#12284c;">${escapeHtml(lot)}</div>
+  <div style="margin-top:10px;font-size:13px;line-height:1.7;">Potencial técnico, genealogia e encaixe com seu histórico devem ser avaliados juntos. Este destaque foi separado para uma análise mais cuidadosa antes do leilão.</div>
+  <div style="margin-top:12px;font-size:13px;">Faixa de referência: <strong style="color:#12284c;">${escapeHtml(value)}</strong></div>
+</div>`
+  }
+
+  if (layoutId === 'underbidder-concierge') {
+    return `<div style="margin:28px 0;padding:20px;border-left:3px solid #9a7a3f;background:#fbfaf7;font-family:Arial,sans-serif;font-size:14px;line-height:1.7;color:#4f5b6d;">
+  Você demonstrou intenção clara em disputas recentes. Em vez de mandar o catálogo inteiro, separei uma alternativa próxima ao seu padrão para avaliarmos com calma.
+</div>`
+  }
+
+  if (layoutId === 'pos-compra') {
+    return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:28px 0;border-collapse:collapse;font-family:Arial,sans-serif;">
+  <tr><td style="padding:14px 0;border-top:1px solid #e5dfd6;"><strong style="color:#12284c;">1. Confirmação</strong><br /><span style="font-size:13px;color:#5f6878;">Validamos os detalhes principais da compra.</span></td></tr>
+  <tr><td style="padding:14px 0;border-top:1px solid #e5dfd6;"><strong style="color:#12284c;">2. Próximos documentos</strong><br /><span style="font-size:13px;color:#5f6878;">A equipe acompanha você nos passos operacionais.</span></td></tr>
+  <tr><td style="padding:14px 0;border-top:1px solid #e5dfd6;border-bottom:1px solid #e5dfd6;"><strong style="color:#12284c;">3. Curadoria futura</strong><br /><span style="font-size:13px;color:#5f6878;">Seguimos atentos a lotes compatíveis com seu perfil.</span></td></tr>
+</table>`
+  }
+
+  if (layoutId === 'ultima-chamada') {
+    return `<div style="margin:28px 0;text-align:center;font-family:Arial,sans-serif;">
+  <div style="display:inline-block;padding:12px 18px;background:#12284c;color:#ffffff;font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;">Última janela de avaliação</div>
+  <div style="margin-top:12px;font-size:13px;color:#5f6878;">Revise os lotes indicados antes do encerramento.</div>
+</div>`
+  }
+
+  return `<div style="margin:28px 0;padding:18px 20px;background:#fbfaf7;border:1px solid #e5dfd6;font-family:Arial,sans-serif;font-size:13px;line-height:1.7;color:#4f5b6d;">
+  <strong style="display:block;color:#12284c;margin-bottom:6px;">Destaque da curadoria</strong>
+  ${wizard.lot ? `Lote: ${escapeHtml(lot)}<br />` : ''}
+  ${wizard.valueRange ? `Faixa de valor: ${escapeHtml(value)}<br />` : ''}
+  Perfil: {{segmento}} · {{cidade}}
+</div>`
+}
+
+const buildPremiumLayoutEmail = (
+  layout: (typeof PREMIUM_EMAIL_LAYOUTS)[number],
+  wizard: WizardState,
+  context: PreviewContext,
+) => {
+  const banner = wizard.bannerUrl
+    ? imageBlock({
+        src: wizard.bannerUrl,
+        alt: wizard.bannerAlt || layout.title,
+        caption: '',
+        variant: 'banner',
+      })
+    : ''
+  const bodyCopy = paragraphForGoal(layout.goal, wizard.tone, wizard)
+  const content = `
+${banner}
+<div style="margin:0 0 28px;text-align:center;">
+  <div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:#9a7a3f;">${escapeHtml(layout.badge)} · Milan Horses</div>
+  <h2 style="margin:10px 0 8px;font-family:Georgia,'Times New Roman',serif;font-size:32px;line-height:1.12;font-weight:400;color:#12284c;">${escapeHtml(wizard.headline || layout.headline)}</h2>
+  <div style="font-family:Arial,sans-serif;font-size:13px;color:#6c7280;">{{leilao}}${wizard.auctionDate ? ' · {{data_leilao}}' : ''}</div>
+</div>
+<p>Olá, {{nome}}.</p>
+<p>${bodyCopy}</p>
+${premiumLayoutBodyBlock(layout.id, wizard)}
+<p>Se fizer sentido, posso te enviar uma seleção curta com os pontos que realmente merecem atenção.</p>
+${ctaBlock(wizard.ctaLabel || layout.ctaLabel, wizard.ctaUrl)}
+${signatureBlock()}
+`
+
+  return emailShell(content)
+    .replaceAll('{{leilao}}', wizard.auctionName || context.leilao)
+    .replaceAll('{{data_leilao}}', wizard.auctionDate || context.data_leilao)
+    .replaceAll('{{lote}}', wizard.lot || context.lote)
+    .replaceAll('{{valor}}', wizard.valueRange || context.valor)
+}
+
 export default function Modelos() {
   const [templates, setTemplates] = useState<MessageTemplate[]>([])
   const [auctions, setAuctions] = useState<SmartLeilao[]>([])
@@ -466,6 +692,8 @@ export default function Modelos() {
   const [wizard, setWizard] = useState<WizardState>(emptyWizard)
   const [composerChannel, setComposerChannel] = useState<TemplateType>('E-mail')
   const [composerPreviewOpen, setComposerPreviewOpen] = useState(false)
+  const [selectedPremiumLayoutId, setSelectedPremiumLayoutId] =
+    useState<PremiumLayoutId>('convite-privado')
   const [previewContext, setPreviewContext] =
     useState<PreviewContext>(SAMPLE_CONTEXT)
   const [selectedId, setSelectedId] = useState<string | null>(null)
@@ -644,6 +872,74 @@ export default function Modelos() {
     toast({
       title: 'E-mail premium criado',
       description: 'Revise o preview, envie um teste e salve como modelo.',
+      variant: 'success',
+    })
+  }
+
+  const selectPremiumLayout = (
+    layout: (typeof PREMIUM_EMAIL_LAYOUTS)[number],
+  ) => {
+    setSelectedPremiumLayoutId(layout.id)
+    setComposerChannel('E-mail')
+    setComposerPreviewOpen(true)
+    updateWizard({
+      goal: layout.goal,
+      visual: 'hero',
+      headline: layout.headline,
+      ctaLabel: layout.ctaLabel,
+    })
+  }
+
+  const applySelectedPremiumLayout = () => {
+    const layout =
+      PREMIUM_EMAIL_LAYOUTS.find(
+        (item) => item.id === selectedPremiumLayoutId,
+      ) || PREMIUM_EMAIL_LAYOUTS[0]
+    const nextWizard: WizardState = {
+      ...wizard,
+      goal: layout.goal,
+      visual: 'hero',
+      headline: wizard.headline || layout.headline,
+      ctaLabel: wizard.ctaLabel || layout.ctaLabel,
+    }
+    const subject = layout.subject
+      .replaceAll('{{leilao}}', nextWizard.auctionName || '{{leilao}}')
+      .replaceAll(
+        '{{data_leilao}}',
+        nextWizard.auctionDate || '{{data_leilao}}',
+      )
+    const body = buildPremiumLayoutEmail(layout, nextWizard, previewContext)
+
+    setSelectedId(null)
+    setVariations([])
+    setComposerChannel('E-mail')
+    setComposerPreviewOpen(true)
+    setWizard(nextWizard)
+    setDraft({
+      title: `${layout.title} · ${nextWizard.auctionName || 'Milan Horses'}`,
+      category: layout.category,
+      type: 'E-mail',
+      subject,
+      body,
+      variables: extractVariables(`${subject} ${body}`),
+    })
+    setAssetUrl(nextWizard.bannerUrl)
+    setAssetAlt(nextWizard.bannerAlt)
+    setAssetCaption(nextWizard.lot)
+    setCtaLabel(nextWizard.ctaLabel)
+    setCtaUrl(nextWizard.ctaUrl)
+    setPreviewContext((current) => ({
+      ...current,
+      leilao: nextWizard.auctionName || current.leilao,
+      data_leilao: nextWizard.auctionDate || current.data_leilao,
+      lote: nextWizard.lot || current.lote,
+      valor: nextWizard.valueRange || current.valor,
+      segmento: nextWizard.audience || current.segmento,
+    }))
+
+    toast({
+      title: 'Layout premium aplicado',
+      description: 'O e-mail foi criado no editor com banner, CTA e estrutura.',
       variant: 'success',
     })
   }
@@ -990,6 +1286,9 @@ export default function Modelos() {
   const selectedGoal =
     GOAL_PRESETS.find((item) => item.id === wizard.goal) || GOAL_PRESETS[0]
   const selectedTone = TONE_PRESETS.find((item) => item.id === wizard.tone)
+  const selectedPremiumLayout =
+    PREMIUM_EMAIL_LAYOUTS.find((item) => item.id === selectedPremiumLayoutId) ||
+    PREMIUM_EMAIL_LAYOUTS[0]
   const wizardPreviewSubject = selectedGoal.subject
     .replaceAll('{{leilao}}', wizard.auctionName || 'Leilão selecionado')
     .replaceAll('{{data_leilao}}', wizard.auctionDate || 'Data do leilão')
@@ -1598,6 +1897,187 @@ export default function Modelos() {
               <div className="text-center text-xs text-muted-foreground">
                 Depois de gerar, você pode editar detalhes, enviar teste, salvar
                 e transformar em campanha.
+              </div>
+            </aside>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="overflow-hidden border-0 shadow-sm ring-1 ring-border/80">
+        <CardHeader className="border-b bg-[#fbfaf7]">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+              <div className="mb-2 inline-flex items-center gap-2 rounded-md bg-amber-100 px-2 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-amber-900">
+                <Crown className="h-3.5 w-3.5" />
+                Layouts premium
+              </div>
+              <CardTitle className="text-xl text-primary">
+                Templates nativos de e-mail
+              </CardTitle>
+              <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
+                Escolha uma peça pronta, adicione o banner do leilão e gere um
+                e-mail sofisticado para editar, testar e salvar.
+              </p>
+            </div>
+            <Button onClick={applySelectedPremiumLayout} size="lg">
+              <Sparkles className="mr-2 h-4 w-4" />
+              Usar template selecionado
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_420px]">
+            <div className="border-b p-4 lg:border-b-0 lg:border-r lg:p-5">
+              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                {PREMIUM_EMAIL_LAYOUTS.map((layout) => (
+                  <button
+                    key={layout.id}
+                    type="button"
+                    className={cn(
+                      'rounded-md border bg-white p-4 text-left transition-colors hover:border-primary hover:bg-primary/5',
+                      selectedPremiumLayoutId === layout.id &&
+                        'border-primary bg-primary/5 shadow-sm',
+                    )}
+                    onClick={() => selectPremiumLayout(layout)}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 text-primary">
+                        <Mail className="h-5 w-5" />
+                      </div>
+                      <Badge variant="outline" className="shrink-0 bg-white">
+                        {layout.badge}
+                      </Badge>
+                    </div>
+                    <div className="mt-4 font-semibold text-foreground">
+                      {layout.title}
+                    </div>
+                    <p className="mt-1 min-h-[40px] text-sm text-muted-foreground">
+                      {layout.description}
+                    </p>
+                    <div className="mt-3 text-xs font-medium text-primary">
+                      {layout.bestFor}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <aside className="space-y-4 bg-white p-4 lg:p-5">
+              <div>
+                <div className="text-sm font-semibold text-primary">
+                  {selectedPremiumLayout.title}
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {selectedPremiumLayout.description}
+                </p>
+              </div>
+
+              <div className="space-y-3 rounded-md border bg-muted/10 p-3">
+                <Label className="flex items-center gap-2 font-semibold">
+                  <Image className="h-4 w-4 text-primary" />
+                  Banner principal do e-mail
+                </Label>
+                <div className="overflow-hidden rounded-md border bg-white">
+                  {wizard.bannerUrl ? (
+                    <img
+                      src={wizard.bannerUrl}
+                      alt={wizard.bannerAlt || 'Banner Milan Horses'}
+                      className="aspect-[16/7] w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex aspect-[16/7] items-center justify-center bg-[#f6f3ee] text-center">
+                      <div>
+                        <Image className="mx-auto h-7 w-7 text-primary/60" />
+                        <div className="mt-2 text-xs font-medium text-muted-foreground">
+                          Adicione uma foto do lote, banner do leilão ou imagem
+                          editorial.
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+                  <Input
+                    value={wizard.bannerUrl}
+                    onChange={(event) => {
+                      setAssetUrl(event.target.value)
+                      updateWizard({ bannerUrl: event.target.value })
+                    }}
+                    placeholder="Cole a URL pública do banner"
+                  />
+                  <Button type="button" variant="outline" asChild>
+                    <label className="cursor-pointer">
+                      {uploadingAsset ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        <Upload className="mr-2 h-4 w-4" />
+                      )}
+                      Upload
+                      <input
+                        type="file"
+                        accept="image/png,image/jpeg,image/jpg,image/webp"
+                        className="hidden"
+                        onChange={uploadEmailAsset}
+                        disabled={uploadingAsset}
+                      />
+                    </label>
+                  </Button>
+                </div>
+                <Input
+                  value={wizard.bannerAlt}
+                  onChange={(event) => {
+                    setAssetAlt(event.target.value)
+                    updateWizard({ bannerAlt: event.target.value })
+                  }}
+                  placeholder="Descrição do banner"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="font-semibold">Título e botão</Label>
+                <Input
+                  value={wizard.headline}
+                  onChange={(event) =>
+                    updateWizard({ headline: event.target.value })
+                  }
+                  placeholder={selectedPremiumLayout.headline}
+                />
+                <div className="grid gap-2 sm:grid-cols-[0.8fr_1fr]">
+                  <Input
+                    value={wizard.ctaLabel}
+                    onChange={(event) =>
+                      updateWizard({ ctaLabel: event.target.value })
+                    }
+                    placeholder={selectedPremiumLayout.ctaLabel}
+                  />
+                  <Input
+                    value={wizard.ctaUrl}
+                    onChange={(event) =>
+                      updateWizard({ ctaUrl: event.target.value })
+                    }
+                    placeholder="Link do botão"
+                  />
+                </div>
+              </div>
+
+              <div className="rounded-md border bg-[#fbfaf7] p-3">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#9a7a3f]">
+                  Preview do layout
+                </div>
+                <div className="mt-2 font-display text-lg leading-tight text-primary">
+                  {wizard.headline || selectedPremiumLayout.headline}
+                </div>
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                  Assunto: {selectedPremiumLayout.subject}
+                </p>
+                <Button
+                  type="button"
+                  className="mt-4 w-full"
+                  onClick={applySelectedPremiumLayout}
+                >
+                  <Wand2 className="mr-2 h-4 w-4" />
+                  Gerar no editor
+                </Button>
               </div>
             </aside>
           </div>

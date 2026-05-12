@@ -76,7 +76,19 @@ export type StudbookFilters = {
   includeUnknownAge?: boolean
   minOffspring?: number
   dataQualityMin?: number
+  recentYears?: number
+  rankMode?: 'volume' | 'recent'
   sortBy?: StudbookSortMode
+}
+
+export type StudbookPagination = {
+  page?: number
+  pageSize?: number
+}
+
+export type StudbookHorsePage = {
+  rows: StudbookHorse[]
+  total: number
 }
 
 export type StudbookFilterOption = {
@@ -92,6 +104,54 @@ export type StudbookFilterOptions = {
   dams: StudbookFilterOption[]
   ageMin: number
   ageMax: number
+}
+
+export type StudbookNetworkKind = 'breeder' | 'owner' | 'sire' | 'dam'
+
+export type StudbookNetworkEntity = {
+  entity_id?: string | null
+  entity_kind: StudbookNetworkKind
+  name: string
+  horse_count: number
+  female_count: number
+  young_count: number
+  active_mare_count: number
+  connected_owner_count: number
+  avg_quality?: number | null
+  latest_birth_year?: number | null
+  recent_horse_count?: number | null
+  crm_contact_count?: number | null
+  total_entities?: number | null
+}
+
+export type StudbookNetworkOverview = {
+  breeders: StudbookNetworkEntity[]
+  owners: StudbookNetworkEntity[]
+  sires: StudbookNetworkEntity[]
+  dams: StudbookNetworkEntity[]
+  stats: {
+    breeders: number
+    owners: number
+    sires: number
+    dams: number
+  }
+}
+
+export type StudbookNetworkDetail = {
+  entity: StudbookNetworkEntity
+  horses: StudbookHorse[]
+  crmContacts: StudbookCrmContact[]
+}
+
+export type StudbookCrmContact = {
+  id: string
+  name: string
+  email?: string | null
+  phone?: string | null
+  whatsapp?: string | null
+  city?: string | null
+  state?: string | null
+  tags?: Array<{ id: string; name: string; color: string }>
 }
 
 const emptyOverview: StudbookOverview = {
@@ -121,6 +181,35 @@ const searchColumns = [
   'sire_name',
   'dam_name',
 ]
+
+const horseListColumns = [
+  'id',
+  'name',
+  'registration',
+  'original_registration',
+  'ueln',
+  'microchip',
+  'breed',
+  'sex',
+  'birth_date',
+  'birth_year',
+  'age_years',
+  'age_band',
+  'coat',
+  'status',
+  'dna',
+  'sire_name',
+  'dam_name',
+  'breeder_name',
+  'owner_name',
+  'birthplace',
+  'source_url',
+  'data_quality_score',
+  'offspring_count',
+  'is_reproductive_mare',
+  'last_synced_at',
+  'updated_at',
+].join(',')
 
 const searchStopwords = new Set([
   'a',
@@ -243,6 +332,11 @@ const applyFilters = (query: any, filters: StudbookFilters) => {
     nextQuery = nextQuery.gte('data_quality_score', filters.dataQualityMin)
   }
 
+  if (typeof filters.recentYears === 'number' && filters.recentYears > 0) {
+    const cutoffYear = new Date().getFullYear() - filters.recentYears + 1
+    nextQuery = nextQuery.gte('birth_year', cutoffYear)
+  }
+
   return nextQuery
 }
 
@@ -258,6 +352,20 @@ const applySort = (query: any, sortBy: StudbookSortMode = 'updated') => {
     return query.order('data_quality_score', { ascending: false })
   return query.order('updated_at', { ascending: false })
 }
+
+const hasActiveHorseFilters = (filters: StudbookFilters) =>
+  searchTokens(filters.search).length > 0 ||
+  Boolean(filters.sex && filters.sex !== 'all') ||
+  Boolean(filters.ageBand && filters.ageBand !== 'all') ||
+  filters.includeUnknownAge === false ||
+  Boolean(filters.reproductiveOnly) ||
+  Boolean(filters.breederNames?.length) ||
+  Boolean(filters.ownerNames?.length) ||
+  Boolean(filters.sireNames?.length) ||
+  Boolean(filters.damNames?.length) ||
+  Boolean(filters.minOffspring && filters.minOffspring > 0) ||
+  Boolean(filters.dataQualityMin && filters.dataQualityMin > 0) ||
+  Boolean(filters.recentYears && filters.recentYears > 0)
 
 const searchableText = (horse: StudbookHorse) =>
   normalizeSearchText(
@@ -368,6 +476,169 @@ const optionList = (
     }))
 }
 
+const emptyNetworkOverview: StudbookNetworkOverview = {
+  breeders: [],
+  owners: [],
+  sires: [],
+  dams: [],
+  stats: {
+    breeders: 0,
+    owners: 0,
+    sires: 0,
+    dams: 0,
+  },
+}
+
+const entityNameColumnByKind: Record<StudbookNetworkKind, keyof StudbookHorse> =
+  {
+    breeder: 'breeder_name',
+    owner: 'owner_name',
+    sire: 'sire_name',
+    dam: 'dam_name',
+  }
+
+const legacyRankingQueries = async () => {
+  const [
+    breederRows,
+    ownerRows,
+    sireRows,
+    damRows,
+    breederCount,
+    ownerCount,
+    sireCount,
+    damCount,
+  ] = await Promise.all([
+    db
+      .from('studbook_breeder_rankings')
+      .select('*')
+      .order('horse_count', { ascending: false })
+      .limit(6),
+    db
+      .from('studbook_owner_rankings')
+      .select('*')
+      .order('horse_count', { ascending: false })
+      .limit(6),
+    db
+      .from('studbook_sire_rankings')
+      .select('*')
+      .order('horse_count', { ascending: false })
+      .limit(6),
+    db
+      .from('studbook_dam_rankings')
+      .select('*')
+      .order('horse_count', { ascending: false })
+      .limit(6),
+    db
+      .from('studbook_breeder_rankings')
+      .select('entity_id', { count: 'exact', head: true }),
+    db
+      .from('studbook_owner_rankings')
+      .select('entity_id', { count: 'exact', head: true }),
+    db
+      .from('studbook_sire_rankings')
+      .select('entity_id', { count: 'exact', head: true }),
+    db
+      .from('studbook_dam_rankings')
+      .select('entity_id', { count: 'exact', head: true }),
+  ])
+
+  const results = [
+    breederRows,
+    ownerRows,
+    sireRows,
+    damRows,
+    breederCount,
+    ownerCount,
+    sireCount,
+    damCount,
+  ]
+  const failed = results.find((result) => result.error)
+  if (failed?.error) throw failed.error
+
+  return {
+    breeders: (breederRows.data || []) as StudbookNetworkEntity[],
+    owners: (ownerRows.data || []) as StudbookNetworkEntity[],
+    sires: (sireRows.data || []) as StudbookNetworkEntity[],
+    dams: (damRows.data || []) as StudbookNetworkEntity[],
+    stats: {
+      breeders: breederCount.count || 0,
+      owners: ownerCount.count || 0,
+      sires: sireCount.count || 0,
+      dams: damCount.count || 0,
+    },
+  }
+}
+
+const networkRowsToOverview = (
+  rows: StudbookNetworkEntity[],
+): StudbookNetworkOverview => {
+  const grouped = {
+    breeders: rows.filter((row) => row.entity_kind === 'breeder'),
+    owners: rows.filter((row) => row.entity_kind === 'owner'),
+    sires: rows.filter((row) => row.entity_kind === 'sire'),
+    dams: rows.filter((row) => row.entity_kind === 'dam'),
+  }
+
+  return {
+    ...grouped,
+    stats: {
+      breeders: grouped.breeders[0]?.total_entities || grouped.breeders.length,
+      owners: grouped.owners[0]?.total_entities || grouped.owners.length,
+      sires: grouped.sires[0]?.total_entities || grouped.sires.length,
+      dams: grouped.dams[0]?.total_entities || grouped.dams.length,
+    },
+  }
+}
+
+const networkRpcPayload = (filters: StudbookFilters = {}) => ({
+  p_search: filters.search?.trim() || null,
+  p_sex: filters.sex || 'all',
+  p_min_age: filters.includeUnknownAge === false ? filters.minAge : null,
+  p_max_age: filters.includeUnknownAge === false ? filters.maxAge : null,
+  p_include_unknown_age: filters.includeUnknownAge !== false,
+  p_reproductive_only: Boolean(filters.reproductiveOnly),
+  p_breeder_names: filters.breederNames?.length ? filters.breederNames : null,
+  p_owner_names: filters.ownerNames?.length ? filters.ownerNames : null,
+  p_sire_names: filters.sireNames?.length ? filters.sireNames : null,
+  p_dam_names: filters.damNames?.length ? filters.damNames : null,
+  p_min_offspring: filters.minOffspring || null,
+  p_data_quality_min: filters.dataQualityMin || null,
+  p_recent_years: filters.recentYears || null,
+  p_rank_mode: filters.rankMode || 'volume',
+  p_limit: 6,
+})
+
+const normalizeName = (value: unknown) =>
+  String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+
+const entityTagName = (entity: StudbookNetworkEntity) =>
+  entity.entity_kind === 'owner'
+    ? 'Studbook Proprietário'
+    : entity.entity_kind === 'breeder'
+      ? 'Studbook Criador'
+      : 'Studbook Linhagem'
+
+const prospectingThesis = (entity: StudbookNetworkEntity) => {
+  if (entity.entity_kind === 'breeder') {
+    return `${entity.name} aparece como criador relevante no Studbook BH, com ${entity.horse_count} animais registrados. Tese: iniciar relacionamento para convites de leilão, captação de lotes e acesso a famílias maternas.`
+  }
+
+  if (entity.entity_kind === 'owner') {
+    return `${entity.name} aparece como proprietário relevante no Studbook BH, com ${entity.horse_count} animais registrados. Tese: transformar proprietário em comprador, vendedor ou convidado VIP dos próximos leilões Milan Horses.`
+  }
+
+  if (entity.entity_kind === 'sire') {
+    return `${entity.name} concentra ${entity.horse_count} descendentes mapeados. Tese: usar a influência do garanhão para criar campanha de convite por linhagem e identificar criadores/proprietários conectados.`
+  }
+
+  return `${entity.name} concentra ${entity.horse_count} descendentes mapeados como matriz. Tese: usar a força da família materna para selecionar convidados, fornecedores e potenciais lotes para leilões premium.`
+}
+
 export const studbookService = {
   async getOverview(): Promise<StudbookOverview> {
     try {
@@ -447,14 +718,22 @@ export const studbookService = {
     }
   },
 
-  async getHorses(filters: StudbookFilters = {}): Promise<StudbookHorse[]> {
+  async getHorses(
+    filters: StudbookFilters = {},
+    pagination: StudbookPagination = {},
+  ): Promise<StudbookHorsePage> {
     try {
       const hasSearch = searchTokens(filters.search).length > 0
+      const hasFilters = hasActiveHorseFilters(filters)
+      const page = Math.max(1, pagination.page || 1)
+      const pageSize = Math.min(100, Math.max(10, pagination.pageSize || 50))
+      const from = (page - 1) * pageSize
+      const to = from + pageSize - 1
       const query = applyFilters(
         applySort(
-          db.from('studbook_horses_enriched').select('*'),
+          db.from('studbook_horses_enriched').select(horseListColumns),
           filters.sortBy || 'updated',
-        ).limit(hasSearch ? 600 : 160),
+        ).range(from, to),
         filters,
       )
 
@@ -462,10 +741,32 @@ export const studbookService = {
       if (error) throw error
 
       const rows = (data || []) as StudbookHorse[]
+      let total = rows.length
 
-      if (!hasSearch) return rows
+      if (!hasFilters) {
+        const countResult = await db
+          .from('studbook_horses')
+          .select('id', { count: 'exact', head: true })
+        if (countResult.error) throw countResult.error
+        total = countResult.count || 0
+      } else {
+        const countResult = await applyFilters(
+          db
+            .from('studbook_horses_enriched')
+            .select('id', { count: 'exact', head: true }),
+          filters,
+        )
+        if (!countResult.error) total = countResult.count || rows.length
+      }
 
-      return rows
+      if (!hasSearch) {
+        return {
+          rows,
+          total,
+        }
+      }
+
+      const scoredRows = rows
         .map((horse) => ({
           horse,
           score: scoreSearchResult(horse, filters.search),
@@ -476,10 +777,14 @@ export const studbookService = {
             b.score - a.score ||
             compareBySort(a.horse, b.horse, filters.sortBy || 'updated'),
         )
-        .slice(0, 160)
         .map((result) => result.horse)
+
+      return {
+        rows: scoredRows,
+        total,
+      }
     } catch (error) {
-      if (isMissingTable(error)) return []
+      if (isMissingTable(error)) return { rows: [], total: 0 }
       throw error
     }
   },
@@ -521,6 +826,77 @@ export const studbookService = {
     }
   },
 
+  async getNetworkOverview(
+    filters: StudbookFilters = {},
+  ): Promise<StudbookNetworkOverview> {
+    try {
+      const { data, error } = await db.rpc(
+        'get_studbook_network_rankings',
+        networkRpcPayload(filters),
+      )
+
+      if (error) throw error
+
+      return networkRowsToOverview((data || []) as StudbookNetworkEntity[])
+    } catch (error) {
+      console.warn(
+        'Filtered Studbook rankings unavailable, using fallback.',
+        error,
+      )
+      try {
+        return await legacyRankingQueries()
+      } catch (fallbackError) {
+        if (isMissingTable(fallbackError)) return emptyNetworkOverview
+        throw fallbackError
+      }
+    }
+  },
+
+  async getNetworkDetail(
+    kind: StudbookNetworkKind,
+    name: string,
+    filters: StudbookFilters = {},
+  ): Promise<StudbookNetworkDetail | null> {
+    try {
+      const nameColumn = entityNameColumnByKind[kind]
+      const rankingResult = await db.rpc('get_studbook_network_rankings', {
+        ...networkRpcPayload(filters),
+        p_limit: 20,
+      })
+
+      if (rankingResult.error) throw rankingResult.error
+      const entity = (
+        (rankingResult.data || []) as StudbookNetworkEntity[]
+      ).find((row) => row.entity_kind === kind && row.name === name)
+      if (!entity) return null
+
+      const horseQuery = applyFilters(
+        db
+          .from('studbook_horses_enriched')
+          .select(horseListColumns)
+          .eq(nameColumn, name)
+          .order('birth_year', { ascending: false, nullsFirst: false })
+          .order('data_quality_score', { ascending: false })
+          .limit(24),
+        filters,
+      )
+
+      const [{ data: horses, error: horsesError }, crmContacts] =
+        await Promise.all([horseQuery, this.findCrmContactsByName(name)])
+
+      if (horsesError) throw horsesError
+
+      return {
+        entity: entity as StudbookNetworkEntity,
+        horses: (horses || []) as StudbookHorse[],
+        crmContacts,
+      }
+    } catch (error) {
+      if (isMissingTable(error)) return null
+      throw error
+    }
+  },
+
   async getCandidateLists(): Promise<AuctionCandidateList[]> {
     try {
       const { data, error } = await db
@@ -554,6 +930,110 @@ export const studbookService = {
 
     if (error) throw error
     return data as AuctionCandidateList
+  },
+
+  async createProspectingListFromEntity(entity: StudbookNetworkEntity) {
+    const { data, error } = await db
+      .from('auction_candidate_lists')
+      .insert({
+        name: `Prospecção - ${entity.name}`.slice(0, 90),
+        thesis: prospectingThesis(entity),
+        status: 'draft',
+        filters: {
+          source: 'studbook_network',
+          kind: entity.entity_kind,
+          name: entity.name,
+          horse_count: entity.horse_count,
+        },
+      })
+      .select()
+      .single()
+
+    if (error) throw error
+    return data as AuctionCandidateList
+  },
+
+  async findCrmContactsByName(name: string): Promise<StudbookCrmContact[]> {
+    const token = name.split(/\s+/).find((part) => part.length > 3) || name
+    const { data, error } = await db
+      .from('contacts')
+      .select(
+        'id,name,email,phone,whatsapp,city,state,contact_tags(tags(id,name,color))',
+      )
+      .ilike('name', `%${token}%`)
+      .limit(20)
+
+    if (error) throw error
+
+    const normalized = normalizeName(name)
+    return ((data || []) as any[])
+      .filter((contact) => normalizeName(contact.name) === normalized)
+      .map((contact) => ({
+        ...contact,
+        tags:
+          contact.contact_tags?.map((item: any) => item.tags).filter(Boolean) ||
+          [],
+      }))
+  },
+
+  async createOrTagCrmContactFromEntity(entity: StudbookNetworkEntity) {
+    const tagName = entityTagName(entity)
+    const existingContacts = await this.findCrmContactsByName(entity.name)
+    let [contact] = existingContacts
+
+    if (!contact) {
+      const { data, error } = await db
+        .from('contacts')
+        .insert({
+          name: entity.name,
+          email: '',
+          phone: '',
+          whatsapp: null,
+          origin: 'Studbook ABCCH',
+          notes: prospectingThesis(entity),
+          preferences: {
+            source: 'studbook_network',
+            kind: entity.entity_kind,
+            horse_count: entity.horse_count,
+            recent_horse_count: entity.recent_horse_count || 0,
+          },
+        })
+        .select('id,name,email,phone,whatsapp,city,state')
+        .single()
+
+      if (error) throw error
+      contact = data as StudbookCrmContact
+    }
+
+    let { data: tag, error: tagError } = await db
+      .from('tags')
+      .select('id,name,color')
+      .eq('name', tagName)
+      .maybeSingle()
+
+    if (tagError) throw tagError
+
+    if (!tag) {
+      const created = await db
+        .from('tags')
+        .insert({
+          name: tagName,
+          color: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        })
+        .select('id,name,color')
+        .single()
+
+      if (created.error) throw created.error
+      tag = created.data
+    }
+
+    const { error: contactTagError } = await db
+      .from('contact_tags')
+      .upsert({ contact_id: contact.id, tag_id: tag.id })
+
+    if (contactTagError) throw contactTagError
+
+    return { contact, tag }
   },
 
   async addHorseToList(listId: string, horseId: string, reason: string) {
