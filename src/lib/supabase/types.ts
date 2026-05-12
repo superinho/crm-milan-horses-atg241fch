@@ -11,7 +11,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.1"
+    PostgrestVersion: '14.1'
   }
   public: {
     Tables: {
@@ -93,25 +93,25 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "bids_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'bids_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contact_segmentation_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "bids_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'bids_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contacts"
-            referencedColumns: ["id"]
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "bids_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'bids_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "customer_rfmv_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_rfmv_view'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -169,32 +169,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "campaign_recipients_campaign_id_fkey"
-            columns: ["campaign_id"]
+            foreignKeyName: 'campaign_recipients_campaign_id_fkey'
+            columns: ['campaign_id']
             isOneToOne: false
-            referencedRelation: "campaigns"
-            referencedColumns: ["id"]
+            referencedRelation: 'campaigns'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "campaign_recipients_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'campaign_recipients_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contact_segmentation_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "campaign_recipients_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'campaign_recipients_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contacts"
-            referencedColumns: ["id"]
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "campaign_recipients_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'campaign_recipients_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "customer_rfmv_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_rfmv_view'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -237,18 +237,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "campaign_schedules_campaign_id_fkey"
-            columns: ["campaign_id"]
+            foreignKeyName: 'campaign_schedules_campaign_id_fkey'
+            columns: ['campaign_id']
             isOneToOne: false
-            referencedRelation: "campaigns"
-            referencedColumns: ["id"]
+            referencedRelation: 'campaigns'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "campaign_schedules_template_id_fkey"
-            columns: ["template_id"]
+            foreignKeyName: 'campaign_schedules_template_id_fkey'
+            columns: ['template_id']
             isOneToOne: false
-            referencedRelation: "message_templates"
-            referencedColumns: ["id"]
+            referencedRelation: 'message_templates'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -318,46 +318,46 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "campaign_sends_campaign_id_fkey"
-            columns: ["campaign_id"]
+            foreignKeyName: 'campaign_sends_campaign_id_fkey'
+            columns: ['campaign_id']
             isOneToOne: false
-            referencedRelation: "campaigns"
-            referencedColumns: ["id"]
+            referencedRelation: 'campaigns'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "campaign_sends_campaign_recipient_id_fkey"
-            columns: ["campaign_recipient_id"]
+            foreignKeyName: 'campaign_sends_campaign_recipient_id_fkey'
+            columns: ['campaign_recipient_id']
             isOneToOne: false
-            referencedRelation: "campaign_recipients"
-            referencedColumns: ["id"]
+            referencedRelation: 'campaign_recipients'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "campaign_sends_recipient_id_fkey"
-            columns: ["recipient_id"]
+            foreignKeyName: 'campaign_sends_recipient_id_fkey'
+            columns: ['recipient_id']
             isOneToOne: false
-            referencedRelation: "contact_segmentation_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "campaign_sends_recipient_id_fkey"
-            columns: ["recipient_id"]
+            foreignKeyName: 'campaign_sends_recipient_id_fkey'
+            columns: ['recipient_id']
             isOneToOne: false
-            referencedRelation: "contacts"
-            referencedColumns: ["id"]
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "campaign_sends_recipient_id_fkey"
-            columns: ["recipient_id"]
+            foreignKeyName: 'campaign_sends_recipient_id_fkey'
+            columns: ['recipient_id']
             isOneToOne: false
-            referencedRelation: "customer_rfmv_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_rfmv_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "campaign_sends_schedule_id_fkey"
-            columns: ["schedule_id"]
+            foreignKeyName: 'campaign_sends_schedule_id_fkey'
+            columns: ['schedule_id']
             isOneToOne: false
-            referencedRelation: "campaign_schedules"
-            referencedColumns: ["id"]
+            referencedRelation: 'campaign_schedules'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -472,32 +472,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "contact_interactions_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'contact_interactions_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contact_segmentation_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "contact_interactions_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'contact_interactions_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contacts"
-            referencedColumns: ["id"]
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "contact_interactions_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'contact_interactions_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "customer_rfmv_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_rfmv_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "contact_interactions_deal_id_fkey"
-            columns: ["deal_id"]
+            foreignKeyName: 'contact_interactions_deal_id_fkey'
+            columns: ['deal_id']
             isOneToOne: false
-            referencedRelation: "deals"
-            referencedColumns: ["id"]
+            referencedRelation: 'deals'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -516,32 +516,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "contact_tags_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'contact_tags_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contact_segmentation_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "contact_tags_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'contact_tags_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contacts"
-            referencedColumns: ["id"]
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "contact_tags_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'contact_tags_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "customer_rfmv_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_rfmv_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "contact_tags_tag_id_fkey"
-            columns: ["tag_id"]
+            foreignKeyName: 'contact_tags_tag_id_fkey'
+            columns: ['tag_id']
             isOneToOne: false
-            referencedRelation: "tags"
-            referencedColumns: ["id"]
+            referencedRelation: 'tags'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -632,11 +632,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "deal_tasks_deal_id_fkey"
-            columns: ["deal_id"]
+            foreignKeyName: 'deal_tasks_deal_id_fkey'
+            columns: ['deal_id']
             isOneToOne: false
-            referencedRelation: "deals"
-            referencedColumns: ["id"]
+            referencedRelation: 'deals'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -679,25 +679,25 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "deals_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'deals_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contact_segmentation_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "deals_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'deals_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contacts"
-            referencedColumns: ["id"]
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "deals_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'deals_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "customer_rfmv_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_rfmv_view'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -734,39 +734,39 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "message_events_campaign_id_fkey"
-            columns: ["campaign_id"]
+            foreignKeyName: 'message_events_campaign_id_fkey'
+            columns: ['campaign_id']
             isOneToOne: false
-            referencedRelation: "campaigns"
-            referencedColumns: ["id"]
+            referencedRelation: 'campaigns'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "message_events_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'message_events_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contact_segmentation_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "message_events_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'message_events_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contacts"
-            referencedColumns: ["id"]
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "message_events_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'message_events_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "customer_rfmv_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_rfmv_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "message_events_outbound_message_id_fkey"
-            columns: ["outbound_message_id"]
+            foreignKeyName: 'message_events_outbound_message_id_fkey'
+            columns: ['outbound_message_id']
             isOneToOne: false
-            referencedRelation: "outbound_messages"
-            referencedColumns: ["id"]
+            referencedRelation: 'outbound_messages'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -869,46 +869,46 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "outbound_messages_campaign_id_fkey"
-            columns: ["campaign_id"]
+            foreignKeyName: 'outbound_messages_campaign_id_fkey'
+            columns: ['campaign_id']
             isOneToOne: false
-            referencedRelation: "campaigns"
-            referencedColumns: ["id"]
+            referencedRelation: 'campaigns'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "outbound_messages_campaign_recipient_id_fkey"
-            columns: ["campaign_recipient_id"]
+            foreignKeyName: 'outbound_messages_campaign_recipient_id_fkey'
+            columns: ['campaign_recipient_id']
             isOneToOne: false
-            referencedRelation: "campaign_recipients"
-            referencedColumns: ["id"]
+            referencedRelation: 'campaign_recipients'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "outbound_messages_campaign_send_id_fkey"
-            columns: ["campaign_send_id"]
+            foreignKeyName: 'outbound_messages_campaign_send_id_fkey'
+            columns: ['campaign_send_id']
             isOneToOne: false
-            referencedRelation: "campaign_sends"
-            referencedColumns: ["id"]
+            referencedRelation: 'campaign_sends'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "outbound_messages_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'outbound_messages_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contact_segmentation_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "outbound_messages_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'outbound_messages_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contacts"
-            referencedColumns: ["id"]
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "outbound_messages_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'outbound_messages_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "customer_rfmv_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_rfmv_view'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -957,25 +957,25 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "purchases_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'purchases_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contact_segmentation_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "purchases_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'purchases_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contacts"
-            referencedColumns: ["id"]
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "purchases_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'purchases_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "customer_rfmv_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_rfmv_view'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1066,11 +1066,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "smartleiloes_lots_auction_id_fkey"
-            columns: ["auction_id"]
+            foreignKeyName: 'smartleiloes_lots_auction_id_fkey'
+            columns: ['auction_id']
             isOneToOne: false
-            referencedRelation: "smartleiloes_auctions"
-            referencedColumns: ["id"]
+            referencedRelation: 'smartleiloes_auctions'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1203,32 +1203,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "tasks_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'tasks_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contact_segmentation_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'contact_segmentation_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "tasks_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'tasks_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contacts"
-            referencedColumns: ["id"]
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "tasks_contact_id_fkey"
-            columns: ["contact_id"]
+            foreignKeyName: 'tasks_contact_id_fkey'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "customer_rfmv_view"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_rfmv_view'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "tasks_deal_id_fkey"
-            columns: ["deal_id"]
+            foreignKeyName: 'tasks_deal_id_fkey'
+            columns: ['deal_id']
             isOneToOne: false
-            referencedRelation: "deals"
-            referencedColumns: ["id"]
+            referencedRelation: 'deals'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1290,33 +1290,33 @@ export type Database = {
   }
 }
 
-type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+type DatabaseWithoutInternals = Omit<Database, '__InternalSupabase'>
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, 'public'>]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])[TableName] extends {
       Row: infer R
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] &
+        DefaultSchema['Views'])
+    ? (DefaultSchema['Tables'] &
+        DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
         Row: infer R
       }
       ? R
@@ -1325,23 +1325,23 @@ export type Tables<
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
+    | keyof DefaultSchema['Tables']
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
         Insert: infer I
       }
       ? I
@@ -1350,23 +1350,23 @@ export type TablesInsert<
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
+    | keyof DefaultSchema['Tables']
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
         Update: infer U
       }
       ? U
@@ -1375,36 +1375,36 @@ export type TablesUpdate<
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema["Enums"]
+    | keyof DefaultSchema['Enums']
     | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums']
     : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums'][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums']
+    ? DefaultSchema['Enums'][DefaultSchemaEnumNameOrOptions]
     : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
+    | keyof DefaultSchema['CompositeTypes']
     | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
     : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes']
+    ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
     : never
 
 export const Constants = {
@@ -1412,7 +1412,6 @@ export const Constants = {
     Enums: {},
   },
 } as const
-
 
 // ====== DATABASE EXTENDED CONTEXT (auto-generated) ======
 // This section contains actual PostgreSQL column types, constraints, RLS policies,
@@ -1966,7 +1965,7 @@ export const Constants = {
 //       RETURN NEW;
 //   END;
 //   $function$
-//   
+//
 // FUNCTION update_updated_at_column()
 //   CREATE OR REPLACE FUNCTION public.update_updated_at_column()
 //    RETURNS trigger
@@ -1977,7 +1976,7 @@ export const Constants = {
 //       RETURN NEW;
 //   END;
 //   $function$
-//   
+//
 
 // --- TRIGGERS ---
 // Table: deals
@@ -2014,4 +2013,3 @@ export const Constants = {
 //   CREATE UNIQUE INDEX smartleiloes_raw_records_record_type_external_id_key ON public.smartleiloes_raw_records USING btree (record_type, external_id)
 // Table: tags
 //   CREATE UNIQUE INDEX tags_name_key ON public.tags USING btree (name)
-
