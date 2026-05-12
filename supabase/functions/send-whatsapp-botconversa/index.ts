@@ -20,13 +20,12 @@ const normalizePhone = (value?: string | null) => {
 const shouldUseAuthorization = () =>
   Boolean(
     BOTCONVERSA_API_KEY &&
-    BOTCONVERSA_WEBHOOK_URL &&
-    !BOTCONVERSA_WEBHOOK_URL.includes('/webhooks-automation/catch/'),
+      BOTCONVERSA_WEBHOOK_URL &&
+      !BOTCONVERSA_WEBHOOK_URL.includes('/webhooks-automation/catch/'),
   )
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS')
-    return new Response('ok', { headers: corsHeaders })
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
 
   try {
     const body = await req.json()
@@ -45,9 +44,7 @@ Deno.serve(async (req) => {
       contact = data
     }
 
-    const phone = normalizePhone(
-      body.phone || contact?.whatsapp || contact?.phone,
-    )
+    const phone = normalizePhone(body.phone || contact?.whatsapp || contact?.phone)
     const message = String(body.message || '').trim()
     if (!phone) throw new Error('Telefone/WhatsApp obrigatório.')
     if (!message) throw new Error('Mensagem obrigatória.')
@@ -65,9 +62,7 @@ Deno.serve(async (req) => {
       flow_id: body.flowId || BOTCONVERSA_DEFAULT_FLOW_ID || undefined,
       metadata: body.metadata || {},
     }
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    }
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' }
     if (shouldUseAuthorization()) {
       headers.Authorization = `Bearer ${BOTCONVERSA_API_KEY}`
     }
@@ -96,13 +91,10 @@ Deno.serve(async (req) => {
       )
     }
 
-    return new Response(
-      JSON.stringify({ ok: true, response: responsePayload }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      },
-    )
+    return new Response(JSON.stringify({ ok: true, response: responsePayload }), {
+      status: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
