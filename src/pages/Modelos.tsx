@@ -31,7 +31,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
-import supabase from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 import {
   templatesService,
   type MessageTemplate,

@@ -1,4 +1,4 @@
-import supabase from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 
 export interface SmartLeilao {
   id: string | number
