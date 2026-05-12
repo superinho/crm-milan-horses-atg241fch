@@ -42,7 +42,7 @@ export default function CampaignDetails() {
   const [campaign, setCampaign] = useState<Campaign | null>(null)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
-  const [testPhone, setTestPhone] = useState('11999427752')
+  const [testPhone, setTestPhone] = useState('')
   const [action, setAction] = useState<'test' | 'pilot' | 'full' | null>(null)
 
   const fetchCampaign = useCallback(async () => {

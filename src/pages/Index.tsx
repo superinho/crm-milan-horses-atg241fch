@@ -1,42 +1,51 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Loader2 } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import {
+  ArrowRight,
+  Loader2,
+  Megaphone,
+  Radar,
+  RefreshCcw,
+  Wand2,
+} from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { dashboardService, DashboardData } from '@/services/dashboard'
-import { tasksService, Task } from '@/services/tasks'
 import { useRealtime } from '@/hooks/use-realtime'
-
-// Components
-import { GoalCard } from '@/components/dashboard/GoalCard'
-import { UrgentTasksWidget } from '@/components/dashboard/UrgentTasksWidget'
-import { PipelineOverview } from '@/components/dashboard/PipelineOverview'
-import { SalesComparisonChart } from '@/components/dashboard/SalesComparisonChart'
-import { QuickActions } from '@/components/dashboard/QuickActions'
 import { MonetaryDashboard } from '@/components/dashboard/MonetaryDashboard'
 import { ExecutiveSnapshot } from '@/components/dashboard/ExecutiveSnapshot'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 
-// Dialogs
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet'
-import { ContactForm } from '@/components/contacts/ContactForm'
-import { DealForm } from '@/components/deals/DealForm'
-import { TaskForm } from '@/components/tasks/TaskForm'
-import { CampaignForm } from '@/components/campaigns/CampaignForm'
+const cockpitActions = [
+  {
+    title: 'Radar VIP',
+    description: 'Priorize clientes com maior potencial para o próximo leilão.',
+    href: '/radar-vip',
+    icon: Radar,
+  },
+  {
+    title: 'Criar campanha',
+    description: 'Monte o público, escolha uma mensagem e envie testes.',
+    href: '/campanhas',
+    icon: Megaphone,
+  },
+  {
+    title: 'E-mail premium',
+    description: 'Abra o Estúdio já focado em uma peça editorial.',
+    href: '/modelos',
+    icon: Wand2,
+  },
+  {
+    title: 'Sincronizar base',
+    description: 'Atualize contatos e histórico real da Smart Leilões.',
+    href: '/contatos',
+    icon: RefreshCcw,
+  },
+]
 
 export default function Index() {
   const [data, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [activeDialog, setActiveDialog] = useState<string | null>(null)
   const { toast } = useToast()
 
   const currentDate = new Date().toLocaleDateString('pt-BR', {
@@ -67,49 +76,7 @@ export default function Index() {
   }, [fetchData])
 
   useRealtime('campaigns', () => fetchData())
-  useRealtime('deals', () => fetchData())
-  useRealtime('tasks', () => fetchData())
-
-  const handleTaskComplete = async (task: Task) => {
-    try {
-      // Optimistic update
-      if (data) {
-        setData({
-          ...data,
-          urgentTasks: data.urgentTasks.filter((t) => t.id !== task.id),
-        })
-      }
-
-      await tasksService.toggleTaskCompletion(task.id, true)
-
-      toast({
-        variant: 'success',
-        title: 'Tarefa concluída',
-        description: 'A tarefa foi marcada como feita.',
-      })
-
-      // Refresh to get new top 5
-      fetchData()
-    } catch (error) {
-      console.error(error)
-      toast({
-        title: 'Erro',
-        description: 'Não foi possível concluir a tarefa.',
-        variant: 'destructive',
-      })
-      fetchData() // Revert state
-    }
-  }
-
-  const handleQuickAction = (action: string) => {
-    setActiveDialog(action)
-  }
-
-  const closeDialog = () => {
-    setActiveDialog(null)
-    // Refresh data as action might have changed stats
-    fetchData()
-  }
+  useRealtime('contacts', () => fetchData())
 
   if (loading) {
     return (
@@ -131,99 +98,31 @@ export default function Index() {
 
       {data && <ExecutiveSnapshot snapshot={data.snapshot} />}
 
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        {cockpitActions.map((action) => (
+          <Card key={action.title} className="border-border/70 shadow-sm">
+            <CardContent className="flex h-full flex-col justify-between gap-4 p-4">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                  <action.icon className="h-4 w-4" />
+                  {action.title}
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {action.description}
+                </p>
+              </div>
+              <Button asChild variant="outline" className="justify-between">
+                <Link to={action.href}>
+                  Abrir
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
       <MonetaryDashboard />
-
-      {/* Goal & Quick Actions Row */}
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
-        {data && (
-          <GoalCard
-            current={data.goal.current}
-            target={data.goal.target}
-            percentage={data.goal.percentage}
-          />
-        )}
-        <QuickActions onAction={handleQuickAction} />
-      </div>
-
-      {/* Main Grid: Comparison, Pipeline, Urgent Tasks */}
-      <div className="grid gap-6 grid-cols-1 lg:grid-cols-7">
-        {/* Sales Chart */}
-        <div className="col-span-1 lg:col-span-4">
-          {data && <SalesComparisonChart data={data.salesComparison} />}
-        </div>
-
-        {/* Pipeline & Tasks Column */}
-        <div className="col-span-1 lg:col-span-3 space-y-6 flex flex-col">
-          <div className="flex-1">
-            {data && <PipelineOverview data={data.pipeline} />}
-          </div>
-          <div className="flex-1">
-            {data && (
-              <UrgentTasksWidget
-                tasks={data.urgentTasks}
-                onComplete={handleTaskComplete}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Quick Action Modals */}
-
-      {/* Contact Sheet */}
-      <Sheet
-        open={activeDialog === 'contact'}
-        onOpenChange={(open) => !open && closeDialog()}
-      >
-        <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-          <SheetHeader>
-            <SheetTitle>Novo Contato</SheetTitle>
-            <SheetDescription>
-              Adicione um novo cliente ou lead.
-            </SheetDescription>
-          </SheetHeader>
-          <ContactForm onSuccess={closeDialog} />
-        </SheetContent>
-      </Sheet>
-
-      {/* Deal Dialog */}
-      <Dialog
-        open={activeDialog === 'deal'}
-        onOpenChange={(open) => !open && closeDialog()}
-      >
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Novo Negócio</DialogTitle>
-          </DialogHeader>
-          <DealForm onSuccess={closeDialog} onCancel={closeDialog} />
-        </DialogContent>
-      </Dialog>
-
-      {/* Task Dialog */}
-      <Dialog
-        open={activeDialog === 'task'}
-        onOpenChange={(open) => !open && closeDialog()}
-      >
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Nova Tarefa</DialogTitle>
-          </DialogHeader>
-          <TaskForm onSuccess={closeDialog} onCancel={closeDialog} />
-        </DialogContent>
-      </Dialog>
-
-      {/* Campaign Dialog */}
-      <Dialog
-        open={activeDialog === 'campaign'}
-        onOpenChange={(open) => !open && closeDialog()}
-      >
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Nova Campanha</DialogTitle>
-          </DialogHeader>
-          <CampaignForm onSuccess={closeDialog} onCancel={closeDialog} />
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }

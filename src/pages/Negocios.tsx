@@ -26,22 +26,22 @@ export default function Negocios() {
       <div className="flex items-center justify-between shrink-0">
         <div>
           <h1 className="text-3xl font-bold font-display text-primary">
-            Pipeline de Vendas
+            Oportunidades
           </h1>
           <p className="text-muted-foreground">
-            Gerencie suas oportunidades de negócio e acompanhe o progresso.
+            Área secundária para acompanhar tratativas comerciais específicas.
           </p>
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button className="bg-primary hover:bg-primary/90 text-white shadow-md">
-              <Plus className="mr-2 h-4 w-4" /> Novo Negócio
+              <Plus className="mr-2 h-4 w-4" /> Nova oportunidade
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
-              <DialogTitle>Adicionar Novo Negócio</DialogTitle>
+              <DialogTitle>Adicionar oportunidade</DialogTitle>
               <DialogDescription>
                 Crie uma nova oportunidade de venda associada a um contato.
               </DialogDescription>
