@@ -17,6 +17,7 @@ type SyncCounter = { fetched: number; saved: number; failed: number }
 type SyncSummary = Record<string, SyncCounter>
 
 const currentYear = new Date().getFullYear()
+const BATCH_SIZE = 100
 
 const endpoints = [
   {
@@ -50,6 +51,15 @@ const endpoints = [
     path: `/empresa/receitas-eventos?palavra-chave=&id-evento=&id-cliente=&id-tipo-data=1&data-inicio=${currentYear - 8}-01-01&data-fim=${currentYear + 1}-12-31&situacao=99&ordenacao=1&limite=5000`,
   },
 ] as const
+
+type EndpointKey = (typeof endpoints)[number]['key']
+
+const endpointScopes: Record<string, EndpointKey[]> = {
+  contacts: ['clients'],
+  auctions: ['events', 'lots'],
+  commercial: ['bids', 'contracts'],
+  all: endpoints.map((endpoint) => endpoint.key),
+}
 
 const jsonResponse = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -208,7 +218,10 @@ const titleOf = (record: ApiRecord, fallback: string) =>
   asString(
     valueOf(record, [
       'nome',
+      'nomeCliente',
       'nome_cliente',
+      'nomeRazaoSocialCliente',
+      'nome_razao_social_cliente',
       'razao_social',
       'razão social',
       'nome_evento',
@@ -358,221 +371,313 @@ const authenticateSmartLeiloes = async () => {
   return String(token)
 }
 
-const saveRawRecord = async (
-  type: string,
-  record: ApiRecord,
-  index: number,
+const chunk = <T>(items: T[], size = BATCH_SIZE) => {
+  const chunks: T[][] = []
+  for (let index = 0; index < items.length; index += size) {
+    chunks.push(items.slice(index, index + size))
+  }
+  return chunks
+}
+
+const uniqueBy = <T>(items: T[], keyOf: (item: T) => string) => {
+  const map = new Map<string, T>()
+  for (const item of items) {
+    const key = keyOf(item)
+    if (key) map.set(key, item)
+  }
+  return [...map.values()]
+}
+
+const upsertRows = async (
+  table: string,
+  rows: Record<string, unknown>[],
+  onConflict: string,
 ) => {
-  const id = externalId(record, type, index)
-  const { error } = await supabase.from('smartleiloes_raw_records').upsert(
-    {
-      record_type: type,
-      external_id: id,
-      title: titleOf(record, `Smart Leilões ${type}`),
-      amount: amountOf(record),
-      record_date: recordDateOf(record),
-      related_event_id: eventExternalIdOf(record) || null,
-      related_client_id: clientExternalIdOf(record) || null,
-      payload: record,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: 'record_type,external_id' },
-  )
+  if (!rows.length) return
 
-  if (error) throw error
-  return id
-}
-
-const findContactId = async (smartleiloesId: string) => {
-  if (!smartleiloesId) return null
-  const { data } = await supabase
-    .from('contacts')
-    .select('id')
-    .eq('smartleiloes_id', smartleiloesId)
-    .maybeSingle()
-  return data?.id || null
-}
-
-const findAuctionId = async (smartleiloesId: string) => {
-  if (!smartleiloesId) return null
-  const { data } = await supabase
-    .from('smartleiloes_auctions')
-    .select('id')
-    .eq('smartleiloes_id', smartleiloesId)
-    .maybeSingle()
-  return data?.id || null
-}
-
-const syncContact = async (record: ApiRecord, index: number) => {
-  const smartleiloesId = externalId(record, 'client', index)
-  const email = asString(valueOf(record, ['email', 'e-mail', 'email_cliente']))
-  const phone = asString(
-    valueOf(record, ['telefone', 'celular', 'fone', 'phone']),
-  )
-  const whatsapp = asString(valueOf(record, ['whatsapp', 'celular_whatsapp']))
-  const document = asString(
-    valueOf(record, ['cpf_cnpj', 'cpf-cnpj', 'documento', 'cpf', 'cnpj']),
-  )
-  const birthDate = birthDateOf(record)
-
-  const { error } = await supabase.from('contacts').upsert(
-    {
-      smartleiloes_id: smartleiloesId,
-      name: titleOf(record, `Cliente ${smartleiloesId}`),
-      email,
-      phone: phone || whatsapp,
-      whatsapp: whatsapp || phone,
-      ...(birthDate ? { birth_date: birthDate } : {}),
-      cpf: document,
-      document,
-      address: asString(valueOf(record, ['endereco', 'endereço', 'address'])),
-      city: asString(valueOf(record, ['cidade', 'city'])),
-      state: asString(valueOf(record, ['uf', 'estado', 'state'])),
-      origin: 'Smart Leilões',
-      source_payload: record,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: 'smartleiloes_id' },
-  )
-
-  if (error) throw error
-}
-
-const syncEvent = async (record: ApiRecord, index: number) => {
-  const smartleiloesId = externalId(record, 'event', index)
-  const { error } = await supabase.from('smartleiloes_auctions').upsert(
-    {
-      smartleiloes_id: smartleiloesId,
-      title: titleOf(record, `Leilão ${smartleiloesId}`),
-      status: asString(
-        valueOf(record, [
-          'nome_situacao_evento',
-          'nomeSituacaoEvento',
-          'situacao_evento',
-          'situacaoEvento',
-          'id_situacao_evento',
-          'idSituacaoEvento',
-          'situacao',
-          'situação',
-          'status',
-        ]),
-      ),
-      value: amountOf(record),
-      event_date: recordDateOf(record),
-      event_type: asString(
-        valueOf(record, [
-          'descricao_tipo_evento',
-          'descricaoTipoEvento',
-          'raca_evento',
-          'racaEvento',
-          'tipo_evento',
-          'tipo',
-          'type',
-        ]),
-      ),
-      source_url: 'https://api.smartleiloes.digital/',
-      payload: record,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: 'smartleiloes_id' },
-  )
-
-  if (error) throw error
-}
-
-const syncLot = async (record: ApiRecord, index: number) => {
-  const smartleiloesId = externalId(record, 'lot', index)
-  const auctionSmartleiloesId = eventExternalIdOf(record)
-  const auctionId = await findAuctionId(auctionSmartleiloesId)
-
-  const { error } = await supabase.from('smartleiloes_lots').upsert(
-    {
-      smartleiloes_id: smartleiloesId,
-      auction_id: auctionId,
-      auction_smartleiloes_id: auctionSmartleiloesId || null,
-      lot_number: asString(
-        valueOf(record, ['numero', 'número', 'numero_lote', 'lote']),
-      ),
-      title: titleOf(record, `Lote ${smartleiloesId}`),
-      category: asString(
-        valueOf(record, ['categoria', 'id_tipo_lote', 'tipo_lote']),
-      ),
-      commercial_status: asString(
-        valueOf(record, ['situacao_comercial', 'situação_comercial']),
-      ),
-      value: amountOf(record),
-      payload: record,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: 'smartleiloes_id' },
-  )
-
-  if (error) throw error
-}
-
-const syncBid = async (record: ApiRecord, index: number) => {
-  const smartleiloesId = externalId(record, 'bid', index)
-  const eventExternalId = eventExternalIdOf(record)
-  const lotExternalId = lotExternalIdOf(record)
-  const contactId = await findContactId(clientExternalIdOf(record))
-
-  const { error } = await supabase.from('bids').upsert(
-    {
-      smartleiloes_id: smartleiloesId,
-      smartleiloes_event_id: eventExternalId || null,
-      smartleiloes_lot_id: lotExternalId || null,
-      contact_id: contactId,
-      auction_id: eventExternalId || null,
-      lot_number:
-        asString(
-          valueOf(record, [
-            'numero_lote',
-            'numero_lote_lance',
-            'número_lote',
-            'lote',
-          ]),
-        ) ||
-        lotExternalId ||
-        null,
-      value: amountOf(record),
-      date: asDateOnly(
-        valueOf(record, ['data_lance', 'datalance', 'data', 'created_at']),
-      ),
-      reason: asString(valueOf(record, ['situacao', 'status', 'motivo'])),
-      payload: record,
-    },
-    { onConflict: 'smartleiloes_id' },
-  )
-
-  if (error) throw error
-}
-
-const syncContract = async (record: ApiRecord, index: number) => {
-  const smartleiloesId = externalId(record, 'contract', index)
-  const eventExternalId = eventExternalIdOf(record)
-  const lotExternalId = lotExternalIdOf(record)
-  const status = commercialStatusOf(record)
-  const buyerId = asString(
-    valueOf(record, ['id_comprador', 'id_comprador_contrato', 'comprador_id']),
-  )
-  const contactId = await findContactId(buyerId || clientExternalIdOf(record))
-
-  if (status && status.toUpperCase() !== 'VENDIDO') {
+  for (const rowsChunk of chunk(rows)) {
     const { error } = await supabase
-      .from('purchases')
-      .delete()
-      .eq('smartleiloes_id', smartleiloesId)
+      .from(table)
+      .upsert(rowsChunk, { onConflict })
 
     if (error) throw error
-    return
+  }
+}
+
+const deleteRowsByIds = async (
+  table: string,
+  column: string,
+  ids: string[],
+) => {
+  const uniqueIds = [...new Set(ids.filter(Boolean))]
+  if (!uniqueIds.length) return
+
+  for (const idsChunk of chunk(uniqueIds)) {
+    const { error } = await supabase.from(table).delete().in(column, idsChunk)
+    if (error) throw error
+  }
+}
+
+const fetchIdMap = async (
+  table: string,
+  externalIds: string[],
+): Promise<Map<string, string>> => {
+  const map = new Map<string, string>()
+  const uniqueExternalIds = [...new Set(externalIds.filter(Boolean))]
+  if (!uniqueExternalIds.length) return map
+
+  for (const idsChunk of chunk(uniqueExternalIds)) {
+    const { data, error } = await supabase
+      .from(table)
+      .select('id, smartleiloes_id')
+      .in('smartleiloes_id', idsChunk)
+
+    if (error) throw error
+    for (const row of data || []) {
+      if (row.smartleiloes_id) map.set(row.smartleiloes_id, row.id)
+    }
   }
 
-  const { error } = await supabase.from('purchases').upsert(
-    {
+  return map
+}
+
+const rawRowsFor = (type: string, records: ApiRecord[]) =>
+  uniqueBy(
+    records.map((record, index) => {
+      const id = externalId(record, type, index)
+      return {
+        record_type: type,
+        external_id: id,
+        title: titleOf(record, `Smart Leilões ${type}`),
+        amount: amountOf(record),
+        record_date: recordDateOf(record),
+        related_event_id: eventExternalIdOf(record) || null,
+        related_client_id: clientExternalIdOf(record) || null,
+        payload: record,
+        updated_at: new Date().toISOString(),
+      }
+    }),
+    (row) => `${row.record_type}:${row.external_id}`,
+  )
+
+const contactRowsFor = (records: ApiRecord[]) =>
+  uniqueBy(
+    records.map((record, index) => {
+      const smartleiloesId = externalId(record, 'client', index)
+      const email = asString(
+        valueOf(record, [
+          'email',
+          'e-mail',
+          'email_cliente',
+          'emailCliente01',
+          'emailCliente02',
+        ]),
+      )
+      const phone = asString(
+        valueOf(record, [
+          'telefone',
+          'celular',
+          'fone',
+          'phone',
+          'telefoneCliente01',
+          'telefoneCliente02',
+          'celularCliente01',
+          'celularCliente02',
+        ]),
+      )
+      const whatsapp = asString(
+        valueOf(record, [
+          'whatsapp',
+          'celular_whatsapp',
+          'celularCliente01',
+          'celularCliente02',
+        ]),
+      )
+      const document = asString(
+        valueOf(record, [
+          'cpf_cnpj',
+          'cpf-cnpj',
+          'cpfCnpjCliente',
+          'documento',
+          'cpf',
+          'cnpj',
+        ]),
+      )
+      const birthDate = birthDateOf(record)
+
+      return {
+        smartleiloes_id: smartleiloesId,
+        name: titleOf(record, `Cliente ${smartleiloesId}`),
+        email,
+        phone: phone || whatsapp,
+        whatsapp: whatsapp || phone,
+        ...(birthDate ? { birth_date: birthDate } : {}),
+        cpf: document,
+        document,
+        address: asString(
+          valueOf(record, [
+            'endereco',
+            'endereço',
+            'enderecoCliente',
+            'address',
+          ]),
+        ),
+        city: asString(valueOf(record, ['cidade', 'cidadeCliente', 'city'])),
+        state: asString(
+          valueOf(record, ['uf', 'ufCliente', 'estado', 'state']),
+        ),
+        origin: 'Smart Leilões',
+        source_payload: record,
+        updated_at: new Date().toISOString(),
+      }
+    }),
+    (row) => row.smartleiloes_id,
+  )
+
+const eventRowsFor = (records: ApiRecord[]) =>
+  uniqueBy(
+    records.map((record, index) => {
+      const smartleiloesId = externalId(record, 'event', index)
+      return {
+        smartleiloes_id: smartleiloesId,
+        title: titleOf(record, `Leilão ${smartleiloesId}`),
+        status: asString(
+          valueOf(record, [
+            'nome_situacao_evento',
+            'nomeSituacaoEvento',
+            'situacao_evento',
+            'situacaoEvento',
+            'id_situacao_evento',
+            'idSituacaoEvento',
+            'situacao',
+            'situação',
+            'status',
+          ]),
+        ),
+        value: amountOf(record),
+        event_date: recordDateOf(record),
+        event_type: asString(
+          valueOf(record, [
+            'descricao_tipo_evento',
+            'descricaoTipoEvento',
+            'raca_evento',
+            'racaEvento',
+            'tipo_evento',
+            'tipo',
+            'type',
+          ]),
+        ),
+        source_url: 'https://api.smartleiloes.digital/',
+        payload: record,
+        updated_at: new Date().toISOString(),
+      }
+    }),
+    (row) => row.smartleiloes_id,
+  )
+
+const lotRowsFor = (
+  records: ApiRecord[],
+  auctionIdsBySmartId: Map<string, string>,
+) =>
+  uniqueBy(
+    records.map((record, index) => {
+      const smartleiloesId = externalId(record, 'lot', index)
+      const auctionSmartleiloesId = eventExternalIdOf(record)
+
+      return {
+        smartleiloes_id: smartleiloesId,
+        auction_id: auctionIdsBySmartId.get(auctionSmartleiloesId) || null,
+        auction_smartleiloes_id: auctionSmartleiloesId || null,
+        lot_number: asString(
+          valueOf(record, ['numero', 'número', 'numero_lote', 'lote']),
+        ),
+        title: titleOf(record, `Lote ${smartleiloesId}`),
+        category: asString(
+          valueOf(record, ['categoria', 'id_tipo_lote', 'tipo_lote']),
+        ),
+        commercial_status: asString(
+          valueOf(record, ['situacao_comercial', 'situação_comercial']),
+        ),
+        value: amountOf(record),
+        payload: record,
+        updated_at: new Date().toISOString(),
+      }
+    }),
+    (row) => row.smartleiloes_id,
+  )
+
+const bidRowsFor = (
+  records: ApiRecord[],
+  contactIdsBySmartId: Map<string, string>,
+) =>
+  uniqueBy(
+    records.map((record, index) => {
+      const smartleiloesId = externalId(record, 'bid', index)
+      const eventExternalId = eventExternalIdOf(record)
+      const lotExternalId = lotExternalIdOf(record)
+
+      return {
+        smartleiloes_id: smartleiloesId,
+        smartleiloes_event_id: eventExternalId || null,
+        smartleiloes_lot_id: lotExternalId || null,
+        contact_id: contactIdsBySmartId.get(clientExternalIdOf(record)) || null,
+        auction_id: eventExternalId || null,
+        lot_number:
+          asString(
+            valueOf(record, [
+              'numero_lote',
+              'numero_lote_lance',
+              'número_lote',
+              'lote',
+            ]),
+          ) ||
+          lotExternalId ||
+          null,
+        value: amountOf(record),
+        date: asDateOnly(
+          valueOf(record, ['data_lance', 'datalance', 'data', 'created_at']),
+        ),
+        reason: asString(valueOf(record, ['situacao', 'status', 'motivo'])),
+        payload: record,
+      }
+    }),
+    (row) => row.smartleiloes_id,
+  )
+
+const contractRowsFor = (
+  records: ApiRecord[],
+  contactIdsBySmartId: Map<string, string>,
+) => {
+  const soldRows: Record<string, unknown>[] = []
+  const unsoldIds: string[] = []
+
+  records.forEach((record, index) => {
+    const smartleiloesId = externalId(record, 'contract', index)
+    const eventExternalId = eventExternalIdOf(record)
+    const lotExternalId = lotExternalIdOf(record)
+    const status = commercialStatusOf(record)
+
+    if (status && status.toUpperCase() !== 'VENDIDO') {
+      unsoldIds.push(smartleiloesId)
+      return
+    }
+
+    const buyerId = asString(
+      valueOf(record, [
+        'id_comprador',
+        'id_comprador_contrato',
+        'comprador_id',
+      ]),
+    )
+    const contactId = contactIdsBySmartId.get(
+      buyerId || clientExternalIdOf(record),
+    )
+
+    soldRows.push({
       smartleiloes_id: smartleiloesId,
       smartleiloes_event_id: eventExternalId || null,
       smartleiloes_lot_id: lotExternalId || null,
-      contact_id: contactId,
+      contact_id: contactId || null,
       auction_id: eventExternalId || null,
       lot_number:
         asString(
@@ -597,28 +702,117 @@ const syncContract = async (record: ApiRecord, index: number) => {
       ),
       description: `${titleOf(record, `Contrato ${smartleiloesId}`)} | ID contrato ${smartleiloesId} | ${status}`,
       payload: record,
-    },
-    { onConflict: 'smartleiloes_id' },
-  )
+    })
+  })
 
-  if (error) throw error
+  return {
+    soldRows: uniqueBy(soldRows, (row) => String(row.smartleiloes_id || '')),
+    unsoldIds,
+  }
 }
 
-const syncNormalizedRecord = async (
+const syncEndpointRows = async (
   type: string,
-  record: ApiRecord,
-  index: number,
-) => {
-  if (type === 'client') return syncContact(record, index)
-  if (type === 'event') return syncEvent(record, index)
-  if (type === 'lot') return syncLot(record, index)
-  if (type === 'bid') return syncBid(record, index)
-  if (type === 'contract') return syncContract(record, index)
+  records: ApiRecord[],
+): Promise<number> => {
+  let saved = 0
+
+  for (const recordsChunk of chunk(records)) {
+    await upsertRows(
+      'smartleiloes_raw_records',
+      rawRowsFor(type, recordsChunk),
+      ['record_type', 'external_id'].join(','),
+    )
+
+    if (type === 'client') {
+      const rows = contactRowsFor(recordsChunk)
+      await upsertRows('contacts', rows, 'smartleiloes_id')
+      saved += rows.length
+      continue
+    }
+
+    if (type === 'event') {
+      const rows = eventRowsFor(recordsChunk)
+      await upsertRows('smartleiloes_auctions', rows, 'smartleiloes_id')
+      saved += rows.length
+      continue
+    }
+
+    if (type === 'lot') {
+      const auctionIdsBySmartId = await fetchIdMap(
+        'smartleiloes_auctions',
+        recordsChunk.map(eventExternalIdOf),
+      )
+      const rows = lotRowsFor(recordsChunk, auctionIdsBySmartId)
+      await upsertRows('smartleiloes_lots', rows, 'smartleiloes_id')
+      saved += rows.length
+      continue
+    }
+
+    if (type === 'bid') {
+      const contactIdsBySmartId = await fetchIdMap(
+        'contacts',
+        recordsChunk.map(clientExternalIdOf),
+      )
+      const rows = bidRowsFor(recordsChunk, contactIdsBySmartId)
+      await upsertRows('bids', rows, 'smartleiloes_id')
+      saved += rows.length
+      continue
+    }
+
+    if (type === 'contract') {
+      const contactIdsBySmartId = await fetchIdMap(
+        'contacts',
+        recordsChunk.map((record) => {
+          const buyerId = asString(
+            valueOf(record, [
+              'id_comprador',
+              'id_comprador_contrato',
+              'comprador_id',
+            ]),
+          )
+          return buyerId || clientExternalIdOf(record)
+        }),
+      )
+      const { soldRows, unsoldIds } = contractRowsFor(
+        recordsChunk,
+        contactIdsBySmartId,
+      )
+      await deleteRowsByIds('purchases', 'smartleiloes_id', unsoldIds)
+      await upsertRows('purchases', soldRows, 'smartleiloes_id')
+      saved += soldRows.length + unsoldIds.length
+    }
+  }
+
+  return saved
 }
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS')
     return new Response('ok', { headers: corsHeaders })
+
+  const body = await req.json().catch(() => ({}))
+  const requestedEndpoints = Array.isArray(body?.endpoints)
+    ? body.endpoints
+    : endpointScopes[String(body?.scope || 'all')] || endpointScopes.all
+  const selectedEndpointKeys = new Set<EndpointKey>(
+    requestedEndpoints.filter((key: string): key is EndpointKey =>
+      endpoints.some((endpoint) => endpoint.key === key),
+    ),
+  )
+  const endpointsToSync = endpoints.filter((endpoint) =>
+    selectedEndpointKeys.has(endpoint.key),
+  )
+
+  if (!endpointsToSync.length) {
+    return jsonResponse(
+      {
+        status: 'error',
+        error: 'Nenhum endpoint válido informado para sincronização.',
+      },
+      400,
+    )
+  }
 
   const startedAt = new Date().toISOString()
   const { data: run, error: runError } = await supabase
@@ -634,7 +828,7 @@ Deno.serve(async (req) => {
   try {
     const token = await authenticateSmartLeiloes()
 
-    for (const endpoint of endpoints) {
+    for (const endpoint of endpointsToSync) {
       const counter: SyncCounter = { fetched: 0, saved: 0, failed: 0 }
       summary[endpoint.key] = counter
 
@@ -646,15 +840,13 @@ Deno.serve(async (req) => {
       const items = extractItems(data)
       counter.fetched = items.length
 
-      for (const [index, item] of items.entries()) {
-        try {
-          await saveRawRecord(endpoint.type, item, index)
-          await syncNormalizedRecord(endpoint.type, item, index)
-          counter.saved += 1
-        } catch (error) {
-          console.error(`Failed to sync ${endpoint.type}`, error)
-          counter.failed += 1
-        }
+      try {
+        counter.saved = await syncEndpointRows(endpoint.type, items)
+        counter.failed = Math.max(counter.fetched - counter.saved, 0)
+      } catch (error) {
+        console.error(`Failed to sync ${endpoint.type}`, error)
+        counter.failed = counter.fetched
+        throw error
       }
     }
 
