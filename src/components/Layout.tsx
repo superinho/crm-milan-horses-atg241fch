@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
-import { Outlet, useLocation, Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Outlet, useLocation, Link } from 'react-router-dom'
 import {
   Sidebar,
   SidebarContent,
@@ -9,8 +9,6 @@ import {
   SidebarMenuButton,
   SidebarProvider,
   SidebarTrigger,
-  SidebarFooter,
-  useSidebar,
 } from '@/components/ui/sidebar'
 import {
   Breadcrumb,
@@ -31,12 +29,12 @@ import {
   Search,
   Bell,
   Tag as TagIcon,
-  FileText,
   Settings,
   Keyboard,
   Menu,
   Gavel,
   Radar,
+  Wand2,
 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
@@ -56,7 +54,6 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import logoImg from '@/assets/editedimage_1769630541473-88067.png'
-import { useToast } from '@/hooks/use-toast'
 
 // Modals & Search
 import { GlobalSearch } from '@/components/search/GlobalSearch'
@@ -76,7 +73,7 @@ const NAV_ITEMS = [
   { label: 'Leilões', icon: Gavel, path: '/leiloes' },
   { label: 'Radar VIP', icon: Radar, path: '/radar-vip' },
   { label: 'Tags', icon: TagIcon, path: '/tags' },
-  { label: 'Modelos', icon: FileText, path: '/modelos' },
+  { label: 'Estúdio', icon: Wand2, path: '/modelos' },
   { label: 'Configurações', icon: Settings, path: '/configuracoes' },
 ]
 
@@ -168,9 +165,7 @@ function TopHeader({
   onSearchClick: () => void
   onHelpClick: () => void
 }) {
-  const navigate = useNavigate()
   const location = useLocation()
-  const { toast } = useToast()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // Breadcrumb logic
