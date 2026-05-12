@@ -3,7 +3,8 @@ import {
   CircleDollarSign,
   Gift,
   MessageCircle,
-  TrendingUp,
+  ShieldAlert,
+  Flame,
   UserCheck,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
@@ -42,24 +43,24 @@ export function ExecutiveSnapshot({ snapshot }: ExecutiveSnapshotProps) {
           icon: Gift,
           tone: 'text-pink-700 bg-pink-500/10',
         }
-      : snapshot.highPotential > 0
+      : snapshot.hotBuyers > 0
         ? {
-            title: 'Alto potencial',
-            value: compact(snapshot.highPotential),
-            detail: 'Lançadores fortes sem compra registrada',
-            badge: 'Ativar',
+            title: 'Compradores quentes',
+            value: compact(snapshot.hotBuyers),
+            detail: 'Clientes em sequência recente de compra',
+            badge: 'Priorizar',
             href: '/radar-vip',
-            icon: TrendingUp,
-            tone: 'text-amber-700 bg-amber-500/10',
+            icon: Flame,
+            tone: 'text-orange-700 bg-orange-500/10',
           }
         : {
-            title: 'Valor em lances',
-            value: money(snapshot.totalBidsValue),
-            detail: 'Demanda declarada nos leilões',
+            title: 'Bidders fantasma',
+            value: compact(snapshot.ghostBidders),
+            detail: 'Lances sem compra: revisar antes de ativar',
             badge: 'Radar',
             href: '/radar-vip',
-            icon: TrendingUp,
-            tone: 'text-amber-700 bg-amber-500/10',
+            icon: ShieldAlert,
+            tone: 'text-slate-700 bg-slate-500/10',
           }
 
   const cards = [

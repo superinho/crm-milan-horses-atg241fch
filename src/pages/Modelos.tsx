@@ -46,7 +46,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
@@ -90,16 +89,6 @@ type WizardState = {
 }
 
 type PreviewContext = typeof SAMPLE_CONTEXT
-
-type Recipe = {
-  title: string
-  category: TemplateCategory
-  type: TemplateType
-  objective: string
-  tone: string
-  subject?: string
-  body: string
-}
 
 const SAMPLE_CONTEXT = {
   nome: 'Nome do cliente',
@@ -255,75 +244,6 @@ const emptyWizard: WizardState = {
   ctaLabel: 'Ver curadoria',
   ctaUrl: 'https://www.milanhorses.com.br',
 }
-
-const RECIPES: Recipe[] = [
-  {
-    title: 'Convite VIP discreto',
-    category: 'Convite VIP',
-    type: 'WhatsApp',
-    objective: 'Convidar cliente de alto valor',
-    tone: 'Pessoal e exclusivo',
-    body: 'Olá, {{nome}}. Tudo bem? Separei alguns destaques de {{leilao}} que combinam bastante com seu histórico na Milan Horses. Posso te mandar uma curadoria curta antes do leilão?',
-  },
-  {
-    title: 'E-mail curadoria premium',
-    category: 'Radar VIP',
-    type: 'E-mail',
-    objective: 'Apresentar seleção de lotes',
-    tone: 'Elegante e consultivo',
-    subject: 'Curadoria Milan Horses para {{leilao}}',
-    body: '<p>Olá, {{nome}}.</p><p>Revendo seu histórico conosco, selecionei alguns destaques de <strong>{{leilao}}</strong> que parecem especialmente alinhados ao seu perfil.</p><p>Se fizer sentido, posso te enviar uma seleção objetiva com os principais pontos de cada lote.</p><p>{{curador}}</p>',
-  },
-  {
-    title: 'Underbidder premium',
-    category: 'Underbidder',
-    type: 'WhatsApp',
-    objective: 'Reativar quem disputou forte',
-    tone: 'Direto e oportuno',
-    body: 'Olá, {{nome}}. Vi que você costuma disputar forte nossos lotes. {{leilao}} tem oportunidades bem próximas do seu perfil de compra. Quer que eu te envie os destaques antes da abertura?',
-  },
-  {
-    title: 'Reativação elegante',
-    category: 'Reativação de Cliente',
-    type: 'WhatsApp',
-    objective: 'Retomar conversa sem pressão',
-    tone: 'Leve e pessoal',
-    body: 'Olá, {{nome}}. Faz tempo que não nos falamos, mas o catálogo de {{leilao}} me lembrou seu perfil na Milan Horses. Posso te mandar 2 ou 3 destaques para você avaliar com calma?',
-  },
-  {
-    title: 'Última chamada sem exagero',
-    category: 'Novo Leilão',
-    type: 'WhatsApp',
-    objective: 'Lembrar prazo do leilão',
-    tone: 'Urgente com sobriedade',
-    body: 'Olá, {{nome}}. Passando só para te lembrar que {{leilao}} acontece em {{data_leilao}}. Há alguns lotes compatíveis com seu perfil e achei que valia te avisar antes do fechamento.',
-  },
-  {
-    title: 'Cliente top - acesso antecipado',
-    category: 'Convite VIP',
-    type: 'E-mail',
-    objective: 'Dar tratamento prioritário',
-    tone: 'Exclusivo e refinado',
-    subject: 'Acesso antecipado à curadoria de {{leilao}}',
-    body: '<p>Olá, {{nome}}.</p><p>Antes de ampliarmos a comunicação sobre <strong>{{leilao}}</strong>, queria te mostrar uma seleção antecipada de lotes que dialogam com seu histórico e ticket médio.</p><p>Posso te encaminhar a curadoria completa?</p>',
-  },
-  {
-    title: 'Pós-leilão comprador',
-    category: 'Pós-leilão',
-    type: 'WhatsApp',
-    objective: 'Agradecer e abrir próximo contato',
-    tone: 'Atencioso',
-    body: 'Olá, {{nome}}. Obrigado pela participação no leilão. Foi um prazer acompanhar sua compra. Vou seguir atento a oportunidades compatíveis com seu perfil e te aviso quando aparecer algo especial.',
-  },
-  {
-    title: 'Aniversário premium',
-    category: 'Aniversário',
-    type: 'WhatsApp',
-    objective: 'Relacionamento',
-    tone: 'Caloroso e breve',
-    body: 'Olá, {{nome}}. Passando para desejar um feliz aniversário em nome da Milan Horses. Que seja um novo ciclo excelente, com boas conquistas dentro e fora das pistas.',
-  },
-]
 
 const emptyDraft: DraftTemplate = {
   title: '',
@@ -544,6 +464,8 @@ export default function Modelos() {
   const [auctions, setAuctions] = useState<SmartLeilao[]>([])
   const [draft, setDraft] = useState<DraftTemplate>(emptyDraft)
   const [wizard, setWizard] = useState<WizardState>(emptyWizard)
+  const [composerChannel, setComposerChannel] = useState<TemplateType>('E-mail')
+  const [composerPreviewOpen, setComposerPreviewOpen] = useState(false)
   const [previewContext, setPreviewContext] =
     useState<PreviewContext>(SAMPLE_CONTEXT)
   const [selectedId, setSelectedId] = useState<string | null>(null)
@@ -652,6 +574,8 @@ export default function Modelos() {
   const startNew = (type: TemplateType = 'E-mail') => {
     setSelectedId(null)
     setVariations([])
+    setComposerChannel(type)
+    setComposerPreviewOpen(false)
     setDraft({
       ...emptyDraft,
       type,
@@ -662,6 +586,7 @@ export default function Modelos() {
   const loadTemplate = (template: MessageTemplate) => {
     setSelectedId(template.id)
     setVariations([])
+    setComposerChannel(template.type)
     setDraft({
       id: template.id,
       title: template.title,
@@ -670,19 +595,6 @@ export default function Modelos() {
       subject: template.subject || '',
       body: template.body,
       variables: template.variables || extractVariables(template.body),
-    })
-  }
-
-  const loadRecipe = (recipe: Recipe) => {
-    setSelectedId(null)
-    setVariations([])
-    setDraft({
-      title: recipe.title,
-      category: recipe.category,
-      type: recipe.type,
-      subject: recipe.subject || '',
-      body: recipe.body,
-      variables: extractVariables(`${recipe.subject || ''} ${recipe.body}`),
     })
   }
 
@@ -706,6 +618,7 @@ export default function Modelos() {
 
     setSelectedId(null)
     setVariations([])
+    setComposerChannel('E-mail')
     setDraft({
       title,
       category: goalPreset.category,
@@ -733,6 +646,66 @@ export default function Modelos() {
       description: 'Revise o preview, envie um teste e salve como modelo.',
       variant: 'success',
     })
+  }
+
+  const buildWizardWhatsApp = () => {
+    const body = paragraphForGoal(wizard.goal, wizard.tone, wizard)
+      .replace(/<[^>]+>/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+
+    const close =
+      wizard.goal === 'pos-leilao'
+        ? 'Quando aparecer algo especial, te aviso por aqui.'
+        : 'Posso te enviar uma curadoria curta por aqui?'
+
+    return `Olá, {{nome}}. ${body} ${close}`
+      .replaceAll('{{leilao}}', wizard.auctionName || '{{leilao}}')
+      .replaceAll('{{data_leilao}}', wizard.auctionDate || '{{data_leilao}}')
+      .replaceAll('{{lote}}', wizard.lot || '{{lote}}')
+      .replaceAll('{{valor}}', wizard.valueRange || '{{valor}}')
+  }
+
+  const generateWizardWhatsApp = () => {
+    const goalPreset =
+      GOAL_PRESETS.find((item) => item.id === wizard.goal) || GOAL_PRESETS[0]
+    const body = buildWizardWhatsApp()
+    const title = `${goalPreset.title} · ${wizard.auctionName || 'Milan Horses'}`
+
+    setSelectedId(null)
+    setVariations([])
+    setComposerChannel('WhatsApp')
+    setDraft({
+      title,
+      category: goalPreset.category,
+      type: 'WhatsApp',
+      subject: '',
+      body,
+      variables: extractVariables(body),
+    })
+    setPreviewContext((current) => ({
+      ...current,
+      leilao: wizard.auctionName || current.leilao,
+      data_leilao: wizard.auctionDate || current.data_leilao,
+      lote: wizard.lot || current.lote,
+      valor: wizard.valueRange || current.valor,
+      segmento: wizard.audience || current.segmento,
+    }))
+
+    toast({
+      title: 'WhatsApp criado',
+      description: 'Revise o texto, envie um teste e salve como modelo.',
+      variant: 'success',
+    })
+  }
+
+  const generateFromWizard = () => {
+    if (composerChannel === 'WhatsApp') {
+      generateWizardWhatsApp()
+      return
+    }
+
+    generatePremiumEmail()
   }
 
   const insertVariable = (variable: string) => {
@@ -1020,14 +993,23 @@ export default function Modelos() {
   const wizardPreviewSubject = selectedGoal.subject
     .replaceAll('{{leilao}}', wizard.auctionName || 'Leilão selecionado')
     .replaceAll('{{data_leilao}}', wizard.auctionDate || 'Data do leilão')
+  const wizardPreviewMessage = renderWithSample(
+    buildWizardWhatsApp(),
+    previewContext,
+  )
   const readyItems = [
     { label: 'Objetivo definido', done: Boolean(wizard.goal) },
+    { label: `Canal: ${composerChannel}`, done: Boolean(composerChannel) },
     { label: 'Leilão escolhido', done: Boolean(wizard.auctionName.trim()) },
-    { label: 'Visual selecionado', done: Boolean(wizard.visual) },
-    {
-      label: 'CTA configurado',
-      done: Boolean(wizard.ctaLabel && wizard.ctaUrl),
-    },
+    ...(composerChannel === 'E-mail'
+      ? [
+          { label: 'Visual selecionado', done: Boolean(wizard.visual) },
+          {
+            label: 'CTA configurado',
+            done: Boolean(wizard.ctaLabel && wizard.ctaUrl),
+          },
+        ]
+      : [{ label: 'Texto pronto', done: Boolean(wizard.auctionName.trim()) }]),
   ]
   const readyCount = readyItems.filter((item) => item.done).length
 
@@ -1069,17 +1051,27 @@ export default function Modelos() {
                 Fluxo guiado
               </div>
               <CardTitle className="text-xl text-primary">
-                Criador Milan de e-mails premium
+                Criador Milan de mensagens premium
               </CardTitle>
               <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-                Um caminho guiado para sair de objetivo, leilão e banner para um
-                e-mail editorial pronto para teste, sem tocar em HTML.
+                Escolha objetivo e canal no mesmo lugar. Depois preencha só os
+                detalhes úteis para gerar um WhatsApp ou e-mail editável.
               </p>
             </div>
-            <Button onClick={generatePremiumEmail} size="lg">
-              <Wand2 className="mr-2 h-4 w-4" />
-              Gerar e-mail premium
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setComposerPreviewOpen(true)}
+                size="lg"
+              >
+                <Eye className="mr-2 h-4 w-4" />
+                Ver preview
+              </Button>
+              <Button onClick={generateFromWizard} size="lg">
+                <Wand2 className="mr-2 h-4 w-4" />
+                Gerar {composerChannel === 'E-mail' ? 'e-mail' : 'WhatsApp'}
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent className="p-0">
@@ -1088,9 +1080,9 @@ export default function Modelos() {
               <div className="grid gap-2 md:grid-cols-4">
                 {[
                   ['1', 'Objetivo'],
-                  ['2', 'Leilão'],
-                  ['3', 'Visual'],
-                  ['4', 'Preview'],
+                  ['2', 'Canal'],
+                  ['3', 'Detalhes'],
+                  ['4', 'Gerar'],
                 ].map(([step, label]) => (
                   <div
                     key={step}
@@ -1107,30 +1099,67 @@ export default function Modelos() {
               <section className="space-y-2">
                 <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
                   <FileText className="h-4 w-4 text-primary" />
-                  1. Escolha a intenção
+                  1. Escolha o objetivo e o canal
                 </div>
                 <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
                   {GOAL_PRESETS.map((goal) => (
-                    <button
+                    <div
                       key={goal.id}
-                      type="button"
                       className={cn(
-                        'rounded-md border p-3 text-left transition-colors hover:border-primary hover:bg-primary/5',
+                        'rounded-md border p-3 transition-colors hover:border-primary hover:bg-primary/5',
                         wizard.goal === goal.id &&
                           'border-primary bg-primary/5',
                       )}
-                      onClick={() =>
-                        updateWizard({
-                          goal: goal.id,
-                          headline: goal.title,
-                        })
-                      }
                     >
-                      <div className="font-semibold">{goal.title}</div>
+                      <button
+                        type="button"
+                        className="w-full text-left"
+                        onClick={() =>
+                          updateWizard({
+                            goal: goal.id,
+                            headline: goal.title,
+                          })
+                        }
+                      >
+                        <div className="font-semibold">{goal.title}</div>
+                      </button>
                       <div className="mt-1 text-xs text-muted-foreground">
                         {goal.description}
                       </div>
-                    </button>
+                      <div className="mt-3 grid grid-cols-2 gap-2">
+                        {(['WhatsApp', 'E-mail'] as TemplateType[]).map(
+                          (type) => (
+                            <Button
+                              key={`${goal.id}-${type}`}
+                              type="button"
+                              variant={
+                                wizard.goal === goal.id &&
+                                composerChannel === type
+                                  ? 'default'
+                                  : 'outline'
+                              }
+                              size="sm"
+                              className="justify-center"
+                              onClick={() => {
+                                setComposerChannel(type)
+                                setComposerPreviewOpen(false)
+                                updateWizard({
+                                  goal: goal.id,
+                                  headline: goal.title,
+                                })
+                              }}
+                            >
+                              {type === 'WhatsApp' ? (
+                                <MessageSquare className="mr-2 h-3.5 w-3.5" />
+                              ) : (
+                                <Mail className="mr-2 h-3.5 w-3.5" />
+                              )}
+                              {type}
+                            </Button>
+                          ),
+                        )}
+                      </div>
+                    </div>
                   ))}
                 </div>
               </section>
@@ -1211,8 +1240,11 @@ export default function Modelos() {
                         <SelectItem value="Underbidders">
                           Underbidders
                         </SelectItem>
-                        <SelectItem value="Alto potencial sem compra">
-                          Alto potencial sem compra
+                        <SelectItem value="Compradores quentes">
+                          Compradores quentes
+                        </SelectItem>
+                        <SelectItem value="Bidders fantasma">
+                          Bidders fantasma
                         </SelectItem>
                         <SelectItem value="Compradores">Compradores</SelectItem>
                         <SelectItem value="Inativos valiosos">
@@ -1244,102 +1276,139 @@ export default function Modelos() {
                 </div>
               </section>
 
-              <section className="grid gap-4 lg:grid-cols-2">
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 font-semibold">
-                    <Paintbrush className="h-4 w-4 text-primary" />
-                    3. Visual e banner
-                  </Label>
-                  <div className="grid gap-2 md:grid-cols-3">
-                    {VISUAL_PRESETS.map((visual) => (
-                      <button
-                        key={visual.id}
-                        type="button"
-                        className={cn(
-                          'rounded-md border p-3 text-left transition-colors hover:border-primary hover:bg-primary/5',
-                          wizard.visual === visual.id &&
-                            'border-primary bg-primary/5',
+              {composerChannel === 'E-mail' ? (
+                <section className="grid gap-4 lg:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label className="flex items-center gap-2 font-semibold">
+                      <Paintbrush className="h-4 w-4 text-primary" />
+                      3. Visual do e-mail
+                    </Label>
+                    <div className="grid gap-2 md:grid-cols-3">
+                      {VISUAL_PRESETS.map((visual) => (
+                        <button
+                          key={visual.id}
+                          type="button"
+                          className={cn(
+                            'rounded-md border p-3 text-left transition-colors hover:border-primary hover:bg-primary/5',
+                            wizard.visual === visual.id &&
+                              'border-primary bg-primary/5',
+                          )}
+                          onClick={() => updateWizard({ visual: visual.id })}
+                        >
+                          <div className="text-sm font-medium">
+                            {visual.title}
+                          </div>
+                          <div className="mt-1 text-xs text-muted-foreground">
+                            {visual.description}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                    <Input
+                      value={wizard.bannerUrl}
+                      onChange={(event) =>
+                        updateWizard({ bannerUrl: event.target.value })
+                      }
+                      placeholder="URL pública do banner ou foto"
+                    />
+                    <Button type="button" variant="outline" asChild>
+                      <label className="cursor-pointer">
+                        {uploadingAsset ? (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                          <Upload className="mr-2 h-4 w-4" />
                         )}
-                        onClick={() => updateWizard({ visual: visual.id })}
-                      >
-                        <div className="text-sm font-medium">
-                          {visual.title}
-                        </div>
-                        <div className="mt-1 text-xs text-muted-foreground">
-                          {visual.description}
-                        </div>
-                      </button>
-                    ))}
+                        Fazer upload do banner
+                        <input
+                          type="file"
+                          accept="image/png,image/jpeg,image/jpg,image/webp"
+                          className="hidden"
+                          onChange={uploadEmailAsset}
+                          disabled={uploadingAsset}
+                        />
+                      </label>
+                    </Button>
                   </div>
-                  <Input
-                    value={wizard.bannerUrl}
-                    onChange={(event) =>
-                      updateWizard({ bannerUrl: event.target.value })
-                    }
-                    placeholder="URL pública do banner ou foto"
-                  />
-                  <Button type="button" variant="outline" asChild>
-                    <label className="cursor-pointer">
-                      {uploadingAsset ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      ) : (
-                        <Upload className="mr-2 h-4 w-4" />
-                      )}
-                      Fazer upload do banner
-                      <input
-                        type="file"
-                        accept="image/png,image/jpeg,image/jpg,image/webp"
-                        className="hidden"
-                        onChange={uploadEmailAsset}
-                        disabled={uploadingAsset}
-                      />
-                    </label>
-                  </Button>
-                </div>
 
-                <div className="space-y-2">
-                  <Label className="font-semibold">Texto de destaque</Label>
-                  <Input
-                    value={wizard.headline}
-                    onChange={(event) =>
-                      updateWizard({ headline: event.target.value })
-                    }
-                    placeholder="Título principal do e-mail"
-                  />
-                  <div className="grid gap-2 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label className="font-semibold">Texto de destaque</Label>
+                    <Input
+                      value={wizard.headline}
+                      onChange={(event) =>
+                        updateWizard({ headline: event.target.value })
+                      }
+                      placeholder="Título principal do e-mail"
+                    />
+                    <div className="grid gap-2 md:grid-cols-2">
+                      <Input
+                        value={wizard.lot}
+                        onChange={(event) =>
+                          updateWizard({ lot: event.target.value })
+                        }
+                        placeholder="Lote destacado"
+                      />
+                      <Input
+                        value={wizard.valueRange}
+                        onChange={(event) =>
+                          updateWizard({ valueRange: event.target.value })
+                        }
+                        placeholder="Faixa de valor"
+                      />
+                    </div>
+                    <div className="grid gap-2 md:grid-cols-[0.7fr_1fr]">
+                      <Input
+                        value={wizard.ctaLabel}
+                        onChange={(event) =>
+                          updateWizard({ ctaLabel: event.target.value })
+                        }
+                        placeholder="Texto do botão"
+                      />
+                      <Input
+                        value={wizard.ctaUrl}
+                        onChange={(event) =>
+                          updateWizard({ ctaUrl: event.target.value })
+                        }
+                        placeholder="Link do botão"
+                      />
+                    </div>
+                  </div>
+                </section>
+              ) : (
+                <section className="grid gap-4 lg:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label className="flex items-center gap-2 font-semibold">
+                      <MessageSquare className="h-4 w-4 text-primary" />
+                      3. WhatsApp curto e pessoal
+                    </Label>
                     <Input
                       value={wizard.lot}
                       onChange={(event) =>
                         updateWizard({ lot: event.target.value })
                       }
-                      placeholder="Lote destacado"
+                      placeholder="Lote ou gancho da conversa"
                     />
                     <Input
                       value={wizard.valueRange}
                       onChange={(event) =>
                         updateWizard({ valueRange: event.target.value })
                       }
-                      placeholder="Faixa de valor"
+                      placeholder="Faixa de valor ou interesse"
                     />
+                    <p className="text-xs text-muted-foreground">
+                      O texto final fica curto, consultivo e pronto para teste
+                      pelo BotConversa.
+                    </p>
                   </div>
-                  <div className="grid gap-2 md:grid-cols-[0.7fr_1fr]">
-                    <Input
-                      value={wizard.ctaLabel}
-                      onChange={(event) =>
-                        updateWizard({ ctaLabel: event.target.value })
-                      }
-                      placeholder="Texto do botão"
-                    />
-                    <Input
-                      value={wizard.ctaUrl}
-                      onChange={(event) =>
-                        updateWizard({ ctaUrl: event.target.value })
-                      }
-                      placeholder="Link do botão"
-                    />
+                  <div className="rounded-md border bg-muted/20 p-4 text-sm text-muted-foreground">
+                    <div className="mb-2 font-semibold text-foreground">
+                      Como vai sair
+                    </div>
+                    A mensagem usa o nome do cliente automaticamente na campanha
+                    real. Aqui você só escolhe o objetivo, leilão e gancho da
+                    conversa.
                   </div>
-                </div>
-              </section>
+                </section>
+              )}
             </div>
 
             <aside className="space-y-4 border-t bg-muted/10 p-4 lg:p-5 xl:border-l xl:border-t-0">
@@ -1347,78 +1416,114 @@ export default function Modelos() {
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2 text-sm font-semibold">
                     <Eye className="h-4 w-4 text-primary" />
-                    Preview instantâneo
+                    Preview ao lado
                   </div>
                   <Badge variant="secondary" className="border-0">
                     {readyCount}/4 pronto
                   </Badge>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Veja a peça tomando forma antes de gerar o modelo editável.
+                  Abra quando quiser conferir a mensagem antes de gerar.
                 </p>
               </div>
 
-              <div className="overflow-hidden rounded-md border bg-white shadow-sm">
-                {wizard.bannerUrl ? (
-                  <img
-                    src={wizard.bannerUrl}
-                    alt={wizard.bannerAlt || 'Banner Milan Horses'}
-                    className="aspect-[16/7] w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex aspect-[16/7] items-center justify-center bg-[#f6f3ee] text-center">
-                    <div>
-                      <Image className="mx-auto h-6 w-6 text-primary/60" />
-                      <div className="mt-2 text-xs font-medium text-muted-foreground">
-                        Banner ou foto do leilão
+              {composerPreviewOpen ? (
+                composerChannel === 'E-mail' ? (
+                  <div className="overflow-hidden rounded-md border bg-white shadow-sm">
+                    {wizard.bannerUrl ? (
+                      <img
+                        src={wizard.bannerUrl}
+                        alt={wizard.bannerAlt || 'Banner Milan Horses'}
+                        className="aspect-[16/7] w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex aspect-[16/7] items-center justify-center bg-[#f6f3ee] text-center">
+                        <div>
+                          <Image className="mx-auto h-6 w-6 text-primary/60" />
+                          <div className="mt-2 text-xs font-medium text-muted-foreground">
+                            Banner ou foto do leilão
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                )}
-                <div className="space-y-3 p-4">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#9a7a3f]">
-                    {selectedGoal.title}
-                  </div>
-                  <div className="font-display text-xl leading-tight text-primary">
-                    {wizard.headline || 'Curadoria privada Milan Horses'}
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {wizard.auctionName || 'Leilão selecionado'}
-                    {wizard.auctionDate ? ` · ${wizard.auctionDate}` : ''}
-                  </div>
-                  <div className="rounded-md bg-muted/20 px-2 py-1 text-xs text-muted-foreground">
-                    Assunto: {wizardPreviewSubject}
-                  </div>
-                  <div className="border-t pt-3 text-sm leading-relaxed text-foreground">
-                    Olá, {previewContext.nome}.{' '}
-                    {paragraphForGoal(wizard.goal, wizard.tone, wizard)
-                      .replace(/<[^>]+>/g, '')
-                      .replaceAll('{{leilao}}', wizard.auctionName)
-                      .replaceAll('{{data_leilao}}', wizard.auctionDate)
-                      .replaceAll('{{lote}}', wizard.lot || previewContext.lote)
-                      .replaceAll(
-                        '{{valor}}',
-                        wizard.valueRange || previewContext.valor,
-                      )}
-                  </div>
-                  {wizard.lot || wizard.valueRange ? (
-                    <div className="rounded-md border bg-muted/20 p-3 text-xs text-muted-foreground">
-                      {wizard.lot ? <div>Lote: {wizard.lot}</div> : null}
-                      {wizard.valueRange ? (
-                        <div>Faixa: {wizard.valueRange}</div>
+                    )}
+                    <div className="space-y-3 p-4">
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#9a7a3f]">
+                        {selectedGoal.title}
+                      </div>
+                      <div className="font-display text-xl leading-tight text-primary">
+                        {wizard.headline || 'Curadoria privada Milan Horses'}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {wizard.auctionName || 'Leilão selecionado'}
+                        {wizard.auctionDate ? ` · ${wizard.auctionDate}` : ''}
+                      </div>
+                      <div className="rounded-md bg-muted/20 px-2 py-1 text-xs text-muted-foreground">
+                        Assunto: {wizardPreviewSubject}
+                      </div>
+                      <div className="border-t pt-3 text-sm leading-relaxed text-foreground">
+                        Olá, {previewContext.nome}.{' '}
+                        {paragraphForGoal(wizard.goal, wizard.tone, wizard)
+                          .replace(/<[^>]+>/g, '')
+                          .replaceAll('{{leilao}}', wizard.auctionName)
+                          .replaceAll('{{data_leilao}}', wizard.auctionDate)
+                          .replaceAll(
+                            '{{lote}}',
+                            wizard.lot || previewContext.lote,
+                          )
+                          .replaceAll(
+                            '{{valor}}',
+                            wizard.valueRange || previewContext.valor,
+                          )}
+                      </div>
+                      {wizard.lot || wizard.valueRange ? (
+                        <div className="rounded-md border bg-muted/20 p-3 text-xs text-muted-foreground">
+                          {wizard.lot ? <div>Lote: {wizard.lot}</div> : null}
+                          {wizard.valueRange ? (
+                            <div>Faixa: {wizard.valueRange}</div>
+                          ) : null}
+                        </div>
                       ) : null}
+                      <Button size="sm" className="w-full">
+                        {wizard.ctaLabel || 'Ver curadoria'}
+                      </Button>
                     </div>
-                  ) : null}
-                  <Button size="sm" className="w-full">
-                    {wizard.ctaLabel || 'Ver curadoria'}
+                  </div>
+                ) : (
+                  <div className="rounded-md border bg-[#eef8f0] p-4 shadow-sm">
+                    <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold text-emerald-800">
+                      <MessageSquare className="h-3.5 w-3.5" />
+                      Preview WhatsApp
+                    </div>
+                    <div className="ml-auto max-w-[92%] rounded-2xl rounded-tr-sm bg-white p-4 text-sm leading-relaxed text-foreground shadow-sm">
+                      {wizardPreviewMessage}
+                    </div>
+                  </div>
+                )
+              ) : (
+                <div className="rounded-md border border-dashed bg-white p-5 text-center">
+                  <Eye className="mx-auto h-6 w-6 text-primary/70" />
+                  <div className="mt-2 font-medium text-foreground">
+                    Preview escondido
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Clique em Ver preview quando quiser conferir a peça ao lado.
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="mt-4"
+                    onClick={() => setComposerPreviewOpen(true)}
+                  >
+                    <Eye className="mr-2 h-4 w-4" />
+                    Ver preview
                   </Button>
                 </div>
-              </div>
+              )}
 
               <div className="space-y-2 rounded-md border bg-white p-3">
                 <div className="flex items-center gap-2 text-sm font-medium">
                   <UserRound className="h-4 w-4 text-primary" />
-                  Campos do preview
+                  Teste com exemplo de cliente
                 </div>
                 <Input
                   value={previewContext.nome}
@@ -1427,27 +1532,40 @@ export default function Modelos() {
                   }
                   placeholder="Nome do cliente"
                 />
-                <Input
-                  value={previewContext.segmento}
-                  onChange={(event) =>
-                    updatePreviewContext({ segmento: event.target.value })
-                  }
-                  placeholder="Segmento"
-                />
-                <Input
-                  value={previewContext.cidade}
-                  onChange={(event) =>
-                    updatePreviewContext({ cidade: event.target.value })
-                  }
-                  placeholder="Cidade"
-                />
-                <Input
-                  value={previewContext.ticket_medio}
-                  onChange={(event) =>
-                    updatePreviewContext({ ticket_medio: event.target.value })
-                  }
-                  placeholder="Ticket médio"
-                />
+                <details className="rounded-md border bg-muted/10 p-3 text-xs text-muted-foreground">
+                  <summary className="cursor-pointer font-medium text-foreground">
+                    Personalização avançada
+                  </summary>
+                  <div className="mt-3 space-y-2">
+                    <Input
+                      value={previewContext.segmento}
+                      onChange={(event) =>
+                        updatePreviewContext({ segmento: event.target.value })
+                      }
+                      placeholder="Segmento"
+                    />
+                    <Input
+                      value={previewContext.cidade}
+                      onChange={(event) =>
+                        updatePreviewContext({ cidade: event.target.value })
+                      }
+                      placeholder="Cidade"
+                    />
+                    <Input
+                      value={previewContext.ticket_medio}
+                      onChange={(event) =>
+                        updatePreviewContext({
+                          ticket_medio: event.target.value,
+                        })
+                      }
+                      placeholder="Histórico ou ticket"
+                    />
+                    <p>
+                      Na campanha real, o CRM preenche esses dados
+                      automaticamente quando existirem no contato.
+                    </p>
+                  </div>
+                </details>
               </div>
 
               <div className="space-y-2 rounded-md border bg-white p-3">
@@ -1470,13 +1588,12 @@ export default function Modelos() {
                 </div>
               </div>
 
-              <Button
-                onClick={generatePremiumEmail}
-                className="w-full"
-                size="lg"
-              >
+              <Button onClick={generateFromWizard} className="w-full" size="lg">
                 <Wand2 className="mr-2 h-4 w-4" />
-                Gerar modelo editável
+                Gerar {composerChannel === 'E-mail'
+                  ? 'e-mail'
+                  : 'WhatsApp'}{' '}
+                editável
               </Button>
               <div className="text-center text-xs text-muted-foreground">
                 Depois de gerar, você pode editar detalhes, enviar teste, salvar
@@ -1524,13 +1641,17 @@ export default function Modelos() {
       <div className="grid gap-4 xl:grid-cols-[340px_minmax(0,1fr)] 2xl:grid-cols-[360px_minmax(0,1fr)_380px]">
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle>Biblioteca</CardTitle>
+            <CardTitle>Modelos salvos</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Objetivos e canais ficam no criador acima. Aqui aparecem só as
+              mensagens já salvas para reutilizar em campanhas.
+            </p>
           </CardHeader>
           <CardContent className="space-y-3">
             <Input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Buscar modelo ou receita..."
+              placeholder="Buscar modelo salvo..."
             />
             <div className="grid grid-cols-2 gap-2">
               <Select
@@ -1568,93 +1689,45 @@ export default function Modelos() {
               </Select>
             </div>
 
-            <Tabs defaultValue="recipes">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="recipes">Receitas</TabsTrigger>
-                <TabsTrigger value="saved">Salvos</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="recipes" className="mt-3">
-                <ScrollArea className="h-[560px] pr-3">
-                  <div className="space-y-2">
-                    {RECIPES.filter((recipe) => {
-                      const term = search.toLowerCase()
-                      const matchesSearch =
-                        !term ||
-                        recipe.title.toLowerCase().includes(term) ||
-                        recipe.objective.toLowerCase().includes(term)
-                      const matchesChannel =
-                        channel === 'Todos' || recipe.type === channel
-                      const matchesCategory =
-                        category === 'Todas' || recipe.category === category
-                      return matchesSearch && matchesChannel && matchesCategory
-                    }).map((recipe) => (
-                      <button
-                        key={`${recipe.title}-${recipe.type}`}
-                        type="button"
-                        className="w-full rounded-md border p-3 text-left transition-colors hover:border-primary hover:bg-primary/5"
-                        onClick={() => loadRecipe(recipe)}
-                      >
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="font-medium">{recipe.title}</div>
-                          <Badge variant="outline" className="shrink-0">
-                            {recipe.type}
-                          </Badge>
-                        </div>
-                        <div className="mt-1 text-xs text-muted-foreground">
-                          {recipe.objective}
-                        </div>
-                        <div className="mt-2 text-xs text-primary">
-                          {recipe.tone}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </ScrollArea>
-              </TabsContent>
-
-              <TabsContent value="saved" className="mt-3">
-                <ScrollArea className="h-[560px] pr-3">
-                  {loading ? (
-                    <div className="flex h-40 items-center justify-center">
-                      <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                    </div>
-                  ) : filteredTemplates.length ? (
-                    <div className="space-y-2">
-                      {filteredTemplates.map((template) => (
-                        <button
-                          key={template.id}
-                          type="button"
-                          className={cn(
-                            'w-full rounded-md border p-3 text-left transition-colors hover:border-primary hover:bg-primary/5',
-                            selectedId === template.id &&
-                              'border-primary bg-primary/5',
-                          )}
-                          onClick={() => loadTemplate(template)}
-                        >
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="font-medium">{template.title}</div>
-                            <Badge variant="outline" className="shrink-0">
-                              {template.type}
-                            </Badge>
-                          </div>
-                          <div className="mt-1 text-xs text-muted-foreground">
-                            {template.category}
-                          </div>
-                          <div className="mt-2 line-clamp-2 text-xs text-muted-foreground">
-                            {template.body.replace(/<[^>]+>/g, '')}
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="rounded-md border border-dashed p-6 text-center text-sm text-muted-foreground">
-                      Nenhum modelo encontrado.
-                    </div>
-                  )}
-                </ScrollArea>
-              </TabsContent>
-            </Tabs>
+            <ScrollArea className="h-[560px] pr-3">
+              {loading ? (
+                <div className="flex h-40 items-center justify-center">
+                  <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                </div>
+              ) : filteredTemplates.length ? (
+                <div className="space-y-2">
+                  {filteredTemplates.map((template) => (
+                    <button
+                      key={template.id}
+                      type="button"
+                      className={cn(
+                        'w-full rounded-md border p-3 text-left transition-colors hover:border-primary hover:bg-primary/5',
+                        selectedId === template.id &&
+                          'border-primary bg-primary/5',
+                      )}
+                      onClick={() => loadTemplate(template)}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="font-medium">{template.title}</div>
+                        <Badge variant="outline" className="shrink-0">
+                          {template.type}
+                        </Badge>
+                      </div>
+                      <div className="mt-1 text-xs text-muted-foreground">
+                        {template.category}
+                      </div>
+                      <div className="mt-2 line-clamp-2 text-xs text-muted-foreground">
+                        {template.body.replace(/<[^>]+>/g, '')}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-md border border-dashed p-6 text-center text-sm text-muted-foreground">
+                  Nenhum modelo salvo encontrado.
+                </div>
+              )}
+            </ScrollArea>
           </CardContent>
         </Card>
 
@@ -1711,7 +1784,8 @@ export default function Modelos() {
                 <Label>Canal</Label>
                 <Select
                   value={draft.type}
-                  onValueChange={(value) =>
+                  onValueChange={(value) => {
+                    setComposerChannel(value as TemplateType)
                     updateDraft({
                       type: value as TemplateType,
                       subject:
@@ -1720,7 +1794,7 @@ export default function Modelos() {
                             'Curadoria Milan Horses: {{leilao}}'
                           : '',
                     })
-                  }
+                  }}
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -2032,14 +2106,14 @@ export default function Modelos() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <div className="text-sm font-medium">Campos dinâmicos</div>
+              <div className="text-sm font-medium">
+                Exemplo de personalização
+              </div>
               <div className="rounded-md border p-3 text-sm">
                 <div className="font-semibold">{SAMPLE_CONTEXT.nome}</div>
                 <div className="text-muted-foreground">
-                  {SAMPLE_CONTEXT.segmento} · {SAMPLE_CONTEXT.cidade}
-                </div>
-                <div className="text-muted-foreground">
-                  Ticket médio {SAMPLE_CONTEXT.ticket_medio}
+                  Na campanha real, o CRM troca os campos entre chaves pelos
+                  dados de cada contato.
                 </div>
               </div>
             </div>
@@ -2052,7 +2126,7 @@ export default function Modelos() {
                 </div>
                 <div className="rounded-md bg-white p-3 text-sm leading-relaxed shadow-sm">
                   {previewBody ||
-                    'Selecione uma receita ou escreva a mensagem.'}
+                    'Gere uma mensagem acima ou escreva o texto aqui.'}
                 </div>
               </div>
             ) : (
@@ -2072,7 +2146,7 @@ export default function Modelos() {
                   dangerouslySetInnerHTML={{
                     __html:
                       previewBody ||
-                      'Selecione uma receita ou escreva a mensagem.',
+                      'Gere uma mensagem acima ou escreva o texto aqui.',
                   }}
                 />
               </div>

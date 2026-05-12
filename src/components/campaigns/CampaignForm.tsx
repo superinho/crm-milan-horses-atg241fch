@@ -193,7 +193,7 @@ export function CampaignForm({
         variant: 'info',
         title: 'Atenção',
         description:
-          'Você não selecionou nenhum filtro de público. Isso pode resultar em 0 destinatários.',
+          'Você não selecionou listas nem tags. Isso pode resultar em 0 destinatários.',
       })
     }
 

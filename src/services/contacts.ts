@@ -438,24 +438,60 @@ export const contactsService = {
     }
   },
 
-  async getAudienceCount(filters: { tags?: string[]; segments?: string[] }) {
-    const { data, count, error } = await this.getContacts({
-      page: 1,
-      pageSize: 10000,
-      tags: filters.tags || [],
-    })
+  async getAudienceLists() {
+    const { data, error } = await db
+      .from('customer_rfmv_view')
+      .select('segment')
     if (error) throw error
 
-    if (!filters.segments?.length) return count
+    return [
+      ...new Set(
+        (data || [])
+          .map((item: any) => item.segment)
+          .filter((segment: string | null) => Boolean(segment)),
+      ),
+    ] as string[]
+  },
 
-    const { data: segmented, error: segmentError } = await db
-      .from('contact_segmentation_view')
-      .select('id')
-      .in('segment', filters.segments)
+  async getAudienceCount(filters: { tags?: string[]; segments?: string[] }) {
+    const tags = filters.tags || []
+    const segments = filters.segments || []
 
-    if (segmentError) throw segmentError
-    const segmentIds = new Set((segmented || []).map((item: any) => item.id))
-    return data.filter((contact) => segmentIds.has(contact.id)).length
+    if (!tags.length && !segments.length) {
+      const { count, error } = await db
+        .from('customer_rfmv_view')
+        .select('id', { count: 'exact', head: true })
+
+      if (error) throw error
+      return count || 0
+    }
+
+    const ids = new Set<string>()
+
+    if (tags.length) {
+      const tagIds = await tagIdsByNames(tags)
+      if (tagIds.length) {
+        const { data: contactTags, error } = await db
+          .from('contact_tags')
+          .select('contact_id')
+          .in('tag_id', tagIds)
+
+        if (error) throw error
+        ;(contactTags || []).forEach((item: any) => ids.add(item.contact_id))
+      }
+    }
+
+    if (segments.length) {
+      const { data: segmented, error } = await db
+        .from('customer_rfmv_view')
+        .select('id')
+        .in('segment', segments)
+
+      if (error) throw error
+      ;(segmented || []).forEach((item: any) => ids.add(item.id))
+    }
+
+    return ids.size
   },
 
   async deleteContact(id: string) {

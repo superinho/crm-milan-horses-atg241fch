@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react'
-import { DollarSign, Trophy, Gavel, Users, Loader2 } from 'lucide-react'
+import {
+  DollarSign,
+  Trophy,
+  Gavel,
+  Users,
+  Loader2,
+  Flame,
+  ShieldAlert,
+} from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -24,6 +32,16 @@ function CustomerRow({ customer }: { customer: CustomerRfmv }) {
         <div className="mt-0.5 text-xs text-muted-foreground">
           {customer.purchase_count} compras · {customer.bid_count} lances
         </div>
+        {customer.heat_score ? (
+          <div className="mt-0.5 text-xs font-medium text-orange-700">
+            Heat {customer.heat_score} · streak {customer.streak_count || 0}
+          </div>
+        ) : null}
+        {customer.ghost_score ? (
+          <div className="mt-0.5 text-xs font-medium text-slate-700">
+            Ghost {customer.ghost_score} · sem compra
+          </div>
+        ) : null}
       </div>
       <div className="text-right">
         <div className="text-sm font-semibold">
@@ -159,22 +177,43 @@ export function MonetaryDashboard() {
         <Card>
           <CardHeader>
             <CardTitle className="text-base">
-              Alto potencial sem compra
+              Compradores quentes
+              <Flame className="h-4 w-4 text-orange-700" />
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {data.highPotential.length ? (
-              data.highPotential.map((customer) => (
+            {data.hotBuyers.length ? (
+              data.hotBuyers.map((customer) => (
                 <CustomerRow key={customer.id} customer={customer} />
               ))
             ) : (
               <div className="text-sm text-muted-foreground">
-                Nenhum cliente neste segmento ainda.
+                Nenhum comprador em streak recente.
               </div>
             )}
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            Bidders fantasma
+            <ShieldAlert className="h-4 w-4 text-slate-700" />
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-2 md:grid-cols-2 xl:grid-cols-5">
+          {data.ghostBidders.length ? (
+            data.ghostBidders.map((customer) => (
+              <CustomerRow key={customer.id} customer={customer} />
+            ))
+          ) : (
+            <div className="text-sm text-muted-foreground">
+              Nenhum bidder fantasma relevante.
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }

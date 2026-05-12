@@ -10,7 +10,8 @@ export interface DashboardData {
     withWhatsapp: number
     totalBidsValue: number
     avgTicket: number
-    highPotential: number
+    ghostBidders: number
+    hotBuyers: number
     upcomingBirthdays: number
     upcomingBirthdayNames: string[]
   }
@@ -64,12 +65,13 @@ export const dashboardService = {
   async getDashboardData(): Promise<DashboardData> {
     const now = new Date()
 
-    const [rfmvData, birthdayData] = await Promise.all([
+    const [rfmvData, birthdayData, purchaseData] = await Promise.all([
       fetchAllRows(
         'customer_rfmv_view',
-        'id,name,purchase_count,monetary_value,bid_value,avg_ticket,whatsapp,segment',
+        'id,name,purchase_count,monetary_value,bid_count,bid_value,avg_ticket,whatsapp,segment,last_activity_date',
       ),
       fetchAllRows('contacts', 'id,name,birth_date'),
+      fetchAllRows('purchases', 'id,contact_id,date,value'),
     ])
 
     const rfmvRows = (rfmvData || []).map((row: any) => ({
@@ -118,9 +120,10 @@ export const dashboardService = {
         0,
       ),
       avgTicket: totalPurchases ? totalRevenue / totalPurchases : 0,
-      highPotential: rfmvRows.filter(
-        (row: any) => row.segment === 'Alto potencial sem compra',
+      ghostBidders: rfmvRows.filter(
+        (row: any) => row.purchase_count === 0 && Number(row.bid_count || 0) >= 5,
       ).length,
+      hotBuyers: hotBuyerCount(purchaseData || []),
       upcomingBirthdays: upcomingBirthdays.length,
       upcomingBirthdayNames: upcomingBirthdays
         .slice(0, 3)
@@ -132,4 +135,22 @@ export const dashboardService = {
       snapshot,
     }
   },
+}
+
+const hotBuyerCount = (purchases: any[]) => {
+  const byContact = new Map<string, Set<string>>()
+
+  purchases.forEach((purchase) => {
+    if (!purchase.contact_id || !purchase.date) return
+    const date = new Date(purchase.date)
+    if (Number.isNaN(date.getTime())) return
+    const days = Math.floor((Date.now() - date.getTime()) / 86_400_000)
+    if (days > 90) return
+
+    const current = byContact.get(purchase.contact_id) || new Set<string>()
+    current.add(String(purchase.date).slice(0, 10))
+    byContact.set(purchase.contact_id, current)
+  })
+
+  return [...byContact.values()].filter((dates) => dates.size >= 2).length
 }

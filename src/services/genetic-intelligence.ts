@@ -21,6 +21,23 @@ type CommercialRow = {
   payload: Record<string, any> | null
 }
 
+type StudbookHorseRow = {
+  id: string
+  name: string | null
+  normalized_name: string | null
+  registration: string | null
+  sex: string | null
+  birth_date: string | null
+  birth_year: number | null
+  sire_name: string | null
+  dam_name: string | null
+  breeder_name: string | null
+  owner_name: string | null
+  data_quality_score: number | null
+}
+
+type GeneticLotMeta = ReturnType<typeof lotMeta>
+
 export type GeneticRankingMode = 'mare' | 'sire' | 'cross'
 export type GeneticReproductiveType =
   | 'mare'
@@ -126,12 +143,24 @@ const normalize = (value: string) =>
   value
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[ºª]/g, '')
     .replace(/\s+/g, ' ')
     .trim()
     .toUpperCase()
 
+const normalizeComparable = (value: string) =>
+  normalize(value)
+    .replace(/[^A-Z0-9 ]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
 const clean = (value: string, fallback = 'Não informado') =>
   value ? value.replace(/\s+/g, ' ').trim() : fallback
+
+const hasValue = (value: string) => {
+  const normalized = normalizeComparable(value)
+  return Boolean(normalized && normalized !== 'NAO INFORMADO')
+}
 
 const parseBirthDate = (value: string) => {
   if (!value || value === '0000-00-00') return null
@@ -267,6 +296,12 @@ const lotMeta = (lot: SmartLotRow) => {
   }
 }
 
+const commercialTitleOf = (row: CommercialRow) =>
+  descriptionOf(row)
+    .replace(/\s*\|\s*ID\s+contrato.*$/i, '')
+    .replace(/\s*\|\s*ID\s+lance.*$/i, '')
+    .trim()
+
 const descriptionOf = (row: CommercialRow) =>
   clean(
     valueOf(row.payload, [
@@ -285,12 +320,244 @@ const bidderIdOf = (row: CommercialRow) =>
     'nomeCompradorContrato',
   ])
 
+const horseNameAliases = (name: string | null | undefined) => {
+  const aliases = new Set<string>()
+  const base = normalizeComparable(name || '')
+  if (!base) return []
+
+  aliases.add(base)
+
+  const suffixes = new Set([
+    'TE',
+    'FIV',
+    'IA',
+    'IATF',
+    'ET',
+    'ETR',
+    'Z',
+    'JMEN',
+  ])
+  const tokens = base.split(' ')
+  while (tokens.length > 1 && suffixes.has(tokens[tokens.length - 1])) {
+    tokens.pop()
+    aliases.add(tokens.join(' '))
+  }
+
+  return [...aliases]
+}
+
+const findHorse = (
+  index: Map<string, StudbookHorseRow[]>,
+  name: string,
+): StudbookHorseRow | null => {
+  for (const alias of horseNameAliases(name)) {
+    const matches = index.get(alias)
+    if (matches?.length) return matches[0]
+  }
+  return null
+}
+
+const sexIsFemale = (horse: StudbookHorseRow | null) =>
+  normalizeComparable(horse?.sex || '').includes('F')
+
+const sexIsMale = (horse: StudbookHorseRow | null) => {
+  const sex = normalizeComparable(horse?.sex || '')
+  return sex.includes('M') || sex.includes('GARANHAO')
+}
+
+const categoryOf = (row: CommercialRow) =>
+  clean(
+    valueOf(row.payload, [
+      'categoriaLoteContrato',
+      'categoriaLoteLance',
+      'categoriaLote',
+      'categoria',
+    ]),
+    'Sem categoria',
+  )
+
+const isClearlyNonHorseLot = (row: CommercialRow) => {
+  const category = normalizeComparable(categoryOf(row))
+  const title = normalizeComparable(commercialTitleOf(row))
+
+  if (/\b(PALHETA|SEMEN|SEMEM|COBERTURA)\b/.test(category)) return false
+  if (category && category !== 'SEM GRUPO DEFINIDO') return false
+
+  return /\b(SELA|CASACA|CAMISA|CAPACETE|CASACO|LUVA|BOTA|ARREIO|MANTA|QUADRO|LIVRO|CINTO|BONE|CHAPEU|HOTEL|VINHO|POLO|COLAR|BRILHANTE)\b/.test(
+    title,
+  )
+}
+
+const reproductiveTypeFromCommercial = (
+  row: CommercialRow,
+  title: string,
+  sex = '',
+) =>
+  classifyReproductiveType({
+    category: categoryOf(row),
+    sex,
+    title,
+    payload: row.payload || {},
+  })
+
+const damSireFor = (
+  damName: string,
+  horseIndex: Map<string, StudbookHorseRow[]>,
+) => findHorse(horseIndex, damName)?.sire_name || ''
+
+const lotMetaFromHorse = (
+  row: CommercialRow,
+  horse: StudbookHorseRow,
+  horseIndex: Map<string, StudbookHorseRow[]>,
+): GeneticLotMeta => {
+  const birthDate = parseBirthDate(horse.birth_date || '')
+  const birthYearDate =
+    !birthDate && horse.birth_year
+      ? new Date(`${horse.birth_year}-07-01T00:00:00`)
+      : null
+  const ageYears = ageFromDate(birthDate || birthYearDate)
+  const title = clean(horse.name || commercialTitleOf(row))
+  const category = categoryOf(row)
+  const mare = clean(horse.dam_name || '', '')
+  const sire = clean(horse.sire_name || '', '')
+  const damSire = clean(damSireFor(mare, horseIndex), '')
+  const sex = clean(horse.sex || '', 'Não informado')
+
+  return {
+    id: String(row.smartleiloes_lot_id || row.smartleiloes_id || title),
+    title,
+    lotNumber: clean(String(row.lot_number || ''), '-'),
+    imageUrl: '',
+    category,
+    mare,
+    sire,
+    damSire,
+    breeder: clean(horse.breeder_name || '', 'Não informado'),
+    sex,
+    reproductiveType: reproductiveTypeFromCommercial(row, title, sex),
+    ageYears,
+    ageLabel: ageYears === null ? 'Idade não informada' : `${ageYears} anos`,
+    ageSource: birthDate
+      ? 'Studbook BH'
+      : birthYearDate
+        ? 'Ano Studbook BH'
+        : 'Sem data de nascimento',
+    commercialStatus: clean(
+      valueOf(row.payload, [
+        'situacaoComercialContrato',
+        'situacaoComercialLance',
+        'situacaoComercialLote',
+      ]),
+      'Vendido',
+    ),
+  }
+}
+
+const cleanCrossName = (value: string) =>
+  value
+    .replace(/\([^)]*\)/g, '')
+    .replace(/\b(EMBRIAO|EMBRYON|COBERTURA|PRENHEZ|PALHETA|SEMEN|SEMEM)\b/gi, '')
+    .replace(/^[\s:.-]+|[\s:.-]+$/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+const parsedCrossFromTitle = (
+  row: CommercialRow,
+  horseIndex: Map<string, StudbookHorseRow[]>,
+): GeneticLotMeta | null => {
+  const title = commercialTitleOf(row)
+  const normalized = normalizeComparable(title)
+  const damSireHint = title.match(/\(([^)]+)\)/)?.[1] || ''
+  const text = title
+    .replace(/\([^)]*\)/g, '')
+    .replace(/\b(EMBRIAO|EMBRYON|COBERTURA|PRENHEZ|PALHETA|SEMEN|SEMEM)\b/gi, '')
+    .replace(/^[\s:.-]+|[\s:.-]+$/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  let left = ''
+  let right = ''
+  let relation: 'x' | 'on' | null = null
+
+  const onMatch = text.match(/^(.+?)\s+(?:NA|NO|EM)\s+(.+)$/i)
+  const xMatch = text.match(/^(.+?)\s+X\s+(.+)$/i)
+
+  if (onMatch) {
+    left = cleanCrossName(onMatch[1])
+    right = cleanCrossName(onMatch[2])
+    relation = 'on'
+  } else if (xMatch) {
+    left = cleanCrossName(xMatch[1])
+    right = cleanCrossName(xMatch[2])
+    relation = 'x'
+  }
+
+  if (!left || !right || !relation) return null
+
+  const leftHorse = findHorse(horseIndex, left)
+  const rightHorse = findHorse(horseIndex, right)
+  let sire = left
+  let mare = right
+
+  if (
+    relation === 'x' &&
+    (sexIsFemale(leftHorse) || (sexIsMale(rightHorse) && !sexIsMale(leftHorse)))
+  ) {
+    sire = right
+    mare = left
+  }
+
+  const mareHorse = findHorse(horseIndex, mare)
+  const sireHorse = findHorse(horseIndex, sire)
+  const damSire =
+    damSireHint ||
+    mareHorse?.sire_name ||
+    (sexIsFemale(leftHorse) ? leftHorse?.sire_name : rightHorse?.sire_name) ||
+    ''
+
+  if (!hasValue(sire) && !hasValue(mare)) return null
+
+  return {
+    id: String(row.smartleiloes_lot_id || row.smartleiloes_id || normalized),
+    title: clean(title),
+    lotNumber: clean(String(row.lot_number || ''), '-'),
+    imageUrl: '',
+    category: categoryOf(row),
+    mare: clean(mare, ''),
+    sire: clean(sire, ''),
+    damSire: clean(damSire || '', ''),
+    breeder: clean(mareHorse?.breeder_name || sireHorse?.breeder_name || ''),
+    sex: 'Não informado',
+    reproductiveType: reproductiveTypeFromCommercial(row, title),
+    ageYears: null,
+    ageLabel: 'Idade não informada',
+    ageSource: 'Cruzamento descrito na venda',
+    commercialStatus: clean(
+      valueOf(row.payload, ['situacaoComercialContrato']),
+      'Vendido',
+    ),
+  }
+}
+
+const lotMetaFromCommercial = (
+  row: CommercialRow,
+  horseIndex: Map<string, StudbookHorseRow[]>,
+) => {
+  if (isClearlyNonHorseLot(row)) return null
+
+  const title = commercialTitleOf(row)
+  const directHorse = findHorse(horseIndex, title)
+  if (directHorse) return lotMetaFromHorse(row, directHorse, horseIndex)
+
+  return parsedCrossFromTitle(row, horseIndex)
+}
+
 const createMetric = (
   mode: GeneticRankingMode,
   key: string,
   label: string,
   secondaryLabel: string,
-  lot: ReturnType<typeof lotMeta>,
+  lot: GeneticLotMeta,
 ): GeneticMetricRow => ({
   key,
   label,
@@ -405,9 +672,11 @@ export const geneticIntelligenceService = {
       ),
     ])
 
+    const horseIndex = new Map<string, StudbookHorseRow[]>()
     const lotsById = new Map(
       lots.map((lot) => [String(lot.smartleiloes_id), lotMeta(lot)]),
     )
+    const pedigreeLotIds = new Set<string>()
     const mareRows = new Map<string, GeneticMetricRow>()
     const sireRows = new Map<string, GeneticMetricRow>()
     const crossRows = new Map<string, GeneticMetricRow>()
@@ -437,7 +706,7 @@ export const geneticIntelligenceService = {
       mode: GeneticRankingMode,
       label: string,
       secondaryLabel: string,
-      lot: ReturnType<typeof lotMeta>,
+      lot: GeneticLotMeta,
     ) => {
       const key = `${mode}:${normalize(label)}:${normalize(secondaryLabel)}`
       if (!map.has(key))
@@ -459,17 +728,48 @@ export const geneticIntelligenceService = {
       return map.get(key)!
     }
 
-    const rowsForLot = (lot: ReturnType<typeof lotMeta>) => [
-      ensureRow(mareRows, 'mare', lot.mare, `por ${lot.damSire}`, lot),
-      ensureRow(sireRows, 'sire', lot.sire, `matriz ${lot.mare}`, lot),
-      ensureRow(
-        crossRows,
-        'cross',
-        `${lot.sire} x ${lot.mare}`,
-        lot.damSire,
-        lot,
-      ),
-    ]
+    const rowsForLot = (lot: GeneticLotMeta) => {
+      const rows: GeneticMetricRow[] = []
+
+      if (hasValue(lot.mare)) {
+        rows.push(
+          ensureRow(
+            mareRows,
+            'mare',
+            lot.mare,
+            hasValue(lot.damSire) ? `por ${lot.damSire}` : lot.title,
+            lot,
+          ),
+        )
+      }
+
+      if (hasValue(lot.sire)) {
+        rows.push(
+          ensureRow(
+            sireRows,
+            'sire',
+            lot.sire,
+            hasValue(lot.mare) ? `matriz ${lot.mare}` : lot.title,
+            lot,
+          ),
+        )
+      }
+
+      if (hasValue(lot.sire) && hasValue(lot.mare)) {
+        rows.push(
+          ensureRow(
+            crossRows,
+            'cross',
+            `${lot.sire} x ${lot.mare}`,
+            lot.damSire || lot.title,
+            lot,
+          ),
+        )
+      }
+
+      if (rows.length > 0) pedigreeLotIds.add(lot.id)
+      return rows
+    }
 
     for (const lot of lotsById.values()) {
       rowsForLot(lot)
@@ -484,12 +784,43 @@ export const geneticIntelligenceService = {
 
     const processCommercial = (row: CommercialRow, type: 'bid' | 'sale') => {
       const lotId = String(row.smartleiloes_lot_id || '')
-      const lot = lotsById.get(lotId)
+      let lot = lotsById.get(lotId)
       const amount =
         Number(row.value || 0) ||
         numberOf(valueOf(row.payload, ['valorLance', 'valorContrato']))
 
+      if (!lot && lotId) {
+        const syntheticLot = lotMetaFromCommercial(row, horseIndex)
+        if (syntheticLot) {
+          lotsById.set(lotId, syntheticLot)
+          lot = syntheticLot
+        }
+      }
+
       if (!lot) {
+        if (isClearlyNonHorseLot(row)) return
+
+        if (type === 'bid') {
+          unmatchedBidCount += 1
+        } else {
+          unmatchedSalesCount += 1
+          unmatchedSalesValue += amount
+        }
+
+        if (gaps.length < 80) {
+          gaps.push({
+            source: type === 'bid' ? 'Lance' : 'Venda',
+            lotId,
+            lotNumber: clean(String(row.lot_number || ''), '-'),
+            description: descriptionOf(row),
+            value: amount,
+          })
+        }
+        return
+      }
+
+      const metricRows = rowsForLot(lot)
+      if (metricRows.length === 0) {
         if (type === 'bid') {
           unmatchedBidCount += 1
         } else {
@@ -517,7 +848,7 @@ export const geneticIntelligenceService = {
         salesValueWithPedigree += amount
       }
 
-      for (const metric of rowsForLot(lot)) {
+      for (const metric of metricRows) {
         const bidders = rowBidders.get(metric.key)!
         const soldLotIds = rowSoldLots.get(metric.key)!
         addActivity(
@@ -560,7 +891,7 @@ export const geneticIntelligenceService = {
 
     return {
       summary: {
-        pedigreeLots: lots.length,
+        pedigreeLots: pedigreeLotIds.size,
         lotsWithCommercialActivity: lotsWithActivity.size,
         bidCountWithPedigree,
         salesCountWithPedigree,

@@ -20,7 +20,8 @@ export type VipRadarAuction = {
 export type VipRadarSegment =
   | 'VIP ativo'
   | 'Underbidder premium'
-  | 'Alto potencial sem compra'
+  | 'Bidder fantasma'
+  | 'Comprador quente'
   | 'Reativação VIP'
   | 'Comprador compatível'
 
@@ -40,6 +41,9 @@ export type VipRadarRecommendation = {
   bidCount: number
   bidValue: number
   lastActivityDate: string | null
+  heatScore: number
+  streakCount: number
+  ghostScore: number
   reasons: string[]
   recommendedChannel: 'whatsapp' | 'email' | 'phone' | 'manual'
   suggestedMessage: string
@@ -75,6 +79,9 @@ type RfmvRow = {
   last_activity_date: string | null
   rfmv_score: number
   segment: string | null
+  heat_score?: number | null
+  streak_count?: number | null
+  ghost_score?: number | null
 }
 
 const money = (value: number) =>
@@ -111,6 +118,95 @@ const targetValueOf = (auction: VipRadarAuction | null) => {
   return auction.avgLotValue || auction.topLotValue || auction.value || 0
 }
 
+const eventKeyOf = (row: any) =>
+  String(
+    row.smartleiloes_event_id ||
+      row.auction_id ||
+      row.payload?.idEventoContrato ||
+      row.payload?.idEvento ||
+      row.date ||
+      '',
+  )
+
+const buildPurchaseHeatProfiles = (purchases: any[]) => {
+  const byContact = new Map<
+    string,
+    { dates: string[]; events: string[]; recentValue: number }
+  >()
+
+  purchases.forEach((purchase) => {
+    if (!purchase.contact_id) return
+    const current =
+      byContact.get(purchase.contact_id) || {
+        dates: [],
+        events: [],
+        recentValue: 0,
+      }
+    const date = String(purchase.date || '')
+    current.dates.push(date)
+
+    const eventKey = eventKeyOf(purchase)
+    if (eventKey && !current.events.includes(eventKey)) {
+      current.events.push(eventKey)
+    }
+
+    if (daysSince(date) <= 180) {
+      current.recentValue += numberValue(purchase.value)
+    }
+
+    byContact.set(purchase.contact_id, current)
+  })
+
+  const profiles = new Map<
+    string,
+    { heat_score: number; streak_count: number; recent_purchase_value: number }
+  >()
+
+  byContact.forEach((profile, contactId) => {
+    const uniqueDates = [...new Set(profile.dates.filter(Boolean))].sort(
+      (a, b) => new Date(b).getTime() - new Date(a).getTime(),
+    )
+    const lastDays = daysSince(uniqueDates[0])
+    const purchasesIn90 = uniqueDates.filter((date) => daysSince(date) <= 90)
+    const purchasesIn180 = uniqueDates.filter((date) => daysSince(date) <= 180)
+    const streakCount = Math.max(
+      purchasesIn90.length,
+      Math.min(purchasesIn180.length, profile.events.length),
+    )
+    const recencyScore =
+      lastDays <= 15
+        ? 45
+        : lastDays <= 30
+          ? 38
+          : lastDays <= 60
+            ? 28
+            : lastDays <= 90
+              ? 20
+              : lastDays <= 180
+                ? 10
+                : 0
+    const streakScore = Math.min(30, streakCount * 8)
+    const valueScore = Math.min(25, Math.round(profile.recentValue / 40_000))
+
+    profiles.set(contactId, {
+      heat_score: Math.min(100, recencyScore + streakScore + valueScore),
+      streak_count: streakCount,
+      recent_purchase_value: profile.recentValue,
+    })
+  })
+
+  return profiles
+}
+
+const ghostScoreOf = (row: RfmvRow) => {
+  if (row.purchase_count > 0 || row.bid_count <= 0) return 0
+  return scoreClamp(
+    row.bid_count * 1.4 +
+      Math.min(45, row.bid_value / 8_000) +
+      Math.min(20, numberValue(row.auction_count) * 4),
+  )
+}
+
 const valueFitScore = (row: RfmvRow, targetValue: number) => {
   if (!targetValue) return 8
 
@@ -131,12 +227,14 @@ const valueFitScore = (row: RfmvRow, targetValue: number) => {
 }
 
 const segmentOf = (row: RfmvRow, inactiveDays: number): VipRadarSegment => {
+  if (numberValue(row.heat_score) >= 55 && row.purchase_count > 0)
+    return 'Comprador quente'
   if (row.monetary_value >= 500_000 && inactiveDays <= 180) return 'VIP ativo'
   if (
     row.purchase_count === 0 &&
     (row.bid_count >= 5 || row.bid_value >= 250_000)
   ) {
-    return 'Alto potencial sem compra'
+    return 'Bidder fantasma'
   }
   if (
     row.purchase_count > 0 &&
@@ -152,8 +250,9 @@ const segmentOf = (row: RfmvRow, inactiveDays: number): VipRadarSegment => {
 
 const segmentBoost = (segment: VipRadarSegment) => {
   if (segment === 'VIP ativo') return 18
+  if (segment === 'Comprador quente') return 20
   if (segment === 'Underbidder premium') return 17
-  if (segment === 'Alto potencial sem compra') return 15
+  if (segment === 'Bidder fantasma') return -18
   if (segment === 'Reativação VIP') return 12
   return 8
 }
@@ -181,6 +280,17 @@ const reasonsFor = (
 
   if (row.bid_value >= 100_000) {
     reasons.push(`${money(row.bid_value)} em intenção de lance`)
+  }
+
+  if (segment === 'Comprador quente') {
+    reasons.push(
+      `heat score ${numberValue(row.heat_score)} com ${numberValue(row.streak_count)} compras recentes`,
+    )
+  }
+
+  if (segment === 'Bidder fantasma') {
+    reasons.push('sem compra registrada: tratar como ruído/pressão')
+    reasons.push(`ghost score ${numberValue(row.ghost_score)}`)
   }
 
   if (targetValue > 0) {
@@ -216,7 +326,25 @@ const suggestedMessageFor = (
     return `Olá, ${firstName}. Vi que você costuma disputar forte nossos lotes. ${auctionTitle} tem oportunidades que parecem muito alinhadas ao seu perfil. Quer que eu te envie os destaques antes do leilão?`
   }
 
+  if (segment === 'Comprador quente') {
+    return `Olá, ${firstName}. Vi que você está em uma sequência recente de compras conosco. ${auctionTitle} tem alguns lotes que combinam bem com esse momento. Quer que eu te mande uma curadoria objetiva?`
+  }
+
+  if (segment === 'Bidder fantasma') {
+    return `Olá, ${firstName}. Notei atividade de lances recente na Milan Horses. Antes de te enviar uma curadoria de ${auctionTitle}, queria entender se você está buscando algum perfil específico de lote.`
+  }
+
   return `Olá, ${firstName}. ${auctionTitle} está chegando e selecionei alguns lotes que combinam com seu perfil na Milan Horses. Posso te enviar uma curadoria rápida?`
+}
+
+const hasInternalName = (name: string) => {
+  const text = name.toUpperCase()
+  return (
+    text.includes('MESA OPERADORA') ||
+    text.includes('NAO USAR') ||
+    text.includes('NÃO USAR') ||
+    text.includes('TESTE')
+  )
 }
 
 const mapAuction = (auction: any, lots: any[]): VipRadarAuction => {
@@ -286,6 +414,7 @@ export const vipRadarService = {
     const [
       { data: auctionRows, error: auctionsError },
       { data: lotRows, error: lotsError },
+      { data: purchaseRows, error: purchasesError },
     ] = await Promise.all([
       db
         .from('smartleiloes_auctions')
@@ -293,10 +422,18 @@ export const vipRadarService = {
         .order('event_date', { ascending: false })
         .limit(200),
       db.from('smartleiloes_lots').select('*'),
+      db
+        .from('purchases')
+        .select(
+          'contact_id,date,smartleiloes_event_id,auction_id,value,payload',
+        )
+        .order('date', { ascending: false })
+        .limit(5000),
     ])
 
     if (auctionsError) throw auctionsError
     if (lotsError) throw lotsError
+    if (purchasesError) throw purchasesError
 
     const lotsByAuctionId = new Map<string, any[]>()
     ;(lotRows || []).forEach((lot: any) => {
@@ -344,8 +481,10 @@ export const vipRadarService = {
     if (rfmvError) throw rfmvError
 
     const targetValue = targetValueOf(selectedAuction)
+    const heatProfiles = buildPurchaseHeatProfiles(purchaseRows || [])
     const recommendations = ((rfmvRows || []) as RfmvRow[])
       .map((rawRow) => {
+        const heatProfile = heatProfiles.get(rawRow.id)
         const row: RfmvRow = {
           ...rawRow,
           purchase_count: numberValue(rawRow.purchase_count),
@@ -355,7 +494,12 @@ export const vipRadarService = {
           auction_count: numberValue(rawRow.auction_count),
           bid_value: numberValue(rawRow.bid_value),
           rfmv_score: numberValue(rawRow.rfmv_score),
+          heat_score: heatProfile?.heat_score || numberValue(rawRow.heat_score),
+          streak_count:
+            heatProfile?.streak_count || numberValue(rawRow.streak_count),
+          ghost_score: numberValue(rawRow.ghost_score),
         }
+        row.ghost_score = ghostScoreOf(row)
         const inactiveDays = daysSince(row.last_activity_date)
         const segment = segmentOf(row, inactiveDays)
         const channel = contactChannel(row)
@@ -368,12 +512,16 @@ export const vipRadarService = {
                 ? 6
                 : 2
         const channelScore = channel === 'manual' ? 0 : 5
+        const heatScore = numberValue(row.heat_score)
+        const ghostScore = numberValue(row.ghost_score)
         const score = scoreClamp(
           row.rfmv_score * 2.2 +
             valueFitScore(row, targetValue) +
             segmentBoost(segment) +
             recency +
-            channelScore,
+            channelScore +
+            (segment === 'Comprador quente' ? Math.min(22, heatScore / 3) : 0) -
+            (segment === 'Bidder fantasma' ? Math.min(28, ghostScore / 3) : 0),
         )
 
         return {
@@ -392,6 +540,9 @@ export const vipRadarService = {
           bidCount: row.bid_count,
           bidValue: row.bid_value,
           lastActivityDate: row.last_activity_date,
+          heatScore,
+          streakCount: numberValue(row.streak_count),
+          ghostScore,
           reasons: reasonsFor(row, selectedAuction, segment, targetValue),
           recommendedChannel: channel,
           suggestedMessage: suggestedMessageFor(row, selectedAuction, segment),
@@ -399,9 +550,11 @@ export const vipRadarService = {
       })
       .filter(
         (item) =>
+          !hasInternalName(item.name) &&
           item.score >= 45 &&
           (item.purchaseCount > 0 ||
-            item.bidCount > 0 ||
+            (item.bidCount > 0 && item.segment !== 'Bidder fantasma') ||
+            item.segment === 'Bidder fantasma' ||
             item.monetaryValue > 0),
       )
       .sort((a, b) => b.score - a.score)
@@ -415,7 +568,8 @@ export const vipRadarService = {
       {
         'VIP ativo': 0,
         'Underbidder premium': 0,
-        'Alto potencial sem compra': 0,
+        'Bidder fantasma': 0,
+        'Comprador quente': 0,
         'Reativação VIP': 0,
         'Comprador compatível': 0,
       } as Record<VipRadarSegment, number>,

@@ -113,17 +113,38 @@ const resolveAudienceFromFilters = async (
 
   if (campaign.audience_filters?.contact_ids?.length) {
     query = query.in('id', campaign.audience_filters.contact_ids)
-  }
+  } else {
+    const audienceIds = new Set<string>()
 
-  if (campaign.audience_filters?.tags?.length) {
-    const { data: taggedIds } = await supabase
-      .from('contact_tags')
-      .select('contact_id, tags!inner(name)')
-      .in('tags.name', campaign.audience_filters.tags)
+    if (campaign.audience_filters?.tags?.length) {
+      const { data: taggedIds, error: taggedError } = await supabase
+        .from('contact_tags')
+        .select('contact_id, tags!inner(name)')
+        .in('tags.name', campaign.audience_filters.tags)
 
-    const ids = taggedIds?.map((item: any) => item.contact_id) || []
-    if (!ids.length) return []
-    query = query.in('id', ids)
+      if (taggedError) throw taggedError
+      taggedIds?.forEach((item: any) => audienceIds.add(item.contact_id))
+    }
+
+    if (campaign.audience_filters?.segments?.length) {
+      const { data: segmentedIds, error: segmentError } = await supabase
+        .from('customer_rfmv_view')
+        .select('id')
+        .in('segment', campaign.audience_filters.segments)
+
+      if (segmentError) throw segmentError
+      segmentedIds?.forEach((item: any) => audienceIds.add(item.id))
+    }
+
+    const hasFilters =
+      campaign.audience_filters?.tags?.length ||
+      campaign.audience_filters?.segments?.length
+
+    if (hasFilters) {
+      const ids = [...audienceIds]
+      if (!ids.length) return []
+      query = query.in('id', ids)
+    }
   }
 
   const { data: contacts, error } = await query

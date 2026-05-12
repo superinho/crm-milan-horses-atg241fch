@@ -75,7 +75,8 @@ const SEGMENTS = [
   'Comprador',
   'Lead',
   'Interessado',
-  'Alto potencial sem compra',
+  'Bidder fantasma',
+  'Comprador quente',
   'Reativação',
 ]
 
