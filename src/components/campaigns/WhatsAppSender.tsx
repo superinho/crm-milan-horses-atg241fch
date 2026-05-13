@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { campaignsService, CampaignSendLog } from '@/services/campaigns'
 import { useToast } from '@/hooks/use-toast'
+import { whatsappUrl } from '@/lib/phone'
 
 interface WhatsAppSenderProps {
   campaignId: string
@@ -63,11 +64,8 @@ export function WhatsAppSender({ campaignId, onRefresh }: WhatsAppSenderProps) {
       return
     }
 
-    const cleanPhone = phone.replace(/\D/g, '')
     const message = item.content || item.metadata?.message || ''
-    const url = `https://wa.me/55${cleanPhone.replace(/^55/, '')}${
-      message ? `?text=${encodeURIComponent(message)}` : ''
-    }`
+    const url = whatsappUrl(phone, message)
 
     window.open(url, '_blank')
     setProcessingId(item.id)

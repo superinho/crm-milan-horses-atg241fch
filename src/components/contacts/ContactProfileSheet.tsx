@@ -33,6 +33,7 @@ import {
   type Contact,
   type Purchase,
 } from '@/services/contacts'
+import { telUrl, whatsappUrl } from '@/lib/phone'
 
 type ContactProfileSheetProps = {
   contactId: string | null
@@ -56,9 +57,6 @@ const money = (value: number | null | undefined) =>
 
 const date = (value?: string | null) =>
   value ? new Date(value).toLocaleDateString('pt-BR') : '-'
-
-const digitsOnly = (value?: string | null) =>
-  String(value || '').replace(/\D/g, '')
 
 function EmptyLine({ children }: { children: React.ReactNode }) {
   return (
@@ -152,9 +150,9 @@ export function ContactProfileSheet({
   }, [contactId, open])
 
   const contact = state?.contact
-  const phoneDigits = digitsOnly(contact?.whatsapp || contact?.phone)
-  const whatsappHref = phoneDigits ? `https://wa.me/55${phoneDigits}` : ''
-  const telHref = phoneDigits ? `tel:+55${phoneDigits}` : ''
+  const preferredPhone = contact?.whatsapp || contact?.phone
+  const whatsappHref = whatsappUrl(preferredPhone)
+  const telHref = telUrl(preferredPhone)
   const mailHref = contact?.email ? `mailto:${contact.email}` : ''
 
   const preferredInfo = useMemo(() => {

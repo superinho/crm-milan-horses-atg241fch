@@ -61,9 +61,16 @@ const renderTemplate = (
     )
 
 const normalizePhone = (value?: string | null) => {
-  const digits = String(value || '').replace(/\D/g, '')
+  let digits = String(value || '')
+    .replace(/\D/g, '')
+    .replace(/^0+/, '')
   if (!digits) return ''
-  if (digits.startsWith('55')) return `+${digits}`
+
+  while (digits.startsWith('5555') && digits.length > 13) {
+    digits = digits.slice(2)
+  }
+
+  if (digits.startsWith('55') && digits.length >= 12) return `+${digits}`
   return `+55${digits}`
 }
 
