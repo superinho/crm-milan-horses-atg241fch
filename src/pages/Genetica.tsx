@@ -9,20 +9,18 @@ import {
   YAxis,
 } from 'recharts'
 import {
-  AlertTriangle,
   Brain,
   Building2,
   CalendarDays,
   Database,
   Dna,
-  Download,
-  ExternalLink,
   FilterX,
   Loader2,
   type LucideIcon,
   Search,
   SlidersHorizontal,
   Sparkles,
+  Target,
   Trophy,
   VenusAndMars,
 } from 'lucide-react'
@@ -52,7 +50,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useToast } from '@/hooks/use-toast'
 import {
   geneticIntelligenceService,
-  type GeneticGapRow,
   type GeneticIntelligenceData,
   type GeneticMetricRow,
   type GeneticRankingMode,
@@ -109,9 +106,6 @@ const ageRangeLabel = (row: GeneticMetricRow) => {
   if (row.age.min === row.age.max) return `${row.age.min} anos`
   return `${row.age.min}-${row.age.max} anos`
 }
-
-const csvEscape = (value: unknown) =>
-  `"${String(value ?? '').replaceAll('"', '""')}"`
 
 function MetricCard({
   title,
@@ -273,68 +267,95 @@ function RankingTable({ rows }: { rows: GeneticMetricRow[] }) {
   )
 }
 
-function EnrichmentTable({
-  gaps,
-  onExport,
+type GeneticOpportunity = {
+  id: string
+  title: string
+  label: string
+  helper: string
+  metric: string
+  badge: string
+  row?: GeneticMetricRow
+  breeder?: string
+}
+
+function OpportunityBoard({
+  opportunities,
+  onFocusRow,
+  onFocusBreeder,
 }: {
-  gaps: GeneticGapRow[]
-  onExport: () => void
+  opportunities: GeneticOpportunity[]
+  onFocusRow: (row: GeneticMetricRow) => void
+  onFocusBreeder: (breeder: string) => void
 }) {
   return (
-    <Card className="shadow-sm">
+    <Card className="border-primary/20 bg-white shadow-sm">
       <CardHeader className="flex flex-col gap-3 border-b pb-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <CardTitle className="flex items-center gap-2 text-base text-primary">
-            <AlertTriangle className="h-4 w-4 text-amber-600" />
-            Fila de enriquecimento externo
+            <Target className="h-4 w-4" />
+            Radar de oportunidades
           </CardTitle>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Lotes com lance ou venda, mas sem genealogia confirmada no lote
-            salvo da Smart.
+          <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
+            A função mais valiosa desta área: transformar genética em listas de
+            campanha. Estes sinais usam os filtros atuais para apontar onde há
+            tração comercial real.
           </p>
         </div>
-        <Button variant="outline" onClick={onExport} className="gap-2">
-          <Download className="h-4 w-4" />
-          Exportar CSV
-        </Button>
+        <Badge variant="secondary" className="w-fit rounded-md">
+          {opportunities.length} ações sugeridas
+        </Badge>
       </CardHeader>
-      <CardContent className="p-0">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Origem</TableHead>
-              <TableHead>Lote</TableHead>
-              <TableHead>Descrição</TableHead>
-              <TableHead className="text-right">Valor</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {gaps.slice(0, 10).map((gap, index) => (
-              <TableRow key={`${gap.source}-${gap.lotId}-${index}`}>
-                <TableCell>
-                  <Badge
-                    variant={gap.source === 'Venda' ? 'default' : 'secondary'}
-                    className="rounded-md"
+      <CardContent className="grid gap-3 p-5 lg:grid-cols-3">
+        {opportunities.length === 0 ? (
+          <div className="rounded-md border border-dashed p-5 text-sm text-muted-foreground lg:col-span-3">
+            Ajuste os filtros para revelar matrizes, garanhões ou cruzamentos
+            com atividade comercial suficiente.
+          </div>
+        ) : (
+          opportunities.map((opportunity) => (
+            <div
+              key={opportunity.id}
+              className="flex min-h-[210px] flex-col justify-between rounded-md border bg-muted/10 p-4"
+            >
+              <div>
+                <Badge variant="outline" className="rounded-md bg-white">
+                  {opportunity.badge}
+                </Badge>
+                <h3 className="mt-3 text-base font-semibold text-primary">
+                  {opportunity.title}
+                </h3>
+                <p className="mt-1 text-sm font-medium text-foreground">
+                  {opportunity.label}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {opportunity.helper}
+                </p>
+              </div>
+              <div className="mt-4 flex items-center justify-between gap-3">
+                <div className="text-sm font-semibold text-primary">
+                  {opportunity.metric}
+                </div>
+                {opportunity.row ? (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => onFocusRow(opportunity.row!)}
                   >
-                    {gap.source}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <div className="font-medium">{gap.lotNumber}</div>
-                  <div className="text-xs text-muted-foreground">
-                    ID {gap.lotId || 'sem ID'}
-                  </div>
-                </TableCell>
-                <TableCell className="max-w-[420px]">
-                  <div className="truncate">{gap.description}</div>
-                </TableCell>
-                <TableCell className="text-right font-medium">
-                  {money(gap.value)}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                    Ver ranking
+                  </Button>
+                ) : opportunity.breeder ? (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => onFocusBreeder(opportunity.breeder!)}
+                  >
+                    Filtrar
+                  </Button>
+                ) : null}
+              </div>
+            </div>
+          ))
+        )}
       </CardContent>
     </Card>
   )
@@ -538,26 +559,85 @@ export default function Genetica() {
     lances: row.bidCount,
   }))
 
-  const exportGaps = () => {
-    if (!data?.gaps.length) return
-    const header = ['origem', 'id_lote', 'numero_lote', 'descricao', 'valor']
-    const rows = data.gaps.map((gap) => [
-      gap.source,
-      gap.lotId,
-      gap.lotNumber,
-      gap.description,
-      gap.value,
-    ])
-    const csv = [header, ...rows]
-      .map((row) => row.map(csvEscape).join(','))
-      .join('\n')
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'milan-horses-enriquecimento-genetico.csv'
-    link.click()
-    URL.revokeObjectURL(url)
+  const opportunities = useMemo<GeneticOpportunity[]>(() => {
+    const rows: GeneticOpportunity[] = []
+    const topCommercial = activeRows.find(
+      (row) => row.salesValue > 0 || row.bidCount > 0,
+    )
+    const highDemandNoSale = [...activeRows]
+      .filter((row) => row.bidCount > 0 && row.salesCount === 0)
+      .sort((a, b) => b.bidCount - a.bidCount || b.topBid - a.topBid)[0]
+    const highConversion = [...activeRows]
+      .filter((row) => row.soldLots > 0 && row.conversionRate >= 50)
+      .sort(
+        (a, b) =>
+          b.conversionRate - a.conversionRate || b.salesValue - a.salesValue,
+      )[0]
+    const topBreeder = topBreeders[0]
+
+    if (topCommercial) {
+      rows.push({
+        id: 'top-commercial',
+        title: 'Lista VIP por genética quente',
+        label: topCommercial.label,
+        helper:
+          'Use este pedigree como gancho para alertar clientes que já compraram ou deram lance em famílias parecidas.',
+        metric: `${money(topCommercial.salesValue)} vendidos`,
+        badge: rankingLabel[mode],
+        row: topCommercial,
+      })
+    }
+
+    if (highDemandNoSale) {
+      rows.push({
+        id: 'demand-no-sale',
+        title: 'Demanda reprimida',
+        label: highDemandNoSale.label,
+        helper:
+          'Teve disputa, mas não virou venda. É um bom sinal para procurar lote similar e avisar antes do próximo leilão.',
+        metric: `${number(highDemandNoSale.bidCount)} lances`,
+        badge: 'Follow-up',
+        row: highDemandNoSale,
+      })
+    }
+
+    if (highConversion && highConversion.key !== topCommercial?.key) {
+      rows.push({
+        id: 'high-conversion',
+        title: 'Pedigree de alta conversão',
+        label: highConversion.label,
+        helper:
+          'Quando aparecer lote parecido, vale criar comunicação mais direta: esse perfil já demonstrou liquidez.',
+        metric: `${percent(highConversion.conversionRate)} conversão`,
+        badge: 'Liquidez',
+        row: highConversion,
+      })
+    }
+
+    if (topBreeder) {
+      rows.push({
+        id: 'top-breeder',
+        title: 'Criador para relacionamento',
+        label: topBreeder.breeder,
+        helper:
+          'Este criador concentra tração comercial no recorte atual. Pode virar origem, parceiro ou público de convite.',
+        metric: `${number(topBreeder.bidCount)} lances`,
+        badge: 'Prospecção',
+        breeder: topBreeder.breeder,
+      })
+    }
+
+    return rows.slice(0, 3)
+  }, [activeRows, mode, topBreeders])
+
+  const focusRow = (row: GeneticMetricRow) => {
+    setMode(row.mode)
+    setSearch(row.label)
+  }
+
+  const focusBreeder = (breeder: string) => {
+    setSelectedBreeders([breeder])
+    setSearch('')
   }
 
   if (loading) {
@@ -637,7 +717,7 @@ export default function Genetica() {
         <MetricCard
           title="Cobertura genética"
           value={percent(data.summary.enrichmentCoverage)}
-          helper={`${number(data.summary.unmatchedSalesCount + data.summary.unmatchedBidCount)} registros para enriquecer`}
+          helper="Dos registros comerciais analisados"
           icon={Brain}
         />
       </div>
@@ -800,6 +880,12 @@ export default function Genetica() {
         </CardContent>
       </Card>
 
+      <OpportunityBoard
+        opportunities={opportunities}
+        onFocusRow={focusRow}
+        onFocusBreeder={focusBreeder}
+      />
+
       <Card className="overflow-hidden border-0 shadow-sm ring-1 ring-border/80">
         <CardContent className="p-0">
           <div className="grid gap-0 xl:grid-cols-[minmax(0,1fr)_360px]">
@@ -881,56 +967,6 @@ export default function Genetica() {
                 </p>
               </div>
             </aside>
-          </div>
-        </CardContent>
-      </Card>
-
-      <EnrichmentTable gaps={data.gaps} onExport={exportGaps} />
-
-      <Card className="border-primary/20 bg-white shadow-sm">
-        <CardContent className="grid gap-4 p-5 lg:grid-cols-[1fr_1.4fr]">
-          <div>
-            <div className="mb-2 inline-flex items-center gap-2 rounded-md bg-secondary/20 px-2 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              <Brain className="h-3.5 w-3.5" />
-              Próximo salto de qualidade
-            </div>
-            <h2 className="text-lg font-semibold text-primary">
-              Enriquecer o histórico com pedigree externo
-            </h2>
-            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-              A Smart já entrega pedigree para lotes atuais. Para o histórico, o
-              CRM deve usar a fila acima como lista de pesquisa em bases como
-              Hippomundo e HorseTelex.
-            </p>
-          </div>
-          <div className="grid gap-3 md:grid-cols-3">
-            {[
-              {
-                title: '1. Confirmar lote',
-                text: 'Validar nome, registro, UELN ou descrição do lote antes de enriquecer.',
-              },
-              {
-                title: '2. Completar família',
-                text: 'Adicionar matriz, garanhão, pai da matriz e link da fonte externa.',
-              },
-              {
-                title: '3. Ativar CRM',
-                text: 'Criar alertas para clientes que disputam a mesma matriz ou cruzamento.',
-              },
-            ].map((step) => (
-              <div
-                key={step.title}
-                className="rounded-md border bg-muted/10 p-3"
-              >
-                <div className="flex items-center gap-2 text-sm font-semibold">
-                  <ExternalLink className="h-4 w-4 text-primary" />
-                  {step.title}
-                </div>
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                  {step.text}
-                </p>
-              </div>
-            ))}
           </div>
         </CardContent>
       </Card>
