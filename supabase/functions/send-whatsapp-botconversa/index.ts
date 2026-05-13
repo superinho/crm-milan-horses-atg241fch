@@ -11,16 +11,9 @@ const BOTCONVERSA_DEFAULT_FLOW_ID = Deno.env.get('BOTCONVERSA_DEFAULT_FLOW_ID')
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
 const normalizePhone = (value?: string | null) => {
-  let digits = String(value || '')
-    .replace(/\D/g, '')
-    .replace(/^0+/, '')
+  const digits = String(value || '').replace(/\D/g, '')
   if (!digits) return ''
-
-  while (digits.startsWith('5555') && digits.length > 13) {
-    digits = digits.slice(2)
-  }
-
-  if (digits.startsWith('55') && digits.length >= 12) return `+${digits}`
+  if (digits.startsWith('55')) return `+${digits}`
   return `+55${digits}`
 }
 
