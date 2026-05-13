@@ -350,6 +350,31 @@ const yearFromEndedText = (value) => {
   return null
 }
 
+const dateFromEnglishText = (value, fallbackYear) => {
+  const text = decodeHtml(value)
+    .replace(/\b(\d{1,2})(st|nd|rd|th)\b/gi, '$1')
+    .replace(/&bull;/g, ' ')
+  const match = text.match(
+    /\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.?\s+\d{1,2}(?:,\s*\d{4})?/i,
+  )
+  if (!match) return null
+
+  const candidate = /\b\d{4}\b/.test(match[0])
+    ? match[0]
+    : `${match[0]}, ${fallbackYear}`
+  const date = new Date(candidate)
+  if (Number.isNaN(date.getTime())) return null
+  return date.toISOString().slice(0, 10)
+}
+
+const dateFromZangersheideText = (html) => {
+  const match = String(html || '').match(
+    /Auction ended on[\s\S]*?(\d{2})\/(\d{2})\/(\d{2})/i,
+  )
+  if (!match) return null
+  return `20${match[3]}-${match[2]}-${match[1]}`
+}
+
 const parseFlandersCards = (html) =>
   [
     ...html.matchAll(
@@ -472,6 +497,10 @@ const importFlandersFoalAuctions = async () => {
         .filter(Boolean)
       const title = headings[0] || headings[1] || 'Flanders Foal Auction'
       const year = inferFlandersYear({ html, title, url: sourceUrl })
+      const whenText = decodeHtml(
+        String(html || '').match(/When:[\s\S]{0,800}/i)?.[0] || '',
+      )
+      const auctionDate = dateFromEnglishText(whenText, year)
       const lots = parseFlandersCards(html)
       rowsSeen += lots.length
 
@@ -485,6 +514,7 @@ const importFlandersFoalAuctions = async () => {
           name: title,
           normalized_name: normalize(`${title} ${sourceUrl.split('/').pop()}`),
           auction_year: year,
+          auction_date: auctionDate,
           country: 'Belgium',
           discipline: 'show_jumping',
           category: 'foal',
@@ -492,6 +522,7 @@ const importFlandersFoalAuctions = async () => {
           source_payload: {
             importer: 'flanders-foal-html-v1',
             headings,
+            when_text: whenText,
           },
         },
         'source_id,normalized_name,auction_year',
@@ -716,6 +747,7 @@ const importZangersheideAuctions = async () => {
         textBetween(html, /<h1[^>]*>([\s\S]*?)<\/h1>/i) ||
         textBetween(html, /<title[^>]*>([\s\S]*?)<\/title>/i) ||
         sourceUrl.split('/').pop()
+      const auctionDate = dateFromZangersheideText(html)
       const lots = parseZangersheideTiles(html)
       rowsSeen += lots.length
 
@@ -729,6 +761,7 @@ const importZangersheideAuctions = async () => {
           name: pageTitle,
           normalized_name: normalize(pageTitle),
           auction_year: inferZangersheideYear(html),
+          auction_date: auctionDate,
           country: 'Belgium',
           discipline: 'show_jumping',
           category: 'foal',
@@ -964,6 +997,7 @@ const importYouhorseAuctions = async () => {
         html.match(/Ended on[\s\S]{0,180}/i)?.[0] || '',
       )
       const year = yearFromEndedText(endedText) || yearFromTitle(title)
+      const auctionDate = dateFromEnglishText(endedText, year)
       rowsSeen += cards.length
 
       const auction = await upsertOne(
@@ -974,7 +1008,7 @@ const importYouhorseAuctions = async () => {
           name: title,
           normalized_name: normalize(`${title} ${id}`),
           auction_year: year,
-          auction_date: null,
+          auction_date: auctionDate,
           country: 'Netherlands',
           discipline: 'show_jumping',
           category: 'mixed_show_jumping',

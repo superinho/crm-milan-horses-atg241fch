@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   ArrowRight,
   BarChart3,
+  Calendar,
   ExternalLink,
   FilterX,
   Gavel,
@@ -83,6 +84,13 @@ const emptyOverview: GlobalAuctionOverview = {
   first_year: null,
   latest_year: null,
 }
+
+const periodOptions = [
+  { value: 'all', label: 'Tudo' },
+  { value: '30d', label: '30 dias' },
+  { value: '3m', label: '3 meses' },
+  { value: '1y', label: '1 ano' },
+]
 
 function MarketMetric({
   label,
@@ -355,7 +363,9 @@ export default function MercadoGlobal() {
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
-  const [year, setYear] = useState('all')
+  const [period, setPeriod] = useState('all')
+  const [selectedYears, setSelectedYears] = useState<number[]>([])
+  const [availableYears, setAvailableYears] = useState<number[]>([])
   const [status, setStatus] = useState('all')
   const [category, setCategory] = useState('all')
   const [selectedLot, setSelectedLot] = useState<GlobalAuctionLot | null>(null)
@@ -364,25 +374,29 @@ export default function MercadoGlobal() {
   const pageSize = 25
 
   const filters = useMemo<GlobalAuctionFilters>(
-    () => ({ search, year, status, category }),
-    [search, year, status, category],
+    () => ({
+      search,
+      period: selectedYears.length ? 'years' : period,
+      years: selectedYears,
+      status,
+      category,
+    }),
+    [search, period, selectedYears, status, category],
   )
 
   const loadData = useCallback(async () => {
     setLoading(true)
     try {
-      const [nextOverview, lotPage, nextSires, nextHouses] = await Promise.all([
-        globalAuctionsService.getOverview(),
+      const [nextOverview, lotPage] = await Promise.all([
+        globalAuctionsService.getMarketSummary(filters),
         globalAuctionsService.getLots(filters, { page, pageSize }),
-        globalAuctionsService.getSireRankings(),
-        globalAuctionsService.getHouseRankings(),
       ])
 
-      setOverview(nextOverview)
+      setOverview(nextOverview.overview)
       setLots(lotPage.rows)
       setTotal(lotPage.total)
-      setSires(nextSires)
-      setHouses(nextHouses)
+      setSires(nextOverview.sires)
+      setHouses(nextOverview.houses)
     } catch (error) {
       console.error(error)
       toast({
@@ -400,6 +414,20 @@ export default function MercadoGlobal() {
   }, [loadData])
 
   useEffect(() => {
+    globalAuctionsService
+      .getAvailableYears()
+      .then((years) =>
+        setAvailableYears(
+          years.length ? years : [2026, 2025, 2024, 2023, 2022],
+        ),
+      )
+      .catch((error) => {
+        console.error(error)
+        setAvailableYears([2026, 2025, 2024, 2023, 2022])
+      })
+  }, [])
+
+  useEffect(() => {
     setPage(1)
   }, [filters])
 
@@ -411,9 +439,24 @@ export default function MercadoGlobal() {
 
   const clearFilters = () => {
     setSearch('')
-    setYear('all')
+    setPeriod('all')
+    setSelectedYears([])
     setStatus('all')
     setCategory('all')
+  }
+
+  const selectPeriod = (nextPeriod: string) => {
+    setPeriod(nextPeriod)
+    setSelectedYears([])
+  }
+
+  const toggleYear = (year: number) => {
+    setSelectedYears((current) =>
+      current.includes(year)
+        ? current.filter((item) => item !== year)
+        : [...current, year].sort((a, b) => b - a),
+    )
+    setPeriod('years')
   }
 
   return (
@@ -449,6 +492,106 @@ export default function MercadoGlobal() {
           </a>
         </Button>
       </div>
+
+      <Card className="shadow-sm">
+        <CardContent className="space-y-4 p-4">
+          <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+            <Calendar className="h-4 w-4" />
+            Filtros de mercado
+          </div>
+          <div className="grid gap-3 xl:grid-cols-[1.3fr_1fr_1fr_auto]">
+            <div className="space-y-2">
+              <div className="text-xs font-medium text-muted-foreground">
+                Período rápido
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {periodOptions.map((option) => (
+                  <Button
+                    key={option.value}
+                    type="button"
+                    variant={
+                      period === option.value && !selectedYears.length
+                        ? 'default'
+                        : 'outline'
+                    }
+                    size="sm"
+                    onClick={() => selectPeriod(option.value)}
+                  >
+                    {option.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-xs font-medium text-muted-foreground">
+                Anos individuais
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {availableYears.map((yearOption) => (
+                  <Button
+                    key={yearOption}
+                    type="button"
+                    variant={
+                      selectedYears.includes(yearOption) ? 'default' : 'outline'
+                    }
+                    size="sm"
+                    onClick={() => toggleYear(yearOption)}
+                  >
+                    {yearOption}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="space-y-2">
+                <div className="text-xs font-medium text-muted-foreground">
+                  Status
+                </div>
+                <Select value={status} onValueChange={setStatus}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos</SelectItem>
+                    <SelectItem value="sold">Vendidos</SelectItem>
+                    <SelectItem value="not_sold">Não vendidos</SelectItem>
+                    <SelectItem value="withdrawn">Retirados</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <div className="text-xs font-medium text-muted-foreground">
+                  Tipo
+                </div>
+                <Select value={category} onValueChange={setCategory}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Tipo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos</SelectItem>
+                    <SelectItem value="foal">Foals</SelectItem>
+                    <SelectItem value="3yo">3 anos</SelectItem>
+                    <SelectItem value="sport_horse">Sport horse</SelectItem>
+                    <SelectItem value="mixed_show_jumping">
+                      Misto salto
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="flex items-end">
+              <Button
+                variant="outline"
+                onClick={clearFilters}
+                className="w-full"
+              >
+                <FilterX className="h-4 w-4" />
+                Limpar
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <MarketMetric
@@ -511,43 +654,6 @@ export default function MercadoGlobal() {
                 className="pl-9"
               />
             </div>
-            <Select value={year} onValueChange={setYear}>
-              <SelectTrigger className="md:w-36">
-                <SelectValue placeholder="Ano" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos</SelectItem>
-                <SelectItem value="2025">2025</SelectItem>
-                <SelectItem value="2024">2024</SelectItem>
-                <SelectItem value="2023">2023</SelectItem>
-                <SelectItem value="2022">2022</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={status} onValueChange={setStatus}>
-              <SelectTrigger className="md:w-40">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos</SelectItem>
-                <SelectItem value="sold">Vendidos</SelectItem>
-                <SelectItem value="not_sold">Não vendidos</SelectItem>
-                <SelectItem value="withdrawn">Retirados</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="md:w-36">
-                <SelectValue placeholder="Tipo" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos</SelectItem>
-                <SelectItem value="foal">Foals</SelectItem>
-                <SelectItem value="3yo">3 anos</SelectItem>
-                <SelectItem value="sport_horse">Sport horse</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button variant="outline" onClick={clearFilters}>
-              <FilterX className="h-4 w-4" />
-            </Button>
           </div>
         </CardHeader>
         <CardContent className="space-y-3">
