@@ -32,6 +32,7 @@ import {
   Wand2,
   Dna,
   BookOpen,
+  Globe2,
 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
@@ -52,6 +53,7 @@ const NAV_ITEMS = [
   { label: 'Leilões', icon: Gavel, path: '/leiloes' },
   { label: 'Genética', icon: Dna, path: '/genetica' },
   { label: 'Studbook BH', icon: BookOpen, path: '/studbook' },
+  { label: 'Mercado Global', icon: Globe2, path: '/mercado-global' },
   { label: 'Relatórios', icon: BarChart3, path: '/relatorios' },
   { label: 'Configurações', icon: Settings, path: '/configuracoes' },
 ]
