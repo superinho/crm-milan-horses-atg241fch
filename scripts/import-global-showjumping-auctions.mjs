@@ -18,6 +18,11 @@ const ZANGERSHEIDE_AUCTION_URLS = [
   '/en/auctions/zangersheide-quality-auction-friday-foals-2',
   '/en/auctions/zangersheide-quality-auction-saturday-foals-2',
 ].map((path) => `${ZANGERSHEIDE_BASE_URL}${path}`)
+const YOUHORSE_BASE_URL = 'https://youhorse.auction'
+const YOUHORSE_COLLECTION_IDS = Array.from(
+  { length: 44 },
+  (_, index) => 50 + index,
+)
 const USER_AGENT =
   'CRM Milan Horses market research importer (+https://milan.horses)'
 
@@ -144,6 +149,34 @@ const supabaseRequest = async (path, init = {}) => {
     throw new Error(`${res.status} ${res.statusText} ${path}: ${text}`)
   }
   return text ? JSON.parse(text) : null
+}
+
+const fetchHtml = async (url, attempts = 3) => {
+  let lastError
+
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const res = await fetch(url, {
+        headers: { 'user-agent': USER_AGENT },
+        signal: AbortSignal.timeout(20000),
+      })
+      const html = await res.text()
+      return {
+        ok: res.ok,
+        status: res.status,
+        statusText: res.statusText,
+        contentType: res.headers.get('content-type'),
+        html,
+      }
+    } catch (error) {
+      lastError = error
+      if (attempt < attempts) {
+        await new Promise((resolve) => setTimeout(resolve, 750 * attempt))
+      }
+    }
+  }
+
+  throw lastError
 }
 
 const upsertOne = async (path, payload, onConflict) => {
@@ -306,6 +339,17 @@ const inferZangersheideYear = (html) => {
   return yearFromTitle(html) || 2025
 }
 
+const yearFromEndedText = (value) => {
+  const text = decodeHtml(value)
+  const direct = text.match(/\b(20\d{2})\b/)
+  if (direct) return Number(direct[1])
+
+  const shortDate = text.match(/\b\d{1,2}\/\d{1,2}\/(\d{2})\b/)
+  if (shortDate) return 2000 + Number(shortDate[1])
+
+  return null
+}
+
 const parseFlandersCards = (html) =>
   [
     ...html.matchAll(
@@ -397,11 +441,15 @@ const importFlandersFoalAuctions = async () => {
     let auctionsImported = 0
 
     for (const sourceUrl of FLANDERS_AUCTION_URLS) {
-      const res = await fetch(sourceUrl, {
-        headers: { 'user-agent': USER_AGENT },
-      })
-      const html = await res.text()
-      if (!res.ok) {
+      let page
+      try {
+        page = await fetchHtml(sourceUrl)
+      } catch {
+        rowsSkipped += 1
+        continue
+      }
+      const html = page.html
+      if (!page.ok) {
         rowsSkipped += 1
         continue
       }
@@ -412,7 +460,7 @@ const importFlandersFoalAuctions = async () => {
           source_id: source.id,
           import_run_id: run.id,
           source_url: sourceUrl,
-          content_type: res.headers.get('content-type'),
+          content_type: page.contentType,
           checksum: checksum(html),
           metadata: { bytes: html.length },
         },
@@ -638,11 +686,15 @@ const importZangersheideAuctions = async () => {
     let auctionsImported = 0
 
     for (const sourceUrl of ZANGERSHEIDE_AUCTION_URLS) {
-      const res = await fetch(sourceUrl, {
-        headers: { 'user-agent': USER_AGENT },
-      })
-      const html = await res.text()
-      if (!res.ok) {
+      let page
+      try {
+        page = await fetchHtml(sourceUrl)
+      } catch {
+        rowsSkipped += 1
+        continue
+      }
+      const html = page.html
+      if (!page.ok) {
         rowsSkipped += 1
         continue
       }
@@ -653,7 +705,7 @@ const importZangersheideAuctions = async () => {
           source_id: source.id,
           import_run_id: run.id,
           source_url: sourceUrl,
-          content_type: res.headers.get('content-type'),
+          content_type: page.contentType,
           checksum: checksum(html),
           metadata: { bytes: html.length },
         },
@@ -751,6 +803,272 @@ const importZangersheideAuctions = async () => {
   }
 }
 
+const skipPwebCategory = (category) =>
+  /dressage|pony|hunter|equitation|embryo/i.test(category || '')
+
+const parsePwebCards = (html) =>
+  String(html || '')
+    .split('<div class="card card-collection')
+    .slice(1)
+    .map((part) => `<div class="card card-collection${part}`)
+    .map((card) => {
+      const horseNameRaw = textBetween(
+        card,
+        /<p class="card-text horsename[^"]*">([\s\S]*?)<\/p>/i,
+      )
+      const lotMatch = String(horseNameRaw || '').match(/^(\d+)\.\s*(.+)$/)
+      const lotNumber = lotMatch?.[1] || null
+      const horseName = lotMatch?.[2] || horseNameRaw
+      const pedigree = textBetween(
+        card,
+        /<p class="card-text horsepedigree">([\s\S]*?)<\/p>/i,
+      )
+      const [sireName, damSireName] = String(pedigree || '')
+        .split(/\s+x\s+/i)
+        .map((part) => part.trim())
+      const info = textBetween(
+        card,
+        /<p class="card-text text-uppercase horseinfo">([\s\S]*?)<\/p>/i,
+      )
+      const infoParts = String(info || '')
+        .split('•')
+        .map((part) => part.replace(/^°/, '').trim())
+        .filter(Boolean)
+      const birthYear = Number(infoParts[0])
+      const sex = infoParts[1] || null
+      const category = infoParts[2] || null
+      const priceText = textBetween(
+        card,
+        /id="auction-price-[^"]*">([\s\S]*?)<\/span>/i,
+      )
+      const bidCount = Number(
+        textBetween(card, /id="bid-count-[^"]*">([\s\S]*?)<\/span>/i) || 0,
+      )
+      const buyerCountry = textBetween(
+        card,
+        /id="horse-[^"]*-bidcountry"[^>]*title="([^"]+)"/i,
+      )
+      const notAuctionedVisible =
+        /auction-not-auctioned"[^>]*style="display:\s*block/i.test(card)
+      const href = textBetween(
+        card,
+        /<a href=([^ >]+)[^>]*class="stretched-link/i,
+      )
+      const slogan = textBetween(
+        card,
+        /<p class="card-slogan horseslogan">([\s\S]*?)<\/p>/i,
+      )
+
+      return {
+        lotNumber,
+        horseName,
+        slogan,
+        pedigree,
+        birthYear: Number.isFinite(birthYear) ? birthYear : null,
+        sex,
+        category,
+        sireName: sireName || null,
+        damSireName: damSireName || null,
+        priceText,
+        bidCount,
+        buyerCountry,
+        notAuctionedVisible,
+        href,
+      }
+    })
+    .filter((lot) => lot.horseName)
+
+const importYouhorseAuctions = async () => {
+  const source = await upsertOne(
+    'global_auction_sources',
+    {
+      name: 'Youhorse Auction',
+      source_type: 'auction_house',
+      country: 'Netherlands',
+      website_url: YOUHORSE_BASE_URL,
+      results_url: `${YOUHORSE_BASE_URL}/en/collection-ended`,
+      discipline_scope: 'show_jumping',
+      scrape_strategy: 'html_cards',
+      access_level: 'public',
+      status: 'active',
+      notes:
+        'Public ended Youhorse collections. Filtered to jumping-compatible horse categories.',
+    },
+    'name',
+  )
+
+  const house = await upsertOne(
+    'global_auction_houses',
+    {
+      source_id: source.id,
+      name: 'Youhorse Auction',
+      normalized_name: normalize('Youhorse Auction'),
+      country: 'Netherlands',
+      website_url: YOUHORSE_BASE_URL,
+    },
+    'normalized_name',
+  )
+
+  const run = await createRun(
+    source.id,
+    `${YOUHORSE_BASE_URL}/en/collection-ended`,
+    'youhorse-pweb-html-v1',
+  )
+
+  try {
+    let rowsSeen = 0
+    let rowsSkipped = 0
+    let rowsImported = 0
+    let auctionsImported = 0
+
+    for (const id of YOUHORSE_COLLECTION_IDS) {
+      const sourceUrl = `${YOUHORSE_BASE_URL}/en/collection-ended/${id}`
+      let page
+      try {
+        page = await fetchHtml(sourceUrl)
+      } catch {
+        rowsSkipped += 1
+        continue
+      }
+      const html = page.html
+      if (!page.ok) {
+        rowsSkipped += 1
+        continue
+      }
+
+      const cards = parsePwebCards(html)
+      if (cards.length < 5) continue
+
+      await upsertOne(
+        'global_auction_source_snapshots',
+        {
+          source_id: source.id,
+          import_run_id: run.id,
+          source_url: sourceUrl,
+          content_type: page.contentType,
+          checksum: checksum(html),
+          metadata: { bytes: html.length },
+        },
+        'source_url,checksum',
+      )
+
+      const title =
+        [...html.matchAll(/<h3[^>]*>([\s\S]*?)<\/h3>/gi)]
+          .map((match) => textOrNull(match[1]))
+          .find(
+            (heading) =>
+              heading &&
+              !/Ended auctions|Select|Conditions|Status/i.test(heading),
+          ) || `Youhorse Auction ${id}`
+      const endedText = decodeHtml(
+        html.match(/Ended on[\s\S]{0,180}/i)?.[0] || '',
+      )
+      const year = yearFromEndedText(endedText) || yearFromTitle(title)
+      rowsSeen += cards.length
+
+      const auction = await upsertOne(
+        'global_auctions',
+        {
+          house_id: house.id,
+          source_id: source.id,
+          name: title,
+          normalized_name: normalize(`${title} ${id}`),
+          auction_year: year,
+          auction_date: null,
+          country: 'Netherlands',
+          discipline: 'show_jumping',
+          category: 'mixed_show_jumping',
+          source_url: sourceUrl,
+          source_payload: {
+            importer: 'youhorse-pweb-html-v1',
+            ended_text: endedText,
+            collection_id: id,
+          },
+        },
+        'source_id,normalized_name,auction_year',
+      )
+      auctionsImported += 1
+
+      const payload = cards
+        .filter((lot) => !skipPwebCategory(lot.category))
+        .map((lot) => {
+          const status =
+            lot.notAuctionedVisible || lot.bidCount <= 0 ? 'not_sold' : 'sold'
+          return {
+            auction_id: auction.id,
+            source_id: source.id,
+            lot_number: lot.lotNumber,
+            horse_name: lot.horseName,
+            normalized_horse_name: normalize(lot.horseName),
+            birth_year: lot.birthYear,
+            age: lot.birthYear && year ? year - lot.birthYear : null,
+            sex: lot.sex,
+            sire_name: lot.sireName,
+            dam_sire_name: lot.damSireName,
+            buyer_country: lot.buyerCountry,
+            sold_status: status,
+            hammer_price:
+              status === 'sold' ? numberFromPrice(lot.priceText) : null,
+            currency: 'EUR',
+            price_text: lot.priceText,
+            discipline: 'show_jumping',
+            source_url: lot.href?.startsWith('http')
+              ? lot.href
+              : `${YOUHORSE_BASE_URL}${lot.href || ''}`,
+            source_payload: {
+              importer: 'youhorse-pweb-html-v1',
+              category: lot.category,
+              slogan: lot.slogan,
+              pedigree: lot.pedigree,
+              bid_count: lot.bidCount,
+              collection_id: id,
+            },
+            confidence_score: 70,
+          }
+        })
+        .filter((lot) => lot.horse_name)
+
+      rowsSkipped += cards.length - payload.length
+      if (!payload.length) continue
+
+      const imported = await supabaseRequest(
+        'global_auction_lots?on_conflict=auction_id,lot_number,normalized_horse_name',
+        {
+          method: 'POST',
+          headers: {
+            Prefer: 'resolution=merge-duplicates,return=representation',
+          },
+          body: JSON.stringify(payload),
+        },
+      )
+      rowsImported += imported?.length || 0
+    }
+
+    await finishRun(run.id, {
+      status: 'finished',
+      rows_seen: rowsSeen,
+      rows_imported: rowsImported,
+      rows_skipped: rowsSkipped,
+      metadata: { auctions_imported: auctionsImported },
+    })
+
+    return {
+      source: source.name,
+      status: 'finished',
+      auctionsImported,
+      rowsSeen,
+      rowsImported,
+      rowsSkipped,
+    }
+  } catch (error) {
+    await finishRun(run.id, {
+      status: 'failed',
+      error_message: error.message,
+    })
+    throw error
+  }
+}
+
 const importGoresbridge = async () => {
   const source = await upsertOne(
     'global_auction_sources',
@@ -789,12 +1107,12 @@ const importGoresbridge = async () => {
   )
 
   try {
-    const res = await fetch(GORESBRIDGE_RESULTS_URL, {
-      headers: { 'user-agent': USER_AGENT },
-    })
-    const html = await res.text()
-    if (!res.ok) {
-      throw new Error(`${res.status} ${res.statusText}: ${html.slice(0, 300)}`)
+    const page = await fetchHtml(GORESBRIDGE_RESULTS_URL)
+    const html = page.html
+    if (!page.ok) {
+      throw new Error(
+        `${page.status} ${page.statusText}: ${html.slice(0, 300)}`,
+      )
     }
 
     await upsertOne(
@@ -803,7 +1121,7 @@ const importGoresbridge = async () => {
         source_id: source.id,
         import_run_id: run.id,
         source_url: GORESBRIDGE_RESULTS_URL,
-        content_type: res.headers.get('content-type'),
+        content_type: page.contentType,
         checksum: checksum(html),
         metadata: { bytes: html.length },
       },
@@ -894,6 +1212,7 @@ const main = async () => {
   summaries.push(await importGoresbridge())
   summaries.push(await importFlandersFoalAuctions())
   summaries.push(await importZangersheideAuctions())
+  summaries.push(await importYouhorseAuctions())
 
   console.log(
     JSON.stringify(
