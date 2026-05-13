@@ -27,6 +27,7 @@ export type GlobalAuctionLot = {
   sire_name: string | null
   dam_name: string | null
   dam_sire_name: string | null
+  breeder_name: string | null
   vendor_name: string | null
   buyer_name: string | null
   buyer_country: string | null
@@ -48,26 +49,34 @@ export type GlobalAuctionLot = {
   } | null
 }
 
-export type GlobalAuctionSireRanking = {
-  sire_name: string
+export type GlobalAuctionRankingMetrics = {
   lots: number
   sold_lots: number
   total_value_eur: number
   average_price_eur: number
+  median_price_eur: number
   top_price_eur: number | null
   latest_year: number | null
+  sell_through_rate: number
+  premium_lots: number
 }
 
-export type GlobalAuctionHouseRanking = {
+export type GlobalAuctionSireRanking = GlobalAuctionRankingMetrics & {
+  sire_name: string
+}
+
+export type GlobalAuctionDamSireRanking = GlobalAuctionRankingMetrics & {
+  dam_sire_name: string
+}
+
+export type GlobalAuctionVendorRanking = GlobalAuctionRankingMetrics & {
+  vendor_name: string
+}
+
+export type GlobalAuctionHouseRanking = GlobalAuctionRankingMetrics & {
   house_name: string
   country: string | null
   auctions: number
-  lots: number
-  sold_lots: number
-  total_value_eur: number
-  average_price_eur: number
-  top_price_eur: number | null
-  latest_year: number | null
 }
 
 export type GlobalAuctionFilters = {
@@ -88,6 +97,8 @@ export type GlobalAuctionLotPage = {
 export type GlobalAuctionMarketSummary = {
   overview: GlobalAuctionOverview
   sires: GlobalAuctionSireRanking[]
+  damSires: GlobalAuctionDamSireRanking[]
+  vendors: GlobalAuctionVendorRanking[]
   houses: GlobalAuctionHouseRanking[]
 }
 
@@ -113,14 +124,49 @@ const isMissingMarketSchema = (error: unknown) => {
   )
 }
 
-const applyLotFilters = (query: any, filters: GlobalAuctionFilters = {}) => {
+const resolveAuctionIdsForFilters = async (
+  filters: GlobalAuctionFilters = {},
+) => {
+  const shouldFilterAuctions =
+    (filters.category && filters.category !== 'all') ||
+    Boolean(filters.years?.length) ||
+    Boolean(filters.period && !['all', 'years'].includes(filters.period))
+
+  if (!shouldFilterAuctions) return null
+
+  let query = db.from('global_auctions').select('id')
+
+  if (filters.category && filters.category !== 'all') {
+    query = query.eq('category', filters.category)
+  }
+
+  if (filters.years?.length) {
+    query = query.in('auction_year', filters.years)
+  }
+
+  if (filters.period && !['all', 'years'].includes(filters.period)) {
+    const cutoff = periodCutoff(filters.period)
+    if (cutoff) query = query.gte('auction_date', cutoff)
+  }
+
+  const { data, error } = await query
+  if (error) throw error
+
+  return (data || []).map((row: { id: string }) => row.id)
+}
+
+const applyLotFilters = (
+  query: any,
+  filters: GlobalAuctionFilters = {},
+  auctionIds: string[] | null = null,
+) => {
   let next = query
   const search = filters.search?.trim()
 
   if (search) {
     const value = search.replace(/[%_]/g, '')
     next = next.or(
-      `horse_name.ilike.%${value}%,sire_name.ilike.%${value}%,dam_name.ilike.%${value}%,dam_sire_name.ilike.%${value}%,vendor_name.ilike.%${value}%,buyer_name.ilike.%${value}%`,
+      `horse_name.ilike.%${value}%,sire_name.ilike.%${value}%,dam_name.ilike.%${value}%,dam_sire_name.ilike.%${value}%,vendor_name.ilike.%${value}%,breeder_name.ilike.%${value}%,buyer_name.ilike.%${value}%`,
     )
   }
 
@@ -128,19 +174,10 @@ const applyLotFilters = (query: any, filters: GlobalAuctionFilters = {}) => {
     next = next.eq('sold_status', filters.status)
   }
 
-  if (filters.category && filters.category !== 'all') {
-    next = next.eq('global_auctions.category', filters.category)
-  }
-
-  if (filters.years?.length) {
-    next = next.in('global_auctions.auction_year', filters.years)
-  }
-
-  if (filters.period && !['all', 'years'].includes(filters.period)) {
-    const cutoff = periodCutoff(filters.period)
-    if (cutoff) {
-      next = next.gte('global_auctions.auction_date', cutoff)
-    }
+  if (auctionIds) {
+    next = auctionIds.length
+      ? next.in('auction_id', auctionIds)
+      : next.in('auction_id', ['00000000-0000-0000-0000-000000000000'])
   }
 
   if (typeof filters.minPrice === 'number') {
@@ -189,6 +226,97 @@ const median = (values: number[]) => {
     : (sorted[middle - 1] + sorted[middle]) / 2
 }
 
+type RankingAccumulator = GlobalAuctionRankingMetrics & {
+  displayName: string
+  prices: number[]
+}
+
+const premiumLotThreshold = 50000
+
+const normalizeRankingKey = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9]+/g, ' ')
+    .trim()
+    .toUpperCase()
+
+const createRankingAccumulator = (displayName: string): RankingAccumulator => ({
+  displayName,
+  lots: 0,
+  sold_lots: 0,
+  total_value_eur: 0,
+  average_price_eur: 0,
+  median_price_eur: 0,
+  top_price_eur: null,
+  latest_year: null,
+  sell_through_rate: 0,
+  premium_lots: 0,
+  prices: [],
+})
+
+const addRankingLot = (
+  map: Map<string, RankingAccumulator>,
+  rawName: string | null | undefined,
+  lot: GlobalAuctionLot,
+) => {
+  const displayName = rawName?.trim()
+  if (!displayName) return
+
+  const key = normalizeRankingKey(displayName)
+  if (!key) return
+
+  const current = map.get(key) || createRankingAccumulator(displayName)
+  const price = Number(lot.hammer_price || 0)
+  const isSold = lot.sold_status === 'sold' && price > 0
+  const year = lot.global_auctions?.auction_year || null
+
+  current.lots += 1
+  if (isSold) {
+    current.sold_lots += 1
+    current.total_value_eur += price
+    current.prices.push(price)
+    current.top_price_eur = Math.max(Number(current.top_price_eur || 0), price)
+    if (price >= premiumLotThreshold) current.premium_lots += 1
+  }
+
+  if (year) {
+    current.latest_year = Math.max(Number(current.latest_year || 0), year)
+  }
+
+  map.set(key, current)
+}
+
+const finalizeRanking = <T extends GlobalAuctionRankingMetrics>(
+  map: Map<string, RankingAccumulator>,
+  createRow: (name: string, metrics: GlobalAuctionRankingMetrics) => T,
+  limit = 8,
+) =>
+  [...map.values()]
+    .map((row) => {
+      const metrics: GlobalAuctionRankingMetrics = {
+        lots: row.lots,
+        sold_lots: row.sold_lots,
+        total_value_eur: row.total_value_eur,
+        average_price_eur: row.sold_lots
+          ? row.total_value_eur / row.sold_lots
+          : 0,
+        median_price_eur: median(row.prices),
+        top_price_eur: row.top_price_eur,
+        latest_year: row.latest_year,
+        sell_through_rate: row.lots ? row.sold_lots / row.lots : 0,
+        premium_lots: row.premium_lots,
+      }
+      return createRow(row.displayName, metrics)
+    })
+    .sort(
+      (a, b) =>
+        b.total_value_eur - a.total_value_eur ||
+        b.sold_lots - a.sold_lots ||
+        Number(b.top_price_eur || 0) - Number(a.top_price_eur || 0),
+    )
+    .slice(0, limit)
+
 const summarizeLots = (
   rows: GlobalAuctionLot[],
 ): GlobalAuctionMarketSummary => {
@@ -216,103 +344,60 @@ const summarizeLots = (
     latest_year: years.length ? Math.max(...years) : null,
   }
 
-  const sireMap = new Map<string, GlobalAuctionSireRanking>()
-  const houseMap = new Map<string, GlobalAuctionHouseRanking>()
+  const sireMap = new Map<string, RankingAccumulator>()
+  const damSireMap = new Map<string, RankingAccumulator>()
+  const vendorMap = new Map<string, RankingAccumulator>()
+  const houseMap = new Map<string, RankingAccumulator>()
+  const houseCountries = new Map<string, string | null>()
+  const houseAuctionIds = new Map<string, Set<string>>()
 
   rows.forEach((lot) => {
-    const price = Number(lot.hammer_price || 0)
-    const isSold = lot.sold_status === 'sold' && price > 0
-    const year = lot.global_auctions?.auction_year || null
-    const sireName = lot.sire_name?.trim()
     const house = lot.global_auctions?.global_auction_houses
     const houseName = house?.name?.trim()
 
-    if (sireName) {
-      const current =
-        sireMap.get(sireName) ||
-        ({
-          sire_name: sireName,
-          lots: 0,
-          sold_lots: 0,
-          total_value_eur: 0,
-          average_price_eur: 0,
-          top_price_eur: null,
-          latest_year: null,
-        } satisfies GlobalAuctionSireRanking)
-      current.lots += 1
-      if (isSold) {
-        current.sold_lots += 1
-        current.total_value_eur += price
-        current.top_price_eur = Math.max(
-          Number(current.top_price_eur || 0),
-          price,
-        )
-      }
-      if (year)
-        current.latest_year = Math.max(Number(current.latest_year || 0), year)
-      sireMap.set(sireName, current)
-    }
+    addRankingLot(sireMap, lot.sire_name, lot)
+    addRankingLot(damSireMap, lot.dam_sire_name, lot)
+    addRankingLot(vendorMap, lot.vendor_name || lot.breeder_name, lot)
 
     if (houseName) {
-      const current =
-        houseMap.get(houseName) ||
-        ({
-          house_name: houseName,
-          country: house?.country || null,
-          auctions: 0,
-          lots: 0,
-          sold_lots: 0,
-          total_value_eur: 0,
-          average_price_eur: 0,
-          top_price_eur: null,
-          latest_year: null,
-        } satisfies GlobalAuctionHouseRanking)
-      current.lots += 1
-      if (isSold) {
-        current.sold_lots += 1
-        current.total_value_eur += price
-        current.top_price_eur = Math.max(
-          Number(current.top_price_eur || 0),
-          price,
-        )
-      }
-      if (year)
-        current.latest_year = Math.max(Number(current.latest_year || 0), year)
-      houseMap.set(houseName, current)
+      const key = normalizeRankingKey(houseName)
+      addRankingLot(houseMap, houseName, lot)
+      houseCountries.set(key, house?.country || null)
+      const set = houseAuctionIds.get(key) || new Set<string>()
+      set.add(lot.auction_id)
+      houseAuctionIds.set(key, set)
     }
   })
 
-  const sires = [...sireMap.values()]
-    .map((row) => ({
-      ...row,
-      average_price_eur: row.sold_lots
-        ? row.total_value_eur / row.sold_lots
-        : 0,
-    }))
-    .sort((a, b) => b.total_value_eur - a.total_value_eur)
-    .slice(0, 8)
+  const sires = finalizeRanking<GlobalAuctionSireRanking>(
+    sireMap,
+    (name, metrics) => ({ sire_name: name, ...metrics }),
+  )
 
-  const houseAuctionIds = new Map<string, Set<string>>()
-  rows.forEach((lot) => {
-    const houseName = lot.global_auctions?.global_auction_houses?.name
-    if (!houseName) return
-    const set = houseAuctionIds.get(houseName) || new Set<string>()
-    set.add(lot.auction_id)
-    houseAuctionIds.set(houseName, set)
-  })
+  const damSires = finalizeRanking<GlobalAuctionDamSireRanking>(
+    damSireMap,
+    (name, metrics) => ({ dam_sire_name: name, ...metrics }),
+  )
 
-  const houses = [...houseMap.values()]
-    .map((row) => ({
-      ...row,
-      auctions: houseAuctionIds.get(row.house_name)?.size || 0,
-      average_price_eur: row.sold_lots
-        ? row.total_value_eur / row.sold_lots
-        : 0,
-    }))
-    .sort((a, b) => b.total_value_eur - a.total_value_eur)
-    .slice(0, 8)
+  const vendors = finalizeRanking<GlobalAuctionVendorRanking>(
+    vendorMap,
+    (name, metrics) => ({ vendor_name: name, ...metrics }),
+  )
 
-  return { overview, sires, houses }
+  const houses = finalizeRanking<GlobalAuctionHouseRanking>(
+    houseMap,
+    (name, metrics) => {
+      const key = normalizeRankingKey(name)
+      return {
+        house_name: name,
+        country: houseCountries.get(key) || null,
+        auctions: houseAuctionIds.get(key)?.size || 0,
+        ...metrics,
+      }
+    },
+  )
+
+  return { overview, sires, damSires, vendors, houses }
 }
 
 export const globalAuctionsService = {
@@ -339,10 +424,12 @@ export const globalAuctionsService = {
       const pageSize = Math.min(100, Math.max(10, pagination.pageSize || 25))
       const from = (page - 1) * pageSize
       const to = from + pageSize - 1
+      const auctionIds = await resolveAuctionIdsForFilters(filters)
 
       const query = applyLotFilters(
         db.from('global_auction_lots').select(lotSelect, { count: 'exact' }),
         filters,
+        auctionIds,
       )
         .order('hammer_price', { ascending: false, nullsFirst: false })
         .range(from, to)
@@ -367,6 +454,7 @@ export const globalAuctionsService = {
       const pageSize = 1000
       let from = 0
       const rows: GlobalAuctionLot[] = []
+      const auctionIds = await resolveAuctionIdsForFilters(filters)
 
       while (true) {
         const query = applyLotFilters(
@@ -375,6 +463,7 @@ export const globalAuctionsService = {
             .select(lotSelect)
             .range(from, from + pageSize - 1),
           filters,
+          auctionIds,
         )
 
         const { data, error } = await query
@@ -388,7 +477,13 @@ export const globalAuctionsService = {
       return summarizeLots(rows)
     } catch (error) {
       if (isMissingMarketSchema(error)) {
-        return { overview: emptyOverview, sires: [], houses: [] }
+        return {
+          overview: emptyOverview,
+          sires: [],
+          damSires: [],
+          vendors: [],
+          houses: [],
+        }
       }
       throw error
     }

@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Sparkles,
   Trophy,
+  Users,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -34,11 +35,14 @@ import {
 import { useToast } from '@/hooks/use-toast'
 import {
   globalAuctionsService,
+  type GlobalAuctionDamSireRanking,
   type GlobalAuctionFilters,
   type GlobalAuctionHouseRanking,
   type GlobalAuctionLot,
   type GlobalAuctionOverview,
+  type GlobalAuctionRankingMetrics,
   type GlobalAuctionSireRanking,
+  type GlobalAuctionVendorRanking,
 } from '@/services/global-auctions'
 
 const formatNumber = (value: number | null | undefined) =>
@@ -300,51 +304,109 @@ function LotDialog({
   )
 }
 
+type MarketRankingRow = GlobalAuctionRankingMetrics & {
+  name: string
+  detail?: string
+}
+
 function RankingList({
   title,
+  subtitle,
   rows,
-  type,
+  icon: Icon,
+  onSelect,
 }: {
   title: string
-  rows: GlobalAuctionSireRanking[] | GlobalAuctionHouseRanking[]
-  type: 'sire' | 'house'
+  subtitle: string
+  rows: MarketRankingRow[]
+  icon: typeof Globe2
+  onSelect?: (name: string) => void
 }) {
   return (
     <Card className="shadow-sm">
       <CardHeader>
-        <CardTitle className="text-lg text-primary">{title}</CardTitle>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <CardTitle className="flex items-center gap-2 text-lg text-primary">
+              <Icon className="h-4 w-4" />
+              {title}
+            </CardTitle>
+            <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+          </div>
+          <Badge variant="outline" className="rounded-md">
+            Top {rows.length}
+          </Badge>
+        </div>
       </CardHeader>
       <CardContent className="space-y-2">
         {rows.length === 0 ? (
           <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">
-            Importe uma primeira fonte para gerar este ranking.
+            Sem dados suficientes para esta seleção.
           </div>
         ) : (
           rows.map((row, index) => {
-            const name =
-              type === 'sire'
-                ? (row as GlobalAuctionSireRanking).sire_name
-                : (row as GlobalAuctionHouseRanking).house_name
-            return (
-              <div
-                key={`${type}-${name}`}
-                className="flex items-center justify-between rounded-md border p-3"
-              >
-                <div className="flex min-w-0 items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-sm font-bold text-primary">
-                    {index + 1}
+            const content = (
+              <>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex min-w-0 items-start gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-sm font-bold text-primary">
+                      {index + 1}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="truncate font-semibold text-foreground">
+                        {row.name}
+                      </div>
+                      <div className="mt-1 text-xs text-muted-foreground">
+                        {formatNumber(row.sold_lots)} vendidos de{' '}
+                        {formatNumber(row.lots)} ·{' '}
+                        {formatNumber(row.sell_through_rate * 100)}% venda ·{' '}
+                        {row.latest_year || 'sem ano'}
+                      </div>
+                      {row.detail ? (
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          {row.detail}
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <div className="truncate font-semibold">{name}</div>
+                  <div className="shrink-0 text-right">
+                    <div className="text-sm font-semibold text-primary">
+                      {formatCurrency(row.total_value_eur)}
+                    </div>
                     <div className="text-xs text-muted-foreground">
-                      {formatNumber(row.sold_lots)} vendidos ·{' '}
-                      {row.latest_year || 'sem ano'}
+                      med. {formatCurrency(row.median_price_eur)}
                     </div>
                   </div>
                 </div>
-                <div className="text-right text-sm font-semibold text-primary">
-                  {formatCurrency(row.total_value_eur)}
+                <div className="mt-3 grid gap-2 text-xs text-muted-foreground sm:grid-cols-3">
+                  <div className="rounded-md bg-muted/40 px-2 py-1">
+                    média {formatCurrency(row.average_price_eur)}
+                  </div>
+                  <div className="rounded-md bg-muted/40 px-2 py-1">
+                    top {formatCurrency(row.top_price_eur)}
+                  </div>
+                  <div className="rounded-md bg-muted/40 px-2 py-1">
+                    {formatNumber(row.premium_lots)} premium
+                  </div>
                 </div>
+              </>
+            )
+
+            return onSelect ? (
+              <button
+                key={`${title}-${row.name}`}
+                type="button"
+                onClick={() => onSelect(row.name)}
+                className="w-full rounded-md border bg-white p-3 text-left transition hover:border-primary/40 hover:bg-primary/5"
+              >
+                {content}
+              </button>
+            ) : (
+              <div
+                key={`${title}-${row.name}`}
+                className="w-full rounded-md border bg-white p-3 text-left"
+              >
+                {content}
               </div>
             )
           })
@@ -359,6 +421,8 @@ export default function MercadoGlobal() {
   const [lots, setLots] = useState<GlobalAuctionLot[]>([])
   const [total, setTotal] = useState(0)
   const [sires, setSires] = useState<GlobalAuctionSireRanking[]>([])
+  const [damSires, setDamSires] = useState<GlobalAuctionDamSireRanking[]>([])
+  const [vendors, setVendors] = useState<GlobalAuctionVendorRanking[]>([])
   const [houses, setHouses] = useState<GlobalAuctionHouseRanking[]>([])
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
@@ -396,6 +460,8 @@ export default function MercadoGlobal() {
       setLots(lotPage.rows)
       setTotal(lotPage.total)
       setSires(nextOverview.sires)
+      setDamSires(nextOverview.damSires)
+      setVendors(nextOverview.vendors)
       setHouses(nextOverview.houses)
     } catch (error) {
       console.error(error)
@@ -458,6 +524,48 @@ export default function MercadoGlobal() {
     )
     setPeriod('years')
   }
+
+  const focusSearch = (name: string) => {
+    setSearch(name)
+    setPage(1)
+  }
+
+  const sireRows = useMemo<MarketRankingRow[]>(
+    () =>
+      sires.map((row) => ({
+        ...row,
+        name: row.sire_name,
+      })),
+    [sires],
+  )
+
+  const damSireRows = useMemo<MarketRankingRow[]>(
+    () =>
+      damSires.map((row) => ({
+        ...row,
+        name: row.dam_sire_name,
+      })),
+    [damSires],
+  )
+
+  const vendorRows = useMemo<MarketRankingRow[]>(
+    () =>
+      vendors.map((row) => ({
+        ...row,
+        name: row.vendor_name,
+      })),
+    [vendors],
+  )
+
+  const houseRows = useMemo<MarketRankingRow[]>(
+    () =>
+      houses.map((row) => ({
+        ...row,
+        name: row.house_name,
+        detail: `${formatNumber(row.auctions)} leilões${row.country ? ` · ${row.country}` : ''}`,
+      })),
+    [houses],
+  )
 
   return (
     <div className="space-y-6 p-4 md:p-6">
@@ -620,16 +728,56 @@ export default function MercadoGlobal() {
         />
       </div>
 
+      <div className="rounded-md border bg-white p-4 shadow-sm">
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+              <Sparkles className="h-4 w-4" />
+              Inteligência de seleção
+            </div>
+            <h2 className="mt-1 text-2xl font-bold text-primary">
+              Quem está em alta no recorte escolhido
+            </h2>
+            <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
+              Rankings recalculados pelos filtros acima. Use para escolher
+              garanhões, famílias maternas, vendedores e casas que merecem
+              prospecção, convites ou comparação de reserva.
+            </p>
+          </div>
+          <div className="text-sm text-muted-foreground">
+            Base atual: {formatNumber(overview.sold_lots)} vendas ·{' '}
+            {formatCurrency(overview.total_sold_value_eur)}
+          </div>
+        </div>
+      </div>
+
       <div className="grid gap-4 lg:grid-cols-2">
         <RankingList
-          title="Garanhões por valor vendido"
-          rows={sires}
-          type="sire"
+          title="Garanhões em alta"
+          subtitle="Valor vendido, liquidez e top price por pai."
+          rows={sireRows}
+          icon={Trophy}
+          onSelect={focusSearch}
         />
         <RankingList
-          title="Casas por volume vendido"
-          rows={houses}
-          type="house"
+          title="Famílias maternas"
+          subtitle="Avôs maternos que aparecem nos melhores tickets."
+          rows={damSireRows}
+          icon={ShieldCheck}
+          onSelect={focusSearch}
+        />
+        <RankingList
+          title="Haras e vendedores"
+          subtitle="Origem comercial dos lotes com maior conversão."
+          rows={vendorRows}
+          icon={Users}
+          onSelect={focusSearch}
+        />
+        <RankingList
+          title="Casas de leilão"
+          subtitle="Fontes com mais volume e maior ticket no período."
+          rows={houseRows}
+          icon={Gavel}
         />
       </div>
 
