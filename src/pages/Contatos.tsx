@@ -79,7 +79,7 @@ import {
   UserCheck,
   UserX,
   Send,
-  Tag,
+  Tag as TagIcon,
 } from 'lucide-react'
 import { cn, getContrastColor } from '@/lib/utils'
 import { ContactForm } from '@/components/contacts/ContactForm'
@@ -501,7 +501,7 @@ export default function Contatos() {
 
           <Button variant="outline" asChild>
             <Link to="/tags">
-              <Tag className="mr-2 h-4 w-4" />
+              <TagIcon className="mr-2 h-4 w-4" />
               Gerenciar Tags
             </Link>
           </Button>
