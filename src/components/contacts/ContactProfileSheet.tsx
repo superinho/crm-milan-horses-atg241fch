@@ -33,7 +33,6 @@ import {
   type Contact,
   type Purchase,
 } from '@/services/contacts'
-import { telUrl, whatsappUrl } from '@/lib/phone'
 
 type ContactProfileSheetProps = {
   contactId: string | null
@@ -57,6 +56,9 @@ const money = (value: number | null | undefined) =>
 
 const date = (value?: string | null) =>
   value ? new Date(value).toLocaleDateString('pt-BR') : '-'
+
+const digitsOnly = (value?: string | null) =>
+  String(value || '').replace(/\D/g, '')
 
 function EmptyLine({ children }: { children: React.ReactNode }) {
   return (
@@ -98,15 +100,19 @@ function ActivityItem({
   icon: React.ElementType
 }) {
   return (
-    <div className="flex gap-3 rounded-md border px-3 py-2">
-      <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-muted">
+    <div className="flex gap-3 rounded-md border px-3 py-2 items-center">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-muted">
         <Icon className="h-4 w-4 text-primary" />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="truncate text-sm font-medium">{title}</div>
+        <div className="text-sm font-medium line-clamp-2 break-words">
+          {title}
+        </div>
         <div className="truncate text-xs text-muted-foreground">{subtitle}</div>
       </div>
-      <div className="shrink-0 text-sm font-semibold">{value}</div>
+      <div className="shrink-0 text-sm font-semibold whitespace-nowrap">
+        {value}
+      </div>
     </div>
   )
 }
@@ -150,9 +156,9 @@ export function ContactProfileSheet({
   }, [contactId, open])
 
   const contact = state?.contact
-  const preferredPhone = contact?.whatsapp || contact?.phone
-  const whatsappHref = whatsappUrl(preferredPhone)
-  const telHref = telUrl(preferredPhone)
+  const phoneDigits = digitsOnly(contact?.whatsapp || contact?.phone)
+  const whatsappHref = phoneDigits ? `https://wa.me/55${phoneDigits}` : ''
+  const telHref = phoneDigits ? `tel:+55${phoneDigits}` : ''
   const mailHref = contact?.email ? `mailto:${contact.email}` : ''
 
   const preferredInfo = useMemo(() => {
@@ -171,9 +177,9 @@ export function ContactProfileSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full overflow-hidden p-0 sm:max-w-2xl">
-        <ScrollArea className="h-full">
-          <div className="p-6">
+      <SheetContent className="w-full flex flex-col p-0 sm:max-w-2xl h-[100dvh]">
+        <ScrollArea className="flex-1">
+          <div className="p-6 pb-12">
             {loading ? (
               <div className="space-y-4">
                 <SheetHeader className="pr-8">
@@ -270,7 +276,7 @@ export function ContactProfileSheet({
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm">
                     <div className="grid gap-3 md:grid-cols-2">
-                      <div>
+                      <div className="min-w-0">
                         <div className="text-xs text-muted-foreground">
                           E-mail
                         </div>
@@ -278,35 +284,35 @@ export function ContactProfileSheet({
                           {contact.email || '-'}
                         </div>
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <div className="text-xs text-muted-foreground">
                           Telefone
                         </div>
-                        <div className="font-medium">
+                        <div className="font-medium truncate">
                           {contact.whatsapp || contact.phone || '-'}
                         </div>
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <div className="text-xs text-muted-foreground">
                           CPF/CNPJ
                         </div>
-                        <div className="font-medium">
+                        <div className="font-medium truncate">
                           {contact.document || contact.cpf || '-'}
                         </div>
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <div className="text-xs text-muted-foreground">
                           Data de nascimento
                         </div>
-                        <div className="font-medium">
+                        <div className="font-medium truncate">
                           {date(contact.birth_date)}
                         </div>
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <div className="text-xs text-muted-foreground">
                           Última atividade
                         </div>
-                        <div className="font-medium">
+                        <div className="font-medium truncate">
                           {date(contact.lastActivityDate)}
                         </div>
                       </div>
@@ -317,14 +323,14 @@ export function ContactProfileSheet({
                         <Separator />
                         <div className="flex gap-2">
                           <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
-                          <div>
-                            <div className="font-medium">
+                          <div className="min-w-0 flex-1">
+                            <div className="font-medium break-words">
                               {[contact.city, contact.state]
                                 .filter(Boolean)
                                 .join(', ') || '-'}
                             </div>
                             {contact.address && (
-                              <div className="text-muted-foreground">
+                              <div className="text-muted-foreground break-words">
                                 {contact.address}
                               </div>
                             )}
@@ -338,7 +344,10 @@ export function ContactProfileSheet({
                         <Separator />
                         <div className="space-y-1">
                           {preferredInfo.map((info) => (
-                            <div key={info} className="text-muted-foreground">
+                            <div
+                              key={info}
+                              className="text-muted-foreground break-words"
+                            >
                               {info}
                             </div>
                           ))}
@@ -353,7 +362,7 @@ export function ContactProfileSheet({
                           <div className="text-xs text-muted-foreground">
                             Notas
                           </div>
-                          <div className="mt-1 text-muted-foreground">
+                          <div className="mt-1 text-muted-foreground break-words whitespace-pre-wrap">
                             {contact.notes}
                           </div>
                         </div>
@@ -370,20 +379,18 @@ export function ContactProfileSheet({
 
                   <TabsContent value="compras" className="space-y-2">
                     {state.purchases.length ? (
-                      state.purchases
-                        .slice(0, 8)
-                        .map((purchase) => (
-                          <ActivityItem
-                            key={purchase.id}
-                            icon={ShoppingBag}
-                            title={
-                              purchase.description ||
-                              `Lote ${purchase.lot_number || '-'}`
-                            }
-                            subtitle={`${date(purchase.date)} · Lote ${purchase.lot_number || '-'}`}
-                            value={money(purchase.value)}
-                          />
-                        ))
+                      state.purchases.map((purchase) => (
+                        <ActivityItem
+                          key={purchase.id}
+                          icon={ShoppingBag}
+                          title={
+                            purchase.description ||
+                            `Lote ${purchase.lot_number || '-'}`
+                          }
+                          subtitle={`${date(purchase.date)} · Lote ${purchase.lot_number || '-'}`}
+                          value={money(purchase.value)}
+                        />
+                      ))
                     ) : (
                       <EmptyLine>Nenhuma compra registrada.</EmptyLine>
                     )}
@@ -391,19 +398,15 @@ export function ContactProfileSheet({
 
                   <TabsContent value="lances" className="space-y-2">
                     {state.bids.length ? (
-                      state.bids
-                        .slice(0, 8)
-                        .map((bid) => (
-                          <ActivityItem
-                            key={bid.id}
-                            icon={Gavel}
-                            title={
-                              bid.reason || `Lote ${bid.lot_number || '-'}`
-                            }
-                            subtitle={`${date(bid.date)} · Lote ${bid.lot_number || '-'}`}
-                            value={money(bid.value)}
-                          />
-                        ))
+                      state.bids.map((bid) => (
+                        <ActivityItem
+                          key={bid.id}
+                          icon={Gavel}
+                          title={bid.reason || `Lote ${bid.lot_number || '-'}`}
+                          subtitle={`${date(bid.date)} · Lote ${bid.lot_number || '-'}`}
+                          value={money(bid.value)}
+                        />
+                      ))
                     ) : (
                       <EmptyLine>Nenhum lance registrado.</EmptyLine>
                     )}

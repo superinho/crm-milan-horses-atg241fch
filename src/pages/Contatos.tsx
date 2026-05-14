@@ -57,6 +57,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { Link } from 'react-router-dom'
 import {
   Search,
   Plus,
@@ -78,6 +79,7 @@ import {
   UserCheck,
   UserX,
   Send,
+  Tag,
 } from 'lucide-react'
 import { cn, getContrastColor } from '@/lib/utils'
 import { ContactForm } from '@/components/contacts/ContactForm'
@@ -101,7 +103,6 @@ import {
   type SmartLeiloesSyncRun,
   type SmartLeiloesSyncSummary,
 } from '@/services/smartleiloes-sync'
-import { whatsappUrl } from '@/lib/phone'
 
 const initialFilters: FilterState = {
   tags: [],
@@ -498,6 +499,13 @@ export default function Contatos() {
             Importar aniversários
           </Button>
 
+          <Button variant="outline" asChild>
+            <Link to="/tags">
+              <Tag className="mr-2 h-4 w-4" />
+              Gerenciar Tags
+            </Link>
+          </Button>
+
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
               <Button className="bg-primary hover:bg-primary/90 text-white shadow-md">
@@ -807,6 +815,7 @@ export default function Contatos() {
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50 hover:bg-muted/50">
+                  <TableHead className="w-[50px]">#</TableHead>
                   <TableHead className="w-[300px]">
                     <Button
                       variant="ghost"
@@ -868,17 +877,20 @@ export default function Contatos() {
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="h-32 text-center">
+                    <TableCell colSpan={9} className="h-32 text-center">
                       <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
                     </TableCell>
                   </TableRow>
                 ) : contacts.length > 0 ? (
-                  contacts.map((contact) => (
+                  contacts.map((contact, index) => (
                     <TableRow
                       key={contact.id}
                       className="group cursor-pointer hover:bg-muted/30 transition-colors"
                       onClick={() => openProfile(contact)}
                     >
+                      <TableCell className="text-muted-foreground text-sm">
+                        {(currentPage - 1) * itemsPerPage + index + 1}
+                      </TableCell>
                       <TableCell className="font-medium">
                         <div className="flex items-center gap-3">
                           <Avatar className="h-9 w-9 border border-muted">
@@ -1032,9 +1044,9 @@ export default function Contatos() {
                               className="h-8 w-8 text-muted-foreground hover:text-primary"
                             >
                               <a
-                                href={whatsappUrl(
+                                href={`https://wa.me/55${String(
                                   contact.whatsapp || contact.phone,
-                                )}
+                                ).replace(/\D/g, '')}`}
                                 target="_blank"
                                 rel="noreferrer"
                                 title="Chamar no WhatsApp"
@@ -1081,7 +1093,7 @@ export default function Contatos() {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={8} className="h-32 text-center">
+                    <TableCell colSpan={9} className="h-32 text-center">
                       <div className="flex flex-col items-center justify-center text-muted-foreground">
                         <Search className="h-8 w-8 mb-2 opacity-50" />
                         <p>Nenhum contato encontrado com os filtros atuais.</p>
