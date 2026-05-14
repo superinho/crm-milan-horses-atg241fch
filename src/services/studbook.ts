@@ -1299,4 +1299,24 @@ export const studbookService = {
 
     if (error) throw error
   },
+
+  async getListItems(listId: string) {
+    const { data, error } = await db
+      .from('auction_candidate_items')
+      .select('id, reason, created_at, horse:studbook_horses_enriched(*)')
+      .eq('list_id', listId)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return data || []
+  },
+
+  async removeListItem(itemId: string) {
+    const { error } = await db
+      .from('auction_candidate_items')
+      .delete()
+      .eq('id', itemId)
+
+    if (error) throw error
+  },
 }

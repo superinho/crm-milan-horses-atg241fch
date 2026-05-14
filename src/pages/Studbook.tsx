@@ -20,6 +20,7 @@ import {
   SlidersHorizontal,
   Sparkles,
   Tag,
+  Trash2,
   Trophy,
   Users,
   UserPlus,
@@ -84,7 +85,8 @@ const formatNumber = (value: number) =>
     value || 0,
   )
 
-const quality = (value?: number | null) => Math.round(Number(value || 0))
+const completenessScore = (value?: number | null) =>
+  Math.round(Number(value || 0))
 
 const ageLabel = (horse: StudbookHorse) =>
   horse.age_years !== null && horse.age_years !== undefined
@@ -524,6 +526,89 @@ function NetworkDetailDialog({
   )
 }
 
+function ListDetailDialog({
+  list,
+  items,
+  loading,
+  open,
+  onOpenChange,
+  onRemoveItem,
+}: {
+  list: AuctionCandidateList | null
+  items: any[]
+  loading: boolean
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onRemoveItem: (itemId: string) => void
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-3xl">
+        <DialogHeader>
+          <DialogTitle className="text-primary">{list?.name}</DialogTitle>
+          <DialogDescription>
+            {list?.thesis || 'Sem tese comercial definida.'}
+          </DialogDescription>
+        </DialogHeader>
+
+        {loading ? (
+          <div className="flex min-h-48 items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">
+                {items.length} animais nesta lista
+              </span>
+            </div>
+
+            <div className="max-h-[60vh] overflow-y-auto rounded-md border">
+              {items.length === 0 ? (
+                <div className="p-8 text-center text-sm text-muted-foreground">
+                  Nenhum animal adicionado a esta lista ainda.
+                </div>
+              ) : (
+                <div className="divide-y">
+                  {items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between p-4"
+                    >
+                      <div>
+                        <div className="font-medium text-foreground">
+                          {item.horse?.name || 'Animal desconhecido'}
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {item.horse?.registration ||
+                            item.horse?.ueln ||
+                            'Sem registro'}
+                          {item.horse?.age_years
+                            ? ` · ${item.horse.age_years} anos`
+                            : ''}
+                        </div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-muted-foreground hover:text-destructive"
+                        onClick={() => onRemoveItem(item.id)}
+                        title="Remover da lista"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 function HorseDetailDialog({
   horse,
   open,
@@ -581,9 +666,9 @@ function HorseDetailDialog({
                 </div>
               </div>
               <div className="rounded-md border bg-muted/10 p-3">
-                <div className="text-xs text-muted-foreground">Qualidade</div>
+                <div className="text-xs text-muted-foreground">Completude</div>
                 <div className="mt-1 font-semibold">
-                  {quality(horse.data_quality_score)}%
+                  {completenessScore(horse.data_quality_score)}%
                 </div>
               </div>
             </div>
@@ -694,27 +779,19 @@ function HorseRecordCard({
           <Badge className="rounded-md">Matriz ativa</Badge>
         ) : null}
       </div>
-      <div className="mt-3 flex items-center justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <div className="mb-1 flex items-center justify-between gap-2 text-xs">
-            <span>Qualidade</span>
-            <span className="font-semibold">
-              {quality(horse.data_quality_score)}%
-            </span>
-          </div>
-          <Progress value={quality(horse.data_quality_score)} className="h-2" />
-        </div>
+      <div className="mt-4 flex">
         <Button
           variant="outline"
           size="sm"
+          className="w-full justify-center"
           disabled={!lists.length}
           onClick={(event) => {
             event.stopPropagation()
             onAddToList(horse)
           }}
         >
-          <Plus className="h-4 w-4" />
-          Lista
+          <Plus className="h-4 w-4 mr-2" />
+          Adicionar à lista
         </Button>
       </div>
     </div>
@@ -825,6 +902,12 @@ export default function Studbook() {
   const [page, setPage] = useState(1)
   const pageSize = 50
   const [lists, setLists] = useState<AuctionCandidateList[]>([])
+  const [listDialogOpen, setListDialogOpen] = useState(false)
+  const [selectedList, setSelectedList] = useState<AuctionCandidateList | null>(
+    null,
+  )
+  const [listItems, setListItems] = useState<any[]>([])
+  const [listItemsLoading, setListItemsLoading] = useState(false)
   const [loading, setLoading] = useState(true)
   const dataRequestRef = useRef(0)
   const networkRequestRef = useRef(0)
@@ -1104,6 +1187,50 @@ export default function Studbook() {
     await openNetworkEntity(selectedNetworkEntity, nextPage)
   }
 
+  const openList = async (list: AuctionCandidateList) => {
+    setSelectedList(list)
+    setListDialogOpen(true)
+    setListItemsLoading(true)
+    try {
+      const items = await studbookService.getListItems(list.id)
+      setListItems(items)
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: 'Erro',
+        description: 'Não foi possível carregar os animais da lista.',
+        variant: 'destructive',
+      })
+    } finally {
+      setListItemsLoading(false)
+    }
+  }
+
+  const removeListItem = async (itemId: string) => {
+    try {
+      await studbookService.removeListItem(itemId)
+      setListItems((prev) => prev.filter((item) => item.id !== itemId))
+      setLists((prev) =>
+        prev.map((l) =>
+          l.id === selectedList?.id
+            ? { ...l, item_count: Math.max(0, (l.item_count || 0) - 1) }
+            : l,
+        ),
+      )
+      toast({
+        title: 'Removido',
+        description: 'Animal removido da lista.',
+      })
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: 'Erro',
+        description: 'Não foi possível remover o animal da lista.',
+        variant: 'destructive',
+      })
+    }
+  }
+
   const createProspectingList = async (entity: StudbookNetworkEntity) => {
     try {
       await studbookService.createProspectingListFromEntity(entity)
@@ -1177,6 +1304,14 @@ export default function Studbook() {
 
   return (
     <div className="space-y-6 pb-10 animate-fade-in">
+      <ListDetailDialog
+        list={selectedList}
+        items={listItems}
+        loading={listItemsLoading}
+        open={listDialogOpen}
+        onOpenChange={setListDialogOpen}
+        onRemoveItem={removeListItem}
+      />
       <NetworkDetailDialog
         open={networkDialogOpen}
         detail={networkDetail}
@@ -1315,7 +1450,7 @@ export default function Studbook() {
                   <SelectItem value="age_asc">Mais jovens</SelectItem>
                   <SelectItem value="age_desc">Mais velhos</SelectItem>
                   <SelectItem value="offspring">Mais filhos</SelectItem>
-                  <SelectItem value="quality">Melhor qualidade</SelectItem>
+                  <SelectItem value="quality">Maior completude</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -1429,10 +1564,10 @@ export default function Studbook() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Qualquer qualidade</SelectItem>
-                  <SelectItem value="50">50%+ completo</SelectItem>
-                  <SelectItem value="70">70%+ completo</SelectItem>
-                  <SelectItem value="85">85%+ completo</SelectItem>
+                  <SelectItem value="all">Qualquer completude</SelectItem>
+                  <SelectItem value="50">50%+ preenchido</SelectItem>
+                  <SelectItem value="70">70%+ preenchido</SelectItem>
+                  <SelectItem value="85">85%+ preenchido</SelectItem>
                 </SelectContent>
               </Select>
               <Select value={recentYears} onValueChange={setRecentYears}>
@@ -1664,9 +1799,14 @@ export default function Studbook() {
                     <p className="mt-1 text-xs text-muted-foreground">
                       {list.thesis || 'Sem tese comercial definida.'}
                     </p>
-                    <Badge variant="secondary" className="mt-3 rounded-md">
-                      {list.item_count || 0} selecionados
-                    </Badge>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="mt-3 w-full"
+                      onClick={() => openList(list)}
+                    >
+                      Ver {list.item_count || 0} selecionados
+                    </Button>
                   </div>
                 ))
               )}
