@@ -882,6 +882,134 @@ function HorseTable({
   )
 }
 
+function SuggestedMares({
+  currentHorses,
+  onOpenHorse,
+  onAddToList,
+  lists,
+}: {
+  currentHorses: StudbookHorse[]
+  onOpenHorse: (horse: StudbookHorse) => void
+  onAddToList: (horse: StudbookHorse) => void
+  lists: AuctionCandidateList[]
+}) {
+  const [suggestions, setSuggestions] = useState<StudbookHorse[]>([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    let active = true
+    async function fetchSuggestions() {
+      if (currentHorses.length === 0) {
+        setSuggestions([])
+        return
+      }
+
+      setLoading(true)
+      try {
+        const sires = new Set<string>()
+        const breeders = new Set<string>()
+
+        currentHorses.slice(0, 10).forEach((h) => {
+          if (h.sire_name) sires.add(h.sire_name)
+          if (h.breeder_name) breeders.add(h.breeder_name)
+        })
+
+        const filters: StudbookFilters = {
+          sex: 'female',
+          reproductiveOnly: true,
+          sortBy: 'quality',
+        }
+
+        if (sires.size > 0) {
+          filters.sireNames = Array.from(sires).slice(0, 3)
+        } else if (breeders.size > 0) {
+          filters.breederNames = Array.from(breeders).slice(0, 3)
+        }
+
+        const res = await studbookService.getHorses(filters, {
+          page: 1,
+          pageSize: 5,
+        })
+        if (!active) return
+
+        const currentIds = new Set(currentHorses.map((h) => h.id))
+        setSuggestions(
+          res.rows.filter((h) => !currentIds.has(h.id)).slice(0, 3),
+        )
+      } catch (err) {
+        console.error(err)
+      } finally {
+        if (active) setLoading(false)
+      }
+    }
+
+    const timeoutId = setTimeout(fetchSuggestions, 500)
+    return () => {
+      active = false
+      clearTimeout(timeoutId)
+    }
+  }, [currentHorses])
+
+  if (currentHorses.length === 0 || (!loading && suggestions.length === 0))
+    return null
+
+  return (
+    <Card className="shadow-sm">
+      <CardHeader className="border-b pb-4">
+        <CardTitle className="flex items-center gap-2 text-base text-primary">
+          <Sparkles className="h-4 w-4" />
+          Matrizes-alvo Relacionadas
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3 p-4">
+        <p className="text-xs text-muted-foreground">
+          Sugestões dinâmicas de matrizes ativas cruzando a genética dos
+          resultados da busca atual.
+        </p>
+        {loading ? (
+          <div className="flex min-h-24 items-center justify-center">
+            <Loader2 className="h-5 w-5 animate-spin text-primary" />
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {suggestions.map((horse) => (
+              <div
+                key={horse.id}
+                className="rounded-md border bg-primary/5 p-3 transition hover:bg-primary/10"
+              >
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className="cursor-pointer text-sm font-semibold hover:underline"
+                  onClick={() => onOpenHorse(horse)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') onOpenHorse(horse)
+                  }}
+                >
+                  {horse.name}
+                </div>
+                <div className="mt-1 text-xs text-muted-foreground">
+                  Pai: {horse.sire_name || 'não informado'}
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-2 h-7 w-full text-xs"
+                  disabled={!lists.length}
+                  onClick={() => onAddToList(horse)}
+                >
+                  <Plus className="mr-1 h-3 w-3" />
+                  Salvar
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
 export default function Studbook() {
   const [overview, setOverview] = useState<StudbookOverview | null>(null)
   const [networkOverview, setNetworkOverview] =
@@ -1102,12 +1230,12 @@ export default function Studbook() {
   const createDefaultList = async () => {
     try {
       await studbookService.createCandidateList(
-        'Matrizes-alvo',
-        'Seleção inicial de matrizes para futuros leilões Milan Horses.',
+        'Lista Personalizada',
+        'Seleção de animais de interesse separados manualmente.',
       )
       toast({
         title: 'Lista criada',
-        description: 'Agora você pode adicionar matrizes à lista de leilão.',
+        description: 'Agora você pode adicionar registros à sua lista.',
         variant: 'success',
       })
       await loadData()
@@ -1732,6 +1860,13 @@ export default function Studbook() {
         </div>
 
         <aside className="space-y-4">
+          <SuggestedMares
+            currentHorses={horses}
+            onOpenHorse={openHorse}
+            onAddToList={addToFirstList}
+            lists={lists}
+          />
+
           <Card className="shadow-sm">
             <CardHeader className="border-b pb-4">
               <CardTitle className="text-base text-primary">
