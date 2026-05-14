@@ -11,10 +11,95 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: '14.1'
+    PostgrestVersion: "14.1"
   }
   public: {
     Tables: {
+      auction_candidate_items: {
+        Row: {
+          created_at: string | null
+          horse_id: string
+          id: string
+          list_id: string
+          notes: string | null
+          potential_score: number | null
+          reason: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          horse_id: string
+          id?: string
+          list_id: string
+          notes?: string | null
+          potential_score?: number | null
+          reason?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          horse_id?: string
+          id?: string
+          list_id?: string
+          notes?: string | null
+          potential_score?: number | null
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auction_candidate_items_horse_id_fkey"
+            columns: ["horse_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_horses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "auction_candidate_items_horse_id_fkey"
+            columns: ["horse_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_horses_enriched"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "auction_candidate_items_list_id_fkey"
+            columns: ["list_id"]
+            isOneToOne: false
+            referencedRelation: "auction_candidate_lists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      auction_candidate_lists: {
+        Row: {
+          created_at: string | null
+          filters: Json | null
+          id: string
+          name: string
+          notes: string | null
+          status: string | null
+          thesis: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          filters?: Json | null
+          id?: string
+          name: string
+          notes?: string | null
+          status?: string | null
+          thesis?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          filters?: Json | null
+          id?: string
+          name?: string
+          notes?: string | null
+          status?: string | null
+          thesis?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       automation_settings: {
         Row: {
           config: Json | null
@@ -93,25 +178,25 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'bids_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "bids_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'bids_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "bids_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'bids_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "bids_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -169,32 +254,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'campaign_recipients_campaign_id_fkey'
-            columns: ['campaign_id']
+            foreignKeyName: "campaign_recipients_campaign_id_fkey"
+            columns: ["campaign_id"]
             isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_recipients_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "campaign_recipients_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_recipients_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "campaign_recipients_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_recipients_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "campaign_recipients_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -237,18 +322,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'campaign_schedules_campaign_id_fkey'
-            columns: ['campaign_id']
+            foreignKeyName: "campaign_schedules_campaign_id_fkey"
+            columns: ["campaign_id"]
             isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_schedules_template_id_fkey'
-            columns: ['template_id']
+            foreignKeyName: "campaign_schedules_template_id_fkey"
+            columns: ["template_id"]
             isOneToOne: false
-            referencedRelation: 'message_templates'
-            referencedColumns: ['id']
+            referencedRelation: "message_templates"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -318,46 +403,46 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'campaign_sends_campaign_id_fkey'
-            columns: ['campaign_id']
+            foreignKeyName: "campaign_sends_campaign_id_fkey"
+            columns: ["campaign_id"]
             isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_sends_campaign_recipient_id_fkey'
-            columns: ['campaign_recipient_id']
+            foreignKeyName: "campaign_sends_campaign_recipient_id_fkey"
+            columns: ["campaign_recipient_id"]
             isOneToOne: false
-            referencedRelation: 'campaign_recipients'
-            referencedColumns: ['id']
+            referencedRelation: "campaign_recipients"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_sends_recipient_id_fkey'
-            columns: ['recipient_id']
+            foreignKeyName: "campaign_sends_recipient_id_fkey"
+            columns: ["recipient_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_sends_recipient_id_fkey'
-            columns: ['recipient_id']
+            foreignKeyName: "campaign_sends_recipient_id_fkey"
+            columns: ["recipient_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_sends_recipient_id_fkey'
-            columns: ['recipient_id']
+            foreignKeyName: "campaign_sends_recipient_id_fkey"
+            columns: ["recipient_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_sends_schedule_id_fkey'
-            columns: ['schedule_id']
+            foreignKeyName: "campaign_sends_schedule_id_fkey"
+            columns: ["schedule_id"]
             isOneToOne: false
-            referencedRelation: 'campaign_schedules'
-            referencedColumns: ['id']
+            referencedRelation: "campaign_schedules"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -472,32 +557,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'contact_interactions_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_interactions_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_interactions_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_interactions_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_interactions_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_interactions_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_interactions_deal_id_fkey'
-            columns: ['deal_id']
+            foreignKeyName: "contact_interactions_deal_id_fkey"
+            columns: ["deal_id"]
             isOneToOne: false
-            referencedRelation: 'deals'
-            referencedColumns: ['id']
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -516,32 +601,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'contact_tags_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_tags_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_tags_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_tags_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_tags_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_tags_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_tags_tag_id_fkey'
-            columns: ['tag_id']
+            foreignKeyName: "contact_tags_tag_id_fkey"
+            columns: ["tag_id"]
             isOneToOne: false
-            referencedRelation: 'tags'
-            referencedColumns: ['id']
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -632,11 +717,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'deal_tasks_deal_id_fkey'
-            columns: ['deal_id']
+            foreignKeyName: "deal_tasks_deal_id_fkey"
+            columns: ["deal_id"]
             isOneToOne: false
-            referencedRelation: 'deals'
-            referencedColumns: ['id']
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -679,25 +764,392 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'deals_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "deals_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'deals_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "deals_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'deals_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "deals_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      global_auction_houses: {
+        Row: {
+          country: string | null
+          created_at: string | null
+          id: string
+          name: string
+          normalized_name: string
+          notes: string | null
+          source_id: string | null
+          updated_at: string | null
+          website_url: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string | null
+          id?: string
+          name: string
+          normalized_name: string
+          notes?: string | null
+          source_id?: string | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string | null
+          id?: string
+          name?: string
+          normalized_name?: string
+          notes?: string | null
+          source_id?: string | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "global_auction_houses_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "global_auction_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      global_auction_import_runs: {
+        Row: {
+          error_message: string | null
+          finished_at: string | null
+          id: string
+          metadata: Json | null
+          rows_imported: number | null
+          rows_seen: number | null
+          rows_skipped: number | null
+          source_id: string | null
+          source_url: string | null
+          started_at: string | null
+          status: string
+        }
+        Insert: {
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          metadata?: Json | null
+          rows_imported?: number | null
+          rows_seen?: number | null
+          rows_skipped?: number | null
+          source_id?: string | null
+          source_url?: string | null
+          started_at?: string | null
+          status?: string
+        }
+        Update: {
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          metadata?: Json | null
+          rows_imported?: number | null
+          rows_seen?: number | null
+          rows_skipped?: number | null
+          source_id?: string | null
+          source_url?: string | null
+          started_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "global_auction_import_runs_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "global_auction_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      global_auction_lots: {
+        Row: {
+          age: number | null
+          auction_id: string
+          birth_year: number | null
+          breeder_name: string | null
+          buyer_country: string | null
+          buyer_name: string | null
+          color: string | null
+          confidence_score: number | null
+          created_at: string | null
+          currency: string
+          dam_name: string | null
+          dam_sire_name: string | null
+          discipline: string
+          hammer_price: number | null
+          horse_name: string
+          id: string
+          lot_number: string | null
+          normalized_horse_name: string
+          price_text: string | null
+          sex: string | null
+          sire_name: string | null
+          sold_status: string
+          source_id: string | null
+          source_payload: Json | null
+          source_url: string | null
+          studbook: string | null
+          updated_at: string | null
+          vendor_name: string | null
+        }
+        Insert: {
+          age?: number | null
+          auction_id: string
+          birth_year?: number | null
+          breeder_name?: string | null
+          buyer_country?: string | null
+          buyer_name?: string | null
+          color?: string | null
+          confidence_score?: number | null
+          created_at?: string | null
+          currency?: string
+          dam_name?: string | null
+          dam_sire_name?: string | null
+          discipline?: string
+          hammer_price?: number | null
+          horse_name: string
+          id?: string
+          lot_number?: string | null
+          normalized_horse_name: string
+          price_text?: string | null
+          sex?: string | null
+          sire_name?: string | null
+          sold_status?: string
+          source_id?: string | null
+          source_payload?: Json | null
+          source_url?: string | null
+          studbook?: string | null
+          updated_at?: string | null
+          vendor_name?: string | null
+        }
+        Update: {
+          age?: number | null
+          auction_id?: string
+          birth_year?: number | null
+          breeder_name?: string | null
+          buyer_country?: string | null
+          buyer_name?: string | null
+          color?: string | null
+          confidence_score?: number | null
+          created_at?: string | null
+          currency?: string
+          dam_name?: string | null
+          dam_sire_name?: string | null
+          discipline?: string
+          hammer_price?: number | null
+          horse_name?: string
+          id?: string
+          lot_number?: string | null
+          normalized_horse_name?: string
+          price_text?: string | null
+          sex?: string | null
+          sire_name?: string | null
+          sold_status?: string
+          source_id?: string | null
+          source_payload?: Json | null
+          source_url?: string | null
+          studbook?: string | null
+          updated_at?: string | null
+          vendor_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "global_auction_lots_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "global_auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "global_auction_lots_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "global_auction_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      global_auction_source_snapshots: {
+        Row: {
+          captured_at: string | null
+          checksum: string
+          content_type: string | null
+          id: string
+          import_run_id: string | null
+          metadata: Json | null
+          source_id: string | null
+          source_url: string
+        }
+        Insert: {
+          captured_at?: string | null
+          checksum: string
+          content_type?: string | null
+          id?: string
+          import_run_id?: string | null
+          metadata?: Json | null
+          source_id?: string | null
+          source_url: string
+        }
+        Update: {
+          captured_at?: string | null
+          checksum?: string
+          content_type?: string | null
+          id?: string
+          import_run_id?: string | null
+          metadata?: Json | null
+          source_id?: string | null
+          source_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "global_auction_source_snapshots_import_run_id_fkey"
+            columns: ["import_run_id"]
+            isOneToOne: false
+            referencedRelation: "global_auction_import_runs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "global_auction_source_snapshots_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "global_auction_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      global_auction_sources: {
+        Row: {
+          access_level: string
+          country: string | null
+          created_at: string | null
+          discipline_scope: string
+          id: string
+          name: string
+          notes: string | null
+          results_url: string | null
+          scrape_strategy: string
+          source_type: string
+          status: string
+          updated_at: string | null
+          website_url: string | null
+        }
+        Insert: {
+          access_level?: string
+          country?: string | null
+          created_at?: string | null
+          discipline_scope?: string
+          id?: string
+          name: string
+          notes?: string | null
+          results_url?: string | null
+          scrape_strategy?: string
+          source_type?: string
+          status?: string
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          access_level?: string
+          country?: string | null
+          created_at?: string | null
+          discipline_scope?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          results_url?: string | null
+          scrape_strategy?: string
+          source_type?: string
+          status?: string
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      global_auctions: {
+        Row: {
+          auction_date: string | null
+          auction_year: number | null
+          category: string | null
+          country: string | null
+          created_at: string | null
+          discipline: string
+          house_id: string | null
+          id: string
+          location: string | null
+          name: string
+          normalized_name: string
+          source_id: string | null
+          source_payload: Json | null
+          source_url: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          auction_date?: string | null
+          auction_year?: number | null
+          category?: string | null
+          country?: string | null
+          created_at?: string | null
+          discipline?: string
+          house_id?: string | null
+          id?: string
+          location?: string | null
+          name: string
+          normalized_name: string
+          source_id?: string | null
+          source_payload?: Json | null
+          source_url?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          auction_date?: string | null
+          auction_year?: number | null
+          category?: string | null
+          country?: string | null
+          created_at?: string | null
+          discipline?: string
+          house_id?: string | null
+          id?: string
+          location?: string | null
+          name?: string
+          normalized_name?: string
+          source_id?: string | null
+          source_payload?: Json | null
+          source_url?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "global_auctions_house_id_fkey"
+            columns: ["house_id"]
+            isOneToOne: false
+            referencedRelation: "global_auction_houses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "global_auctions_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "global_auction_sources"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -734,39 +1186,39 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'message_events_campaign_id_fkey'
-            columns: ['campaign_id']
+            foreignKeyName: "message_events_campaign_id_fkey"
+            columns: ["campaign_id"]
             isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'message_events_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "message_events_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'message_events_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "message_events_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'message_events_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "message_events_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'message_events_outbound_message_id_fkey'
-            columns: ['outbound_message_id']
+            foreignKeyName: "message_events_outbound_message_id_fkey"
+            columns: ["outbound_message_id"]
             isOneToOne: false
-            referencedRelation: 'outbound_messages'
-            referencedColumns: ['id']
+            referencedRelation: "outbound_messages"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -869,46 +1321,46 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'outbound_messages_campaign_id_fkey'
-            columns: ['campaign_id']
+            foreignKeyName: "outbound_messages_campaign_id_fkey"
+            columns: ["campaign_id"]
             isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'outbound_messages_campaign_recipient_id_fkey'
-            columns: ['campaign_recipient_id']
+            foreignKeyName: "outbound_messages_campaign_recipient_id_fkey"
+            columns: ["campaign_recipient_id"]
             isOneToOne: false
-            referencedRelation: 'campaign_recipients'
-            referencedColumns: ['id']
+            referencedRelation: "campaign_recipients"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'outbound_messages_campaign_send_id_fkey'
-            columns: ['campaign_send_id']
+            foreignKeyName: "outbound_messages_campaign_send_id_fkey"
+            columns: ["campaign_send_id"]
             isOneToOne: false
-            referencedRelation: 'campaign_sends'
-            referencedColumns: ['id']
+            referencedRelation: "campaign_sends"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'outbound_messages_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "outbound_messages_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'outbound_messages_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "outbound_messages_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'outbound_messages_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "outbound_messages_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -957,25 +1409,25 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'purchases_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "purchases_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'purchases_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "purchases_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'purchases_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "purchases_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1066,11 +1518,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'smartleiloes_lots_auction_id_fkey'
-            columns: ['auction_id']
+            foreignKeyName: "smartleiloes_lots_auction_id_fkey"
+            columns: ["auction_id"]
             isOneToOne: false
-            referencedRelation: 'smartleiloes_auctions'
-            referencedColumns: ['id']
+            referencedRelation: "smartleiloes_auctions"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1146,6 +1598,349 @@ export type Database = {
         }
         Relationships: []
       }
+      studbook_horses: {
+        Row: {
+          abcch_breeder_token: string | null
+          abcch_detail_error: string | null
+          abcch_detail_sync_status: string | null
+          abcch_detail_synced_at: string | null
+          abcch_owner_token: string | null
+          abcch_token: string | null
+          birth_date: string | null
+          birth_year: number | null
+          birthplace: string | null
+          breed: string | null
+          breeder_id: string | null
+          coat: string | null
+          created_at: string | null
+          dam_name: string | null
+          data_quality_score: number | null
+          dna: string | null
+          id: string
+          import_batch_id: string | null
+          last_synced_at: string | null
+          microchip: string | null
+          name: string
+          normalized_name: string
+          original_registration: string | null
+          owner_id: string | null
+          registration: string | null
+          sex: string | null
+          sire_name: string | null
+          source: string | null
+          source_checksum: string | null
+          source_payload: Json | null
+          source_url: string | null
+          status: string | null
+          ueln: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          abcch_breeder_token?: string | null
+          abcch_detail_error?: string | null
+          abcch_detail_sync_status?: string | null
+          abcch_detail_synced_at?: string | null
+          abcch_owner_token?: string | null
+          abcch_token?: string | null
+          birth_date?: string | null
+          birth_year?: number | null
+          birthplace?: string | null
+          breed?: string | null
+          breeder_id?: string | null
+          coat?: string | null
+          created_at?: string | null
+          dam_name?: string | null
+          data_quality_score?: number | null
+          dna?: string | null
+          id?: string
+          import_batch_id?: string | null
+          last_synced_at?: string | null
+          microchip?: string | null
+          name: string
+          normalized_name: string
+          original_registration?: string | null
+          owner_id?: string | null
+          registration?: string | null
+          sex?: string | null
+          sire_name?: string | null
+          source?: string | null
+          source_checksum?: string | null
+          source_payload?: Json | null
+          source_url?: string | null
+          status?: string | null
+          ueln?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          abcch_breeder_token?: string | null
+          abcch_detail_error?: string | null
+          abcch_detail_sync_status?: string | null
+          abcch_detail_synced_at?: string | null
+          abcch_owner_token?: string | null
+          abcch_token?: string | null
+          birth_date?: string | null
+          birth_year?: number | null
+          birthplace?: string | null
+          breed?: string | null
+          breeder_id?: string | null
+          coat?: string | null
+          created_at?: string | null
+          dam_name?: string | null
+          data_quality_score?: number | null
+          dna?: string | null
+          id?: string
+          import_batch_id?: string | null
+          last_synced_at?: string | null
+          microchip?: string | null
+          name?: string
+          normalized_name?: string
+          original_registration?: string | null
+          owner_id?: string | null
+          registration?: string | null
+          sex?: string | null
+          sire_name?: string | null
+          source?: string | null
+          source_checksum?: string | null
+          source_payload?: Json | null
+          source_url?: string | null
+          status?: string | null
+          ueln?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studbook_horses_breeder_id_fkey"
+            columns: ["breeder_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_people_orgs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studbook_horses_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_people_orgs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      studbook_import_runs: {
+        Row: {
+          errors: Json | null
+          finished_at: string | null
+          id: string
+          inserted_or_updated_horses: number | null
+          inserted_or_updated_people: number | null
+          notes: string | null
+          search_terms: Json | null
+          source: string
+          started_at: string | null
+          status: string
+          total_source_rows: number | null
+          unique_tokens: number | null
+        }
+        Insert: {
+          errors?: Json | null
+          finished_at?: string | null
+          id?: string
+          inserted_or_updated_horses?: number | null
+          inserted_or_updated_people?: number | null
+          notes?: string | null
+          search_terms?: Json | null
+          source?: string
+          started_at?: string | null
+          status?: string
+          total_source_rows?: number | null
+          unique_tokens?: number | null
+        }
+        Update: {
+          errors?: Json | null
+          finished_at?: string | null
+          id?: string
+          inserted_or_updated_horses?: number | null
+          inserted_or_updated_people?: number | null
+          notes?: string | null
+          search_terms?: Json | null
+          source?: string
+          started_at?: string | null
+          status?: string
+          total_source_rows?: number | null
+          unique_tokens?: number | null
+        }
+        Relationships: []
+      }
+      studbook_offspring: {
+        Row: {
+          child_birth_date: string | null
+          child_id: string | null
+          child_name: string
+          child_registration: string | null
+          child_sex: string | null
+          created_at: string | null
+          id: string
+          parent_id: string
+          source: string | null
+          source_payload: Json | null
+        }
+        Insert: {
+          child_birth_date?: string | null
+          child_id?: string | null
+          child_name: string
+          child_registration?: string | null
+          child_sex?: string | null
+          created_at?: string | null
+          id?: string
+          parent_id: string
+          source?: string | null
+          source_payload?: Json | null
+        }
+        Update: {
+          child_birth_date?: string | null
+          child_id?: string | null
+          child_name?: string
+          child_registration?: string | null
+          child_sex?: string | null
+          created_at?: string | null
+          id?: string
+          parent_id?: string
+          source?: string | null
+          source_payload?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studbook_offspring_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_horses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studbook_offspring_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_horses_enriched"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studbook_offspring_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_horses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studbook_offspring_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_horses_enriched"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      studbook_pedigree_links: {
+        Row: {
+          created_at: string | null
+          generation: number | null
+          horse_id: string
+          id: string
+          related_horse_id: string | null
+          related_name: string | null
+          relation_type: string
+          source: string | null
+          source_payload: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          generation?: number | null
+          horse_id: string
+          id?: string
+          related_horse_id?: string | null
+          related_name?: string | null
+          relation_type: string
+          source?: string | null
+          source_payload?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          generation?: number | null
+          horse_id?: string
+          id?: string
+          related_horse_id?: string | null
+          related_name?: string | null
+          relation_type?: string
+          source?: string | null
+          source_payload?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studbook_pedigree_links_horse_id_fkey"
+            columns: ["horse_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_horses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studbook_pedigree_links_horse_id_fkey"
+            columns: ["horse_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_horses_enriched"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studbook_pedigree_links_related_horse_id_fkey"
+            columns: ["related_horse_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_horses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studbook_pedigree_links_related_horse_id_fkey"
+            columns: ["related_horse_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_horses_enriched"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      studbook_people_orgs: {
+        Row: {
+          city: string | null
+          created_at: string | null
+          id: string
+          name: string
+          normalized_name: string
+          role: string
+          source: string | null
+          source_payload: Json | null
+          state: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string | null
+          id?: string
+          name: string
+          normalized_name: string
+          role?: string
+          source?: string | null
+          source_payload?: Json | null
+          state?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          city?: string | null
+          created_at?: string | null
+          id?: string
+          name?: string
+          normalized_name?: string
+          role?: string
+          source?: string | null
+          source_payload?: Json | null
+          state?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       tags: {
         Row: {
           color: string | null
@@ -1203,32 +1998,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'tasks_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "tasks_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'tasks_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "tasks_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'tasks_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "tasks_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'tasks_deal_id_fkey'
-            columns: ['deal_id']
+            foreignKeyName: "tasks_deal_id_fkey"
+            columns: ["deal_id"]
             isOneToOne: false
-            referencedRelation: 'deals'
-            referencedColumns: ['id']
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1277,9 +2072,208 @@ export type Database = {
         }
         Relationships: []
       }
+      global_auction_house_rankings: {
+        Row: {
+          auctions: number | null
+          average_price_eur: number | null
+          country: string | null
+          house_name: string | null
+          latest_year: number | null
+          lots: number | null
+          sold_lots: number | null
+          top_price_eur: number | null
+          total_value_eur: number | null
+        }
+        Relationships: []
+      }
+      global_auction_market_overview: {
+        Row: {
+          auctions: number | null
+          average_price_eur: number | null
+          first_year: number | null
+          latest_year: number | null
+          lots: number | null
+          median_price_eur: number | null
+          sold_lots: number | null
+          top_price_eur: number | null
+          total_sold_value_eur: number | null
+          unsold_or_withdrawn_lots: number | null
+        }
+        Relationships: []
+      }
+      global_auction_sire_rankings: {
+        Row: {
+          average_price_eur: number | null
+          latest_year: number | null
+          lots: number | null
+          sire_name: string | null
+          sold_lots: number | null
+          top_price_eur: number | null
+          total_value_eur: number | null
+        }
+        Relationships: []
+      }
+      studbook_breeder_rankings: {
+        Row: {
+          active_mare_count: number | null
+          avg_quality: number | null
+          connected_owner_count: number | null
+          entity_id: string | null
+          entity_kind: string | null
+          female_count: number | null
+          horse_count: number | null
+          latest_birth_year: number | null
+          name: string | null
+          young_count: number | null
+        }
+        Relationships: []
+      }
+      studbook_dam_rankings: {
+        Row: {
+          active_mare_count: number | null
+          avg_quality: number | null
+          connected_owner_count: number | null
+          entity_id: string | null
+          entity_kind: string | null
+          female_count: number | null
+          horse_count: number | null
+          latest_birth_year: number | null
+          name: string | null
+          young_count: number | null
+        }
+        Relationships: []
+      }
+      studbook_horses_enriched: {
+        Row: {
+          abcch_breeder_token: string | null
+          abcch_detail_error: string | null
+          abcch_detail_sync_status: string | null
+          abcch_detail_synced_at: string | null
+          abcch_owner_token: string | null
+          abcch_token: string | null
+          age_band: string | null
+          age_years: number | null
+          birth_date: string | null
+          birth_year: number | null
+          birthplace: string | null
+          breed: string | null
+          breeder_id: string | null
+          breeder_name: string | null
+          coat: string | null
+          created_at: string | null
+          dam_name: string | null
+          data_quality_score: number | null
+          dna: string | null
+          id: string | null
+          import_batch_id: string | null
+          is_reproductive_mare: boolean | null
+          last_synced_at: string | null
+          microchip: string | null
+          name: string | null
+          normalized_name: string | null
+          offspring_count: number | null
+          original_registration: string | null
+          owner_id: string | null
+          owner_name: string | null
+          registration: string | null
+          sex: string | null
+          sire_name: string | null
+          source: string | null
+          source_checksum: string | null
+          source_payload: Json | null
+          source_url: string | null
+          status: string | null
+          ueln: string | null
+          updated_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studbook_horses_breeder_id_fkey"
+            columns: ["breeder_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_people_orgs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studbook_horses_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "studbook_people_orgs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      studbook_owner_rankings: {
+        Row: {
+          active_mare_count: number | null
+          avg_quality: number | null
+          connected_owner_count: number | null
+          entity_id: string | null
+          entity_kind: string | null
+          female_count: number | null
+          horse_count: number | null
+          latest_birth_year: number | null
+          name: string | null
+          young_count: number | null
+        }
+        Relationships: []
+      }
+      studbook_sire_rankings: {
+        Row: {
+          active_mare_count: number | null
+          avg_quality: number | null
+          connected_owner_count: number | null
+          entity_id: string | null
+          entity_kind: string | null
+          female_count: number | null
+          horse_count: number | null
+          latest_birth_year: number | null
+          name: string | null
+          young_count: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      get_studbook_network_rankings: {
+        Args: {
+          p_breeder_names?: string[]
+          p_dam_names?: string[]
+          p_data_quality_min?: number
+          p_include_unknown_age?: boolean
+          p_limit?: number
+          p_max_age?: number
+          p_min_age?: number
+          p_min_offspring?: number
+          p_owner_names?: string[]
+          p_rank_mode?: string
+          p_recent_years?: number
+          p_reproductive_only?: boolean
+          p_search?: string
+          p_sex?: string
+          p_sire_names?: string[]
+        }
+        Returns: {
+          active_mare_count: number
+          avg_quality: number
+          connected_owner_count: number
+          crm_contact_count: number
+          entity_id: string
+          entity_kind: string
+          female_count: number
+          horse_count: number
+          latest_birth_year: number
+          name: string
+          recent_horse_count: number
+          total_entities: number
+          young_count: number
+        }[]
+      }
+      is_actionable_studbook_name: { Args: { value: string }; Returns: boolean }
+      normalize_studbook_match_name: {
+        Args: { value: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
@@ -1290,33 +2284,33 @@ export type Database = {
   }
 }
 
-type DatabaseWithoutInternals = Omit<Database, '__InternalSupabase'>
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, 'public'>]
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
-        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
-      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])[TableName] extends {
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] &
-        DefaultSchema['Views'])
-    ? (DefaultSchema['Tables'] &
-        DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
         Row: infer R
       }
       ? R
@@ -1325,23 +2319,23 @@ export type Tables<
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema['Tables']
+    | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
-    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
         Insert: infer I
       }
       ? I
@@ -1350,23 +2344,23 @@ export type TablesInsert<
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema['Tables']
+    | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
-    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
         Update: infer U
       }
       ? U
@@ -1375,36 +2369,36 @@ export type TablesUpdate<
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema['Enums']
+    | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums']
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums'][EnumName]
-  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums']
-    ? DefaultSchema['Enums'][DefaultSchemaEnumNameOrOptions]
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema['CompositeTypes']
+    | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes']
-    ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
 
 export const Constants = {
@@ -1412,6 +2406,7 @@ export const Constants = {
     Enums: {},
   },
 } as const
+
 
 // ====== DATABASE EXTENDED CONTEXT (auto-generated) ======
 // This section contains actual PostgreSQL column types, constraints, RLS policies,
@@ -1423,6 +2418,23 @@ export const Constants = {
 // --- COLUMN TYPES (actual PostgreSQL types) ---
 // Use this to know the real database type when writing migrations.
 // "string" in TypeScript types above may be uuid, text, varchar, timestamptz, etc.
+// Table: auction_candidate_items
+//   id: uuid (not null, default: uuid_generate_v4())
+//   list_id: uuid (not null)
+//   horse_id: uuid (not null)
+//   reason: text (nullable)
+//   potential_score: integer (nullable, default: 0)
+//   notes: text (nullable)
+//   created_at: timestamp with time zone (nullable, default: now())
+// Table: auction_candidate_lists
+//   id: uuid (not null, default: uuid_generate_v4())
+//   name: text (not null)
+//   thesis: text (nullable)
+//   status: text (nullable, default: 'draft'::text)
+//   filters: jsonb (nullable, default: '{}'::jsonb)
+//   notes: text (nullable)
+//   created_at: timestamp with time zone (nullable, default: now())
+//   updated_at: timestamp with time zone (nullable, default: now())
 // Table: automation_settings
 //   id: uuid (not null, default: gen_random_uuid())
 //   rule_key: text (not null)
@@ -1597,6 +2609,125 @@ export const Constants = {
 //   created_at: timestamp with time zone (nullable, default: now())
 //   updated_at: timestamp with time zone (nullable, default: now())
 //   notes: text (nullable)
+// Table: global_auction_house_rankings
+//   house_name: text (nullable)
+//   country: text (nullable)
+//   auctions: integer (nullable)
+//   lots: integer (nullable)
+//   sold_lots: integer (nullable)
+//   total_value_eur: numeric (nullable)
+//   average_price_eur: numeric (nullable)
+//   top_price_eur: numeric (nullable)
+//   latest_year: integer (nullable)
+// Table: global_auction_houses
+//   id: uuid (not null, default: uuid_generate_v4())
+//   source_id: uuid (nullable)
+//   name: text (not null)
+//   normalized_name: text (not null)
+//   country: text (nullable)
+//   website_url: text (nullable)
+//   notes: text (nullable)
+//   created_at: timestamp with time zone (nullable, default: now())
+//   updated_at: timestamp with time zone (nullable, default: now())
+// Table: global_auction_import_runs
+//   id: uuid (not null, default: uuid_generate_v4())
+//   source_id: uuid (nullable)
+//   status: text (not null, default: 'running'::text)
+//   started_at: timestamp with time zone (nullable, default: now())
+//   finished_at: timestamp with time zone (nullable)
+//   source_url: text (nullable)
+//   rows_seen: integer (nullable, default: 0)
+//   rows_imported: integer (nullable, default: 0)
+//   rows_skipped: integer (nullable, default: 0)
+//   error_message: text (nullable)
+//   metadata: jsonb (nullable, default: '{}'::jsonb)
+// Table: global_auction_lots
+//   id: uuid (not null, default: uuid_generate_v4())
+//   auction_id: uuid (not null)
+//   source_id: uuid (nullable)
+//   lot_number: text (nullable)
+//   horse_name: text (not null)
+//   normalized_horse_name: text (not null)
+//   birth_year: integer (nullable)
+//   age: integer (nullable)
+//   sex: text (nullable)
+//   color: text (nullable)
+//   studbook: text (nullable)
+//   sire_name: text (nullable)
+//   dam_name: text (nullable)
+//   dam_sire_name: text (nullable)
+//   vendor_name: text (nullable)
+//   breeder_name: text (nullable)
+//   buyer_name: text (nullable)
+//   buyer_country: text (nullable)
+//   sold_status: text (not null, default: 'sold'::text)
+//   hammer_price: numeric (nullable)
+//   currency: text (not null, default: 'EUR'::text)
+//   price_text: text (nullable)
+//   discipline: text (not null, default: 'show_jumping'::text)
+//   source_url: text (nullable)
+//   source_payload: jsonb (nullable, default: '{}'::jsonb)
+//   confidence_score: integer (nullable, default: 70)
+//   created_at: timestamp with time zone (nullable, default: now())
+//   updated_at: timestamp with time zone (nullable, default: now())
+// Table: global_auction_market_overview
+//   auctions: integer (nullable)
+//   lots: integer (nullable)
+//   sold_lots: integer (nullable)
+//   unsold_or_withdrawn_lots: integer (nullable)
+//   total_sold_value_eur: numeric (nullable)
+//   average_price_eur: numeric (nullable)
+//   median_price_eur: numeric (nullable)
+//   top_price_eur: numeric (nullable)
+//   first_year: integer (nullable)
+//   latest_year: integer (nullable)
+// Table: global_auction_sire_rankings
+//   sire_name: text (nullable)
+//   lots: integer (nullable)
+//   sold_lots: integer (nullable)
+//   total_value_eur: numeric (nullable)
+//   average_price_eur: numeric (nullable)
+//   top_price_eur: numeric (nullable)
+//   latest_year: integer (nullable)
+// Table: global_auction_source_snapshots
+//   id: uuid (not null, default: uuid_generate_v4())
+//   source_id: uuid (nullable)
+//   import_run_id: uuid (nullable)
+//   source_url: text (not null)
+//   content_type: text (nullable)
+//   checksum: text (not null)
+//   captured_at: timestamp with time zone (nullable, default: now())
+//   metadata: jsonb (nullable, default: '{}'::jsonb)
+// Table: global_auction_sources
+//   id: uuid (not null, default: uuid_generate_v4())
+//   name: text (not null)
+//   source_type: text (not null, default: 'auction_house'::text)
+//   country: text (nullable)
+//   website_url: text (nullable)
+//   results_url: text (nullable)
+//   discipline_scope: text (not null, default: 'show_jumping'::text)
+//   scrape_strategy: text (not null, default: 'html_table'::text)
+//   access_level: text (not null, default: 'public'::text)
+//   status: text (not null, default: 'active'::text)
+//   notes: text (nullable)
+//   created_at: timestamp with time zone (nullable, default: now())
+//   updated_at: timestamp with time zone (nullable, default: now())
+// Table: global_auctions
+//   id: uuid (not null, default: uuid_generate_v4())
+//   house_id: uuid (nullable)
+//   source_id: uuid (nullable)
+//   name: text (not null)
+//   normalized_name: text (not null)
+//   auction_year: integer (nullable)
+//   auction_date: date (nullable)
+//   location: text (nullable)
+//   country: text (nullable)
+//   discipline: text (not null, default: 'show_jumping'::text)
+//   category: text (nullable)
+//   source_url: text (nullable)
+//   source_payload: jsonb (nullable, default: '{}'::jsonb)
+//   created_at: timestamp with time zone (nullable, default: now())
+//   updated_at: timestamp with time zone (nullable, default: now())
 // Table: message_events
 //   id: uuid (not null, default: gen_random_uuid())
 //   outbound_message_id: uuid (nullable)
@@ -1693,6 +2824,171 @@ export const Constants = {
 //   summary: jsonb (nullable, default: '{}'::jsonb)
 //   error_message: text (nullable)
 //   created_at: timestamp with time zone (nullable, default: now())
+// Table: studbook_breeder_rankings
+//   entity_id: text (nullable)
+//   entity_kind: text (nullable)
+//   name: text (nullable)
+//   horse_count: integer (nullable)
+//   female_count: integer (nullable)
+//   young_count: integer (nullable)
+//   active_mare_count: integer (nullable)
+//   connected_owner_count: integer (nullable)
+//   avg_quality: numeric (nullable)
+//   latest_birth_year: integer (nullable)
+// Table: studbook_dam_rankings
+//   entity_id: text (nullable)
+//   entity_kind: text (nullable)
+//   name: text (nullable)
+//   horse_count: integer (nullable)
+//   female_count: integer (nullable)
+//   young_count: integer (nullable)
+//   active_mare_count: integer (nullable)
+//   connected_owner_count: integer (nullable)
+//   avg_quality: numeric (nullable)
+//   latest_birth_year: integer (nullable)
+// Table: studbook_horses
+//   id: uuid (not null, default: uuid_generate_v4())
+//   name: text (not null)
+//   normalized_name: text (not null)
+//   registration: text (nullable)
+//   microchip: text (nullable)
+//   breed: text (nullable)
+//   sex: text (nullable)
+//   birth_date: date (nullable)
+//   birth_year: integer (nullable)
+//   coat: text (nullable)
+//   status: text (nullable)
+//   dna: text (nullable)
+//   breeder_id: uuid (nullable)
+//   owner_id: uuid (nullable)
+//   birthplace: text (nullable)
+//   source_url: text (nullable)
+//   source: text (nullable, default: 'ABCCH'::text)
+//   source_payload: jsonb (nullable, default: '{}'::jsonb)
+//   data_quality_score: integer (nullable, default: 0)
+//   last_synced_at: timestamp with time zone (nullable)
+//   created_at: timestamp with time zone (nullable, default: now())
+//   updated_at: timestamp with time zone (nullable, default: now())
+//   abcch_token: text (nullable)
+//   original_registration: text (nullable)
+//   ueln: text (nullable)
+//   sire_name: text (nullable)
+//   dam_name: text (nullable)
+//   abcch_owner_token: text (nullable)
+//   abcch_breeder_token: text (nullable)
+//   import_batch_id: uuid (nullable)
+//   source_checksum: text (nullable)
+//   abcch_detail_synced_at: timestamp with time zone (nullable)
+//   abcch_detail_sync_status: text (nullable)
+//   abcch_detail_error: text (nullable)
+// Table: studbook_horses_enriched
+//   id: uuid (nullable)
+//   name: text (nullable)
+//   normalized_name: text (nullable)
+//   registration: text (nullable)
+//   microchip: text (nullable)
+//   breed: text (nullable)
+//   sex: text (nullable)
+//   birth_date: date (nullable)
+//   birth_year: integer (nullable)
+//   coat: text (nullable)
+//   status: text (nullable)
+//   dna: text (nullable)
+//   breeder_id: uuid (nullable)
+//   owner_id: uuid (nullable)
+//   birthplace: text (nullable)
+//   source_url: text (nullable)
+//   source: text (nullable)
+//   source_payload: jsonb (nullable)
+//   data_quality_score: integer (nullable)
+//   last_synced_at: timestamp with time zone (nullable)
+//   created_at: timestamp with time zone (nullable)
+//   updated_at: timestamp with time zone (nullable)
+//   abcch_token: text (nullable)
+//   original_registration: text (nullable)
+//   ueln: text (nullable)
+//   sire_name: text (nullable)
+//   dam_name: text (nullable)
+//   abcch_owner_token: text (nullable)
+//   abcch_breeder_token: text (nullable)
+//   import_batch_id: uuid (nullable)
+//   source_checksum: text (nullable)
+//   abcch_detail_synced_at: timestamp with time zone (nullable)
+//   abcch_detail_sync_status: text (nullable)
+//   abcch_detail_error: text (nullable)
+//   breeder_name: text (nullable)
+//   owner_name: text (nullable)
+//   age_years: integer (nullable)
+//   age_band: text (nullable)
+//   is_reproductive_mare: boolean (nullable)
+//   offspring_count: integer (nullable)
+// Table: studbook_import_runs
+//   id: uuid (not null, default: uuid_generate_v4())
+//   source: text (not null, default: 'ABCCH'::text)
+//   status: text (not null, default: 'running'::text)
+//   started_at: timestamp with time zone (nullable, default: now())
+//   finished_at: timestamp with time zone (nullable)
+//   search_terms: jsonb (nullable, default: '[]'::jsonb)
+//   total_source_rows: integer (nullable, default: 0)
+//   unique_tokens: integer (nullable, default: 0)
+//   inserted_or_updated_horses: integer (nullable, default: 0)
+//   inserted_or_updated_people: integer (nullable, default: 0)
+//   errors: jsonb (nullable, default: '[]'::jsonb)
+//   notes: text (nullable)
+// Table: studbook_offspring
+//   id: uuid (not null, default: uuid_generate_v4())
+//   parent_id: uuid (not null)
+//   child_id: uuid (nullable)
+//   child_name: text (not null)
+//   child_registration: text (nullable)
+//   child_birth_date: date (nullable)
+//   child_sex: text (nullable)
+//   source: text (nullable, default: 'ABCCH'::text)
+//   source_payload: jsonb (nullable, default: '{}'::jsonb)
+//   created_at: timestamp with time zone (nullable, default: now())
+// Table: studbook_owner_rankings
+//   entity_id: text (nullable)
+//   entity_kind: text (nullable)
+//   name: text (nullable)
+//   horse_count: integer (nullable)
+//   female_count: integer (nullable)
+//   young_count: integer (nullable)
+//   active_mare_count: integer (nullable)
+//   connected_owner_count: integer (nullable)
+//   avg_quality: numeric (nullable)
+//   latest_birth_year: integer (nullable)
+// Table: studbook_pedigree_links
+//   id: uuid (not null, default: uuid_generate_v4())
+//   horse_id: uuid (not null)
+//   relation_type: text (not null)
+//   related_horse_id: uuid (nullable)
+//   related_name: text (nullable)
+//   generation: integer (nullable, default: 1)
+//   source: text (nullable, default: 'ABCCH'::text)
+//   source_payload: jsonb (nullable, default: '{}'::jsonb)
+//   created_at: timestamp with time zone (nullable, default: now())
+// Table: studbook_people_orgs
+//   id: uuid (not null, default: uuid_generate_v4())
+//   name: text (not null)
+//   normalized_name: text (not null)
+//   role: text (not null, default: 'unknown'::text)
+//   city: text (nullable)
+//   state: text (nullable)
+//   source: text (nullable, default: 'ABCCH'::text)
+//   source_payload: jsonb (nullable, default: '{}'::jsonb)
+//   created_at: timestamp with time zone (nullable, default: now())
+//   updated_at: timestamp with time zone (nullable, default: now())
+// Table: studbook_sire_rankings
+//   entity_id: text (nullable)
+//   entity_kind: text (nullable)
+//   name: text (nullable)
+//   horse_count: integer (nullable)
+//   female_count: integer (nullable)
+//   young_count: integer (nullable)
+//   active_mare_count: integer (nullable)
+//   connected_owner_count: integer (nullable)
+//   avg_quality: numeric (nullable)
+//   latest_birth_year: integer (nullable)
 // Table: tags
 //   id: uuid (not null, default: uuid_generate_v4())
 //   name: text (not null)
@@ -1710,6 +3006,13 @@ export const Constants = {
 //   created_at: timestamp with time zone (nullable, default: now())
 
 // --- CONSTRAINTS ---
+// Table: auction_candidate_items
+//   FOREIGN KEY auction_candidate_items_horse_id_fkey: FOREIGN KEY (horse_id) REFERENCES studbook_horses(id) ON DELETE CASCADE
+//   FOREIGN KEY auction_candidate_items_list_id_fkey: FOREIGN KEY (list_id) REFERENCES auction_candidate_lists(id) ON DELETE CASCADE
+//   UNIQUE auction_candidate_items_list_id_horse_id_key: UNIQUE (list_id, horse_id)
+//   PRIMARY KEY auction_candidate_items_pkey: PRIMARY KEY (id)
+// Table: auction_candidate_lists
+//   PRIMARY KEY auction_candidate_lists_pkey: PRIMARY KEY (id)
 // Table: automation_settings
 //   PRIMARY KEY automation_settings_pkey: PRIMARY KEY (id)
 //   UNIQUE automation_settings_rule_key_key: UNIQUE (rule_key)
@@ -1754,6 +3057,31 @@ export const Constants = {
 // Table: deals
 //   FOREIGN KEY deals_contact_id_fkey: FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
 //   PRIMARY KEY deals_pkey: PRIMARY KEY (id)
+// Table: global_auction_houses
+//   UNIQUE global_auction_houses_normalized_name_key: UNIQUE (normalized_name)
+//   PRIMARY KEY global_auction_houses_pkey: PRIMARY KEY (id)
+//   FOREIGN KEY global_auction_houses_source_id_fkey: FOREIGN KEY (source_id) REFERENCES global_auction_sources(id) ON DELETE SET NULL
+// Table: global_auction_import_runs
+//   PRIMARY KEY global_auction_import_runs_pkey: PRIMARY KEY (id)
+//   FOREIGN KEY global_auction_import_runs_source_id_fkey: FOREIGN KEY (source_id) REFERENCES global_auction_sources(id) ON DELETE SET NULL
+// Table: global_auction_lots
+//   FOREIGN KEY global_auction_lots_auction_id_fkey: FOREIGN KEY (auction_id) REFERENCES global_auctions(id) ON DELETE CASCADE
+//   UNIQUE global_auction_lots_auction_id_lot_number_normalized_horse__key: UNIQUE (auction_id, lot_number, normalized_horse_name)
+//   PRIMARY KEY global_auction_lots_pkey: PRIMARY KEY (id)
+//   FOREIGN KEY global_auction_lots_source_id_fkey: FOREIGN KEY (source_id) REFERENCES global_auction_sources(id) ON DELETE SET NULL
+// Table: global_auction_source_snapshots
+//   FOREIGN KEY global_auction_source_snapshots_import_run_id_fkey: FOREIGN KEY (import_run_id) REFERENCES global_auction_import_runs(id) ON DELETE SET NULL
+//   PRIMARY KEY global_auction_source_snapshots_pkey: PRIMARY KEY (id)
+//   FOREIGN KEY global_auction_source_snapshots_source_id_fkey: FOREIGN KEY (source_id) REFERENCES global_auction_sources(id) ON DELETE SET NULL
+//   UNIQUE global_auction_source_snapshots_source_url_checksum_key: UNIQUE (source_url, checksum)
+// Table: global_auction_sources
+//   UNIQUE global_auction_sources_name_key: UNIQUE (name)
+//   PRIMARY KEY global_auction_sources_pkey: PRIMARY KEY (id)
+// Table: global_auctions
+//   FOREIGN KEY global_auctions_house_id_fkey: FOREIGN KEY (house_id) REFERENCES global_auction_houses(id) ON DELETE SET NULL
+//   PRIMARY KEY global_auctions_pkey: PRIMARY KEY (id)
+//   FOREIGN KEY global_auctions_source_id_fkey: FOREIGN KEY (source_id) REFERENCES global_auction_sources(id) ON DELETE SET NULL
+//   UNIQUE global_auctions_source_id_normalized_name_auction_year_key: UNIQUE (source_id, normalized_name, auction_year)
 // Table: message_events
 //   FOREIGN KEY message_events_campaign_id_fkey: FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE SET NULL
 //   FOREIGN KEY message_events_contact_id_fkey: FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE SET NULL
@@ -1785,6 +3113,25 @@ export const Constants = {
 //   UNIQUE smartleiloes_raw_records_record_type_external_id_key: UNIQUE (record_type, external_id)
 // Table: smartleiloes_sync_runs
 //   PRIMARY KEY smartleiloes_sync_runs_pkey: PRIMARY KEY (id)
+// Table: studbook_horses
+//   FOREIGN KEY studbook_horses_breeder_id_fkey: FOREIGN KEY (breeder_id) REFERENCES studbook_people_orgs(id) ON DELETE SET NULL
+//   FOREIGN KEY studbook_horses_owner_id_fkey: FOREIGN KEY (owner_id) REFERENCES studbook_people_orgs(id) ON DELETE SET NULL
+//   PRIMARY KEY studbook_horses_pkey: PRIMARY KEY (id)
+// Table: studbook_import_runs
+//   PRIMARY KEY studbook_import_runs_pkey: PRIMARY KEY (id)
+// Table: studbook_offspring
+//   FOREIGN KEY studbook_offspring_child_id_fkey: FOREIGN KEY (child_id) REFERENCES studbook_horses(id) ON DELETE SET NULL
+//   UNIQUE studbook_offspring_parent_id_child_registration_child_name_key: UNIQUE (parent_id, child_registration, child_name)
+//   FOREIGN KEY studbook_offspring_parent_id_fkey: FOREIGN KEY (parent_id) REFERENCES studbook_horses(id) ON DELETE CASCADE
+//   PRIMARY KEY studbook_offspring_pkey: PRIMARY KEY (id)
+// Table: studbook_pedigree_links
+//   FOREIGN KEY studbook_pedigree_links_horse_id_fkey: FOREIGN KEY (horse_id) REFERENCES studbook_horses(id) ON DELETE CASCADE
+//   UNIQUE studbook_pedigree_links_horse_id_relation_type_generation_r_key: UNIQUE (horse_id, relation_type, generation, related_name)
+//   PRIMARY KEY studbook_pedigree_links_pkey: PRIMARY KEY (id)
+//   FOREIGN KEY studbook_pedigree_links_related_horse_id_fkey: FOREIGN KEY (related_horse_id) REFERENCES studbook_horses(id) ON DELETE SET NULL
+// Table: studbook_people_orgs
+//   UNIQUE studbook_people_orgs_normalized_name_role_key: UNIQUE (normalized_name, role)
+//   PRIMARY KEY studbook_people_orgs_pkey: PRIMARY KEY (id)
 // Table: tags
 //   UNIQUE tags_name_key: UNIQUE (name)
 //   PRIMARY KEY tags_pkey: PRIMARY KEY (id)
@@ -1795,6 +3142,20 @@ export const Constants = {
 //   CHECK tasks_type_check: CHECK ((type = ANY (ARRAY['Ligação'::text, 'E-mail'::text, 'WhatsApp'::text, 'Outro'::text])))
 
 // --- ROW LEVEL SECURITY POLICIES ---
+// Table: auction_candidate_items
+//   Policy "Allow anon test access auction_candidate_items" (ALL, PERMISSIVE) roles={anon}
+//     USING: true
+//     WITH CHECK: true
+//   Policy "Allow authenticated full access auction_candidate_items" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
+// Table: auction_candidate_lists
+//   Policy "Allow anon test access auction_candidate_lists" (ALL, PERMISSIVE) roles={anon}
+//     USING: true
+//     WITH CHECK: true
+//   Policy "Allow authenticated full access auction_candidate_lists" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
 // Table: automation_settings
 //   Policy "Enable read access for authenticated users" (SELECT, PERMISSIVE) roles={authenticated}
 //     USING: true
@@ -1847,6 +3208,38 @@ export const Constants = {
 //   Policy "Allow authenticated full access deals" (ALL, PERMISSIVE) roles={authenticated}
 //     USING: true
 //     WITH CHECK: true
+// Table: global_auction_houses
+//   Policy "Allow anon read global_auction_houses" (SELECT, PERMISSIVE) roles={anon}
+//     USING: true
+//   Policy "Allow authenticated full access global_auction_houses" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
+// Table: global_auction_import_runs
+//   Policy "Allow authenticated full access global_auction_import_runs" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
+// Table: global_auction_lots
+//   Policy "Allow anon read global_auction_lots" (SELECT, PERMISSIVE) roles={anon}
+//     USING: true
+//   Policy "Allow authenticated full access global_auction_lots" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
+// Table: global_auction_source_snapshots
+//   Policy "Allow authenticated full access global_auction_source_snapshots" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
+// Table: global_auction_sources
+//   Policy "Allow anon read global_auction_sources" (SELECT, PERMISSIVE) roles={anon}
+//     USING: true
+//   Policy "Allow authenticated full access global_auction_sources" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
+// Table: global_auctions
+//   Policy "Allow anon read global_auctions" (SELECT, PERMISSIVE) roles={anon}
+//     USING: true
+//   Policy "Allow authenticated full access global_auctions" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
 // Table: message_events
 //   Policy "Allow authenticated full access message_events" (ALL, PERMISSIVE) roles={authenticated}
 //     USING: true
@@ -1888,6 +3281,34 @@ export const Constants = {
 //     WITH CHECK: true
 //   Policy "Allow authenticated read smartleiloes_sync_runs" (SELECT, PERMISSIVE) roles={authenticated}
 //     USING: true
+// Table: studbook_horses
+//   Policy "Allow anon read studbook_horses" (SELECT, PERMISSIVE) roles={anon}
+//     USING: true
+//   Policy "Allow authenticated full access studbook_horses" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
+// Table: studbook_import_runs
+//   Policy "Allow authenticated full access studbook_import_runs" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
+// Table: studbook_offspring
+//   Policy "Allow anon read studbook_offspring" (SELECT, PERMISSIVE) roles={anon}
+//     USING: true
+//   Policy "Allow authenticated full access studbook_offspring" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
+// Table: studbook_pedigree_links
+//   Policy "Allow anon read studbook_pedigree_links" (SELECT, PERMISSIVE) roles={anon}
+//     USING: true
+//   Policy "Allow authenticated full access studbook_pedigree_links" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
+// Table: studbook_people_orgs
+//   Policy "Allow anon read studbook_people_orgs" (SELECT, PERMISSIVE) roles={anon}
+//     USING: true
+//   Policy "Allow authenticated full access studbook_people_orgs" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
 // Table: tags
 //   Policy "Allow authenticated full access tags" (ALL, PERMISSIVE) roles={authenticated}
 //     USING: true
@@ -1911,7 +3332,259 @@ export const Constants = {
 //       RETURN NEW;
 //   END;
 //   $function$
-//
+//   
+// FUNCTION get_studbook_network_rankings(text, text, integer, integer, boolean, boolean, text[], text[], text[], text[], integer, integer, integer, text, integer)
+//   CREATE OR REPLACE FUNCTION public.get_studbook_network_rankings(p_search text DEFAULT NULL::text, p_sex text DEFAULT 'all'::text, p_min_age integer DEFAULT NULL::integer, p_max_age integer DEFAULT NULL::integer, p_include_unknown_age boolean DEFAULT true, p_reproductive_only boolean DEFAULT false, p_breeder_names text[] DEFAULT NULL::text[], p_owner_names text[] DEFAULT NULL::text[], p_sire_names text[] DEFAULT NULL::text[], p_dam_names text[] DEFAULT NULL::text[], p_min_offspring integer DEFAULT NULL::integer, p_data_quality_min integer DEFAULT NULL::integer, p_recent_years integer DEFAULT NULL::integer, p_rank_mode text DEFAULT 'volume'::text, p_limit integer DEFAULT 6)
+//    RETURNS TABLE(entity_id text, entity_kind text, name text, horse_count integer, female_count integer, young_count integer, active_mare_count integer, connected_owner_count integer, avg_quality numeric, latest_birth_year integer, recent_horse_count integer, crm_contact_count integer, total_entities integer)
+//    LANGUAGE sql
+//    STABLE
+//   AS $function$
+//   WITH filtered AS (
+//       SELECT *
+//       FROM studbook_horses_enriched h
+//       WHERE (
+//           NULLIF(TRIM(COALESCE(p_search, '')), '') IS NULL
+//           OR h.name ILIKE '%' || p_search || '%'
+//           OR h.registration ILIKE '%' || p_search || '%'
+//           OR h.original_registration ILIKE '%' || p_search || '%'
+//           OR h.ueln ILIKE '%' || p_search || '%'
+//           OR h.microchip ILIKE '%' || p_search || '%'
+//           OR h.breeder_name ILIKE '%' || p_search || '%'
+//           OR h.owner_name ILIKE '%' || p_search || '%'
+//           OR h.sire_name ILIKE '%' || p_search || '%'
+//           OR h.dam_name ILIKE '%' || p_search || '%'
+//       )
+//       AND (
+//           COALESCE(p_sex, 'all') = 'all'
+//           OR (
+//               p_sex = 'female'
+//               AND (
+//                   h.sex = 'F'
+//                   OR LOWER(COALESCE(h.sex, '')) LIKE '%femea%'
+//                   OR LOWER(COALESCE(h.sex, '')) LIKE '%fêmea%'
+//                   OR LOWER(COALESCE(h.sex, '')) LIKE '%egua%'
+//                   OR LOWER(COALESCE(h.sex, '')) LIKE '%égua%'
+//               )
+//           )
+//           OR (
+//               p_sex = 'male'
+//               AND (
+//                   h.sex = 'M'
+//                   OR LOWER(COALESCE(h.sex, '')) LIKE '%macho%'
+//                   OR LOWER(COALESCE(h.sex, '')) LIKE '%garanhao%'
+//                   OR LOWER(COALESCE(h.sex, '')) LIKE '%garanhão%'
+//               )
+//           )
+//           OR (
+//               p_sex = 'gelding'
+//               AND LOWER(COALESCE(h.sex, '')) LIKE '%castrad%'
+//           )
+//       )
+//       AND (
+//           COALESCE(p_include_unknown_age, TRUE)
+//           OR h.age_years IS NOT NULL
+//       )
+//       AND (
+//           COALESCE(p_include_unknown_age, TRUE)
+//           OR p_min_age IS NULL
+//           OR h.age_years >= p_min_age
+//       )
+//       AND (
+//           COALESCE(p_include_unknown_age, TRUE)
+//           OR p_max_age IS NULL
+//           OR h.age_years <= p_max_age
+//       )
+//       AND (
+//           COALESCE(p_reproductive_only, FALSE) = FALSE
+//           OR h.is_reproductive_mare = TRUE
+//       )
+//       AND (
+//           p_breeder_names IS NULL
+//           OR CARDINALITY(p_breeder_names) = 0
+//           OR h.breeder_name = ANY(p_breeder_names)
+//       )
+//       AND (
+//           p_owner_names IS NULL
+//           OR CARDINALITY(p_owner_names) = 0
+//           OR h.owner_name = ANY(p_owner_names)
+//       )
+//       AND (
+//           p_sire_names IS NULL
+//           OR CARDINALITY(p_sire_names) = 0
+//           OR h.sire_name = ANY(p_sire_names)
+//       )
+//       AND (
+//           p_dam_names IS NULL
+//           OR CARDINALITY(p_dam_names) = 0
+//           OR h.dam_name = ANY(p_dam_names)
+//       )
+//       AND (
+//           p_min_offspring IS NULL
+//           OR p_min_offspring <= 0
+//           OR h.offspring_count >= p_min_offspring
+//       )
+//       AND (
+//           p_data_quality_min IS NULL
+//           OR p_data_quality_min <= 0
+//           OR h.data_quality_score >= p_data_quality_min
+//       )
+//       AND (
+//           p_recent_years IS NULL
+//           OR p_recent_years <= 0
+//           OR h.birth_year >= EXTRACT(YEAR FROM CURRENT_DATE)::integer - p_recent_years + 1
+//       )
+//   ),
+//   entities AS (
+//       SELECT
+//           breeder_id::text AS entity_id,
+//           'breeder'::text AS entity_kind,
+//           breeder_name AS name,
+//           COUNT(*)::integer AS horse_count,
+//           COUNT(*) FILTER (WHERE LOWER(COALESCE(sex, '')) LIKE '%f%')::integer AS female_count,
+//           COUNT(*) FILTER (WHERE age_years IS NOT NULL AND age_years <= 6)::integer AS young_count,
+//           COUNT(*) FILTER (WHERE is_reproductive_mare = TRUE)::integer AS active_mare_count,
+//           COUNT(DISTINCT owner_name) FILTER (WHERE owner_name IS NOT NULL)::integer AS connected_owner_count,
+//           ROUND(AVG(COALESCE(data_quality_score, 0))::numeric, 1) AS avg_quality,
+//           MAX(birth_year)::integer AS latest_birth_year,
+//           COUNT(*) FILTER (
+//               WHERE birth_year >= EXTRACT(YEAR FROM CURRENT_DATE)::integer - COALESCE(NULLIF(p_recent_years, 0), 3) + 1
+//           )::integer AS recent_horse_count
+//       FROM filtered
+//       WHERE is_actionable_studbook_name(breeder_name)
+//       GROUP BY breeder_id, breeder_name
+//   
+//       UNION ALL
+//   
+//       SELECT
+//           owner_id::text AS entity_id,
+//           'owner'::text AS entity_kind,
+//           owner_name AS name,
+//           COUNT(*)::integer AS horse_count,
+//           COUNT(*) FILTER (WHERE LOWER(COALESCE(sex, '')) LIKE '%f%')::integer AS female_count,
+//           COUNT(*) FILTER (WHERE age_years IS NOT NULL AND age_years <= 6)::integer AS young_count,
+//           COUNT(*) FILTER (WHERE is_reproductive_mare = TRUE)::integer AS active_mare_count,
+//           COUNT(DISTINCT breeder_name) FILTER (WHERE breeder_name IS NOT NULL)::integer AS connected_owner_count,
+//           ROUND(AVG(COALESCE(data_quality_score, 0))::numeric, 1) AS avg_quality,
+//           MAX(birth_year)::integer AS latest_birth_year,
+//           COUNT(*) FILTER (
+//               WHERE birth_year >= EXTRACT(YEAR FROM CURRENT_DATE)::integer - COALESCE(NULLIF(p_recent_years, 0), 3) + 1
+//           )::integer AS recent_horse_count
+//       FROM filtered
+//       WHERE is_actionable_studbook_name(owner_name)
+//       GROUP BY owner_id, owner_name
+//   
+//       UNION ALL
+//   
+//       SELECT
+//           LOWER(TRIM(sire_name)) AS entity_id,
+//           'sire'::text AS entity_kind,
+//           MIN(TRIM(sire_name)) AS name,
+//           COUNT(*)::integer AS horse_count,
+//           COUNT(*) FILTER (WHERE LOWER(COALESCE(sex, '')) LIKE '%f%')::integer AS female_count,
+//           COUNT(*) FILTER (WHERE age_years IS NOT NULL AND age_years <= 6)::integer AS young_count,
+//           COUNT(*) FILTER (WHERE is_reproductive_mare = TRUE)::integer AS active_mare_count,
+//           COUNT(DISTINCT owner_name) FILTER (WHERE owner_name IS NOT NULL)::integer AS connected_owner_count,
+//           ROUND(AVG(COALESCE(data_quality_score, 0))::numeric, 1) AS avg_quality,
+//           MAX(birth_year)::integer AS latest_birth_year,
+//           COUNT(*) FILTER (
+//               WHERE birth_year >= EXTRACT(YEAR FROM CURRENT_DATE)::integer - COALESCE(NULLIF(p_recent_years, 0), 3) + 1
+//           )::integer AS recent_horse_count
+//       FROM filtered
+//       WHERE is_actionable_studbook_name(sire_name)
+//       GROUP BY LOWER(TRIM(sire_name))
+//   
+//       UNION ALL
+//   
+//       SELECT
+//           LOWER(TRIM(dam_name)) AS entity_id,
+//           'dam'::text AS entity_kind,
+//           MIN(TRIM(dam_name)) AS name,
+//           COUNT(*)::integer AS horse_count,
+//           COUNT(*) FILTER (WHERE LOWER(COALESCE(sex, '')) LIKE '%f%')::integer AS female_count,
+//           COUNT(*) FILTER (WHERE age_years IS NOT NULL AND age_years <= 6)::integer AS young_count,
+//           COUNT(*) FILTER (WHERE is_reproductive_mare = TRUE)::integer AS active_mare_count,
+//           COUNT(DISTINCT owner_name) FILTER (WHERE owner_name IS NOT NULL)::integer AS connected_owner_count,
+//           ROUND(AVG(COALESCE(data_quality_score, 0))::numeric, 1) AS avg_quality,
+//           MAX(birth_year)::integer AS latest_birth_year,
+//           COUNT(*) FILTER (
+//               WHERE birth_year >= EXTRACT(YEAR FROM CURRENT_DATE)::integer - COALESCE(NULLIF(p_recent_years, 0), 3) + 1
+//           )::integer AS recent_horse_count
+//       FROM filtered
+//       WHERE is_actionable_studbook_name(dam_name)
+//       GROUP BY LOWER(TRIM(dam_name))
+//   ),
+//   with_crm AS (
+//       SELECT
+//           e.*,
+//           COALESCE(c.crm_contact_count, 0)::integer AS crm_contact_count,
+//           COUNT(*) OVER (PARTITION BY e.entity_kind)::integer AS total_entities,
+//           ROW_NUMBER() OVER (
+//               PARTITION BY e.entity_kind
+//               ORDER BY
+//                   CASE WHEN COALESCE(p_rank_mode, 'volume') = 'recent' THEN e.recent_horse_count ELSE e.horse_count END DESC,
+//                   e.latest_birth_year DESC NULLS LAST,
+//                   e.horse_count DESC,
+//                   e.name ASC
+//           ) AS rank_position
+//       FROM entities e
+//       LEFT JOIN LATERAL (
+//           SELECT COUNT(*)::integer AS crm_contact_count
+//           FROM contacts c
+//           WHERE normalize_studbook_match_name(c.name) = normalize_studbook_match_name(e.name)
+//       ) c ON TRUE
+//   )
+//   SELECT
+//       entity_id,
+//       entity_kind,
+//       name,
+//       horse_count,
+//       female_count,
+//       young_count,
+//       active_mare_count,
+//       connected_owner_count,
+//       avg_quality,
+//       latest_birth_year,
+//       recent_horse_count,
+//       crm_contact_count,
+//       total_entities
+//   FROM with_crm
+//   WHERE rank_position <= LEAST(GREATEST(COALESCE(p_limit, 6), 1), 20)
+//   ORDER BY entity_kind, rank_position;
+//   $function$
+//   
+// FUNCTION is_actionable_studbook_name(text)
+//   CREATE OR REPLACE FUNCTION public.is_actionable_studbook_name(value text)
+//    RETURNS boolean
+//    LANGUAGE sql
+//    IMMUTABLE
+//   AS $function$
+//       SELECT NULLIF(TRIM(value), '') IS NOT NULL
+//           AND UPPER(TRIM(value)) NOT IN (
+//               'NAO CADASTRADA',
+//               'NÃO CADASTRADA',
+//               'NAO CADASTRADO',
+//               'NÃO CADASTRADO',
+//               'NAO INFORMADA',
+//               'NÃO INFORMADA',
+//               'NAO INFORMADO',
+//               'NÃO INFORMADO',
+//               'PENDENTE',
+//               'PENDENTE - ABCCH',
+//               'SEM REGISTRO',
+//               'DESCONHECIDO',
+//               'DESCONHECIDA'
+//           );
+//   $function$
+//   
+// FUNCTION normalize_studbook_match_name(text)
+//   CREATE OR REPLACE FUNCTION public.normalize_studbook_match_name(value text)
+//    RETURNS text
+//    LANGUAGE sql
+//    IMMUTABLE
+//   AS $function$
+//       SELECT REGEXP_REPLACE(LOWER(TRIM(COALESCE(value, ''))), '[^a-z0-9]+', ' ', 'g');
+//   $function$
+//   
 // FUNCTION update_updated_at_column()
 //   CREATE OR REPLACE FUNCTION public.update_updated_at_column()
 //    RETURNS trigger
@@ -1922,7 +3595,7 @@ export const Constants = {
 //       RETURN NEW;
 //   END;
 //   $function$
-//
+//   
 
 // --- TRIGGERS ---
 // Table: deals
@@ -1930,6 +3603,8 @@ export const Constants = {
 //   update_deals_updated_at: CREATE TRIGGER update_deals_updated_at BEFORE UPDATE ON public.deals FOR EACH ROW EXECUTE FUNCTION update_updated_at_column()
 
 // --- INDEXES ---
+// Table: auction_candidate_items
+//   CREATE UNIQUE INDEX auction_candidate_items_list_id_horse_id_key ON public.auction_candidate_items USING btree (list_id, horse_id)
 // Table: automation_settings
 //   CREATE UNIQUE INDEX automation_settings_rule_key_key ON public.automation_settings USING btree (rule_key)
 // Table: bids
@@ -1944,6 +3619,20 @@ export const Constants = {
 // Table: contacts
 //   CREATE INDEX idx_contacts_document ON public.contacts USING btree (document)
 //   CREATE UNIQUE INDEX idx_contacts_smartleiloes_id ON public.contacts USING btree (smartleiloes_id)
+// Table: global_auction_houses
+//   CREATE UNIQUE INDEX global_auction_houses_normalized_name_key ON public.global_auction_houses USING btree (normalized_name)
+// Table: global_auction_lots
+//   CREATE UNIQUE INDEX global_auction_lots_auction_id_lot_number_normalized_horse__key ON public.global_auction_lots USING btree (auction_id, lot_number, normalized_horse_name)
+//   CREATE INDEX idx_global_auction_lots_horse_name ON public.global_auction_lots USING gin (to_tsvector('simple'::regconfig, horse_name))
+//   CREATE INDEX idx_global_auction_lots_price ON public.global_auction_lots USING btree (hammer_price)
+//   CREATE INDEX idx_global_auction_lots_sire ON public.global_auction_lots USING btree (sire_name)
+// Table: global_auction_source_snapshots
+//   CREATE UNIQUE INDEX global_auction_source_snapshots_source_url_checksum_key ON public.global_auction_source_snapshots USING btree (source_url, checksum)
+// Table: global_auction_sources
+//   CREATE UNIQUE INDEX global_auction_sources_name_key ON public.global_auction_sources USING btree (name)
+// Table: global_auctions
+//   CREATE UNIQUE INDEX global_auctions_source_id_normalized_name_auction_year_key ON public.global_auctions USING btree (source_id, normalized_name, auction_year)
+//   CREATE INDEX idx_global_auctions_year ON public.global_auctions USING btree (auction_year)
 // Table: message_events
 //   CREATE INDEX idx_message_events_campaign ON public.message_events USING btree (campaign_id)
 // Table: outbound_messages
@@ -1957,5 +3646,28 @@ export const Constants = {
 //   CREATE UNIQUE INDEX smartleiloes_lots_smartleiloes_id_key ON public.smartleiloes_lots USING btree (smartleiloes_id)
 // Table: smartleiloes_raw_records
 //   CREATE UNIQUE INDEX smartleiloes_raw_records_record_type_external_id_key ON public.smartleiloes_raw_records USING btree (record_type, external_id)
+// Table: studbook_horses
+//   CREATE INDEX idx_studbook_horses_birth_year ON public.studbook_horses USING btree (birth_year)
+//   CREATE INDEX idx_studbook_horses_breeder ON public.studbook_horses USING btree (breeder_id)
+//   CREATE INDEX idx_studbook_horses_dam_name ON public.studbook_horses USING gin (to_tsvector('simple'::regconfig, COALESCE(dam_name, ''::text)))
+//   CREATE INDEX idx_studbook_horses_dam_name_btree ON public.studbook_horses USING btree (dam_name)
+//   CREATE INDEX idx_studbook_horses_detail_status ON public.studbook_horses USING btree (abcch_detail_sync_status)
+//   CREATE INDEX idx_studbook_horses_detail_synced ON public.studbook_horses USING btree (abcch_detail_synced_at)
+//   CREATE INDEX idx_studbook_horses_name ON public.studbook_horses USING gin (to_tsvector('simple'::regconfig, name))
+//   CREATE INDEX idx_studbook_horses_owner ON public.studbook_horses USING btree (owner_id)
+//   CREATE INDEX idx_studbook_horses_registration ON public.studbook_horses USING btree (registration)
+//   CREATE INDEX idx_studbook_horses_sex ON public.studbook_horses USING btree (sex)
+//   CREATE INDEX idx_studbook_horses_sire_name ON public.studbook_horses USING gin (to_tsvector('simple'::regconfig, COALESCE(sire_name, ''::text)))
+//   CREATE INDEX idx_studbook_horses_sire_name_btree ON public.studbook_horses USING btree (sire_name)
+//   CREATE INDEX idx_studbook_horses_updated_at ON public.studbook_horses USING btree (updated_at DESC)
+//   CREATE UNIQUE INDEX studbook_horses_abcch_token_key ON public.studbook_horses USING btree (abcch_token)
+// Table: studbook_offspring
+//   CREATE INDEX idx_studbook_offspring_parent ON public.studbook_offspring USING btree (parent_id)
+//   CREATE UNIQUE INDEX studbook_offspring_parent_id_child_registration_child_name_key ON public.studbook_offspring USING btree (parent_id, child_registration, child_name)
+// Table: studbook_pedigree_links
+//   CREATE UNIQUE INDEX studbook_pedigree_links_horse_id_relation_type_generation_r_key ON public.studbook_pedigree_links USING btree (horse_id, relation_type, generation, related_name)
+// Table: studbook_people_orgs
+//   CREATE UNIQUE INDEX studbook_people_orgs_normalized_name_role_key ON public.studbook_people_orgs USING btree (normalized_name, role)
 // Table: tags
 //   CREATE UNIQUE INDEX tags_name_key ON public.tags USING btree (name)
+
