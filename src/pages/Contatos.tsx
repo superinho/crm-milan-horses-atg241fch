@@ -101,6 +101,7 @@ import {
   type SmartLeiloesSyncRun,
   type SmartLeiloesSyncSummary,
 } from '@/services/smartleiloes-sync'
+import { whatsappUrl } from '@/lib/phone'
 
 const initialFilters: FilterState = {
   tags: [],
@@ -1031,9 +1032,9 @@ export default function Contatos() {
                               className="h-8 w-8 text-muted-foreground hover:text-primary"
                             >
                               <a
-                                href={`https://wa.me/55${String(
+                                href={whatsappUrl(
                                   contact.whatsapp || contact.phone,
-                                ).replace(/\D/g, '')}`}
+                                )}
                                 target="_blank"
                                 rel="noreferrer"
                                 title="Chamar no WhatsApp"

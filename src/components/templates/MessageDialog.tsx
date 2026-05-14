@@ -28,6 +28,7 @@ import {
 import { contactsService, Contact, Bid, Purchase } from '@/services/contacts'
 import { dealsService, Deal } from '@/services/deals'
 import { RichTextEditor } from '@/components/ui/rich-text-editor'
+import { whatsappUrl } from '@/lib/phone'
 
 interface MessageDialogProps {
   contact: Contact
@@ -185,11 +186,11 @@ export function MessageDialog({
         })
         return
       }
-      const phone = (contact.whatsapp || contact.phone).replace(/\D/g, '')
-      const encoded = encodeURIComponent(previewBody)
-
       // Open WhatsApp
-      window.open(`https://wa.me/55${phone}?text=${encoded}`, '_blank')
+      window.open(
+        whatsappUrl(contact.whatsapp || contact.phone, previewBody),
+        '_blank',
+      )
 
       // Log interaction
       try {

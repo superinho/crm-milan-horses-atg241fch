@@ -49,6 +49,7 @@ import {
 } from '@/services/vip-radar'
 import { campaignsService } from '@/services/campaigns'
 import { cn } from '@/lib/utils'
+import { telUrl, whatsappUrl } from '@/lib/phone'
 
 const SEGMENTS: Array<{ value: VipRadarSegment | 'Todos'; label: string }> = [
   { value: 'Todos', label: 'Todos' },
@@ -71,9 +72,6 @@ const money = (value: number) =>
 
 const date = (value?: string | null) =>
   value ? value.slice(0, 10).split('-').reverse().join('/') : '-'
-
-const digitsOnly = (value?: string | null) =>
-  String(value || '').replace(/\D/g, '')
 
 const segmentClassName = (segment: VipRadarSegment) => {
   if (segment === 'VIP ativo')
@@ -130,10 +128,9 @@ function RecommendationRow({
   onSetAction: (id: string, action: ActionState[string]) => void
   onCopyMessage: (message: string) => void
 }) {
-  const phoneDigits = digitsOnly(item.whatsapp || item.phone)
-  const whatsappUrl = phoneDigits
-    ? `https://wa.me/55${phoneDigits}?text=${encodeURIComponent(item.suggestedMessage)}`
-    : ''
+  const preferredPhone = item.whatsapp || item.phone
+  const whatsappHref = whatsappUrl(preferredPhone, item.suggestedMessage)
+  const phoneHref = telUrl(preferredPhone)
   const mailUrl = item.email
     ? `mailto:${item.email}?subject=${encodeURIComponent('Curadoria Milan Horses')}&body=${encodeURIComponent(item.suggestedMessage)}`
     : ''
@@ -201,14 +198,14 @@ function RecommendationRow({
 
       <TableCell className="min-w-[220px]">
         <div className="flex items-center gap-1">
-          {whatsappUrl ? (
+          {whatsappHref ? (
             <Button
               variant="ghost"
               size="icon"
               asChild
               title="Chamar no WhatsApp"
             >
-              <a href={whatsappUrl} target="_blank" rel="noreferrer">
+              <a href={whatsappHref} target="_blank" rel="noreferrer">
                 <MessageCircle className="h-4 w-4" />
               </a>
             </Button>
@@ -220,9 +217,9 @@ function RecommendationRow({
               </a>
             </Button>
           ) : null}
-          {phoneDigits ? (
+          {phoneHref ? (
             <Button variant="ghost" size="icon" asChild title="Ligar">
-              <a href={`tel:+55${phoneDigits}`}>
+              <a href={phoneHref}>
                 <Phone className="h-4 w-4" />
               </a>
             </Button>
