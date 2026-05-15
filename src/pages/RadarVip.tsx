@@ -491,7 +491,14 @@ export default function RadarVip() {
           </Card>
 
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <Card>
+            <Card
+              className={cn(
+                'cursor-pointer transition-colors hover:border-primary/50 hover:bg-slate-50/50',
+                selectedSegment === 'VIP ativo' &&
+                  'border-primary ring-1 ring-primary',
+              )}
+              onClick={() => setSelectedSegment('VIP ativo')}
+            >
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Crown className="h-4 w-4 text-amber-700" />
@@ -502,7 +509,14 @@ export default function RadarVip() {
                 {data.summary.bySegment['VIP ativo']}
               </CardContent>
             </Card>
-            <Card>
+            <Card
+              className={cn(
+                'cursor-pointer transition-colors hover:border-primary/50 hover:bg-slate-50/50',
+                selectedSegment === 'Comprador quente' &&
+                  'border-primary ring-1 ring-primary',
+              )}
+              onClick={() => setSelectedSegment('Comprador quente')}
+            >
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Flame className="h-4 w-4 text-orange-700" />
@@ -513,7 +527,14 @@ export default function RadarVip() {
                 {data.summary.bySegment['Comprador quente']}
               </CardContent>
             </Card>
-            <Card>
+            <Card
+              className={cn(
+                'cursor-pointer transition-colors hover:border-primary/50 hover:bg-slate-50/50',
+                selectedSegment === 'Underbidder premium' &&
+                  'border-primary ring-1 ring-primary',
+              )}
+              onClick={() => setSelectedSegment('Underbidder premium')}
+            >
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Gem className="h-4 w-4 text-blue-700" />
@@ -524,7 +545,14 @@ export default function RadarVip() {
                 {data.summary.bySegment['Underbidder premium']}
               </CardContent>
             </Card>
-            <Card>
+            <Card
+              className={cn(
+                'cursor-pointer transition-colors hover:border-primary/50 hover:bg-slate-50/50',
+                selectedSegment === 'Bidder fantasma' &&
+                  'border-primary ring-1 ring-primary',
+              )}
+              onClick={() => setSelectedSegment('Bidder fantasma')}
+            >
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <ShieldAlert className="h-4 w-4 text-slate-700" />
