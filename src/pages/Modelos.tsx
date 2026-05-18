@@ -28,6 +28,7 @@ import {
   Send,
   Sparkles,
   Trash2,
+  Search,
   Upload,
   UserRound,
   UsersRound,
@@ -47,6 +48,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
 import { formatCivilDate } from '@/lib/dates'
@@ -60,6 +66,8 @@ import {
 } from '@/services/templates'
 import { smartLeiloesService, type SmartLeilao } from '@/services/smartleiloes'
 import { studioGoalsService, type StudioGoal } from '@/services/studio-goals'
+import { contactsService } from '@/services/contacts'
+import { AudienceSelector } from '@/components/campaigns/AudienceSelector'
 
 type DraftTemplate = TemplateInsert & { id?: string }
 type StudioToneId = 'editorial' | 'exclusivo' | 'direto' | 'caloroso'
@@ -673,6 +681,14 @@ export default function Modelos() {
   const [goals, setGoals] = useState<StudioGoal[]>([])
   const [draft, setDraft] = useState<DraftTemplate>(emptyDraft)
   const [wizard, setWizard] = useState<WizardState>(emptyWizard)
+  const [audienceTags, setAudienceTags] = useState<string[]>([])
+  const [audienceSegments, setAudienceSegments] = useState<string[]>([])
+  const [manualContactSearch, setManualContactSearch] = useState('')
+  const [manualContacts, setManualContacts] = useState<any[]>([])
+  const [selectedContact, setSelectedContact] = useState<any>(null)
+  const [auctionSearch, setAuctionSearch] = useState('')
+  const [auctionOpen, setAuctionOpen] = useState(false)
+  const [contactOpen, setContactOpen] = useState(false)
   const [selectedChannels, setSelectedChannels] = useState<TemplateType[]>([
     'E-mail',
   ])
@@ -742,6 +758,26 @@ export default function Modelos() {
     loadTemplates()
     loadGoals()
   }, [loadTemplates, loadGoals])
+
+  useEffect(() => {
+    const searchContacts = async () => {
+      if (!manualContactSearch || manualContactSearch.length < 2) {
+        setManualContacts([])
+        return
+      }
+      try {
+        const { data } = await contactsService.getContacts({
+          search: manualContactSearch,
+          pageSize: 5,
+        })
+        setManualContacts(data || [])
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    const timer = setTimeout(searchContacts, 300)
+    return () => clearTimeout(timer)
+  }, [manualContactSearch])
 
   useEffect(() => {
     let mounted = true
@@ -1471,34 +1507,210 @@ export default function Modelos() {
                 ))}
               </div>
 
-              <section className="space-y-2">
+              <section className="space-y-5">
                 <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
                   <UsersRound className="h-4 w-4 text-primary" />
-                  2. Defina o público
+                  2. Defina o público e leilão
                 </div>
-                <Select
-                  value={wizard.audience}
-                  onValueChange={(value) => updateWizard({ audience: value })}
-                >
-                  <SelectTrigger className="w-full md:w-1/2">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Radar VIP">Radar VIP</SelectItem>
-                    <SelectItem value="VIP ativo">VIP ativo</SelectItem>
-                    <SelectItem value="Underbidders">Underbidders</SelectItem>
-                    <SelectItem value="Compradores quentes">
-                      Compradores quentes
-                    </SelectItem>
-                    <SelectItem value="Bidders fantasma">
-                      Bidders fantasma
-                    </SelectItem>
-                    <SelectItem value="Compradores">Compradores</SelectItem>
-                    <SelectItem value="Inativos valiosos">
-                      Inativos valiosos
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+
+                <div className="space-y-5 rounded-md border bg-muted/5 p-4">
+                  <div className="space-y-2">
+                    <Label className="flex items-center gap-2 text-foreground">
+                      <Gavel className="h-4 w-4 text-primary" />
+                      Leilão alvo
+                    </Label>
+                    <Popover open={auctionOpen} onOpenChange={setAuctionOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={auctionOpen}
+                          className="w-full justify-between bg-background"
+                        >
+                          {wizard.auctionId
+                            ? wizard.auctionName
+                            : 'Selecione um leilão (Opcional)...'}
+                          <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[400px] p-0" align="start">
+                        <div className="flex items-center border-b px-3">
+                          <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+                          <Input
+                            placeholder="Buscar leilão..."
+                            value={auctionSearch}
+                            onChange={(e) => setAuctionSearch(e.target.value)}
+                            className="flex h-10 w-full rounded-md border-0 bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
+                          />
+                        </div>
+                        <ScrollArea className="h-64">
+                          {auctionsLoading ? (
+                            <div className="p-4 text-center text-sm text-muted-foreground">
+                              Carregando...
+                            </div>
+                          ) : (
+                            <div className="p-2">
+                              {auctions
+                                .filter((a) =>
+                                  (a.title || a.name || '')
+                                    .toLowerCase()
+                                    .includes(auctionSearch.toLowerCase()),
+                                )
+                                .map((auction) => (
+                                  <div
+                                    key={auction.id}
+                                    className={cn(
+                                      'relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+                                      wizard.auctionId === String(auction.id) &&
+                                        'bg-accent text-accent-foreground',
+                                    )}
+                                    onClick={() => {
+                                      selectAuction(String(auction.id))
+                                      setAuctionOpen(false)
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        'mr-2 h-4 w-4',
+                                        wizard.auctionId === String(auction.id)
+                                          ? 'opacity-100'
+                                          : 'opacity-0',
+                                      )}
+                                    />
+                                    {auction.title || auction.name}
+                                  </div>
+                                ))}
+                            </div>
+                          )}
+                        </ScrollArea>
+                      </PopoverContent>
+                    </Popover>
+                    {wizard.auctionId && (
+                      <div className="grid gap-2 md:grid-cols-[1fr_140px] pt-1">
+                        <Input
+                          value={wizard.auctionName}
+                          onChange={(event) =>
+                            updateWizard({ auctionName: event.target.value })
+                          }
+                          placeholder="Nome do leilão"
+                        />
+                        <Input
+                          value={wizard.auctionDate}
+                          onChange={(event) =>
+                            updateWizard({ auctionDate: event.target.value })
+                          }
+                          placeholder="Data"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-4 pt-2">
+                    <AudienceSelector
+                      selectedTags={audienceTags}
+                      selectedSegments={audienceSegments}
+                      onTagsChange={setAudienceTags}
+                      onSegmentsChange={setAudienceSegments}
+                    />
+
+                    <div className="space-y-2 border-t border-border/50 pt-4">
+                      <Label className="flex items-center gap-2">
+                        <UserRound className="h-4 w-4 text-primary" />
+                        Buscar cliente específico (opcional)
+                      </Label>
+                      <Popover open={contactOpen} onOpenChange={setContactOpen}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={contactOpen}
+                            className="w-full justify-between bg-background"
+                          >
+                            {selectedContact
+                              ? selectedContact.name
+                              : 'Buscar por nome, email ou telefone...'}
+                            <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[400px] p-0" align="start">
+                          <div className="flex items-center border-b px-3">
+                            <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+                            <Input
+                              placeholder="Digite para buscar..."
+                              value={manualContactSearch}
+                              onChange={(e) =>
+                                setManualContactSearch(e.target.value)
+                              }
+                              className="flex h-10 w-full rounded-md border-0 bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground focus-visible:ring-0"
+                            />
+                          </div>
+                          <ScrollArea className="max-h-64">
+                            <div className="p-2">
+                              {manualContacts.length === 0 ? (
+                                <div className="p-4 text-center text-sm text-muted-foreground">
+                                  {manualContactSearch.length < 2
+                                    ? 'Digite pelo menos 2 caracteres'
+                                    : 'Nenhum contato encontrado'}
+                                </div>
+                              ) : (
+                                manualContacts.map((contact) => (
+                                  <div
+                                    key={contact.id}
+                                    className="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
+                                    onClick={() => {
+                                      setSelectedContact(contact)
+                                      setPreviewContext((curr) => ({
+                                        ...curr,
+                                        nome: contact.name,
+                                        cidade: contact.city || curr.cidade,
+                                        segmento:
+                                          contact.segment || curr.segmento,
+                                        ticket_medio: contact.avgTicket
+                                          ? `Ticket médio: R$ ${contact.avgTicket}`
+                                          : curr.ticket_medio,
+                                      }))
+                                      setContactOpen(false)
+                                    }}
+                                  >
+                                    <div className="flex flex-col">
+                                      <span className="font-medium">
+                                        {contact.name}
+                                      </span>
+                                      <span className="text-xs text-muted-foreground">
+                                        {contact.email} •{' '}
+                                        {contact.phone || contact.whatsapp}
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))
+                              )}
+                            </div>
+                          </ScrollArea>
+                        </PopoverContent>
+                      </Popover>
+                      {selectedContact && (
+                        <div className="flex items-center justify-between rounded-md border bg-background px-3 py-2 text-sm">
+                          <div>
+                            <span className="font-medium">
+                              {selectedContact.name}
+                            </span>
+                            <span className="ml-2 text-muted-foreground">
+                              {selectedContact.phone || selectedContact.email}
+                            </span>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setSelectedContact(null)}
+                            className="h-8 px-2 text-destructive"
+                          >
+                            Remover
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </section>
 
               <section className="space-y-2 border-t pt-5">
@@ -1717,62 +1929,8 @@ export default function Modelos() {
               <section className="grid gap-4 lg:grid-cols-2 border-t pt-5">
                 <div className="space-y-2">
                   <Label className="flex items-center gap-2 font-semibold">
-                    <Gavel className="h-4 w-4 text-primary" />
-                    4. Detalhes: Leilão real
-                  </Label>
-                  <Select
-                    value={wizard.auctionId || 'manual'}
-                    onValueChange={(value) => {
-                      if (value === 'manual') {
-                        updateWizard({ auctionId: '' })
-                        return
-                      }
-                      selectAuction(value)
-                    }}
-                    disabled={auctionsLoading}
-                  >
-                    <SelectTrigger>
-                      <SelectValue
-                        placeholder={
-                          auctionsLoading
-                            ? 'Carregando leilões...'
-                            : 'Escolha um leilão'
-                        }
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="manual">
-                        Preencher manualmente
-                      </SelectItem>
-                      {auctions.slice(0, 50).map((auction) => (
-                        <SelectItem key={auction.id} value={String(auction.id)}>
-                          {auction.title || auction.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <div className="grid gap-2 md:grid-cols-[1fr_140px]">
-                    <Input
-                      value={wizard.auctionName}
-                      onChange={(event) =>
-                        updateWizard({ auctionName: event.target.value })
-                      }
-                      placeholder="Nome do leilão"
-                    />
-                    <Input
-                      value={wizard.auctionDate}
-                      onChange={(event) =>
-                        updateWizard({ auctionDate: event.target.value })
-                      }
-                      placeholder="Data"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 font-semibold">
                     <Wand2 className="h-4 w-4 text-primary" />
-                    Tom de voz
+                    4. Detalhes: Tom de voz
                   </Label>
                   <Select
                     value={wizard.tone}
