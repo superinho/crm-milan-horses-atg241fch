@@ -59,15 +59,9 @@ import {
   type TemplateType,
 } from '@/services/templates'
 import { smartLeiloesService, type SmartLeilao } from '@/services/smartleiloes'
+import { studioGoalsService, type StudioGoal } from '@/services/studio-goals'
 
 type DraftTemplate = TemplateInsert & { id?: string }
-type StudioGoalId =
-  | 'curadoria'
-  | 'convite-vip'
-  | 'underbidder'
-  | 'reativacao'
-  | 'ultima-chamada'
-  | 'pos-leilao'
 type StudioToneId = 'editorial' | 'exclusivo' | 'direto' | 'caloroso'
 type StudioVisualId = 'hero' | 'editorial' | 'lote'
 type PremiumLayoutId =
@@ -83,7 +77,7 @@ type PremiumLayoutId =
   | 'pos-compra'
 
 type WizardState = {
-  goal: StudioGoalId
+  goal: string
   tone: StudioToneId
   visual: StudioVisualId
   auctionId: string
@@ -139,54 +133,56 @@ const CATEGORIES: TemplateCategory[] = [
   'Agradecimento Pós-Compra',
 ]
 
-const GOAL_PRESETS: Array<{
-  id: StudioGoalId
-  title: string
-  category: TemplateCategory
-  subject: string
-  description: string
-}> = [
+const DEFAULT_GOALS: Array<
+  Omit<StudioGoal, 'id' | 'created_at' | 'updated_at'>
+> = [
   {
-    id: 'curadoria',
     title: 'Curadoria de leilão',
     category: 'Radar VIP',
     subject: 'Curadoria Milan Horses para {{leilao}}',
     description: 'Seleção refinada de lotes para clientes com fit claro.',
+    base_text:
+      'Revendo seu perfil conosco, preparei uma curadoria objetiva e cuidadosamente filtrada. Selecionei alguns destaques que parecem bem alinhados ao seu histórico na Milan Horses.',
   },
   {
-    id: 'convite-vip',
     title: 'Convite VIP',
     category: 'Convite VIP',
     subject: 'Acesso reservado: {{leilao}}',
     description: 'Convite privado para clientes de alto valor.',
+    base_text:
+      'Revendo seu perfil conosco, preparei uma curadoria objetiva e cuidadosamente filtrada. O objetivo é te dar uma visão antecipada de oportunidades compatíveis com seu perfil antes da abertura para a base completa.',
   },
   {
-    id: 'underbidder',
     title: 'Underbidder',
     category: 'Underbidder',
     subject: 'Novas oportunidades alinhadas ao seu histórico',
     description: 'Reengaja quem disputou forte e não comprou.',
+    base_text:
+      'Revendo seu perfil conosco, preparei uma curadoria objetiva e cuidadosamente filtrada. Como você costuma disputar lotes com intenção clara, há oportunidades em {{leilao}} que merecem atenção antes do fechamento.',
   },
   {
-    id: 'reativacao',
     title: 'Reativação elegante',
     category: 'Reativação de Cliente',
     subject: 'Uma seleção pensada para seu perfil',
     description: 'Retoma conversa com cliente inativo sem pressão.',
+    base_text:
+      'Revendo seu perfil conosco, preparei uma curadoria objetiva e cuidadosamente filtrada. Faz algum tempo que não nos falamos, mas {{leilao}} trouxe uma seleção que parece próxima do seu momento e do seu padrão de compra.',
   },
   {
-    id: 'ultima-chamada',
     title: 'Última chamada',
     category: 'Novo Leilão',
     subject: 'Última chamada para {{leilao}}',
     description: 'Lembra prazo e cria urgência com sobriedade.',
+    base_text:
+      'Revendo seu perfil conosco, preparei uma curadoria objetiva e cuidadosamente filtrada. {{leilao}} acontece em {{data_leilao}}, então achei importante te avisar enquanto ainda há tempo para avaliar os lotes com calma.',
   },
   {
-    id: 'pos-leilao',
     title: 'Pós-leilão',
     category: 'Pós-leilão',
     subject: 'Obrigado pela participação no leilão',
     description: 'Agradece e prepara o próximo relacionamento.',
+    base_text:
+      'Obrigado pela participação no leilão. Foi um prazer acompanhar seu interesse, e vou seguir atento a oportunidades realmente compatíveis com seu perfil.',
   },
 ]
 
@@ -244,7 +240,7 @@ const PREMIUM_EMAIL_LAYOUTS: Array<{
   title: string
   badge: string
   category: TemplateCategory
-  goal: StudioGoalId
+  goal: string
   subject: string
   headline: string
   ctaLabel: string
@@ -374,7 +370,7 @@ const PREMIUM_EMAIL_LAYOUTS: Array<{
 ]
 
 const emptyWizard: WizardState = {
-  goal: 'curadoria',
+  goal: '',
   tone: 'editorial',
   visual: 'hero',
   auctionId: '',
@@ -518,41 +514,24 @@ const imageBlock = ({
 }
 
 const paragraphForGoal = (
-  goal: StudioGoalId,
-  tone: StudioToneId,
+  goalId: string,
+  goals: StudioGoal[],
   wizard: WizardState,
 ) => {
-  const lotSentence = wizard.lot
-    ? `Incluí especialmente o lote <strong>{{lote}}</strong>, que conversa com seu histórico e com a faixa de interesse de {{valor}}.`
-    : 'Selecionei alguns destaques que parecem bem alinhados ao seu histórico na Milan Horses.'
-
-  const toneOpeners: Record<StudioToneId, string> = {
-    editorial:
-      'Revendo seu perfil conosco, preparei uma curadoria objetiva e cuidadosamente filtrada.',
-    exclusivo:
-      'Antes de ampliarmos a comunicação deste leilão, queria te enviar uma seleção mais reservada.',
-    direto: 'Separei os pontos mais importantes para você avaliar com rapidez.',
-    caloroso:
-      'Lembrei do seu perfil ao revisar o catálogo e achei que valia te avisar pessoalmente.',
+  const goal = goals.find((g) => g.id === goalId)
+  if (!goal) return ''
+  let text = goal.base_text || ''
+  if (wizard.lot) {
+    text += ` Incluí especialmente o lote <strong>{{lote}}</strong>.`
   }
-
-  const goalCopy: Record<StudioGoalId, string> = {
-    curadoria: `${toneOpeners[tone]} ${lotSentence}`,
-    'convite-vip': `${toneOpeners[tone]} O objetivo é te dar uma visão antecipada de oportunidades compatíveis com seu perfil antes da abertura para a base completa.`,
-    underbidder: `${toneOpeners[tone]} Como você costuma disputar lotes com intenção clara, há oportunidades em {{leilao}} que merecem atenção antes do fechamento.`,
-    reativacao: `${toneOpeners[tone]} Faz algum tempo que não nos falamos, mas {{leilao}} trouxe uma seleção que parece próxima do seu momento e do seu padrão de compra.`,
-    'ultima-chamada': `${toneOpeners[tone]} {{leilao}} acontece em {{data_leilao}}, então achei importante te avisar enquanto ainda há tempo para avaliar os lotes com calma.`,
-    'pos-leilao':
-      'Obrigado pela participação no leilão. Foi um prazer acompanhar seu interesse, e vou seguir atento a oportunidades realmente compatíveis com seu perfil.',
-  }
-
-  return goalCopy[goal]
+  return text
 }
 
 const buildPremiumEmail = (
   wizard: WizardState,
   context: PreviewContext,
-  goalPreset: (typeof GOAL_PRESETS)[number],
+  goalPreset: StudioGoal,
+  goals: StudioGoal[],
 ) => {
   const imageHtml = wizard.bannerUrl
     ? imageBlock({
@@ -566,10 +545,10 @@ const buildPremiumEmail = (
       })
     : ''
 
-  const intro = paragraphForGoal(wizard.goal, wizard.tone, wizard)
+  const intro = paragraphForGoal(wizard.goal, goals, wizard)
   const title =
     wizard.headline.trim() ||
-    (wizard.goal === 'convite-vip'
+    (goalPreset.title === 'Convite VIP'
       ? 'Acesso reservado Milan Horses'
       : 'Curadoria privada Milan Horses')
 
@@ -653,6 +632,7 @@ const buildPremiumLayoutEmail = (
   layout: (typeof PREMIUM_EMAIL_LAYOUTS)[number],
   wizard: WizardState,
   context: PreviewContext,
+  goals: StudioGoal[],
 ) => {
   const banner = wizard.bannerUrl
     ? imageBlock({
@@ -662,7 +642,7 @@ const buildPremiumLayoutEmail = (
         variant: 'banner',
       })
     : ''
-  const bodyCopy = paragraphForGoal(layout.goal, wizard.tone, wizard)
+  const bodyCopy = paragraphForGoal(layout.goal, goals, wizard)
   const content = `
 ${banner}
 <div style="margin:0 0 28px;text-align:center;">
@@ -685,13 +665,19 @@ ${signatureBlock()}
     .replaceAll('{{valor}}', wizard.valueRange || context.valor)
 }
 
+import { Plus } from 'lucide-react'
+
 export default function Modelos() {
   const [templates, setTemplates] = useState<MessageTemplate[]>([])
   const [auctions, setAuctions] = useState<SmartLeilao[]>([])
+  const [goals, setGoals] = useState<StudioGoal[]>([])
   const [draft, setDraft] = useState<DraftTemplate>(emptyDraft)
   const [wizard, setWizard] = useState<WizardState>(emptyWizard)
-  const [composerChannel, setComposerChannel] = useState<TemplateType>('E-mail')
-  const [composerPreviewOpen, setComposerPreviewOpen] = useState(false)
+  const [selectedChannels, setSelectedChannels] = useState<TemplateType[]>([
+    'E-mail',
+  ])
+  const [editingGoalId, setEditingGoalId] = useState<string | null>(null)
+  const [editGoalForm, setEditGoalForm] = useState<Partial<StudioGoal>>({})
   const [selectedPremiumLayoutId, setSelectedPremiumLayoutId] =
     useState<PremiumLayoutId>('convite-privado')
   const [previewContext, setPreviewContext] =
@@ -718,6 +704,25 @@ export default function Modelos() {
   const { toast } = useToast()
   const navigate = useNavigate()
 
+  const loadGoals = useCallback(async () => {
+    try {
+      const data = await studioGoalsService.getGoals()
+      if (data.length === 0) {
+        for (const preset of DEFAULT_GOALS) {
+          await studioGoalsService.createGoal(preset)
+        }
+        const newData = await studioGoalsService.getGoals()
+        setGoals(newData)
+        updateWizard({ goal: newData[0]?.id || '' })
+      } else {
+        setGoals(data)
+        setWizard((curr) => ({ ...curr, goal: curr.goal || data[0]?.id || '' }))
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }, [])
+
   const loadTemplates = useCallback(async () => {
     setLoading(true)
     try {
@@ -735,7 +740,8 @@ export default function Modelos() {
 
   useEffect(() => {
     loadTemplates()
-  }, [loadTemplates])
+    loadGoals()
+  }, [loadTemplates, loadGoals])
 
   useEffect(() => {
     let mounted = true
@@ -802,8 +808,7 @@ export default function Modelos() {
   const startNew = (type: TemplateType = 'E-mail') => {
     setSelectedId(null)
     setVariations([])
-    setComposerChannel(type)
-    setComposerPreviewOpen(false)
+    setSelectedChannels([type])
     setDraft({
       ...emptyDraft,
       type,
@@ -814,7 +819,7 @@ export default function Modelos() {
   const loadTemplate = (template: MessageTemplate) => {
     setSelectedId(template.id)
     setVariations([])
-    setComposerChannel(template.type)
+    setSelectedChannels([template.type])
     setDraft({
       id: template.id,
       title: template.title,
@@ -836,17 +841,17 @@ export default function Modelos() {
   }
 
   const generatePremiumEmail = () => {
-    const goalPreset =
-      GOAL_PRESETS.find((item) => item.id === wizard.goal) || GOAL_PRESETS[0]
-    const body = buildPremiumEmail(wizard, previewContext, goalPreset)
+    const goalPreset = goals.find((item) => item.id === wizard.goal) || goals[0]
+    if (!goalPreset) return
+    const body = buildPremiumEmail(wizard, previewContext, goalPreset, goals)
     const title = `${goalPreset.title} · ${wizard.auctionName || 'Milan Horses'}`
-    const subject = goalPreset.subject
+    const subject = (goalPreset.subject || '')
       .replaceAll('{{leilao}}', wizard.auctionName || '{{leilao}}')
       .replaceAll('{{data_leilao}}', wizard.auctionDate || '{{data_leilao}}')
 
     setSelectedId(null)
     setVariations([])
-    setComposerChannel('E-mail')
+    setSelectedChannels(['E-mail'])
     setDraft({
       title,
       category: goalPreset.category,
@@ -880,10 +885,10 @@ export default function Modelos() {
     layout: (typeof PREMIUM_EMAIL_LAYOUTS)[number],
   ) => {
     setSelectedPremiumLayoutId(layout.id)
-    setComposerChannel('E-mail')
-    setComposerPreviewOpen(true)
+    setSelectedChannels(['E-mail'])
+    const matchingGoal = goals.find((g) => g.title === layout.title) || goals[0]
     updateWizard({
-      goal: layout.goal,
+      goal: matchingGoal?.id || '',
       visual: 'hero',
       headline: layout.headline,
       ctaLabel: layout.ctaLabel,
@@ -895,9 +900,10 @@ export default function Modelos() {
       PREMIUM_EMAIL_LAYOUTS.find(
         (item) => item.id === selectedPremiumLayoutId,
       ) || PREMIUM_EMAIL_LAYOUTS[0]
+    const matchingGoal = goals.find((g) => g.title === layout.title) || goals[0]
     const nextWizard: WizardState = {
       ...wizard,
-      goal: layout.goal,
+      goal: matchingGoal?.id || '',
       visual: 'hero',
       headline: wizard.headline || layout.headline,
       ctaLabel: wizard.ctaLabel || layout.ctaLabel,
@@ -908,12 +914,16 @@ export default function Modelos() {
         '{{data_leilao}}',
         nextWizard.auctionDate || '{{data_leilao}}',
       )
-    const body = buildPremiumLayoutEmail(layout, nextWizard, previewContext)
+    const body = buildPremiumLayoutEmail(
+      layout,
+      nextWizard,
+      previewContext,
+      goals,
+    )
 
     setSelectedId(null)
     setVariations([])
-    setComposerChannel('E-mail')
-    setComposerPreviewOpen(true)
+    setSelectedChannels(['E-mail'])
     setWizard(nextWizard)
     setDraft({
       title: `${layout.title} · ${nextWizard.auctionName || 'Milan Horses'}`,
@@ -945,13 +955,14 @@ export default function Modelos() {
   }
 
   const buildWizardWhatsApp = () => {
-    const body = paragraphForGoal(wizard.goal, wizard.tone, wizard)
+    const goalObj = goals.find((g) => g.id === wizard.goal)
+    const body = paragraphForGoal(wizard.goal, goals, wizard)
       .replace(/<[^>]+>/g, '')
       .replace(/\s+/g, ' ')
       .trim()
 
     const close =
-      wizard.goal === 'pos-leilao'
+      goalObj?.title === 'Pós-leilão'
         ? 'Quando aparecer algo especial, te aviso por aqui.'
         : 'Posso te enviar uma curadoria curta por aqui?'
 
@@ -963,14 +974,14 @@ export default function Modelos() {
   }
 
   const generateWizardWhatsApp = () => {
-    const goalPreset =
-      GOAL_PRESETS.find((item) => item.id === wizard.goal) || GOAL_PRESETS[0]
+    const goalPreset = goals.find((item) => item.id === wizard.goal) || goals[0]
+    if (!goalPreset) return
     const body = buildWizardWhatsApp()
     const title = `${goalPreset.title} · ${wizard.auctionName || 'Milan Horses'}`
 
     setSelectedId(null)
     setVariations([])
-    setComposerChannel('WhatsApp')
+    setSelectedChannels(['WhatsApp'])
     setDraft({
       title,
       category: goalPreset.category,
@@ -996,12 +1007,69 @@ export default function Modelos() {
   }
 
   const generateFromWizard = () => {
-    if (composerChannel === 'WhatsApp') {
+    if (selectedChannels.includes('WhatsApp')) {
       generateWizardWhatsApp()
-      return
     }
+    if (selectedChannels.includes('E-mail')) {
+      generatePremiumEmail()
+    }
+  }
 
-    generatePremiumEmail()
+  const startEditingGoal = (goal: StudioGoal) => {
+    setEditingGoalId(goal.id)
+    setEditGoalForm({
+      title: goal.title,
+      description: goal.description,
+      subject: goal.subject,
+      base_text: goal.base_text,
+    })
+  }
+
+  const createNewGoal = () => {
+    const newId = 'new-' + Date.now()
+    setEditingGoalId(newId)
+    setEditGoalForm({
+      title: 'Novo Objetivo',
+      description: 'Descrição do objetivo',
+      subject: 'Assunto do e-mail',
+      base_text: 'Escreva o texto base aqui...',
+      category: 'Radar VIP',
+    })
+  }
+
+  const saveGoal = async (id: string) => {
+    try {
+      if (id.startsWith('new-')) {
+        const created = await studioGoalsService.createGoal({
+          title: editGoalForm.title || 'Novo',
+          description: editGoalForm.description || '',
+          subject: editGoalForm.subject || '',
+          base_text: editGoalForm.base_text || '',
+          category: (editGoalForm.category as TemplateCategory) || 'Radar VIP',
+        })
+        setGoals([...goals, created])
+        updateWizard({ goal: created.id })
+      } else {
+        const updated = await studioGoalsService.updateGoal(id, editGoalForm)
+        setGoals(goals.map((g) => (g.id === id ? updated : g)))
+      }
+      setEditingGoalId(null)
+      toast({ title: 'Objetivo salvo', variant: 'success' })
+    } catch (error: any) {
+      toast({
+        title: 'Erro ao salvar objetivo',
+        description: error.message,
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const toggleChannel = (channel: TemplateType) => {
+    setSelectedChannels((curr) =>
+      curr.includes(channel)
+        ? curr.filter((c) => c !== channel)
+        : [...curr, channel],
+    )
   }
 
   const insertVariable = (variable: string) => {
@@ -1283,13 +1351,12 @@ export default function Modelos() {
     ) : (
       <Mail className="h-4 w-4" />
     )
-  const selectedGoal =
-    GOAL_PRESETS.find((item) => item.id === wizard.goal) || GOAL_PRESETS[0]
+  const selectedGoal = goals.find((item) => item.id === wizard.goal) || goals[0]
   const selectedTone = TONE_PRESETS.find((item) => item.id === wizard.tone)
   const selectedPremiumLayout =
     PREMIUM_EMAIL_LAYOUTS.find((item) => item.id === selectedPremiumLayoutId) ||
     PREMIUM_EMAIL_LAYOUTS[0]
-  const wizardPreviewSubject = selectedGoal.subject
+  const wizardPreviewSubject = (selectedGoal?.subject || '')
     .replaceAll('{{leilao}}', wizard.auctionName || 'Leilão selecionado')
     .replaceAll('{{data_leilao}}', wizard.auctionDate || 'Data do leilão')
   const wizardPreviewMessage = renderWithSample(
@@ -1298,17 +1365,8 @@ export default function Modelos() {
   )
   const readyItems = [
     { label: 'Objetivo definido', done: Boolean(wizard.goal) },
-    { label: `Canal: ${composerChannel}`, done: Boolean(composerChannel) },
+    { label: `Canais selecionados`, done: selectedChannels.length > 0 },
     { label: 'Leilão escolhido', done: Boolean(wizard.auctionName.trim()) },
-    ...(composerChannel === 'E-mail'
-      ? [
-          { label: 'Visual selecionado', done: Boolean(wizard.visual) },
-          {
-            label: 'CTA configurado',
-            done: Boolean(wizard.ctaLabel && wizard.ctaUrl),
-          },
-        ]
-      : [{ label: 'Texto pronto', done: Boolean(wizard.auctionName.trim()) }]),
   ]
   const readyCount = readyItems.filter((item) => item.done).length
 
@@ -1329,14 +1387,35 @@ export default function Modelos() {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          <Button onClick={() => startNew('E-mail')}>
-            <Mail className="mr-2 h-4 w-4" />
-            Novo e-mail
-          </Button>
-          <Button variant="outline" onClick={() => startNew('WhatsApp')}>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm font-medium text-muted-foreground mr-2">
+            Canais da campanha:
+          </span>
+          <Button
+            variant={
+              selectedChannels.includes('WhatsApp') ? 'default' : 'outline'
+            }
+            onClick={() => toggleChannel('WhatsApp')}
+            className={cn(
+              selectedChannels.includes('WhatsApp') &&
+                'bg-[#12284c] text-white hover:bg-[#12284c]/90',
+            )}
+          >
             <MessageSquare className="mr-2 h-4 w-4" />
-            Novo WhatsApp
+            WhatsApp
+          </Button>
+          <Button
+            variant={
+              selectedChannels.includes('E-mail') ? 'default' : 'outline'
+            }
+            onClick={() => toggleChannel('E-mail')}
+            className={cn(
+              selectedChannels.includes('E-mail') &&
+                'bg-[#12284c] text-white hover:bg-[#12284c]/90',
+            )}
+          >
+            <Mail className="mr-2 h-4 w-4" />
+            E-mail
           </Button>
         </div>
       </div>
@@ -1359,16 +1438,12 @@ export default function Modelos() {
             </div>
             <div className="flex flex-wrap gap-2">
               <Button
-                variant="outline"
-                onClick={() => setComposerPreviewOpen(true)}
+                onClick={generateFromWizard}
                 size="lg"
+                disabled={selectedChannels.length === 0}
               >
-                <Eye className="mr-2 h-4 w-4" />
-                Ver preview
-              </Button>
-              <Button onClick={generateFromWizard} size="lg">
                 <Wand2 className="mr-2 h-4 w-4" />
-                Gerar {composerChannel === 'E-mail' ? 'e-mail' : 'WhatsApp'}
+                Gerar rascunhos editáveis
               </Button>
             </div>
           </div>
@@ -1401,65 +1476,210 @@ export default function Modelos() {
                   1. Escolha o objetivo e o canal
                 </div>
                 <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
-                  {GOAL_PRESETS.map((goal) => (
-                    <div
-                      key={goal.id}
-                      className={cn(
-                        'rounded-md border p-3 transition-colors hover:border-primary hover:bg-primary/5',
-                        wizard.goal === goal.id &&
-                          'border-primary bg-primary/5',
-                      )}
-                    >
-                      <button
-                        type="button"
-                        className="w-full text-left"
-                        onClick={() =>
-                          updateWizard({
-                            goal: goal.id,
-                            headline: goal.title,
-                          })
-                        }
+                  {goals.map((goal) => {
+                    const isEditing = editingGoalId === goal.id
+                    const isSelected = wizard.goal === goal.id
+
+                    return (
+                      <div
+                        key={goal.id}
+                        className={cn(
+                          'rounded-md border p-3 transition-colors',
+                          isSelected &&
+                            !isEditing &&
+                            'border-primary bg-primary/5',
+                          isEditing &&
+                            'border-primary bg-white shadow-sm ring-1 ring-primary/20 xl:col-span-2',
+                        )}
                       >
-                        <div className="font-semibold">{goal.title}</div>
-                      </button>
-                      <div className="mt-1 text-xs text-muted-foreground">
-                        {goal.description}
-                      </div>
-                      <div className="mt-3 grid grid-cols-2 gap-2">
-                        {(['WhatsApp', 'E-mail'] as TemplateType[]).map(
-                          (type) => (
-                            <Button
-                              key={`${goal.id}-${type}`}
-                              type="button"
-                              variant={
-                                wizard.goal === goal.id &&
-                                composerChannel === type
-                                  ? 'default'
-                                  : 'outline'
-                              }
-                              size="sm"
-                              className="justify-center"
-                              onClick={() => {
-                                setComposerChannel(type)
-                                setComposerPreviewOpen(false)
-                                updateWizard({
-                                  goal: goal.id,
-                                  headline: goal.title,
-                                })
-                              }}
-                            >
-                              {type === 'WhatsApp' ? (
-                                <MessageSquare className="mr-2 h-3.5 w-3.5" />
-                              ) : (
-                                <Mail className="mr-2 h-3.5 w-3.5" />
-                              )}
-                              {type}
-                            </Button>
-                          ),
+                        {isEditing ? (
+                          <div className="space-y-3 animate-in fade-in zoom-in-95">
+                            <div>
+                              <Label className="text-xs">
+                                Título do Objetivo
+                              </Label>
+                              <Input
+                                value={editGoalForm.title}
+                                onChange={(e) =>
+                                  setEditGoalForm({
+                                    ...editGoalForm,
+                                    title: e.target.value,
+                                  })
+                                }
+                                className="h-8 text-sm"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-xs">Descrição Curta</Label>
+                              <Input
+                                value={editGoalForm.description}
+                                onChange={(e) =>
+                                  setEditGoalForm({
+                                    ...editGoalForm,
+                                    description: e.target.value,
+                                  })
+                                }
+                                className="h-8 text-sm"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-xs">
+                                Assunto do E-mail
+                              </Label>
+                              <Input
+                                value={editGoalForm.subject}
+                                onChange={(e) =>
+                                  setEditGoalForm({
+                                    ...editGoalForm,
+                                    subject: e.target.value,
+                                  })
+                                }
+                                className="h-8 text-sm"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-xs">Texto Base</Label>
+                              <Textarea
+                                value={editGoalForm.base_text}
+                                onChange={(e) =>
+                                  setEditGoalForm({
+                                    ...editGoalForm,
+                                    base_text: e.target.value,
+                                  })
+                                }
+                                className="min-h-[100px] text-sm resize-y"
+                              />
+                            </div>
+                            <div className="flex gap-2 pt-2">
+                              <Button
+                                size="sm"
+                                onClick={() => saveGoal(goal.id)}
+                              >
+                                Salvar Objetivo
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => setEditingGoalId(null)}
+                              >
+                                Cancelar
+                              </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div
+                            className="cursor-pointer h-full flex flex-col"
+                            onClick={() =>
+                              updateWizard({
+                                goal: goal.id,
+                                headline: goal.title,
+                              })
+                            }
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="font-semibold">{goal.title}</div>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6 shrink-0 -mr-1 -mt-1 text-muted-foreground hover:text-primary"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  startEditingGoal(goal)
+                                }}
+                              >
+                                <Edit className="h-3 w-3" />
+                              </Button>
+                            </div>
+                            <div className="mt-1 text-xs text-muted-foreground flex-1">
+                              {goal.description}
+                            </div>
+                          </div>
                         )}
                       </div>
+                    )
+                  })}
+                  {editingGoalId?.startsWith('new-') ? (
+                    <div className="rounded-md border p-3 border-primary bg-white shadow-sm ring-1 ring-primary/20 xl:col-span-2">
+                      <div className="space-y-3 animate-in fade-in zoom-in-95">
+                        <div>
+                          <Label className="text-xs">Título do Objetivo</Label>
+                          <Input
+                            value={editGoalForm.title}
+                            onChange={(e) =>
+                              setEditGoalForm({
+                                ...editGoalForm,
+                                title: e.target.value,
+                              })
+                            }
+                            className="h-8 text-sm"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Descrição Curta</Label>
+                          <Input
+                            value={editGoalForm.description}
+                            onChange={(e) =>
+                              setEditGoalForm({
+                                ...editGoalForm,
+                                description: e.target.value,
+                              })
+                            }
+                            className="h-8 text-sm"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Assunto do E-mail</Label>
+                          <Input
+                            value={editGoalForm.subject}
+                            onChange={(e) =>
+                              setEditGoalForm({
+                                ...editGoalForm,
+                                subject: e.target.value,
+                              })
+                            }
+                            className="h-8 text-sm"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Texto Base</Label>
+                          <Textarea
+                            value={editGoalForm.base_text}
+                            onChange={(e) =>
+                              setEditGoalForm({
+                                ...editGoalForm,
+                                base_text: e.target.value,
+                              })
+                            }
+                            className="min-h-[100px] text-sm resize-y"
+                          />
+                        </div>
+                        <div className="flex gap-2 pt-2">
+                          <Button
+                            size="sm"
+                            onClick={() => saveGoal(editingGoalId)}
+                          >
+                            Salvar Novo Objetivo
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setEditingGoalId(null)}
+                          >
+                            Cancelar
+                          </Button>
+                        </div>
+                      </div>
                     </div>
-                  ))}
+                  ) : (
+                    <Button
+                      variant="outline"
+                      className="h-auto min-h-[100px] border-dashed text-muted-foreground hover:text-primary flex flex-col items-center justify-center gap-2"
+                      onClick={createNewGoal}
+                    >
+                      <Plus className="h-6 w-6" />
+                      Adicionar Novo Objetivo
+                    </Button>
+                  )}
                 </div>
               </section>
 
@@ -1575,12 +1795,12 @@ export default function Modelos() {
                 </div>
               </section>
 
-              {composerChannel === 'E-mail' ? (
-                <section className="grid gap-4 lg:grid-cols-2">
+              {selectedChannels.includes('E-mail') && (
+                <section className="grid gap-4 lg:grid-cols-2 border-t pt-5">
                   <div className="space-y-2">
                     <Label className="flex items-center gap-2 font-semibold">
                       <Paintbrush className="h-4 w-4 text-primary" />
-                      3. Visual do e-mail
+                      Personalização E-mail
                     </Label>
                     <div className="grid gap-2 md:grid-cols-3">
                       {VISUAL_PRESETS.map((visual) => (
@@ -1672,12 +1892,14 @@ export default function Modelos() {
                     </div>
                   </div>
                 </section>
-              ) : (
-                <section className="grid gap-4 lg:grid-cols-2">
+              )}
+
+              {selectedChannels.includes('WhatsApp') && (
+                <section className="grid gap-4 lg:grid-cols-2 border-t pt-5">
                   <div className="space-y-2">
                     <Label className="flex items-center gap-2 font-semibold">
                       <MessageSquare className="h-4 w-4 text-primary" />
-                      3. WhatsApp curto e pessoal
+                      Personalização WhatsApp
                     </Label>
                     <Input
                       value={wizard.lot}
@@ -1715,19 +1937,16 @@ export default function Modelos() {
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2 text-sm font-semibold">
                     <Eye className="h-4 w-4 text-primary" />
-                    Preview ao lado
+                    Preview em tempo real
                   </div>
                   <Badge variant="secondary" className="border-0">
-                    {readyCount}/4 pronto
+                    {readyCount}/3 pronto
                   </Badge>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Abra quando quiser conferir a mensagem antes de gerar.
-                </p>
               </div>
 
-              {composerPreviewOpen ? (
-                composerChannel === 'E-mail' ? (
+              <div className="space-y-4">
+                {selectedChannels.includes('E-mail') && (
                   <div className="overflow-hidden rounded-md border bg-white shadow-sm">
                     {wizard.bannerUrl ? (
                       <img
@@ -1747,7 +1966,7 @@ export default function Modelos() {
                     )}
                     <div className="space-y-3 p-4">
                       <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#9a7a3f]">
-                        {selectedGoal.title}
+                        {selectedGoal?.title}
                       </div>
                       <div className="font-display text-xl leading-tight text-primary">
                         {wizard.headline || 'Curadoria privada Milan Horses'}
@@ -1759,9 +1978,9 @@ export default function Modelos() {
                       <div className="rounded-md bg-muted/20 px-2 py-1 text-xs text-muted-foreground">
                         Assunto: {wizardPreviewSubject}
                       </div>
-                      <div className="border-t pt-3 text-sm leading-relaxed text-foreground">
+                      <div className="border-t pt-3 text-sm leading-relaxed text-foreground whitespace-pre-wrap">
                         Olá, {previewContext.nome}.{' '}
-                        {paragraphForGoal(wizard.goal, wizard.tone, wizard)
+                        {paragraphForGoal(wizard.goal, goals, wizard)
                           .replace(/<[^>]+>/g, '')
                           .replaceAll('{{leilao}}', wizard.auctionName)
                           .replaceAll('{{data_leilao}}', wizard.auctionDate)
@@ -1787,37 +2006,20 @@ export default function Modelos() {
                       </Button>
                     </div>
                   </div>
-                ) : (
+                )}
+
+                {selectedChannels.includes('WhatsApp') && (
                   <div className="rounded-md border bg-[#eef8f0] p-4 shadow-sm">
                     <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold text-emerald-800">
                       <MessageSquare className="h-3.5 w-3.5" />
                       Preview WhatsApp
                     </div>
-                    <div className="ml-auto max-w-[92%] rounded-2xl rounded-tr-sm bg-white p-4 text-sm leading-relaxed text-foreground shadow-sm">
+                    <div className="ml-auto max-w-[92%] rounded-2xl rounded-tr-sm bg-white p-4 text-sm leading-relaxed text-foreground shadow-sm whitespace-pre-wrap">
                       {wizardPreviewMessage}
                     </div>
                   </div>
-                )
-              ) : (
-                <div className="rounded-md border border-dashed bg-white p-5 text-center">
-                  <Eye className="mx-auto h-6 w-6 text-primary/70" />
-                  <div className="mt-2 font-medium text-foreground">
-                    Preview escondido
-                  </div>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Clique em Ver preview quando quiser conferir a peça ao lado.
-                  </p>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="mt-4"
-                    onClick={() => setComposerPreviewOpen(true)}
-                  >
-                    <Eye className="mr-2 h-4 w-4" />
-                    Ver preview
-                  </Button>
-                </div>
-              )}
+                )}
+              </div>
 
               <div className="space-y-2 rounded-md border bg-white p-3">
                 <div className="flex items-center gap-2 text-sm font-medium">
@@ -1887,12 +2089,14 @@ export default function Modelos() {
                 </div>
               </div>
 
-              <Button onClick={generateFromWizard} className="w-full" size="lg">
+              <Button
+                onClick={generateFromWizard}
+                className="w-full"
+                size="lg"
+                disabled={selectedChannels.length === 0}
+              >
                 <Wand2 className="mr-2 h-4 w-4" />
-                Gerar {composerChannel === 'E-mail'
-                  ? 'e-mail'
-                  : 'WhatsApp'}{' '}
-                editável
+                Gerar rascunhos editáveis
               </Button>
               <div className="text-center text-xs text-muted-foreground">
                 Depois de gerar, você pode editar detalhes, enviar teste, salvar
@@ -2265,7 +2469,7 @@ export default function Modelos() {
                 <Select
                   value={draft.type}
                   onValueChange={(value) => {
-                    setComposerChannel(value as TemplateType)
+                    setSelectedChannels([value as TemplateType])
                     updateDraft({
                       type: value as TemplateType,
                       subject:
