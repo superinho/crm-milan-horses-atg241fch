@@ -685,7 +685,7 @@ export default function Modelos() {
   const [audienceSegments, setAudienceSegments] = useState<string[]>([])
   const [manualContactSearch, setManualContactSearch] = useState('')
   const [manualContacts, setManualContacts] = useState<any[]>([])
-  const [selectedContact, setSelectedContact] = useState<any>(null)
+  const [selectedContacts, setSelectedContacts] = useState<any[]>([])
   const [auctionSearch, setAuctionSearch] = useState('')
   const [auctionOpen, setAuctionOpen] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
@@ -1626,8 +1626,8 @@ export default function Modelos() {
                             aria-expanded={contactOpen}
                             className="w-full justify-between bg-background"
                           >
-                            {selectedContact
-                              ? selectedContact.name
+                            {selectedContacts.length > 0
+                              ? `${selectedContacts.length} cliente(s) selecionado(s)`
                               : 'Buscar por nome, email ou telefone...'}
                             <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
@@ -1658,18 +1658,28 @@ export default function Modelos() {
                                     key={contact.id}
                                     className="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
                                     onClick={() => {
-                                      setSelectedContact(contact)
-                                      setPreviewContext((curr) => ({
-                                        ...curr,
-                                        nome: contact.name,
-                                        cidade: contact.city || curr.cidade,
-                                        segmento:
-                                          contact.segment || curr.segmento,
-                                        ticket_medio: contact.avgTicket
-                                          ? `Ticket médio: R$ ${contact.avgTicket}`
-                                          : curr.ticket_medio,
-                                      }))
+                                      if (
+                                        !selectedContacts.find(
+                                          (c) => c.id === contact.id,
+                                        )
+                                      ) {
+                                        setSelectedContacts([
+                                          ...selectedContacts,
+                                          contact,
+                                        ])
+                                        setPreviewContext((curr) => ({
+                                          ...curr,
+                                          nome: contact.name,
+                                          cidade: contact.city || curr.cidade,
+                                          segmento:
+                                            contact.segment || curr.segmento,
+                                          ticket_medio: contact.avgTicket
+                                            ? `Ticket médio: R$ ${contact.avgTicket}`
+                                            : curr.ticket_medio,
+                                        }))
+                                      }
                                       setContactOpen(false)
+                                      setManualContactSearch('')
                                     }}
                                   >
                                     <div className="flex flex-col">
@@ -1688,24 +1698,35 @@ export default function Modelos() {
                           </ScrollArea>
                         </PopoverContent>
                       </Popover>
-                      {selectedContact && (
-                        <div className="flex items-center justify-between rounded-md border bg-background px-3 py-2 text-sm">
-                          <div>
-                            <span className="font-medium">
-                              {selectedContact.name}
-                            </span>
-                            <span className="ml-2 text-muted-foreground">
-                              {selectedContact.phone || selectedContact.email}
-                            </span>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setSelectedContact(null)}
-                            className="h-8 px-2 text-destructive"
-                          >
-                            Remover
-                          </Button>
+                      {selectedContacts.length > 0 && (
+                        <div className="space-y-2 pt-2">
+                          {selectedContacts.map((c) => (
+                            <div
+                              key={c.id}
+                              className="flex items-center justify-between rounded-md border bg-background px-3 py-2 text-sm"
+                            >
+                              <div>
+                                <span className="font-medium">{c.name}</span>
+                                <span className="ml-2 text-muted-foreground">
+                                  {c.phone || c.email}
+                                </span>
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() =>
+                                  setSelectedContacts(
+                                    selectedContacts.filter(
+                                      (sc) => sc.id !== c.id,
+                                    ),
+                                  )
+                                }
+                                className="h-8 px-2 text-destructive"
+                              >
+                                Remover
+                              </Button>
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>
