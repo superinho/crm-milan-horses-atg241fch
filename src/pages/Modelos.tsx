@@ -1451,12 +1451,13 @@ export default function Modelos() {
         <CardContent className="p-0">
           <div className="grid gap-0 xl:grid-cols-[minmax(0,1fr)_420px]">
             <div className="space-y-5 p-4 lg:p-5">
-              <div className="grid gap-2 md:grid-cols-4">
+              <div className="grid gap-2 md:grid-cols-5">
                 {[
-                  ['1', 'Objetivo'],
-                  ['2', 'Canal'],
-                  ['3', 'Detalhes'],
-                  ['4', 'Gerar'],
+                  ['1', 'Canal'],
+                  ['2', 'Público'],
+                  ['3', 'Objetivo'],
+                  ['4', 'Detalhes'],
+                  ['5', 'Gerar'],
                 ].map(([step, label]) => (
                   <div
                     key={step}
@@ -1472,8 +1473,38 @@ export default function Modelos() {
 
               <section className="space-y-2">
                 <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <UsersRound className="h-4 w-4 text-primary" />
+                  2. Defina o público
+                </div>
+                <Select
+                  value={wizard.audience}
+                  onValueChange={(value) => updateWizard({ audience: value })}
+                >
+                  <SelectTrigger className="w-full md:w-1/2">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Radar VIP">Radar VIP</SelectItem>
+                    <SelectItem value="VIP ativo">VIP ativo</SelectItem>
+                    <SelectItem value="Underbidders">Underbidders</SelectItem>
+                    <SelectItem value="Compradores quentes">
+                      Compradores quentes
+                    </SelectItem>
+                    <SelectItem value="Bidders fantasma">
+                      Bidders fantasma
+                    </SelectItem>
+                    <SelectItem value="Compradores">Compradores</SelectItem>
+                    <SelectItem value="Inativos valiosos">
+                      Inativos valiosos
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </section>
+
+              <section className="space-y-2 border-t pt-5">
+                <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
                   <FileText className="h-4 w-4 text-primary" />
-                  1. Escolha o objetivo e o canal
+                  3. Escolha o objetivo
                 </div>
                 <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
                   {goals.map((goal) => {
@@ -1683,11 +1714,11 @@ export default function Modelos() {
                 </div>
               </section>
 
-              <section className="grid gap-4 lg:grid-cols-2">
+              <section className="grid gap-4 lg:grid-cols-2 border-t pt-5">
                 <div className="space-y-2">
                   <Label className="flex items-center gap-2 font-semibold">
                     <Gavel className="h-4 w-4 text-primary" />
-                    2. Leilão real
+                    4. Detalhes: Leilão real
                   </Label>
                   <Select
                     value={wizard.auctionId || 'manual'}
@@ -1740,55 +1771,26 @@ export default function Modelos() {
 
                 <div className="space-y-2">
                   <Label className="flex items-center gap-2 font-semibold">
-                    <UsersRound className="h-4 w-4 text-primary" />
-                    Público e tom
+                    <Wand2 className="h-4 w-4 text-primary" />
+                    Tom de voz
                   </Label>
-                  <div className="grid gap-2 md:grid-cols-2">
-                    <Select
-                      value={wizard.audience}
-                      onValueChange={(value) =>
-                        updateWizard({ audience: value })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Radar VIP">Radar VIP</SelectItem>
-                        <SelectItem value="VIP ativo">VIP ativo</SelectItem>
-                        <SelectItem value="Underbidders">
-                          Underbidders
+                  <Select
+                    value={wizard.tone}
+                    onValueChange={(value) =>
+                      updateWizard({ tone: value as StudioToneId })
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TONE_PRESETS.map((tone) => (
+                        <SelectItem key={tone.id} value={tone.id}>
+                          {tone.title}
                         </SelectItem>
-                        <SelectItem value="Compradores quentes">
-                          Compradores quentes
-                        </SelectItem>
-                        <SelectItem value="Bidders fantasma">
-                          Bidders fantasma
-                        </SelectItem>
-                        <SelectItem value="Compradores">Compradores</SelectItem>
-                        <SelectItem value="Inativos valiosos">
-                          Inativos valiosos
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Select
-                      value={wizard.tone}
-                      onValueChange={(value) =>
-                        updateWizard({ tone: value as StudioToneId })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {TONE_PRESETS.map((tone) => (
-                          <SelectItem key={tone.id} value={tone.id}>
-                            {tone.title}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <p className="text-xs text-muted-foreground">
                     {selectedTone?.description || ''}
                   </p>
