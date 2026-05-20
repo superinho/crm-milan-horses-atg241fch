@@ -48,6 +48,7 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
 const browserPort = Number(args['browser-port'] || DEFAULT_BROWSER_PORT)
 const delayMs = Math.max(1000, Number(args['delay-ms'] || DEFAULT_DELAY_MS))
 const year = String(args.year || '2026')
+const includeUpcoming = args['include-upcoming'] !== 'false'
 const includePastFilters = args['include-past-filters'] !== 'false'
 const summaryFile = args['summary-file'] || '/tmp/hippomundo-2026-import-summary.json'
 
@@ -110,6 +111,7 @@ const createRun = async (sourceId, sourceUrl) => {
       metadata: {
         importer: 'hippomundo-auctions-json-v1',
         year,
+        include_upcoming: includeUpcoming,
         delay_ms: delayMs,
       },
     }),
@@ -203,6 +205,52 @@ const fetchHippomundoJson = async (browser, query) => {
     url: `${HIPPOMUNDO_BASE_URL}${path}`,
     text: response.text,
     data: JSON.parse(response.text),
+  }
+}
+
+const paginationTotal = (snapshot) =>
+  Number(snapshot.data.meta?.pagination?.total || 0)
+
+const paginationPageCount = (snapshot, perPage) => {
+  const total = paginationTotal(snapshot)
+  if (!total) return 1
+  return Math.max(1, Math.ceil(total / perPage))
+}
+
+const fetchAuctionPages = async ({ browser, coming, perPage = 100 }) => {
+  const snapshots = []
+  const allItems = []
+  const first = await fetchHippomundoJson(
+    browser,
+    `page=1&per_page=${perPage}&type=auctions&coming=${
+      coming ? 1 : 0
+    }&year=${year}&auction_id=&sire=&json=1`,
+  )
+
+  snapshots.push(first)
+  allItems.push(...(first.data.data || []))
+
+  const pageCount = paginationPageCount(first, perPage)
+  for (let page = 2; page <= pageCount; page += 1) {
+    await sleep(delayMs)
+    const next = await fetchHippomundoJson(
+      browser,
+      `page=${page}&per_page=${perPage}&type=auctions&coming=${
+        coming ? 1 : 0
+      }&year=${year}&auction_id=&sire=&json=1`,
+    )
+    snapshots.push(next)
+    allItems.push(...(next.data.data || []))
+  }
+
+  return {
+    first,
+    snapshots,
+    data: {
+      ...first.data,
+      data: allItems,
+    },
+    reportedTotal: paginationTotal(first),
   }
 }
 
@@ -420,22 +468,39 @@ const main = async () => {
   let run = null
 
   try {
-    const seedQuery = `page=1&per_page=100&type=auctions&coming=1&year=${year}&auction_id=&sire=&json=1`
-    const first = await fetchHippomundoJson(browser, seedQuery)
-    const { source } = await ensureSourceAndHouse(first.data.data?.[0] || {})
-    run = await createRun(source.id, first.url)
+    const upcomingPages = includeUpcoming
+      ? await fetchAuctionPages({
+          browser,
+          coming: true,
+          perPage: 100,
+        })
+      : {
+          first: null,
+          snapshots: [],
+          data: { data: [] },
+          reportedTotal: 0,
+        }
 
-    const snapshots = [first]
-    const upcoming = first.data
-    await sleep(delayMs)
+    const snapshots = [...upcomingPages.snapshots]
+    const upcoming = upcomingPages.data
 
-    const past = await fetchHippomundoJson(
+    if (includeUpcoming) {
+      await sleep(delayMs)
+    }
+
+    const pastPages = await fetchAuctionPages({
       browser,
-      `page=1&per_page=100&type=auctions&coming=0&year=${year}&auction_id=&sire=&json=1`,
+      coming: false,
+      perPage: 100,
+    })
+    snapshots.push(...pastPages.snapshots)
+    const past = pastPages.data
+    const { source } = await ensureSourceAndHouse(
+      upcoming.data?.[0] || past.data?.[0] || {},
     )
-    snapshots.push(past)
+    run = await createRun(source.id, upcomingPages.first?.url || pastPages.first.url)
 
-    const metaAuctionIds = (past.data.meta?.auctions || [])
+    const metaAuctionIds = (past.meta?.auctions || [])
       .map((auction) => auction.id)
       .filter(Boolean)
     const pastFiltered = []
@@ -472,7 +537,7 @@ const main = async () => {
     }
 
     const upcomingAuctions = dedupeAuctions(upcoming.data || [])
-    const pastPublicAuctions = dedupeAuctions([...(past.data.data || []), ...pastFiltered])
+    const pastPublicAuctions = dedupeAuctions([...(past.data || []), ...pastFiltered])
     const allAuctions = [
       ...upcomingAuctions.map((auction) => ({
         auction,
@@ -520,7 +585,7 @@ const main = async () => {
       })
     }
 
-    const pastReported = Number(past.data.meta?.pagination?.total || 0)
+    const pastReported = Number(pastPages.reportedTotal || 0)
     const pastImported = pastPublicAuctions.length
     const missingPastAuctions = Math.max(0, pastReported - pastImported)
 
@@ -529,7 +594,7 @@ const main = async () => {
       year,
       source: 'Hippomundo',
       delay_ms: delayMs,
-      upcoming_reported: upcoming.data.meta?.pagination?.total || upcomingAuctions.length,
+      upcoming_reported: upcomingPages.reportedTotal || upcomingAuctions.length,
       upcoming_imported: upcomingAuctions.length,
       past_reported: pastReported,
       past_public_imported: pastImported,
