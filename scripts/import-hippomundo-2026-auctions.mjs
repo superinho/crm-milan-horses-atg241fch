@@ -50,7 +50,8 @@ const delayMs = Math.max(1000, Number(args['delay-ms'] || DEFAULT_DELAY_MS))
 const year = String(args.year || '2026')
 const includeUpcoming = args['include-upcoming'] !== 'false'
 const includePastFilters = args['include-past-filters'] !== 'false'
-const summaryFile = args['summary-file'] || '/tmp/hippomundo-2026-import-summary.json'
+const summaryFile =
+  args['summary-file'] || '/tmp/hippomundo-2026-import-summary.json'
 
 const headers = {
   apikey: SUPABASE_KEY,
@@ -282,21 +283,31 @@ const auctionUrl = (auction, coming) =>
   }&year=${year}&auction_id=${auction.auction?.id || ''}`
 
 const inferCategory = (auction, horses) => {
-  const lower = `${auction.name || ''} ${auction.auction?.name || ''}`.toLowerCase()
+  const lower =
+    `${auction.name || ''} ${auction.auction?.name || ''}`.toLowerCase()
   if (lower.includes('foal')) return 'foal'
   if (lower.includes('embryo')) return 'embryo'
   if (lower.includes('youngster')) return 'youngster'
   if (lower.includes('stallion')) return 'stallion'
-  if (horses.length && horses.every((horse) => Number(horse.year) === Number(year))) {
+  if (
+    horses.length &&
+    horses.every((horse) => Number(horse.year) === Number(year))
+  ) {
     return 'foal'
   }
   return 'mixed_show_jumping'
 }
 
-const mapLot = ({ horse, auction, dbAuction, sourceId, coming, accessLimited }) => {
+const mapLot = ({
+  horse,
+  auction,
+  dbAuction,
+  sourceId,
+  coming,
+  accessLimited,
+}) => {
   const soldStatus = statusForHorse(horse, coming)
-  const hammerPrice =
-    soldStatus === 'sold' ? priceNumber(horse.price) : null
+  const hammerPrice = soldStatus === 'sold' ? priceNumber(horse.price) : null
   return {
     auction_id: dbAuction.id,
     source_id: sourceId,
@@ -419,7 +430,14 @@ const importAuction = async ({
   const lots = horses
     .filter((horse) => horse?.horse_name)
     .map((horse) =>
-      mapLot({ horse, auction, dbAuction, sourceId: source.id, coming, accessLimited }),
+      mapLot({
+        horse,
+        auction,
+        dbAuction,
+        sourceId: source.id,
+        coming,
+        accessLimited,
+      }),
     )
 
   const uniqueLots = Array.from(
@@ -498,7 +516,10 @@ const main = async () => {
     const { source } = await ensureSourceAndHouse(
       upcoming.data?.[0] || past.data?.[0] || {},
     )
-    run = await createRun(source.id, upcomingPages.first?.url || pastPages.first.url)
+    run = await createRun(
+      source.id,
+      upcomingPages.first?.url || pastPages.first.url,
+    )
 
     const metaAuctionIds = (past.meta?.auctions || [])
       .map((auction) => auction.id)
@@ -537,7 +558,10 @@ const main = async () => {
     }
 
     const upcomingAuctions = dedupeAuctions(upcoming.data || [])
-    const pastPublicAuctions = dedupeAuctions([...(past.data || []), ...pastFiltered])
+    const pastPublicAuctions = dedupeAuctions([
+      ...(past.data || []),
+      ...pastFiltered,
+    ])
     const allAuctions = [
       ...upcomingAuctions.map((auction) => ({
         auction,
