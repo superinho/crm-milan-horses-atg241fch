@@ -851,18 +851,18 @@ const entityTagName = (entity: StudbookNetworkEntity) =>
 
 const prospectingThesis = (entity: StudbookNetworkEntity) => {
   if (entity.entity_kind === 'breeder') {
-    return `${entity.name} aparece como criador relevante no Studbook BH, com ${entity.horse_count} animais registrados. Tese: iniciar relacionamento para convites de leilão, captação de lotes e acesso a famílias maternas.`
+    return `${entity.name} aparece como criador no Studbook BH, com ${entity.horse_count} animais registrados.`
   }
 
   if (entity.entity_kind === 'owner') {
-    return `${entity.name} aparece como proprietário relevante no Studbook BH, com ${entity.horse_count} animais registrados. Tese: transformar proprietário em comprador, vendedor ou convidado VIP dos próximos leilões Milan Horses.`
+    return `${entity.name} aparece como proprietário no Studbook BH, com ${entity.horse_count} animais registrados.`
   }
 
   if (entity.entity_kind === 'sire') {
-    return `${entity.name} concentra ${entity.horse_count} descendentes mapeados. Tese: usar a influência do garanhão para criar campanha de convite por linhagem e identificar criadores/proprietários conectados.`
+    return `${entity.name} concentra ${entity.horse_count} descendentes mapeados no Studbook BH.`
   }
 
-  return `${entity.name} concentra ${entity.horse_count} descendentes mapeados como matriz. Tese: usar a força da família materna para selecionar convidados, fornecedores e potenciais lotes para leilões premium.`
+  return `${entity.name} concentra ${entity.horse_count} descendentes mapeados como matriz no Studbook BH.`
 }
 
 export const studbookService = {
@@ -877,7 +877,6 @@ export const studbookService = {
         withGenealogy,
         owners,
         breeders,
-        lists,
       ] = await Promise.all([
         db
           .from('studbook_horses_enriched')
@@ -912,9 +911,6 @@ export const studbookService = {
           .from('studbook_people_orgs')
           .select('id', { count: 'exact', head: true })
           .eq('role', 'breeder'),
-        db
-          .from('auction_candidate_lists')
-          .select('id', { count: 'exact', head: true }),
       ])
 
       if (total.error) throw total.error
@@ -925,7 +921,6 @@ export const studbookService = {
       if (withGenealogy.error) throw withGenealogy.error
       if (owners.error) throw owners.error
       if (breeders.error) throw breeders.error
-      if (lists.error) throw lists.error
 
       return {
         total: total.count || 0,
@@ -933,7 +928,7 @@ export const studbookService = {
         reproductiveMares: reproductiveMares.count || 0,
         owners: owners.count || 0,
         breeders: breeders.count || 0,
-        candidateLists: lists.count || 0,
+        candidateLists: 0,
         missingBirthDate: missingBirthDate.count || 0,
         missingOwner: missingOwner.count || 0,
         withGenealogy: withGenealogy.count || 0,
@@ -1013,6 +1008,50 @@ export const studbookService = {
       if (isMissingTable(error)) return { rows: [], total: 0 }
       throw error
     }
+  },
+
+  async exportHorses(filters: StudbookFilters = {}): Promise<StudbookHorse[]> {
+    try {
+      const rows: StudbookHorse[] = []
+      const pageSize = 1000
+      let from = 0
+
+      while (true) {
+        const query = applyFilters(
+          applySort(
+            db.from('studbook_horses_enriched').select(horseListColumns),
+            filters.sortBy || 'name',
+          ).range(from, from + pageSize - 1),
+          filters,
+        )
+
+        const { data, error } = await query
+        if (error) throw error
+
+        const batch = (data || []) as StudbookHorse[]
+        rows.push(...batch)
+
+        if (batch.length < pageSize) break
+        from += pageSize
+      }
+
+      return rows
+    } catch (error) {
+      if (isMissingTable(error)) return []
+      throw error
+    }
+  },
+
+  async syncRecentChanges() {
+    const { data, error } = await db.functions.invoke('sync-studbook-recent', {
+      body: {
+        mode: 'recent',
+        source: 'abcch',
+      },
+    })
+
+    if (error) throw error
+    return data
   },
 
   async getFilterOptions(): Promise<StudbookFilterOptions> {

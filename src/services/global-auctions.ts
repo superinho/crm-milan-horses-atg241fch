@@ -15,6 +15,16 @@ export type GlobalAuctionOverview = {
   latest_year: number | null
 }
 
+export type GlobalAuctionSource = {
+  id?: string
+  name: string
+  source_type?: string | null
+  website_url?: string | null
+  results_url?: string | null
+  access_level?: string | null
+  primary_source?: boolean | null
+}
+
 export type GlobalAuctionLot = {
   id: string
   auction_id: string
@@ -37,11 +47,15 @@ export type GlobalAuctionLot = {
   price_text: string | null
   confidence_score: number | null
   source_url: string | null
+  global_auction_sources?: GlobalAuctionSource | null
   global_auctions?: {
     name: string
     auction_year: number | null
     auction_date: string | null
     category: string | null
+    country?: string | null
+    source_url?: string | null
+    global_auction_sources?: GlobalAuctionSource | null
     global_auction_houses?: {
       name: string
       country: string | null
@@ -85,6 +99,12 @@ export type GlobalAuctionFilters = {
   years?: number[]
   status?: string
   category?: string
+  house?: string
+  country?: string
+  source?: string
+  sire?: string
+  damSire?: string
+  minConfidence?: number
   minPrice?: number
   maxPrice?: number
 }
@@ -100,6 +120,31 @@ export type GlobalAuctionMarketSummary = {
   damSires: GlobalAuctionDamSireRanking[]
   vendors: GlobalAuctionVendorRanking[]
   houses: GlobalAuctionHouseRanking[]
+  quality: GlobalAuctionDataQuality
+}
+
+export type GlobalAuctionDataQuality = {
+  lots: number
+  with_source_url: number
+  with_price: number
+  with_pedigree: number
+  with_buyer: number
+  high_confidence: number
+  hippomundo_lots: number
+  primary_source_lots: number
+  sources: Array<{ name: string; lots: number }>
+}
+
+export type GlobalAuctionFilterOptions = {
+  years: number[]
+  sources: string[]
+  houses: string[]
+  countries: string[]
+  categories: string[]
+  sires: string[]
+  damSires: string[]
+  priceMin: number | null
+  priceMax: number | null
 }
 
 const emptyOverview: GlobalAuctionOverview = {
@@ -113,6 +158,18 @@ const emptyOverview: GlobalAuctionOverview = {
   top_price_eur: null,
   first_year: null,
   latest_year: null,
+}
+
+const emptyQuality: GlobalAuctionDataQuality = {
+  lots: 0,
+  with_source_url: 0,
+  with_price: 0,
+  with_pedigree: 0,
+  with_buyer: 0,
+  high_confidence: 0,
+  hippomundo_lots: 0,
+  primary_source_lots: 0,
+  sources: [],
 }
 
 const isMissingMarketSchema = (error: unknown) => {
@@ -129,30 +186,73 @@ const resolveAuctionIdsForFilters = async (
 ) => {
   const shouldFilterAuctions =
     (filters.category && filters.category !== 'all') ||
+    (filters.house && filters.house !== 'all') ||
+    (filters.country && filters.country !== 'all') ||
+    (filters.source && filters.source !== 'all') ||
     Boolean(filters.years?.length) ||
     Boolean(filters.period && !['all', 'years'].includes(filters.period))
 
   if (!shouldFilterAuctions) return null
 
-  let query = db.from('global_auctions').select('id')
-
-  if (filters.category && filters.category !== 'all') {
-    query = query.eq('category', filters.category)
-  }
-
-  if (filters.years?.length) {
-    query = query.in('auction_year', filters.years)
-  }
-
-  if (filters.period && !['all', 'years'].includes(filters.period)) {
-    const cutoff = periodCutoff(filters.period)
-    if (cutoff) query = query.gte('auction_date', cutoff)
-  }
-
-  const { data, error } = await query
+  const { data, error } = await db.from('global_auctions').select(`
+    id,
+    category,
+    auction_year,
+    auction_date,
+    country,
+    global_auction_sources ( name ),
+    global_auction_houses ( name, country )
+  `)
   if (error) throw error
 
-  return (data || []).map((row: { id: string }) => row.id)
+  const cutoff =
+    filters.period && !['all', 'years'].includes(filters.period)
+      ? periodCutoff(filters.period)
+      : null
+
+  return (data || [])
+    .filter((row: any) => {
+      const house = row.global_auction_houses
+      const source = row.global_auction_sources
+      const country = row.country || house?.country || null
+
+      if (
+        filters.category &&
+        filters.category !== 'all' &&
+        row.category !== filters.category
+      ) {
+        return false
+      }
+      if (filters.years?.length && !filters.years.includes(row.auction_year)) {
+        return false
+      }
+      if (cutoff && (!row.auction_date || row.auction_date < cutoff)) {
+        return false
+      }
+      if (
+        filters.house &&
+        filters.house !== 'all' &&
+        house?.name !== filters.house
+      ) {
+        return false
+      }
+      if (
+        filters.country &&
+        filters.country !== 'all' &&
+        country !== filters.country
+      ) {
+        return false
+      }
+      if (
+        filters.source &&
+        filters.source !== 'all' &&
+        source?.name !== filters.source
+      ) {
+        return false
+      }
+      return true
+    })
+    .map((row: { id: string }) => row.id)
 }
 
 const applyLotFilters = (
@@ -174,6 +274,14 @@ const applyLotFilters = (
     next = next.eq('sold_status', filters.status)
   }
 
+  if (filters.sire && filters.sire !== 'all') {
+    next = next.eq('sire_name', filters.sire)
+  }
+
+  if (filters.damSire && filters.damSire !== 'all') {
+    next = next.eq('dam_sire_name', filters.damSire)
+  }
+
   if (auctionIds) {
     next = auctionIds.length
       ? next.in('auction_id', auctionIds)
@@ -186,6 +294,10 @@ const applyLotFilters = (
 
   if (typeof filters.maxPrice === 'number') {
     next = next.lte('hammer_price', filters.maxPrice)
+  }
+
+  if (typeof filters.minConfidence === 'number') {
+    next = next.gte('confidence_score', filters.minConfidence)
   }
 
   return next
@@ -205,11 +317,27 @@ const periodCutoff = (period?: string) => {
 
 const lotSelect = `
   *,
+  global_auction_sources (
+    name,
+    source_type,
+    website_url,
+    results_url,
+    access_level
+  ),
   global_auctions!inner (
     name,
     auction_year,
     auction_date,
+    country,
     category,
+    source_url,
+    global_auction_sources (
+      name,
+      source_type,
+      website_url,
+      results_url,
+      access_level
+    ),
     global_auction_houses (
       name,
       country
@@ -287,6 +415,17 @@ const addRankingLot = (
   map.set(key, current)
 }
 
+const sourceNameOf = (lot: GlobalAuctionLot) =>
+  lot.global_auction_sources?.name ||
+  lot.global_auctions?.global_auction_sources?.name ||
+  (lot.source_url?.includes('hippomundo.com') ? 'Hippomundo' : null) ||
+  (lot.global_auctions?.source_url?.includes('hippomundo.com')
+    ? 'Hippomundo'
+    : null) ||
+  'Fonte não identificada'
+
+const sourceKeyOf = (value: string) => normalizeRankingKey(value)
+
 const finalizeRanking = <T extends GlobalAuctionRankingMetrics>(
   map: Map<string, RankingAccumulator>,
   createRow: (name: string, metrics: GlobalAuctionRankingMetrics) => T,
@@ -350,14 +489,21 @@ const summarizeLots = (
   const houseMap = new Map<string, RankingAccumulator>()
   const houseCountries = new Map<string, string | null>()
   const houseAuctionIds = new Map<string, Set<string>>()
+  const sourceCounts = new Map<string, { name: string; lots: number }>()
 
   rows.forEach((lot) => {
     const house = lot.global_auctions?.global_auction_houses
     const houseName = house?.name?.trim()
+    const sourceName = sourceNameOf(lot)
+    const sourceKey = sourceKeyOf(sourceName)
 
     addRankingLot(sireMap, lot.sire_name, lot)
     addRankingLot(damSireMap, lot.dam_sire_name, lot)
     addRankingLot(vendorMap, lot.vendor_name || lot.breeder_name, lot)
+    sourceCounts.set(sourceKey, {
+      name: sourceName,
+      lots: (sourceCounts.get(sourceKey)?.lots || 0) + 1,
+    })
 
     if (houseName) {
       const key = normalizeRankingKey(houseName)
@@ -397,7 +543,34 @@ const summarizeLots = (
     },
   )
 
-  return { overview, sires, damSires, vendors, houses }
+  const quality: GlobalAuctionDataQuality = {
+    lots: rows.length,
+    with_source_url: rows.filter(
+      (lot) => lot.source_url || lot.global_auctions?.source_url,
+    ).length,
+    with_price: soldRows.length,
+    with_pedigree: rows.filter(
+      (lot) => lot.sire_name && (lot.dam_name || lot.dam_sire_name),
+    ).length,
+    with_buyer: rows.filter((lot) => lot.buyer_name).length,
+    high_confidence: rows.filter(
+      (lot) => Number(lot.confidence_score || 0) >= 80,
+    ).length,
+    hippomundo_lots: rows.filter((lot) =>
+      sourceNameOf(lot).toLowerCase().includes('hippomundo'),
+    ).length,
+    primary_source_lots: rows.filter(
+      (lot) =>
+        lot.global_auction_sources?.primary_source ||
+        lot.global_auctions?.global_auction_sources?.primary_source ||
+        sourceNameOf(lot).toLowerCase().includes('hippomundo'),
+    ).length,
+    sources: [...sourceCounts.values()]
+      .sort((a, b) => b.lots - a.lots)
+      .slice(0, 5),
+  }
+
+  return { overview, sires, damSires, vendors, houses, quality }
 }
 
 export const globalAuctionsService = {
@@ -483,6 +656,87 @@ export const globalAuctionsService = {
           damSires: [],
           vendors: [],
           houses: [],
+          quality: emptyQuality,
+        }
+      }
+      throw error
+    }
+  },
+
+  async getFilterOptions(): Promise<GlobalAuctionFilterOptions> {
+    try {
+      const { data, error } = await db
+        .from('global_auction_lots')
+        .select(
+          `
+          sire_name,
+          dam_sire_name,
+          hammer_price,
+          global_auction_sources ( name ),
+          global_auctions (
+            auction_year,
+            category,
+            country,
+            global_auction_sources ( name ),
+            global_auction_houses ( name, country )
+          )
+        `,
+        )
+        .limit(5000)
+
+      if (error) throw error
+
+      const rows = (data || []) as GlobalAuctionLot[]
+      const prices = rows
+        .map((row) => Number(row.hammer_price || 0))
+        .filter((price) => price > 0)
+
+      const values = (items: Array<string | null | undefined>) =>
+        [
+          ...new Set(
+            items.map((item) => item?.trim()).filter(Boolean) as string[],
+          ),
+        ]
+          .sort((a, b) => a.localeCompare(b, 'pt-BR'))
+          .slice(0, 200)
+
+      return {
+        years: [
+          ...new Set(
+            rows
+              .map((row) => row.global_auctions?.auction_year)
+              .filter((year): year is number => typeof year === 'number'),
+          ),
+        ].sort((a, b) => b - a),
+        sources: values(rows.map((row) => sourceNameOf(row))),
+        houses: values(
+          rows.map((row) => row.global_auctions?.global_auction_houses?.name),
+        ),
+        countries: values(
+          rows.map(
+            (row) =>
+              row.global_auctions?.country ||
+              row.global_auctions?.global_auction_houses?.country,
+          ),
+        ),
+        categories: values(rows.map((row) => row.global_auctions?.category)),
+        sires: values(rows.map((row) => row.sire_name)),
+        damSires: values(rows.map((row) => row.dam_sire_name)),
+        priceMin: prices.length ? Math.min(...prices) : null,
+        priceMax: prices.length ? Math.max(...prices) : null,
+      }
+    } catch (error) {
+      if (isMissingMarketSchema(error)) {
+        return {
+          years: [],
+          sources: [],
+          houses: [],
+          countries: [],
+          categories: [],
+          sires: [],
+          damSires: [],
+          priceMin: null,
+          priceMax: null,
         }
       }
       throw error
