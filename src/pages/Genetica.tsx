@@ -9,14 +9,20 @@ import {
   YAxis,
 } from 'recharts'
 import {
+  AlertTriangle,
+  BadgeCheck,
   Brain,
   Building2,
   CalendarDays,
+  ChevronRight,
   Database,
   Dna,
+  Eye,
   FilterX,
+  Gavel,
   Loader2,
   type LucideIcon,
+  ReceiptText,
   Search,
   SlidersHorizontal,
   Sparkles,
@@ -24,6 +30,7 @@ import {
   Trophy,
   VenusAndMars,
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -50,12 +57,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useToast } from '@/hooks/use-toast'
 import {
   geneticIntelligenceService,
+  type GeneticCommercialEntry,
+  type GeneticEvidenceLot,
   type GeneticIntelligenceData,
   type GeneticMetricRow,
   type GeneticRankingMode,
   type GeneticReproductiveType,
 } from '@/services/genetic-intelligence'
 import { Slider } from '@/components/ui/slider'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
 
 const money = (value: number) =>
   new Intl.NumberFormat('pt-BR', {
@@ -75,7 +91,6 @@ const percent = (value: number) =>
 const rankingLabel: Record<GeneticRankingMode, string> = {
   mare: 'Matrizes',
   sire: 'Garanhões',
-  cross: 'Cruzamentos',
 }
 
 type SortMode = 'score' | 'sales' | 'bids' | 'conversion' | 'youngest'
@@ -107,6 +122,43 @@ const ageRangeLabel = (row: GeneticMetricRow) => {
   return `${row.age.min}-${row.age.max} anos`
 }
 
+const dateLabel = (value: string) => {
+  if (!value || value === 'Sem data') return 'Sem data'
+  const date = new Date(`${value.slice(0, 10)}T00:00:00`)
+  if (Number.isNaN(date.getTime())) return value
+  return new Intl.DateTimeFormat('pt-BR').format(date)
+}
+
+const evidenceActivityLabel = (row: GeneticMetricRow) => {
+  const parts = [
+    `${number(row.lotsOffered)} lotes`,
+    `${number(row.bidCount)} lances`,
+    `${number(row.salesCount)} vendas`,
+  ]
+
+  return parts.join(' · ')
+}
+
+function EvidenceStat({
+  label,
+  value,
+  helper,
+}: {
+  label: string
+  value: string
+  helper?: string
+}) {
+  return (
+    <div className="rounded-md border bg-white p-3">
+      <div className="text-xs font-medium text-muted-foreground">{label}</div>
+      <div className="mt-1 text-lg font-semibold text-primary">{value}</div>
+      {helper ? (
+        <div className="mt-1 text-xs text-muted-foreground">{helper}</div>
+      ) : null}
+    </div>
+  )
+}
+
 function MetricCard({
   title,
   value,
@@ -134,7 +186,270 @@ function MetricCard({
   )
 }
 
-function RankingTable({ rows }: { rows: GeneticMetricRow[] }) {
+function ContactName({ entry }: { entry: GeneticCommercialEntry }) {
+  if (entry.contact?.id) {
+    return (
+      <Link
+        to={`/contatos/${entry.contact.id}`}
+        className="font-medium text-primary underline-offset-4 hover:underline"
+      >
+        {entry.participantName}
+      </Link>
+    )
+  }
+
+  return (
+    <span className="font-medium text-foreground">{entry.participantName}</span>
+  )
+}
+
+function CommercialEntriesTable({
+  title,
+  icon: Icon,
+  entries,
+  participantLabel,
+  emptyText,
+}: {
+  title: string
+  icon: LucideIcon
+  entries: GeneticCommercialEntry[]
+  participantLabel: string
+  emptyText: string
+}) {
+  const orderedEntries = [...entries].sort(
+    (a, b) => b.value - a.value || b.date.localeCompare(a.date),
+  )
+
+  return (
+    <div className="rounded-md border bg-white">
+      <div className="flex items-center justify-between gap-3 border-b px-3 py-2">
+        <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+          <Icon className="h-4 w-4" />
+          {title}
+        </div>
+        <Badge variant="secondary" className="rounded-md">
+          {number(entries.length)}
+        </Badge>
+      </div>
+      {entries.length === 0 ? (
+        <div className="px-3 py-4 text-sm text-muted-foreground">
+          {emptyText}
+        </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>{participantLabel}</TableHead>
+              <TableHead>Data</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Valor</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {orderedEntries.map((entry) => (
+              <TableRow key={`${entry.id}-${entry.smartleiloesId}`}>
+                <TableCell className="min-w-[180px]">
+                  <ContactName entry={entry} />
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    Smart ID {entry.smartleiloesId}
+                  </div>
+                </TableCell>
+                <TableCell>{dateLabel(entry.date)}</TableCell>
+                <TableCell className="max-w-[220px]">
+                  <span className="line-clamp-2 text-xs text-muted-foreground">
+                    {entry.status}
+                  </span>
+                </TableCell>
+                <TableCell className="text-right font-semibold text-primary">
+                  {money(entry.value)}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+    </div>
+  )
+}
+
+function EvidenceLotCard({ lot }: { lot: GeneticEvidenceLot }) {
+  return (
+    <Card className="overflow-hidden shadow-sm">
+      <CardHeader className="border-b bg-muted/10 p-4">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex gap-3">
+            {lot.imageUrl ? (
+              <img
+                src={lot.imageUrl}
+                alt={lot.title}
+                className="h-16 w-16 rounded-md object-cover"
+              />
+            ) : (
+              <div className="flex h-16 w-16 items-center justify-center rounded-md bg-white ring-1 ring-border">
+                <Dna className="h-6 w-6 text-muted-foreground" />
+              </div>
+            )}
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="outline" className="rounded-md bg-white">
+                  Lote {lot.lotNumber}
+                </Badge>
+                <Badge variant="secondary" className="rounded-md">
+                  {reproductiveTypeLabel[lot.reproductiveType]}
+                </Badge>
+              </div>
+              <CardTitle className="mt-2 text-base text-primary">
+                {lot.title}
+              </CardTitle>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {lot.sourceLabel}
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-4 lg:w-[460px]">
+            <EvidenceStat label="Lances" value={number(lot.bidCount)} />
+            <EvidenceStat
+              label="Licitantes"
+              value={number(lot.uniqueBidders)}
+            />
+            <EvidenceStat label="Vendas" value={number(lot.salesCount)} />
+            <EvidenceStat label="Vendido" value={money(lot.salesValue)} />
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4 p-4">
+        <div className="grid gap-3 text-sm md:grid-cols-2 xl:grid-cols-4">
+          <div>
+            <div className="text-xs font-medium text-muted-foreground">
+              Matriz
+            </div>
+            <div className="mt-1 font-medium text-foreground">{lot.mare}</div>
+          </div>
+          <div>
+            <div className="text-xs font-medium text-muted-foreground">
+              Garanhão
+            </div>
+            <div className="mt-1 font-medium text-foreground">{lot.sire}</div>
+          </div>
+          <div>
+            <div className="text-xs font-medium text-muted-foreground">
+              Criador
+            </div>
+            <div className="mt-1 font-medium text-foreground">
+              {lot.breeder}
+            </div>
+          </div>
+          <div>
+            <div className="text-xs font-medium text-muted-foreground">
+              Idade
+            </div>
+            <div className="mt-1 font-medium text-foreground">
+              {lot.ageLabel}
+            </div>
+          </div>
+        </div>
+        <div className="grid gap-3">
+          <CommercialEntriesTable
+            title="Lances registrados"
+            icon={Gavel}
+            entries={lot.bids}
+            participantLabel="Licitante"
+            emptyText="Nenhum lance vinculado a este lote."
+          />
+          <CommercialEntriesTable
+            title="Vendas registradas"
+            icon={ReceiptText}
+            entries={lot.purchases}
+            participantLabel="Comprador"
+            emptyText="Nenhuma venda vinculada a este lote."
+          />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function EvidenceSheet({
+  row,
+  open,
+  onOpenChange,
+}: {
+  row: GeneticMetricRow | null
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}) {
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent className="w-full overflow-y-auto sm:max-w-3xl lg:max-w-5xl">
+        {row ? (
+          <div className="space-y-5 pb-6">
+            <SheetHeader className="pr-6">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="secondary" className="rounded-md">
+                  {rankingLabel[row.mode]}
+                </Badge>
+                <Badge variant="outline" className="rounded-md">
+                  Base rastreável
+                </Badge>
+              </div>
+              <SheetTitle className="text-2xl text-primary">
+                {row.label}
+              </SheetTitle>
+              <SheetDescription>
+                {row.secondaryLabel}. Este card lista os lotes, lances,
+                licitantes, vendas e compradores que sustentam o ranking.
+              </SheetDescription>
+            </SheetHeader>
+
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              <EvidenceStat label="Lotes" value={number(row.lotsOffered)} />
+              <EvidenceStat label="Lances" value={number(row.bidCount)} />
+              <EvidenceStat
+                label="Licitantes"
+                value={number(row.uniqueBidders)}
+              />
+              <EvidenceStat label="Vendas" value={number(row.salesCount)} />
+              <EvidenceStat
+                label="Valor vendido"
+                value={money(row.salesValue)}
+                helper={`Top lance ${money(row.topBid)}`}
+              />
+            </div>
+
+            <div className="flex items-start gap-2 rounded-md border border-primary/15 bg-primary/5 p-3 text-sm text-muted-foreground">
+              <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              <span>
+                Garanhões e matrizes são agregados pelo nome confirmado no
+                pedigree. Inferências por título foram removidas para evitar
+                números sem lastro.
+              </span>
+            </div>
+
+            {row.evidence.length === 0 ? (
+              <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">
+                Nenhum lote rastreável para este resultado.
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {row.evidence.map((lot) => (
+                  <EvidenceLotCard key={lot.id} lot={lot} />
+                ))}
+              </div>
+            )}
+          </div>
+        ) : null}
+      </SheetContent>
+    </Sheet>
+  )
+}
+
+function RankingTable({
+  rows,
+  onSelectRow,
+}: {
+  rows: GeneticMetricRow[]
+  onSelectRow: (row: GeneticMetricRow) => void
+}) {
   return (
     <Card className="shadow-sm">
       <CardHeader className="border-b pb-4">
@@ -152,11 +467,34 @@ function RankingTable({ rows }: { rows: GeneticMetricRow[] }) {
               <TableHead>Vendas</TableHead>
               <TableHead>Conversão</TableHead>
               <TableHead>Valor</TableHead>
+              <TableHead className="w-12" />
             </TableRow>
           </TableHeader>
           <TableBody>
+            {rows.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={7}
+                  className="h-28 text-center text-sm text-muted-foreground"
+                >
+                  Nenhum resultado com os filtros atuais.
+                </TableCell>
+              </TableRow>
+            ) : null}
             {rows.slice(0, 12).map((row, index) => (
-              <TableRow key={row.key}>
+              <TableRow
+                key={row.key}
+                role="button"
+                tabIndex={0}
+                className="cursor-pointer transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                onClick={() => onSelectRow(row)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    onSelectRow(row)
+                  }
+                }}
+              >
                 <TableCell className="min-w-[280px]">
                   <div className="flex items-center gap-3">
                     {row.representativeLot?.imageUrl ? (
@@ -182,46 +520,79 @@ function RankingTable({ rows }: { rows: GeneticMetricRow[] }) {
                       <div className="mt-1 text-xs text-muted-foreground">
                         {row.secondaryLabel}
                       </div>
+                      <div className="mt-1 flex items-center gap-1 text-xs font-medium text-primary">
+                        <Eye className="h-3.5 w-3.5" />
+                        Abrir evidências
+                      </div>
                       <div className="mt-2 flex flex-wrap gap-1">
-                        {row.categories.map((category) => (
-                          <Badge
-                            key={category}
-                            variant="outline"
-                            className="rounded-md"
-                          >
-                            {category}
+                        {row.mode === 'sire' ? (
+                          <Badge variant="outline" className="rounded-md">
+                            {number(row.lotsOffered)} lotes vinculados
                           </Badge>
-                        ))}
+                        ) : (
+                          row.categories.map((category) => (
+                            <Badge
+                              key={category}
+                              variant="outline"
+                              className="rounded-md"
+                            >
+                              {category}
+                            </Badge>
+                          ))
+                        )}
                       </div>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell className="min-w-[190px]">
-                  <div className="space-y-1.5 text-xs">
-                    <div className="flex items-center gap-1.5 text-foreground">
-                      <CalendarDays className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span>{ageRangeLabel(row)}</span>
+                  {row.mode === 'sire' ? (
+                    <div className="space-y-1.5 text-xs">
+                      <div className="flex items-center gap-1.5 text-foreground">
+                        <Dna className="h-3.5 w-3.5 text-muted-foreground" />
+                        <span>Pai informado no pedigree</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <Building2 className="h-3.5 w-3.5" />
+                        <span className="line-clamp-1">
+                          {row.breeders.find(
+                            (breeder) => breeder !== 'Não informado',
+                          ) || 'Criador do lote não informado'}
+                        </span>
+                      </div>
+                      <Badge
+                        variant="secondary"
+                        className="rounded-md bg-secondary/20 text-primary"
+                      >
+                        Garanhão
+                      </Badge>
                     </div>
-                    <div className="flex items-center gap-1.5 text-muted-foreground">
-                      <Building2 className="h-3.5 w-3.5" />
-                      <span className="line-clamp-1">
-                        {row.breeders.find(
-                          (breeder) => breeder !== 'Não informado',
-                        ) || 'Criador não informado'}
-                      </span>
+                  ) : (
+                    <div className="space-y-1.5 text-xs">
+                      <div className="flex items-center gap-1.5 text-foreground">
+                        <CalendarDays className="h-3.5 w-3.5 text-muted-foreground" />
+                        <span>{ageRangeLabel(row)}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <Building2 className="h-3.5 w-3.5" />
+                        <span className="line-clamp-1">
+                          {row.breeders.find(
+                            (breeder) => breeder !== 'Não informado',
+                          ) || 'Criador não informado'}
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {row.reproductiveTypes.slice(0, 2).map((type) => (
+                          <Badge
+                            key={type}
+                            variant="secondary"
+                            className="rounded-md bg-secondary/20 text-primary"
+                          >
+                            {reproductiveTypeLabel[type]}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
-                    <div className="flex flex-wrap gap-1">
-                      {row.reproductiveTypes.slice(0, 2).map((type) => (
-                        <Badge
-                          key={type}
-                          variant="secondary"
-                          className="rounded-md bg-secondary/20 text-primary"
-                        >
-                          {reproductiveTypeLabel[type]}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
+                  )}
                 </TableCell>
                 <TableCell>
                   <div className="font-medium">
@@ -258,6 +629,9 @@ function RankingTable({ rows }: { rows: GeneticMetricRow[] }) {
                     Top lance {money(row.topBid)}
                   </div>
                 </TableCell>
+                <TableCell>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -280,11 +654,11 @@ type GeneticOpportunity = {
 
 function OpportunityBoard({
   opportunities,
-  onFocusRow,
+  onOpenRow,
   onFocusBreeder,
 }: {
   opportunities: GeneticOpportunity[]
-  onFocusRow: (row: GeneticMetricRow) => void
+  onOpenRow: (row: GeneticMetricRow) => void
   onFocusBreeder: (breeder: string) => void
 }) {
   return (
@@ -296,20 +670,19 @@ function OpportunityBoard({
             Radar de oportunidades
           </CardTitle>
           <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-            A função mais valiosa desta área: transformar genética em listas de
-            campanha. Estes sinais usam os filtros atuais para apontar onde há
-            tração comercial real.
+            Sinais calculados apenas a partir de lances, vendas e pedigree
+            rastreáveis no recorte atual.
           </p>
         </div>
         <Badge variant="secondary" className="w-fit rounded-md">
-          {opportunities.length} ações sugeridas
+          {opportunities.length} sinais
         </Badge>
       </CardHeader>
       <CardContent className="grid gap-3 p-5 lg:grid-cols-3">
         {opportunities.length === 0 ? (
           <div className="rounded-md border border-dashed p-5 text-sm text-muted-foreground lg:col-span-3">
-            Ajuste os filtros para revelar matrizes, garanhões ou cruzamentos
-            com atividade comercial suficiente.
+            Ajuste os filtros para revelar matrizes ou garanhões com atividade
+            comercial suficiente.
           </div>
         ) : (
           opportunities.map((opportunity) => (
@@ -339,9 +712,9 @@ function OpportunityBoard({
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => onFocusRow(opportunity.row!)}
+                    onClick={() => onOpenRow(opportunity.row!)}
                   >
-                    Ver ranking
+                    Abrir dados
                   </Button>
                 ) : opportunity.breeder ? (
                   <Button
@@ -374,6 +747,8 @@ export default function Genetica() {
   const [ageRange, setAgeRange] = useState<[number, number]>([0, 25])
   const [includeUnknownAge, setIncludeUnknownAge] = useState(true)
   const [sortBy, setSortBy] = useState<SortMode>('score')
+  const [selectedRow, setSelectedRow] = useState<GeneticMetricRow | null>(null)
+  const [evidenceOpen, setEvidenceOpen] = useState(false)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -404,11 +779,7 @@ export default function Genetica() {
 
   const sourceRows = useMemo(() => {
     if (!data) return []
-    return mode === 'mare'
-      ? data.mares
-      : mode === 'sire'
-        ? data.sires
-        : data.crosses
+    return mode === 'mare' ? data.mares : data.sires
   }, [data, mode])
 
   const breederOptions = useMemo<Option[]>(() => {
@@ -481,8 +852,7 @@ export default function Genetica() {
 
   const activeRows = useMemo(() => {
     if (!data) return []
-    const source =
-      mode === 'mare' ? data.mares : mode === 'sire' ? data.sires : data.crosses
+    const source = mode === 'mare' ? data.mares : data.sires
     const normalizedSearch = search.trim().toLowerCase()
 
     return source
@@ -578,11 +948,13 @@ export default function Genetica() {
     if (topCommercial) {
       rows.push({
         id: 'top-commercial',
-        title: 'Lista VIP por genética quente',
+        title: 'Maior atividade comprovada',
         label: topCommercial.label,
-        helper:
-          'Use este pedigree como gancho para alertar clientes que já compraram ou deram lance em famílias parecidas.',
-        metric: `${money(topCommercial.salesValue)} vendidos`,
+        helper: evidenceActivityLabel(topCommercial),
+        metric:
+          topCommercial.salesValue > 0
+            ? `${money(topCommercial.salesValue)} vendidos`
+            : `${number(topCommercial.bidCount)} lances`,
         badge: rankingLabel[mode],
         row: topCommercial,
       })
@@ -591,12 +963,12 @@ export default function Genetica() {
     if (highDemandNoSale) {
       rows.push({
         id: 'demand-no-sale',
-        title: 'Demanda reprimida',
+        title: 'Lances sem venda',
         label: highDemandNoSale.label,
         helper:
-          'Teve disputa, mas não virou venda. É um bom sinal para procurar lote similar e avisar antes do próximo leilão.',
+          'Há lances registrados e nenhuma compra associada neste recorte.',
         metric: `${number(highDemandNoSale.bidCount)} lances`,
-        badge: 'Follow-up',
+        badge: 'Conferir',
         row: highDemandNoSale,
       })
     }
@@ -604,12 +976,12 @@ export default function Genetica() {
     if (highConversion && highConversion.key !== topCommercial?.key) {
       rows.push({
         id: 'high-conversion',
-        title: 'Pedigree de alta conversão',
+        title: 'Vendas confirmadas',
         label: highConversion.label,
         helper:
-          'Quando aparecer lote parecido, vale criar comunicação mais direta: esse perfil já demonstrou liquidez.',
+          'O card mostra os lotes vendidos, compradores e valores que compõem a conversão.',
         metric: `${percent(highConversion.conversionRate)} conversão`,
-        badge: 'Liquidez',
+        badge: 'Venda',
         row: highConversion,
       })
     }
@@ -617,12 +989,12 @@ export default function Genetica() {
     if (topBreeder) {
       rows.push({
         id: 'top-breeder',
-        title: 'Criador para relacionamento',
+        title: 'Criador com registros',
         label: topBreeder.breeder,
         helper:
-          'Este criador concentra tração comercial no recorte atual. Pode virar origem, parceiro ou público de convite.',
+          'Filtro por criador confirmado nos lotes que aparecem neste recorte.',
         metric: `${number(topBreeder.bidCount)} lances`,
-        badge: 'Prospecção',
+        badge: 'Filtro',
         breeder: topBreeder.breeder,
       })
     }
@@ -630,9 +1002,10 @@ export default function Genetica() {
     return rows.slice(0, 3)
   }, [activeRows, mode, topBreeders])
 
-  const focusRow = (row: GeneticMetricRow) => {
+  const openEvidence = (row: GeneticMetricRow) => {
     setMode(row.mode)
-    setSearch(row.label)
+    setSelectedRow(row)
+    setEvidenceOpen(true)
   }
 
   const focusBreeder = (breeder: string) => {
@@ -668,8 +1041,8 @@ export default function Genetica() {
             Genética Comercial
           </h1>
           <p className="mt-1 max-w-3xl text-muted-foreground">
-            Entenda quais matrizes, garanhões e cruzamentos geram lances, vendas
-            e valor nos leilões Milan Horses.
+            Entenda quais matrizes e garanhões geram lances, vendas e valor nos
+            leilões Milan Horses, sempre com a base de cálculo aberta.
           </p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
@@ -705,7 +1078,7 @@ export default function Genetica() {
         <MetricCard
           title="Lances analisados"
           value={number(data.summary.bidCountWithPedigree)}
-          helper="Ligados a lote com matriz confirmada"
+          helper="Ligados a lote com pedigree confirmado"
           icon={Sparkles}
         />
         <MetricCard
@@ -721,6 +1094,19 @@ export default function Genetica() {
           icon={Brain}
         />
       </div>
+
+      {data.summary.unmatchedBidCount + data.summary.unmatchedSalesCount > 0 ? (
+        <div className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+          <span>
+            {number(
+              data.summary.unmatchedBidCount + data.summary.unmatchedSalesCount,
+            )}{' '}
+            registros comerciais ficaram fora dos rankings por falta de vínculo
+            confiável com lote ou pedigree.
+          </span>
+        </div>
+      ) : null}
 
       <Card className="border-primary/15 bg-white shadow-sm">
         <CardHeader className="flex flex-col gap-3 border-b pb-4 lg:flex-row lg:items-center lg:justify-between">
@@ -857,9 +1243,11 @@ export default function Genetica() {
               {topBreeders.length ? (
                 <div className="mt-2 space-y-2">
                   {topBreeders.map((breeder) => (
-                    <div
+                    <button
                       key={breeder.breeder}
-                      className="flex items-center justify-between gap-3 text-xs"
+                      type="button"
+                      onClick={() => focusBreeder(breeder.breeder)}
+                      className="flex w-full items-center justify-between gap-3 rounded-md px-2 py-1.5 text-left text-xs transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       <span className="truncate text-foreground">
                         {breeder.breeder}
@@ -867,7 +1255,7 @@ export default function Genetica() {
                       <span className="shrink-0 text-muted-foreground">
                         {money(breeder.salesValue)}
                       </span>
-                    </div>
+                    </button>
                   ))}
                 </div>
               ) : (
@@ -882,7 +1270,7 @@ export default function Genetica() {
 
       <OpportunityBoard
         opportunities={opportunities}
-        onFocusRow={focusRow}
+        onOpenRow={openEvidence}
         onFocusBreeder={focusBreeder}
       />
 
@@ -895,24 +1283,26 @@ export default function Genetica() {
                 onValueChange={(value) => setMode(value as GeneticRankingMode)}
                 className="space-y-4"
               >
-                <TabsList className="grid w-full max-w-xl grid-cols-3">
+                <TabsList className="grid w-full max-w-md grid-cols-2">
                   <TabsTrigger value="mare">Matrizes</TabsTrigger>
                   <TabsTrigger value="sire">Garanhões</TabsTrigger>
-                  <TabsTrigger value="cross">Cruzamentos</TabsTrigger>
                 </TabsList>
 
-                {(['mare', 'sire', 'cross'] as const).map((tab) => (
+                {(['mare', 'sire'] as const).map((tab) => (
                   <TabsContent key={tab} value={tab} className="space-y-4">
                     <div>
                       <h2 className="text-lg font-semibold text-primary">
                         {rankingLabel[tab]} por tração comercial
                       </h2>
                       <p className="text-sm text-muted-foreground">
-                        Ranking combina valor vendido, intensidade de lances e
-                        maior lance registrado.
+                        Ranking calculado com valor vendido, lances registrados
+                        e maior lance. Clique em uma linha para ver a base.
                       </p>
                     </div>
-                    <RankingTable rows={activeRows} />
+                    <RankingTable
+                      rows={activeRows}
+                      onSelectRow={openEvidence}
+                    />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -961,15 +1351,24 @@ export default function Genetica() {
               <div className="mt-4 rounded-md border bg-white p-3">
                 <div className="text-sm font-semibold">Leitura recomendada</div>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  Use a aba Matrizes para decidir alertas de clientes. Use
-                  Cruzamentos para identificar combinações que merecem campanha
-                  própria quando um lote parecido entrar.
+                  Abra qualquer linha antes de tomar ação comercial. O card
+                  mostra os lances, compradores e valores que sustentam o número
+                  exibido.
                 </p>
               </div>
             </aside>
           </div>
         </CardContent>
       </Card>
+
+      <EvidenceSheet
+        row={selectedRow}
+        open={evidenceOpen}
+        onOpenChange={(open) => {
+          setEvidenceOpen(open)
+          if (!open) setSelectedRow(null)
+        }}
+      />
     </div>
   )
 }

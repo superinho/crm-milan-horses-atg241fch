@@ -3,13 +3,14 @@ import {
   ArrowRight,
   BarChart3,
   Calendar,
+  Database,
   ExternalLink,
   FilterX,
   Gavel,
   Globe2,
+  Link as LinkIcon,
   Search,
   ShieldCheck,
-  Sparkles,
   Trophy,
   Users,
 } from 'lucide-react'
@@ -36,6 +37,8 @@ import { useToast } from '@/hooks/use-toast'
 import {
   globalAuctionsService,
   type GlobalAuctionDamSireRanking,
+  type GlobalAuctionDataQuality,
+  type GlobalAuctionFilterOptions,
   type GlobalAuctionFilters,
   type GlobalAuctionHouseRanking,
   type GlobalAuctionLot,
@@ -89,12 +92,80 @@ const emptyOverview: GlobalAuctionOverview = {
   latest_year: null,
 }
 
+const emptyQuality: GlobalAuctionDataQuality = {
+  lots: 0,
+  with_source_url: 0,
+  with_price: 0,
+  with_pedigree: 0,
+  with_buyer: 0,
+  high_confidence: 0,
+  hippomundo_lots: 0,
+  primary_source_lots: 0,
+  sources: [],
+}
+
+const emptyFilterOptions: GlobalAuctionFilterOptions = {
+  years: [],
+  sources: [],
+  houses: [],
+  countries: [],
+  categories: [],
+  sires: [],
+  damSires: [],
+  priceMin: null,
+  priceMax: null,
+}
+
 const periodOptions = [
   { value: 'all', label: 'Tudo' },
   { value: '30d', label: '30 dias' },
   { value: '3m', label: '3 meses' },
   { value: '1y', label: '1 ano' },
 ]
+
+const priceBandOptions = [
+  { value: 'all', label: 'Todos os preços' },
+  { value: '0-10000', label: 'Até €10k', min: 0, max: 10000 },
+  { value: '10000-25000', label: '€10k-€25k', min: 10000, max: 25000 },
+  { value: '25000-50000', label: '€25k-€50k', min: 25000, max: 50000 },
+  { value: '50000-100000', label: '€50k-€100k', min: 50000, max: 100000 },
+  { value: '100000+', label: '€100k+', min: 100000 },
+]
+
+const confidenceOptions = [
+  { value: 'all', label: 'Qualquer confiança' },
+  { value: '70', label: '70%+' },
+  { value: '80', label: '80%+' },
+  { value: '90', label: '90%+' },
+]
+
+const sourceNameOf = (lot: GlobalAuctionLot) =>
+  lot.global_auction_sources?.name ||
+  lot.global_auctions?.global_auction_sources?.name ||
+  (lot.source_url?.includes('hippomundo.com') ? 'Hippomundo' : null) ||
+  (lot.global_auctions?.source_url?.includes('hippomundo.com')
+    ? 'Hippomundo'
+    : null) ||
+  'Fonte não identificada'
+
+const sourceUrlOf = (lot: GlobalAuctionLot) =>
+  lot.source_url ||
+  lot.global_auctions?.source_url ||
+  lot.global_auction_sources?.results_url ||
+  lot.global_auctions?.global_auction_sources?.results_url ||
+  lot.global_auction_sources?.website_url ||
+  lot.global_auctions?.global_auction_sources?.website_url ||
+  null
+
+const confidenceClass = (score?: number | null) => {
+  const value = Number(score || 0)
+  if (value >= 85) return 'border-emerald-200 bg-emerald-50 text-emerald-800'
+  if (value >= 70) return 'border-blue-200 bg-blue-50 text-blue-800'
+  return 'border-amber-200 bg-amber-50 text-amber-800'
+}
+
+const percentage = (value: number, total: number) =>
+  total ? Math.round((value / total) * 100) : 0
 
 function MarketMetric({
   label,
@@ -123,6 +194,24 @@ function MarketMetric({
   )
 }
 
+function QualityMetric({
+  label,
+  value,
+  detail,
+}: {
+  label: string
+  value: string
+  detail: string
+}) {
+  return (
+    <div className="rounded-md border bg-white p-3">
+      <div className="text-xs text-muted-foreground">{label}</div>
+      <div className="mt-1 text-lg font-bold text-primary">{value}</div>
+      <div className="mt-1 text-xs text-muted-foreground">{detail}</div>
+    </div>
+  )
+}
+
 function LotCard({
   lot,
   onOpen,
@@ -133,6 +222,7 @@ function LotCard({
   const status = statusCopy[lot.sold_status] || statusCopy.unknown
   const auction = lot.global_auctions
   const house = auction?.global_auction_houses
+  const sourceName = sourceNameOf(lot)
 
   return (
     <button
@@ -148,6 +238,15 @@ function LotCard({
             </div>
             <Badge variant="outline" className={status.className}>
               {status.label}
+            </Badge>
+            <Badge variant="outline" className="rounded-md">
+              {sourceName}
+            </Badge>
+            <Badge
+              variant="outline"
+              className={`rounded-md ${confidenceClass(lot.confidence_score)}`}
+            >
+              {formatNumber(lot.confidence_score || 0)}%
             </Badge>
           </div>
           <div className="mt-1 text-sm text-muted-foreground">
@@ -217,6 +316,15 @@ function LotDialog({
   const auction = lot.global_auctions
   const house = auction?.global_auction_houses
   const status = statusCopy[lot.sold_status] || statusCopy.unknown
+  const sourceName = sourceNameOf(lot)
+  const sourceUrl = sourceUrlOf(lot)
+  const missingFields = [
+    !sourceUrl ? 'fonte' : null,
+    !lot.hammer_price ? 'preço' : null,
+    !lot.sire_name ? 'pai' : null,
+    !lot.dam_name && !lot.dam_sire_name ? 'linha materna' : null,
+    !lot.buyer_name ? 'comprador' : null,
+  ].filter(Boolean)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -231,6 +339,9 @@ function LotDialog({
                 {auction.category}
               </Badge>
             ) : null}
+            <Badge variant="outline" className="rounded-md">
+              {sourceName}
+            </Badge>
           </div>
           <DialogTitle className="text-2xl text-primary">
             {lot.horse_name}
@@ -241,7 +352,7 @@ function LotDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid gap-3 md:grid-cols-4">
           <div className="rounded-md border bg-muted/10 p-3">
             <div className="text-xs text-muted-foreground">Preço</div>
             <div className="mt-1 font-semibold">
@@ -258,6 +369,33 @@ function LotDialog({
             <div className="text-xs text-muted-foreground">Confiança</div>
             <div className="mt-1 font-semibold">
               {formatNumber(lot.confidence_score || 0)}%
+            </div>
+          </div>
+          <div className="rounded-md border bg-muted/10 p-3">
+            <div className="text-xs text-muted-foreground">Fonte</div>
+            <div className="mt-1 truncate font-semibold">{sourceName}</div>
+          </div>
+        </div>
+
+        <div className="rounded-md border bg-primary/5 p-4">
+          <div className="flex items-start gap-3">
+            <LinkIcon className="mt-0.5 h-5 w-5 text-primary" />
+            <div className="min-w-0">
+              <div className="font-semibold text-primary">
+                Evidência vinculada
+              </div>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Registro importado com URL de origem preservada para auditoria.
+              </p>
+              {missingFields.length ? (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {missingFields.map((field) => (
+                    <Badge key={field} variant="outline" className="rounded-md">
+                      Falta {field}
+                    </Badge>
+                  ))}
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
@@ -289,11 +427,11 @@ function LotDialog({
           </div>
         </div>
 
-        {lot.source_url ? (
+        {sourceUrl ? (
           <DialogFooter>
             <Button variant="outline" asChild>
-              <a href={lot.source_url} target="_blank" rel="noreferrer">
-                Fonte original
+              <a href={sourceUrl} target="_blank" rel="noreferrer">
+                Abrir fonte
                 <ExternalLink className="h-4 w-4" />
               </a>
             </Button>
@@ -424,6 +562,9 @@ export default function MercadoGlobal() {
   const [damSires, setDamSires] = useState<GlobalAuctionDamSireRanking[]>([])
   const [vendors, setVendors] = useState<GlobalAuctionVendorRanking[]>([])
   const [houses, setHouses] = useState<GlobalAuctionHouseRanking[]>([])
+  const [quality, setQuality] = useState<GlobalAuctionDataQuality>(emptyQuality)
+  const [filterOptions, setFilterOptions] =
+    useState<GlobalAuctionFilterOptions>(emptyFilterOptions)
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
@@ -432,21 +573,50 @@ export default function MercadoGlobal() {
   const [availableYears, setAvailableYears] = useState<number[]>([])
   const [status, setStatus] = useState('all')
   const [category, setCategory] = useState('all')
+  const [source, setSource] = useState('all')
+  const [house, setHouse] = useState('all')
+  const [country, setCountry] = useState('all')
+  const [sire, setSire] = useState('all')
+  const [damSire, setDamSire] = useState('all')
+  const [priceBand, setPriceBand] = useState('all')
+  const [minConfidence, setMinConfidence] = useState('all')
   const [selectedLot, setSelectedLot] = useState<GlobalAuctionLot | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
   const { toast } = useToast()
   const pageSize = 25
 
-  const filters = useMemo<GlobalAuctionFilters>(
-    () => ({
+  const filters = useMemo<GlobalAuctionFilters>(() => {
+    const band = priceBandOptions.find((option) => option.value === priceBand)
+    return {
       search,
       period: selectedYears.length ? 'years' : period,
       years: selectedYears,
       status,
       category,
-    }),
-    [search, period, selectedYears, status, category],
-  )
+      source,
+      house,
+      country,
+      sire,
+      damSire,
+      minConfidence:
+        minConfidence === 'all' ? undefined : Number(minConfidence),
+      minPrice: band && 'min' in band ? band.min : undefined,
+      maxPrice: band && 'max' in band ? band.max : undefined,
+    }
+  }, [
+    search,
+    period,
+    selectedYears,
+    status,
+    category,
+    source,
+    house,
+    country,
+    sire,
+    damSire,
+    priceBand,
+    minConfidence,
+  ])
 
   const loadData = useCallback(async () => {
     setLoading(true)
@@ -463,6 +633,7 @@ export default function MercadoGlobal() {
       setDamSires(nextOverview.damSires)
       setVendors(nextOverview.vendors)
       setHouses(nextOverview.houses)
+      setQuality(nextOverview.quality)
     } catch (error) {
       console.error(error)
       toast({
@@ -481,12 +652,13 @@ export default function MercadoGlobal() {
 
   useEffect(() => {
     globalAuctionsService
-      .getAvailableYears()
-      .then((years) =>
+      .getFilterOptions()
+      .then((options) => {
+        setFilterOptions(options)
         setAvailableYears(
-          years.length ? years : [2026, 2025, 2024, 2023, 2022],
-        ),
-      )
+          options.years.length ? options.years : [2026, 2025, 2024, 2023, 2022],
+        )
+      })
       .catch((error) => {
         console.error(error)
         setAvailableYears([2026, 2025, 2024, 2023, 2022])
@@ -509,6 +681,13 @@ export default function MercadoGlobal() {
     setSelectedYears([])
     setStatus('all')
     setCategory('all')
+    setSource('all')
+    setHouse('all')
+    setCountry('all')
+    setSire('all')
+    setDamSire('all')
+    setPriceBand('all')
+    setMinConfidence('all')
   }
 
   const selectPeriod = (nextPeriod: string) => {
@@ -527,6 +706,21 @@ export default function MercadoGlobal() {
 
   const focusSearch = (name: string) => {
     setSearch(name)
+    setPage(1)
+  }
+
+  const focusSire = (name: string) => {
+    setSire(name)
+    setPage(1)
+  }
+
+  const focusDamSire = (name: string) => {
+    setDamSire(name)
+    setPage(1)
+  }
+
+  const focusHouse = (name: string) => {
+    setHouse(name)
     setPage(1)
   }
 
@@ -585,29 +779,92 @@ export default function MercadoGlobal() {
             Mercado Global de Salto
           </h1>
           <p className="mt-2 max-w-3xl text-muted-foreground">
-            Leilões internacionais de show jumping para comparar preços,
-            pedigrees e casas vendedoras antes de montar campanhas ou reservas.
+            Base interna de consulta para preços, pedigree e liquidez de lotes
+            internacionais, com fonte preservada em cada resultado.
           </p>
         </div>
-        <Button variant="outline" asChild>
-          <a
-            href="https://goresbridge.com/showjumping/results/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Primeira fonte
-            <ExternalLink className="h-4 w-4" />
-          </a>
-        </Button>
       </div>
 
       <Card className="shadow-sm">
-        <CardContent className="space-y-4 p-4">
-          <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+        <CardHeader className="border-b pb-4">
+          <CardTitle className="flex items-center gap-2 text-base text-primary">
             <Calendar className="h-4 w-4" />
-            Filtros de mercado
+            Filtros
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-5 p-4">
+          <div className="grid gap-3 lg:grid-cols-[minmax(0,1.5fr)_1fr_1fr_1fr]">
+            <div className="space-y-2">
+              <div className="text-xs font-medium text-muted-foreground">
+                Busca
+              </div>
+              <div className="relative">
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder="Cavalo, pai, mãe, vendedor, comprador..."
+                  className="pl-9"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-xs font-medium text-muted-foreground">
+                Fonte
+              </div>
+              <Select value={source} onValueChange={setSource}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Fonte" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas as fontes</SelectItem>
+                  {filterOptions.sources.map((option) => (
+                    <SelectItem key={option} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <div className="text-xs font-medium text-muted-foreground">
+                Casa
+              </div>
+              <Select value={house} onValueChange={setHouse}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Casa" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas as casas</SelectItem>
+                  {filterOptions.houses.map((option) => (
+                    <SelectItem key={option} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <div className="text-xs font-medium text-muted-foreground">
+                País
+              </div>
+              <Select value={country} onValueChange={setCountry}>
+                <SelectTrigger>
+                  <SelectValue placeholder="País" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos os países</SelectItem>
+                  {filterOptions.countries.map((option) => (
+                    <SelectItem key={option} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-          <div className="grid gap-3 xl:grid-cols-[1.3fr_1fr_1fr_auto]">
+
+          <div className="grid gap-4 xl:grid-cols-[1.2fr_1fr_1.4fr]">
             <div className="space-y-2">
               <div className="text-xs font-medium text-muted-foreground">
                 Período rápido
@@ -677,26 +934,93 @@ export default function MercadoGlobal() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todos</SelectItem>
-                    <SelectItem value="foal">Foals</SelectItem>
-                    <SelectItem value="3yo">3 anos</SelectItem>
-                    <SelectItem value="sport_horse">Sport horse</SelectItem>
-                    <SelectItem value="mixed_show_jumping">
-                      Misto salto
-                    </SelectItem>
+                    {(filterOptions.categories.length
+                      ? filterOptions.categories
+                      : ['foal', '3yo', 'sport_horse', 'mixed_show_jumping']
+                    ).map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {option}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
             </div>
-            <div className="flex items-end">
-              <Button
-                variant="outline"
-                onClick={clearFilters}
-                className="w-full"
-              >
-                <FilterX className="h-4 w-4" />
-                Limpar
-              </Button>
+            <div className="grid gap-2 sm:grid-cols-3">
+              <div className="space-y-2">
+                <div className="text-xs font-medium text-muted-foreground">
+                  Faixa
+                </div>
+                <Select value={priceBand} onValueChange={setPriceBand}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Preço" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {priceBandOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <div className="text-xs font-medium text-muted-foreground">
+                  Confiança
+                </div>
+                <Select value={minConfidence} onValueChange={setMinConfidence}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Confiança" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {confidenceOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-end">
+                <Button
+                  variant="outline"
+                  onClick={clearFilters}
+                  className="w-full"
+                >
+                  <FilterX className="h-4 w-4" />
+                  Limpar
+                </Button>
+              </div>
             </div>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            <Select value={sire} onValueChange={setSire}>
+              <SelectTrigger>
+                <SelectValue placeholder="Garanhão" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os garanhões</SelectItem>
+                {filterOptions.sires.slice(0, 80).map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={damSire} onValueChange={setDamSire}>
+              <SelectTrigger>
+                <SelectValue placeholder="Avô materno" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os avôs maternos</SelectItem>
+                {filterOptions.damSires.slice(0, 80).map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </CardContent>
       </Card>
@@ -732,76 +1056,84 @@ export default function MercadoGlobal() {
         <div className="flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-              <Sparkles className="h-4 w-4" />
-              Inteligência de seleção
+              <Database className="h-4 w-4" />
+              Qualidade da base
             </div>
             <h2 className="mt-1 text-2xl font-bold text-primary">
-              Quem está em alta no recorte escolhido
+              Evidência antes de ranking
             </h2>
             <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-              Rankings recalculados pelos filtros acima. Use para escolher
-              garanhões, famílias maternas, vendedores e casas que merecem
-              prospecção, convites ou comparação de reserva.
+              Recorte atual com fonte, preço, pedigree e lacunas mapeadas.
             </p>
           </div>
           <div className="text-sm text-muted-foreground">
-            Base atual: {formatNumber(overview.sold_lots)} vendas ·{' '}
-            {formatCurrency(overview.total_sold_value_eur)}
+            {quality.sources[0]?.name || 'Fonte não identificada'} ·{' '}
+            {formatNumber(quality.lots)} lotes
           </div>
+        </div>
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          <QualityMetric
+            label="Com link de fonte"
+            value={`${percentage(quality.with_source_url, quality.lots)}%`}
+            detail={`${formatNumber(quality.with_source_url)} de ${formatNumber(quality.lots)}`}
+          />
+          <QualityMetric
+            label="Com preço vendido"
+            value={`${percentage(quality.with_price, quality.lots)}%`}
+            detail={`${formatNumber(quality.with_price)} registros`}
+          />
+          <QualityMetric
+            label="Com pedigree"
+            value={`${percentage(quality.with_pedigree, quality.lots)}%`}
+            detail="Pai e linha materna preenchidos"
+          />
+          <QualityMetric
+            label="Alta confiança"
+            value={`${percentage(quality.high_confidence, quality.lots)}%`}
+            detail={`${formatNumber(quality.high_confidence)} registros 80%+`}
+          />
         </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <RankingList
-          title="Garanhões em alta"
-          subtitle="Valor vendido, liquidez e top price por pai."
+          title="Garanhões por venda"
+          subtitle="Valor vendido, lotes vendidos e top price por pai."
           rows={sireRows}
           icon={Trophy}
-          onSelect={focusSearch}
+          onSelect={focusSire}
         />
         <RankingList
-          title="Famílias maternas"
-          subtitle="Avôs maternos que aparecem nos melhores tickets."
+          title="Avôs maternos"
+          subtitle="Valor vendido e mediana por avô materno."
           rows={damSireRows}
           icon={ShieldCheck}
-          onSelect={focusSearch}
+          onSelect={focusDamSire}
         />
         <RankingList
-          title="Haras e vendedores"
-          subtitle="Origem comercial dos lotes com maior conversão."
+          title="Vendedores"
+          subtitle="Origem comercial informada nos lotes vendidos."
           rows={vendorRows}
           icon={Users}
           onSelect={focusSearch}
         />
         <RankingList
-          title="Casas de leilão"
-          subtitle="Fontes com mais volume e maior ticket no período."
+          title="Casas"
+          subtitle="Volume, conversão e ticket por casa de leilão."
           rows={houseRows}
           icon={Gavel}
+          onSelect={focusHouse}
         />
       </div>
 
       <Card className="shadow-sm">
         <CardHeader className="gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <CardTitle className="text-xl text-primary">
-              Lotes importados
-            </CardTitle>
+            <CardTitle className="text-xl text-primary">Lotes</CardTitle>
             <p className="mt-1 text-sm text-muted-foreground">
               {formatNumber(total)} lotes encontrados. Página {page} de{' '}
               {totalPages}.
             </p>
-          </div>
-          <div className="flex flex-col gap-2 md:flex-row">
-            <div className="relative md:w-80">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                placeholder="Buscar cavalo, pai, mãe, vendedor..."
-                className="pl-9"
-              />
-            </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -811,7 +1143,7 @@ export default function MercadoGlobal() {
             </div>
           ) : lots.length === 0 ? (
             <div className="rounded-md border border-dashed p-10 text-center">
-              <Sparkles className="mx-auto h-8 w-8 text-primary" />
+              <Database className="mx-auto h-8 w-8 text-primary" />
               <div className="mt-3 font-semibold text-primary">
                 Ainda sem lotes nessa seleção
               </div>
