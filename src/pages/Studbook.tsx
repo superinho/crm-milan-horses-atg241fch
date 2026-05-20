@@ -7,20 +7,18 @@ import {
   Calendar,
   Crown,
   Database,
+  Download,
   Dna,
   ExternalLink,
   FilterX,
   GitBranch,
-  Link2,
   Loader2,
   type LucideIcon,
-  Plus,
+  RefreshCw,
   Search,
   ShieldCheck,
   SlidersHorizontal,
   Sparkles,
-  Tag,
-  Trash2,
   Trophy,
   Users,
   UserPlus,
@@ -41,7 +39,6 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { MultiSelect } from '@/components/ui/multi-select'
-import { Progress } from '@/components/ui/progress'
 import {
   Select,
   SelectContent,
@@ -53,7 +50,6 @@ import { Slider } from '@/components/ui/slider'
 import { useToast } from '@/hooks/use-toast'
 import {
   studbookService,
-  type AuctionCandidateList,
   type StudbookFilterOptions,
   type StudbookFilters,
   type StudbookHorse,
@@ -99,37 +95,96 @@ const registrationLabel = (horse: StudbookHorse) =>
   horse.ueln ||
   'Sem registro'
 
+type ExportScope = 'all' | 'filtered'
+
+const studbookExportColumns: Array<{
+  label: string
+  value: (horse: StudbookHorse) => string | number | boolean | null | undefined
+}> = [
+  { label: 'Nome', value: (horse) => horse.name },
+  { label: 'Registro', value: registrationLabel },
+  { label: 'UELN', value: (horse) => horse.ueln },
+  { label: 'Microchip', value: (horse) => horse.microchip },
+  { label: 'Raça', value: (horse) => horse.breed },
+  { label: 'Sexo', value: (horse) => horse.sex },
+  { label: 'Nascimento', value: (horse) => horse.birth_date },
+  { label: 'Ano nascimento', value: (horse) => horse.birth_year },
+  { label: 'Idade', value: (horse) => horse.age_years },
+  { label: 'Pai', value: (horse) => horse.sire_name },
+  { label: 'Mãe', value: (horse) => horse.dam_name },
+  { label: 'Criador', value: (horse) => horse.breeder_name },
+  { label: 'Proprietário', value: (horse) => horse.owner_name },
+  { label: 'Local nascimento', value: (horse) => horse.birthplace },
+  { label: 'Filhos', value: (horse) => horse.offspring_count },
+  { label: 'Matriz ativa', value: (horse) => horse.is_reproductive_mare },
+  { label: 'Completude', value: (horse) => horse.data_quality_score },
+  { label: 'Último sync', value: (horse) => horse.last_synced_at },
+  { label: 'Atualizado em', value: (horse) => horse.updated_at },
+  { label: 'Fonte', value: (horse) => horse.source_url },
+]
+
+const csvCell = (value: string | number | boolean | null | undefined) => {
+  const normalized =
+    value === null || value === undefined ? '' : String(value).trim()
+  if (/[;"\n\r]/.test(normalized)) {
+    return `"${normalized.replace(/"/g, '""')}"`
+  }
+  return normalized
+}
+
+const buildStudbookCsv = (rows: StudbookHorse[]) =>
+  [
+    studbookExportColumns.map((column) => csvCell(column.label)).join(';'),
+    ...rows.map((horse) =>
+      studbookExportColumns
+        .map((column) => csvCell(column.value(horse)))
+        .join(';'),
+    ),
+  ].join('\n')
+
+const downloadCsvFile = (filename: string, csv: string) => {
+  const blob = new Blob([`\uFEFF${csv}`], {
+    type: 'text/csv;charset=utf-8;',
+  })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
+}
+
 const networkKindCopy: Record<
   StudbookNetworkKind,
-  { label: string; plural: string; icon: LucideIcon; thesis: string }
+  { label: string; plural: string; icon: LucideIcon; description: string }
 > = {
   breeder: {
     label: 'Criador',
     plural: 'Criadores',
     icon: Building2,
-    thesis:
-      'Origem de plantel. Bom para captação de lotes, relacionamento e convites de venda.',
+    description:
+      'Registros agrupados pelo criador informado na base Studbook BH.',
   },
   owner: {
     label: 'Proprietário',
     plural: 'Proprietários',
     icon: UserRound,
-    thesis:
-      'Pessoa ou operação com ativos. Bom para transformar em vendedor, comprador ou convidado VIP.',
+    description:
+      'Registros agrupados pelo proprietário informado na base Studbook BH.',
   },
   sire: {
     label: 'Garanhão',
     plural: 'Garanhões',
     icon: Trophy,
-    thesis:
-      'Influência genética. Bom para campanhas por linhagem e leitura de famílias em alta.',
+    description: 'Registros agrupados pelo pai/garanhão informado no pedigree.',
   },
   dam: {
     label: 'Matriz',
     plural: 'Matrizes',
     icon: VenusAndMars,
-    thesis:
-      'Família materna. Bom para selecionar núcleos comerciais e mapear descendentes relevantes.',
+    description: 'Registros agrupados pela mãe/matriz informada no pedigree.',
   },
 }
 
@@ -292,7 +347,6 @@ function NetworkDetailDialog({
   detail,
   loading,
   onOpenChange,
-  onCreateList,
   onApplyFilter,
   onCreateCrmContact,
   onDetailPageChange,
@@ -301,7 +355,6 @@ function NetworkDetailDialog({
   detail: StudbookNetworkDetail | null
   loading: boolean
   onOpenChange: (open: boolean) => void
-  onCreateList: (entity: StudbookNetworkEntity) => void
   onApplyFilter: (entity: StudbookNetworkEntity) => void
   onCreateCrmContact: (entity: StudbookNetworkEntity) => void
   onDetailPageChange: (page: number) => void
@@ -342,7 +395,7 @@ function NetworkDetailDialog({
               <DialogTitle className="pr-8 text-2xl text-primary">
                 {entity.name}
               </DialogTitle>
-              <DialogDescription>{copy.thesis}</DialogDescription>
+              <DialogDescription>{copy.description}</DialogDescription>
             </DialogHeader>
 
             <div className="grid gap-3 md:grid-cols-4">
@@ -377,25 +430,21 @@ function NetworkDetailDialog({
                 <Icon className="mt-0.5 h-5 w-5 text-primary" />
                 <div>
                   <div className="font-semibold text-primary">
-                    Tese comercial
+                    Base deste card
                   </div>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                    {entity.entity_kind === 'breeder'
-                      ? 'Criador relevante para relacionamento: pode fornecer lotes, indicar compradores e gerar conteúdo de autoridade para campanhas.'
-                      : entity.entity_kind === 'owner'
-                        ? 'Proprietário com plantel mapeado: prioridade para convite VIP, sondagem de venda e campanhas personalizadas por perfil de cavalo.'
-                        : entity.entity_kind === 'sire'
-                          ? 'Garanhão com presença ampla: use a linhagem para segmentar criadores e proprietários com descendentes conectados.'
-                          : 'Matriz com descendência relevante: bom ponto de partida para famílias maternas, narrativa de leilão e prospecção de lotes.'}
+                    Os números refletem apenas registros do Studbook BH que
+                    batem com os filtros atuais. Abra os cavalos abaixo para
+                    revisar genealogia, registro, criador, proprietário e fonte.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="grid gap-3 md:grid-cols-[1fr_1fr]">
+            <div className="grid gap-3 md:grid-cols-[1fr]">
               <div className="rounded-md border bg-muted/10 p-4">
                 <div className="mb-2 flex items-center gap-2 font-semibold text-foreground">
-                  <Link2 className="h-4 w-4 text-primary" />
+                  <Users className="h-4 w-4 text-primary" />
                   Cruzamento com CRM
                 </div>
                 {(detail?.crmContacts || []).length ? (
@@ -410,19 +459,6 @@ function NetworkDetailDialog({
                     prospecção e aplique a tag automaticamente.
                   </p>
                 )}
-              </div>
-              <div className="rounded-md border bg-muted/10 p-4">
-                <div className="mb-2 flex items-center gap-2 font-semibold text-foreground">
-                  <Tag className="h-4 w-4 text-primary" />
-                  Próxima ação sugerida
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  {entity.entity_kind === 'owner'
-                    ? 'Tratar como lead de proprietário: mapear telefone/email, taguear no CRM e convidar para leilões compatíveis com o plantel.'
-                    : entity.entity_kind === 'breeder'
-                      ? 'Tratar como lead de criador: abrir relacionamento para captação de lotes e convites curatoriais.'
-                      : 'Usar a linhagem para encontrar proprietários e criadores conectados antes de criar campanha.'}
-                </p>
               </div>
             </div>
 
@@ -514,95 +550,8 @@ function NetworkDetailDialog({
                 Filtrar na base
                 <ArrowRight className="h-4 w-4" />
               </Button>
-              <Button onClick={() => onCreateList(entity)}>
-                <Plus className="h-4 w-4" />
-                Criar lista de prospecção
-              </Button>
             </DialogFooter>
           </>
-        )}
-      </DialogContent>
-    </Dialog>
-  )
-}
-
-function ListDetailDialog({
-  list,
-  items,
-  loading,
-  open,
-  onOpenChange,
-  onRemoveItem,
-}: {
-  list: AuctionCandidateList | null
-  items: any[]
-  loading: boolean
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onRemoveItem: (itemId: string) => void
-}) {
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl">
-        <DialogHeader>
-          <DialogTitle className="text-primary">{list?.name}</DialogTitle>
-          <DialogDescription>
-            {list?.thesis || 'Sem tese comercial definida.'}
-          </DialogDescription>
-        </DialogHeader>
-
-        {loading ? (
-          <div className="flex min-h-48 items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">
-                {items.length} animais nesta lista
-              </span>
-            </div>
-
-            <div className="max-h-[60vh] overflow-y-auto rounded-md border">
-              {items.length === 0 ? (
-                <div className="p-8 text-center text-sm text-muted-foreground">
-                  Nenhum animal adicionado a esta lista ainda.
-                </div>
-              ) : (
-                <div className="divide-y">
-                  {items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center justify-between p-4"
-                    >
-                      <div>
-                        <div className="font-medium text-foreground">
-                          {item.horse?.name || 'Animal desconhecido'}
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1">
-                          {item.horse?.registration ||
-                            item.horse?.ueln ||
-                            'Sem registro'}
-                          {item.horse?.age_years
-                            ? ` · ${item.horse.age_years} anos`
-                            : ''}
-                        </div>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="text-muted-foreground hover:text-destructive"
-                        onClick={() => onRemoveItem(item.id)}
-                        title="Remover da lista"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
         )}
       </DialogContent>
     </Dialog>
@@ -713,13 +662,9 @@ function HorseDetailDialog({
 
 function HorseRecordCard({
   horse,
-  lists,
-  onAddToList,
   onOpen,
 }: {
   horse: StudbookHorse
-  lists: AuctionCandidateList[]
-  onAddToList: (horse: StudbookHorse) => void
   onOpen: (horse: StudbookHorse) => void
 }) {
   return (
@@ -779,21 +724,6 @@ function HorseRecordCard({
           <Badge className="rounded-md">Matriz ativa</Badge>
         ) : null}
       </div>
-      <div className="mt-4 flex">
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-full justify-center"
-          disabled={!lists.length}
-          onClick={(event) => {
-            event.stopPropagation()
-            onAddToList(horse)
-          }}
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Adicionar à lista
-        </Button>
-      </div>
     </div>
   )
 }
@@ -803,8 +733,6 @@ function HorseTable({
   total,
   page,
   pageSize,
-  lists,
-  onAddToList,
   onPageChange,
   onOpenHorse,
 }: {
@@ -812,8 +740,6 @@ function HorseTable({
   total: number
   page: number
   pageSize: number
-  lists: AuctionCandidateList[]
-  onAddToList: (horse: StudbookHorse) => void
   onPageChange: (page: number) => void
   onOpenHorse: (horse: StudbookHorse) => void
 }) {
@@ -847,8 +773,6 @@ function HorseTable({
               <HorseRecordCard
                 key={horse.id}
                 horse={horse}
-                lists={lists}
-                onAddToList={onAddToList}
                 onOpen={onOpenHorse}
               />
             ))}
@@ -882,134 +806,6 @@ function HorseTable({
   )
 }
 
-function SuggestedMares({
-  currentHorses,
-  onOpenHorse,
-  onAddToList,
-  lists,
-}: {
-  currentHorses: StudbookHorse[]
-  onOpenHorse: (horse: StudbookHorse) => void
-  onAddToList: (horse: StudbookHorse) => void
-  lists: AuctionCandidateList[]
-}) {
-  const [suggestions, setSuggestions] = useState<StudbookHorse[]>([])
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    let active = true
-    async function fetchSuggestions() {
-      if (currentHorses.length === 0) {
-        setSuggestions([])
-        return
-      }
-
-      setLoading(true)
-      try {
-        const sires = new Set<string>()
-        const breeders = new Set<string>()
-
-        currentHorses.slice(0, 10).forEach((h) => {
-          if (h.sire_name) sires.add(h.sire_name)
-          if (h.breeder_name) breeders.add(h.breeder_name)
-        })
-
-        const filters: StudbookFilters = {
-          sex: 'female',
-          reproductiveOnly: true,
-          sortBy: 'quality',
-        }
-
-        if (sires.size > 0) {
-          filters.sireNames = Array.from(sires).slice(0, 3)
-        } else if (breeders.size > 0) {
-          filters.breederNames = Array.from(breeders).slice(0, 3)
-        }
-
-        const res = await studbookService.getHorses(filters, {
-          page: 1,
-          pageSize: 5,
-        })
-        if (!active) return
-
-        const currentIds = new Set(currentHorses.map((h) => h.id))
-        setSuggestions(
-          res.rows.filter((h) => !currentIds.has(h.id)).slice(0, 3),
-        )
-      } catch (err) {
-        console.error(err)
-      } finally {
-        if (active) setLoading(false)
-      }
-    }
-
-    const timeoutId = setTimeout(fetchSuggestions, 500)
-    return () => {
-      active = false
-      clearTimeout(timeoutId)
-    }
-  }, [currentHorses])
-
-  if (currentHorses.length === 0 || (!loading && suggestions.length === 0))
-    return null
-
-  return (
-    <Card className="shadow-sm">
-      <CardHeader className="border-b pb-4">
-        <CardTitle className="flex items-center gap-2 text-base text-primary">
-          <Sparkles className="h-4 w-4" />
-          Matrizes-alvo Relacionadas
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3 p-4">
-        <p className="text-xs text-muted-foreground">
-          Sugestões dinâmicas de matrizes ativas cruzando a genética dos
-          resultados da busca atual.
-        </p>
-        {loading ? (
-          <div className="flex min-h-24 items-center justify-center">
-            <Loader2 className="h-5 w-5 animate-spin text-primary" />
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {suggestions.map((horse) => (
-              <div
-                key={horse.id}
-                className="rounded-md border bg-primary/5 p-3 transition hover:bg-primary/10"
-              >
-                <div
-                  role="button"
-                  tabIndex={0}
-                  className="cursor-pointer text-sm font-semibold hover:underline"
-                  onClick={() => onOpenHorse(horse)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') onOpenHorse(horse)
-                  }}
-                >
-                  {horse.name}
-                </div>
-                <div className="mt-1 text-xs text-muted-foreground">
-                  Pai: {horse.sire_name || 'não informado'}
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="mt-2 h-7 w-full text-xs"
-                  disabled={!lists.length}
-                  onClick={() => onAddToList(horse)}
-                >
-                  <Plus className="mr-1 h-3 w-3" />
-                  Salvar
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  )
-}
-
 export default function Studbook() {
   const [overview, setOverview] = useState<StudbookOverview | null>(null)
   const [networkOverview, setNetworkOverview] =
@@ -1029,14 +825,9 @@ export default function Studbook() {
   const [horseDialogOpen, setHorseDialogOpen] = useState(false)
   const [page, setPage] = useState(1)
   const pageSize = 50
-  const [lists, setLists] = useState<AuctionCandidateList[]>([])
-  const [listDialogOpen, setListDialogOpen] = useState(false)
-  const [selectedList, setSelectedList] = useState<AuctionCandidateList | null>(
-    null,
-  )
-  const [listItems, setListItems] = useState<any[]>([])
-  const [listItemsLoading, setListItemsLoading] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [exporting, setExporting] = useState<ExportScope | null>(null)
+  const [syncingRecent, setSyncingRecent] = useState(false)
   const dataRequestRef = useRef(0)
   const networkRequestRef = useRef(0)
   const [search, setSearch] = useState('')
@@ -1098,16 +889,14 @@ export default function Studbook() {
     dataRequestRef.current = requestId
     setLoading(true)
     try {
-      const [nextOverview, nextHorses, nextLists] = await Promise.all([
+      const [nextOverview, nextHorses] = await Promise.all([
         studbookService.getOverview(),
         studbookService.getHorses(filters, { page, pageSize }),
-        studbookService.getCandidateLists(),
       ])
       if (requestId !== dataRequestRef.current) return
       setOverview(nextOverview)
       setHorses(nextHorses.rows)
       setHorseTotal(nextHorses.total)
-      setLists(nextLists)
     } catch (error) {
       if (requestId !== dataRequestRef.current) return
       console.error(error)
@@ -1227,51 +1016,55 @@ export default function Studbook() {
     setSortBy('age_asc')
   }
 
-  const createDefaultList = async () => {
+  const exportStudbook = async (scope: ExportScope) => {
+    setExporting(scope)
     try {
-      await studbookService.createCandidateList(
-        'Lista Personalizada',
-        'Seleção de animais de interesse separados manualmente.',
+      const rows = await studbookService.exportHorses(
+        scope === 'filtered' ? filters : {},
+      )
+      const today = new Date().toISOString().slice(0, 10)
+      downloadCsvFile(
+        `studbook-bh-${scope === 'filtered' ? 'filtros' : 'base-completa'}-${today}.csv`,
+        buildStudbookCsv(rows),
       )
       toast({
-        title: 'Lista criada',
-        description: 'Agora você pode adicionar registros à sua lista.',
+        title: 'Exportação pronta',
+        description: `${formatNumber(rows.length)} registros exportados em CSV.`,
         variant: 'success',
       })
-      await loadData()
     } catch (error) {
       console.error(error)
       toast({
-        title: 'Erro ao criar lista',
-        description: 'Não foi possível criar a lista agora.',
+        title: 'Erro ao exportar',
+        description: 'Não foi possível gerar o CSV do Studbook agora.',
         variant: 'destructive',
       })
+    } finally {
+      setExporting(null)
     }
   }
 
-  const addToFirstList = async (horse: StudbookHorse) => {
-    const [firstList] = lists
-    if (!firstList) return
-
+  const syncRecentChanges = async () => {
+    setSyncingRecent(true)
     try {
-      await studbookService.addHorseToList(
-        firstList.id,
-        horse.id,
-        'Selecionado a partir do Banco Genético Studbook BH.',
-      )
+      const result = await studbookService.syncRecentChanges()
+      const changed = Number(result?.insertedOrUpdatedHorses || 0)
       toast({
-        title: 'Registro adicionado',
-        description: `${horse.name} entrou em ${firstList.name}.`,
+        title: 'Sync solicitado',
+        description: `${formatNumber(changed)} registros recebidos do crawler recente.`,
         variant: 'success',
       })
-      await loadData()
+      await Promise.all([loadData(), loadNetwork()])
     } catch (error) {
       console.error(error)
       toast({
-        title: 'Erro ao adicionar',
-        description: 'Não foi possível adicionar este registro à lista.',
+        title: 'Sync ainda não configurado',
+        description:
+          'O botão está conectado à função sync-studbook-recent. Falta deployar/configurar o crawler para executar a coleta.',
         variant: 'destructive',
       })
+    } finally {
+      setSyncingRecent(false)
     }
   }
 
@@ -1313,69 +1106,6 @@ export default function Studbook() {
   const changeNetworkDetailPage = async (nextPage: number) => {
     if (!selectedNetworkEntity) return
     await openNetworkEntity(selectedNetworkEntity, nextPage)
-  }
-
-  const openList = async (list: AuctionCandidateList) => {
-    setSelectedList(list)
-    setListDialogOpen(true)
-    setListItemsLoading(true)
-    try {
-      const items = await studbookService.getListItems(list.id)
-      setListItems(items)
-    } catch (error) {
-      console.error(error)
-      toast({
-        title: 'Erro',
-        description: 'Não foi possível carregar os animais da lista.',
-        variant: 'destructive',
-      })
-    } finally {
-      setListItemsLoading(false)
-    }
-  }
-
-  const removeListItem = async (itemId: string) => {
-    try {
-      await studbookService.removeListItem(itemId)
-      setListItems((prev) => prev.filter((item) => item.id !== itemId))
-      setLists((prev) =>
-        prev.map((l) =>
-          l.id === selectedList?.id
-            ? { ...l, item_count: Math.max(0, (l.item_count || 0) - 1) }
-            : l,
-        ),
-      )
-      toast({
-        title: 'Removido',
-        description: 'Animal removido da lista.',
-      })
-    } catch (error) {
-      console.error(error)
-      toast({
-        title: 'Erro',
-        description: 'Não foi possível remover o animal da lista.',
-        variant: 'destructive',
-      })
-    }
-  }
-
-  const createProspectingList = async (entity: StudbookNetworkEntity) => {
-    try {
-      await studbookService.createProspectingListFromEntity(entity)
-      toast({
-        title: 'Lista criada',
-        description: `${entity.name} virou uma lista de prospecção.`,
-        variant: 'success',
-      })
-      await Promise.all([loadData(), loadNetwork()])
-    } catch (error) {
-      console.error(error)
-      toast({
-        title: 'Erro ao criar lista',
-        description: 'Não foi possível criar a lista de prospecção agora.',
-        variant: 'destructive',
-      })
-    }
   }
 
   const createOrTagCrmContact = async (entity: StudbookNetworkEntity) => {
@@ -1432,20 +1162,11 @@ export default function Studbook() {
 
   return (
     <div className="space-y-6 pb-10 animate-fade-in">
-      <ListDetailDialog
-        list={selectedList}
-        items={listItems}
-        loading={listItemsLoading}
-        open={listDialogOpen}
-        onOpenChange={setListDialogOpen}
-        onRemoveItem={removeListItem}
-      />
       <NetworkDetailDialog
         open={networkDialogOpen}
         detail={networkDetail}
         loading={networkDetailLoading}
         onOpenChange={setNetworkDialogOpen}
-        onCreateList={createProspectingList}
         onApplyFilter={applyNetworkFilter}
         onCreateCrmContact={createOrTagCrmContact}
         onDetailPageChange={changeNetworkDetailPage}
@@ -1467,13 +1188,33 @@ export default function Studbook() {
           </h1>
           <p className="mt-1 max-w-3xl text-muted-foreground">
             Banco separado do CRM de clientes para pesquisar cavalos, linhagens,
-            idade, criadores, proprietários e montar listas de futuros leilões.
+            idade, criadores, proprietários e origem dos registros.
           </p>
         </div>
-        <Button onClick={createDefaultList}>
-          <Plus className="h-4 w-4" />
-          Criar lista de leilão
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            onClick={() => exportStudbook('all')}
+            disabled={exporting !== null}
+          >
+            <Download className="h-4 w-4" />
+            {exporting === 'all' ? 'Exportando...' : 'Exportar tudo'}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => exportStudbook('filtered')}
+            disabled={exporting !== null}
+          >
+            <Download className="h-4 w-4" />
+            {exporting === 'filtered' ? 'Exportando...' : 'Exportar filtros'}
+          </Button>
+          <Button onClick={syncRecentChanges} disabled={syncingRecent}>
+            <RefreshCw
+              className={`h-4 w-4 ${syncingRecent ? 'animate-spin' : ''}`}
+            />
+            Sync recentes
+          </Button>
+        </div>
       </div>
 
       <div className="rounded-md border bg-white p-4">
@@ -1484,8 +1225,8 @@ export default function Studbook() {
               Separado por desenho
             </div>
             <p className="mt-1 text-sm text-muted-foreground">
-              Estes dados vivem em tabelas `studbook_*` e `auction_candidate_*`.
-              Eles não alteram contatos, compradores, campanhas ou RFMV.
+              Estes dados vivem em tabelas `studbook_*`. Eles não alteram
+              contatos, compradores, campanhas ou RFMV.
             </p>
           </div>
         </div>
@@ -1523,11 +1264,11 @@ export default function Studbook() {
           <div>
             <CardTitle className="flex items-center gap-2 text-base text-primary">
               <SlidersHorizontal className="h-4 w-4" />
-              Curadoria para montar leilões
+              Pesquisa da base Studbook
             </CardTitle>
             <p className="mt-1 text-sm text-muted-foreground">
               Filtre a base por idade, linhagem, criador, proprietário e
-              potencial reprodutivo.
+              qualidade dos dados disponíveis.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -1839,135 +1580,21 @@ export default function Studbook() {
         </CardContent>
       </Card>
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
-        <div>
-          {loading ? (
-            <div className="flex min-h-72 items-center justify-center rounded-md border bg-white">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-          ) : (
-            <HorseTable
-              horses={horses}
-              total={horseTotal}
-              page={page}
-              pageSize={pageSize}
-              lists={lists}
-              onAddToList={addToFirstList}
-              onPageChange={setPage}
-              onOpenHorse={openHorse}
-            />
-          )}
-        </div>
-
-        <aside className="space-y-4">
-          <SuggestedMares
-            currentHorses={horses}
+      <div>
+        {loading ? (
+          <div className="flex min-h-72 items-center justify-center rounded-md border bg-white">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : (
+          <HorseTable
+            horses={horses}
+            total={horseTotal}
+            page={page}
+            pageSize={pageSize}
+            onPageChange={setPage}
             onOpenHorse={openHorse}
-            onAddToList={addToFirstList}
-            lists={lists}
           />
-
-          <Card className="shadow-sm">
-            <CardHeader className="border-b pb-4">
-              <CardTitle className="text-base text-primary">
-                Tese da seleção
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 p-4 text-sm text-muted-foreground">
-              <div className="rounded-md border bg-muted/10 p-3">
-                <div className="font-semibold text-foreground">
-                  {horses.length} candidatos visíveis
-                </div>
-                <p className="mt-1 text-xs leading-relaxed">
-                  Use a lista para montar um leilão por família materna, por
-                  criador ou por perfil de idade. A melhor próxima camada é
-                  cruzar essa base com valores reais de arremate.
-                </p>
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center justify-between text-xs">
-                  <span>Com genealogia</span>
-                  <strong className="text-foreground">
-                    {
-                      horses.filter(
-                        (horse) => horse.sire_name && horse.dam_name,
-                      ).length
-                    }
-                  </strong>
-                </div>
-                <div className="flex items-center justify-between text-xs">
-                  <span>Com proprietário</span>
-                  <strong className="text-foreground">
-                    {horses.filter((horse) => horse.owner_name).length}
-                  </strong>
-                </div>
-                <div className="flex items-center justify-between text-xs">
-                  <span>Com filhos</span>
-                  <strong className="text-foreground">
-                    {
-                      horses.filter(
-                        (horse) => Number(horse.offspring_count || 0) > 0,
-                      ).length
-                    }
-                  </strong>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-sm">
-            <CardHeader className="border-b pb-4">
-              <CardTitle className="text-base text-primary">
-                Listas de leilão
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 p-4">
-              {lists.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  Crie uma lista para começar a separar matrizes e cavalos com
-                  potencial comercial.
-                </p>
-              ) : (
-                lists.map((list) => (
-                  <div key={list.id} className="rounded-md border p-3">
-                    <div className="font-semibold">{list.name}</div>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {list.thesis || 'Sem tese comercial definida.'}
-                    </p>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      className="mt-3 w-full"
-                      onClick={() => openList(list)}
-                    >
-                      Ver {list.item_count || 0} selecionados
-                    </Button>
-                  </div>
-                ))
-              )}
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-sm">
-            <CardHeader className="border-b pb-4">
-              <CardTitle className="text-base text-primary">
-                Importação ABCCH
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 p-4 text-sm text-muted-foreground">
-              <p>
-                O schema já está preparado para download incremental da base
-                pública, guardando fonte, payload bruto e data da última
-                sincronização.
-              </p>
-              <p>
-                A coleta deve rodar em fila lenta e auditável para manter
-                rastreabilidade e não misturar a base de cavalos com o CRM de
-                clientes.
-              </p>
-            </CardContent>
-          </Card>
-        </aside>
+        )}
       </div>
     </div>
   )
