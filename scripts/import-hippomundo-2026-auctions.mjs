@@ -374,7 +374,16 @@ const importAuction = async ({
       mapLot({ horse, auction, dbAuction, sourceId: source.id, coming, accessLimited }),
     )
 
-  if (lots.length) {
+  const uniqueLots = Array.from(
+    new Map(
+      lots.map((lot) => [
+        `${lot.auction_id}|${lot.lot_number}|${lot.normalized_horse_name}`,
+        lot,
+      ]),
+    ).values(),
+  )
+
+  if (uniqueLots.length) {
     await supabaseRequest(
       'global_auction_lots?on_conflict=auction_id,lot_number,normalized_horse_name',
       {
@@ -382,12 +391,16 @@ const importAuction = async ({
         headers: {
           Prefer: 'resolution=merge-duplicates,return=representation',
         },
-        body: JSON.stringify(lots),
+        body: JSON.stringify(uniqueLots),
       },
     )
   }
 
-  return { auction: dbAuction, lotsImported: lots.length }
+  return {
+    auction: dbAuction,
+    lotsImported: uniqueLots.length,
+    lotsSkippedAsDuplicates: lots.length - uniqueLots.length,
+  }
 }
 
 const dedupeAuctions = (items) => {
@@ -477,6 +490,7 @@ const main = async () => {
 
     let rowsSeen = 0
     let rowsImported = 0
+    let rowsSkipped = 0
     let auctionsImported = 0
     const importedAuctions = []
 
@@ -493,6 +507,7 @@ const main = async () => {
       })
       rowsSeen += item.auction.horses?.length || 0
       rowsImported += result.lotsImported
+      rowsSkipped += result.lotsSkippedAsDuplicates || 0
       auctionsImported += 1
       importedAuctions.push({
         id: item.auction.id,
@@ -522,6 +537,7 @@ const main = async () => {
       auctions_imported: auctionsImported,
       lots_seen: rowsSeen,
       lots_imported: rowsImported,
+      lots_skipped_as_duplicate_payload_rows: rowsSkipped,
       imported_auctions: importedAuctions,
     }
 
@@ -529,7 +545,7 @@ const main = async () => {
       status: missingPastAuctions ? 'completed_with_warnings' : 'finished',
       rows_seen: rowsSeen,
       rows_imported: rowsImported,
-      rows_skipped: 0,
+      rows_skipped: rowsSkipped,
       error_message: missingPastAuctions
         ? `Public logged-out endpoint reported ${pastReported} past ${year} auctions but returned ${pastImported}. Login/subscription may be required for full past coverage.`
         : null,
