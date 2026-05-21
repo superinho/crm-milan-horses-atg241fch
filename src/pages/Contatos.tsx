@@ -81,6 +81,7 @@ import {
   UserX,
   Send,
   Tag as TagIcon,
+  ChevronDown,
 } from 'lucide-react'
 import { cn, getContrastColor } from '@/lib/utils'
 import { ContactForm } from '@/components/contacts/ContactForm'
@@ -189,8 +190,8 @@ export default function Contatos() {
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [availableTags, setAvailableTags] = useState<Tag[]>([])
+  const [itemsPerPage, setItemsPerPage] = useState(10)
 
-  const itemsPerPage = 10
   const { toast } = useToast()
 
   const openProfile = (contact: Contact) => {
@@ -268,7 +269,7 @@ export default function Contatos() {
     } finally {
       setLoading(false)
     }
-  }, [currentPage, filters, searchTerm, sortConfig, toast])
+  }, [currentPage, itemsPerPage, filters, searchTerm, sortConfig, toast])
 
   useEffect(() => {
     // Debounce search
@@ -1334,47 +1335,84 @@ export default function Contatos() {
           </div>
 
           {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="mt-4">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        setCurrentPage((p) => Math.max(1, p - 1))
-                      }}
-                      className={
-                        currentPage === 1
-                          ? 'pointer-events-none opacity-50'
-                          : ''
-                      }
-                    />
-                  </PaginationItem>
-
-                  <span className="text-sm text-muted-foreground mx-4">
-                    Página {currentPage} de {totalPages}
-                  </span>
-
-                  <PaginationItem>
-                    <PaginationNext
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        setCurrentPage((p) => Math.min(totalPages, p + 1))
-                      }}
-                      className={
-                        currentPage === totalPages
-                          ? 'pointer-events-none opacity-50'
-                          : ''
-                      }
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
+          <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-sm text-muted-foreground">
+              Mostrando{' '}
+              {totalCount === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1}-
+              {Math.min(currentPage * itemsPerPage, totalCount)} de {totalCount}{' '}
+              contatos
             </div>
-          )}
+
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">
+                  Por página:
+                </span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-8 gap-1">
+                      {itemsPerPage === 10000 ? 'Todos' : itemsPerPage}
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="min-w-[80px]">
+                    {[10, 25, 100, 500, 10000].map((size) => (
+                      <DropdownMenuItem
+                        key={size}
+                        onClick={() => {
+                          setItemsPerPage(size)
+                          setCurrentPage(1)
+                        }}
+                        className={itemsPerPage === size ? 'bg-muted' : ''}
+                      >
+                        {size === 10000 ? 'Todos' : size}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
+              {totalPages > 1 && (
+                <Pagination className="w-auto mx-0">
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setCurrentPage((p) => Math.max(1, p - 1))
+                        }}
+                        className={
+                          currentPage === 1
+                            ? 'pointer-events-none opacity-50'
+                            : ''
+                        }
+                      />
+                    </PaginationItem>
+
+                    <span className="text-sm text-muted-foreground mx-4 hidden md:block">
+                      Página {currentPage} de {totalPages}
+                    </span>
+
+                    <PaginationItem>
+                      <PaginationNext
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setCurrentPage((p) => Math.min(totalPages, p + 1))
+                        }}
+                        className={
+                          currentPage === totalPages
+                            ? 'pointer-events-none opacity-50'
+                            : ''
+                        }
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              )}
+            </div>
+          </div>
         </CardContent>
       </Card>
 
