@@ -17,6 +17,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -111,6 +112,8 @@ const initialFilters: FilterState = {
   maxInvestment: '',
   minPurchases: '',
   maxPurchases: '',
+  minBids: '',
+  maxBids: '',
   status: null,
   breed: null,
   location: '',
@@ -184,6 +187,9 @@ export default function Contatos() {
   const [contactToDelete, setContactToDelete] = useState<Contact | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [availableTags, setAvailableTags] = useState<Tag[]>([])
+
   const itemsPerPage = 10
   const { toast } = useToast()
 
@@ -239,6 +245,8 @@ export default function Contatos() {
         maxPurchases: filters.maxPurchases
           ? Number(filters.maxPurchases)
           : undefined,
+        minBids: filters.minBids ? Number(filters.minBids) : undefined,
+        maxBids: filters.maxBids ? Number(filters.maxBids) : undefined,
         lastContactRange: filters.lastContactRange,
         status: filters.status,
         breed: filters.breed,
@@ -273,6 +281,7 @@ export default function Contatos() {
   useEffect(() => {
     fetchOverview()
     fetchLatestSyncRun()
+    contactsService.getTags().then(setAvailableTags).catch(console.error)
   }, [fetchOverview, fetchLatestSyncRun])
 
   useRealtime('contacts', () => {
@@ -386,6 +395,120 @@ export default function Contatos() {
     setSearchTerm('')
     setFilters({ ...initialFilters })
     setCurrentPage(1)
+  }
+
+  const handleBulkAddTag = async (tagId: string) => {
+    if (selectedIds.size === 0) return
+    try {
+      await contactsService.bulkAddTagToContacts(Array.from(selectedIds), tagId)
+      toast({
+        variant: 'success',
+        title: 'Tags adicionadas',
+        description: `A tag foi adicionada a ${selectedIds.size} contato(s).`,
+      })
+      setSelectedIds(new Set())
+      fetchContacts()
+    } catch (error) {
+      console.error(error)
+      toast({
+        variant: 'destructive',
+        title: 'Erro',
+        description: 'Não foi possível adicionar as tags.',
+      })
+    }
+  }
+
+  const exportContacts = async () => {
+    try {
+      const { data } = await contactsService.getContacts({
+        page: 1,
+        pageSize: 10000,
+        search: searchTerm,
+        tags: filters.tags,
+        segment: filters.segment,
+        minInvestment: filters.minInvestment
+          ? Number(filters.minInvestment)
+          : undefined,
+        maxInvestment: filters.maxInvestment
+          ? Number(filters.maxInvestment)
+          : undefined,
+        minPurchases: filters.minPurchases
+          ? Number(filters.minPurchases)
+          : undefined,
+        maxPurchases: filters.maxPurchases
+          ? Number(filters.maxPurchases)
+          : undefined,
+        minBids: filters.minBids ? Number(filters.minBids) : undefined,
+        maxBids: filters.maxBids ? Number(filters.maxBids) : undefined,
+        lastContactRange: filters.lastContactRange,
+        status: filters.status,
+        breed: filters.breed,
+        location: filters.location,
+        hasWhatsapp: filters.hasWhatsapp,
+        sortBy: sortConfig.key,
+        sortDirection: sortConfig.direction,
+      })
+
+      if (!data || data.length === 0) {
+        toast({ title: 'Nenhum dado para exportar' })
+        return
+      }
+
+      const headers = [
+        'Nome',
+        'Email',
+        'Telefone',
+        'CPF/Documento',
+        'Cidade',
+        'Estado',
+        'Qtd Compras',
+        'Tags',
+      ]
+      const rows = data.map((c) => [
+        `"${(c.name || '').replace(/"/g, '""')}"`,
+        `"${(c.email || '').replace(/"/g, '""')}"`,
+        `"${(c.phone || c.whatsapp || '').replace(/"/g, '""')}"`,
+        `"${(c.cpf || c.document || '').replace(/"/g, '""')}"`,
+        `"${(c.city || '').replace(/"/g, '""')}"`,
+        `"${(c.state || '').replace(/"/g, '""')}"`,
+        c.purchaseCount || 0,
+        `"${(c.tags || [])
+          .map((t) => t.name)
+          .join(', ')
+          .replace(/"/g, '""')}"`,
+      ])
+
+      const csvContent = [
+        headers.join(','),
+        ...rows.map((r) => r.join(',')),
+      ].join('\n')
+      const blob = new Blob(['\ufeff' + csvContent], {
+        type: 'text/csv;charset=utf-8;',
+      })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute(
+        'download',
+        `Contatos_${new Date().toISOString().slice(0, 10)}.csv`,
+      )
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      toast({
+        variant: 'success',
+        title: 'Exportação concluída',
+        description: `Arquivo com ${data.length} contatos foi baixado.`,
+      })
+    } catch (error) {
+      console.error(error)
+      toast({
+        variant: 'destructive',
+        title: 'Erro na exportação',
+        description: 'Não foi possível gerar o arquivo.',
+      })
+    }
   }
 
   const handleSmartLeiloesSync = async () => {
@@ -698,7 +821,13 @@ export default function Contatos() {
                 currentFilters={filters}
               />
 
-              <Button variant="outline" size="icon" className="hidden md:flex">
+              <Button
+                variant="outline"
+                size="icon"
+                className="hidden md:flex"
+                onClick={exportContacts}
+                title="Exportar para Excel/CSV"
+              >
                 <FileDown className="h-4 w-4 text-muted-foreground" />
               </Button>
             </div>
@@ -801,11 +930,75 @@ export default function Contatos() {
                   {filters.maxPurchases || 'sem limite'}
                 </Badge>
               )}
+              {(filters.minBids || filters.maxBids) && (
+                <Badge variant="secondary" className="px-2 py-1 text-xs">
+                  Lances: {filters.minBids || '0'} -{' '}
+                  {filters.maxBids || 'sem limite'}
+                </Badge>
+              )}
               {filters.hasWhatsapp && (
                 <Badge variant="secondary" className="px-2 py-1 text-xs">
                   Com WhatsApp
                 </Badge>
               )}
+            </div>
+          )}
+
+          {/* Bulk Actions Bar */}
+          {selectedIds.size > 0 && (
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-popover text-popover-foreground border shadow-xl rounded-full px-5 py-3 flex items-center gap-4 animate-in slide-in-from-bottom-10">
+              <span className="text-sm font-medium whitespace-nowrap">
+                {selectedIds.size} selecionado{selectedIds.size > 1 ? 's' : ''}
+              </span>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="default"
+                    className="shadow-none rounded-full h-8 px-4"
+                  >
+                    Adicionar Tag
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="center"
+                  className="w-48 max-h-[300px] overflow-y-auto"
+                >
+                  <DropdownMenuLabel>Selecionar Tag</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {availableTags.map((tag) => (
+                    <DropdownMenuItem
+                      key={tag.id}
+                      onClick={() => handleBulkAddTag(tag.id)}
+                    >
+                      <div className="flex items-center gap-2 w-full">
+                        <div
+                          className="w-2 h-2 rounded-full"
+                          style={{ backgroundColor: tag.color || '#ccc' }}
+                        />
+                        {tag.name}
+                      </div>
+                    </DropdownMenuItem>
+                  ))}
+                  {availableTags.length === 0 && (
+                    <div className="p-2 text-sm text-muted-foreground text-center">
+                      Nenhuma tag cadastrada
+                    </div>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <div className="w-px h-4 bg-border"></div>
+
+              <Button
+                size="sm"
+                variant="ghost"
+                className="rounded-full h-8 px-3 text-muted-foreground hover:text-foreground"
+                onClick={() => setSelectedIds(new Set())}
+              >
+                Cancelar
+              </Button>
             </div>
           )}
         </CardHeader>
@@ -815,6 +1008,22 @@ export default function Contatos() {
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50 hover:bg-muted/50">
+                  <TableHead className="w-[40px]">
+                    <Checkbox
+                      checked={
+                        contacts.length > 0 &&
+                        selectedIds.size === contacts.length
+                      }
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setSelectedIds(new Set(contacts.map((c) => c.id)))
+                        } else {
+                          setSelectedIds(new Set())
+                        }
+                      }}
+                      aria-label="Selecionar todos os contatos da página"
+                    />
+                  </TableHead>
                   <TableHead className="w-[50px]">#</TableHead>
                   <TableHead className="w-[300px]">
                     <Button
@@ -877,7 +1086,7 @@ export default function Contatos() {
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={9} className="h-32 text-center">
+                    <TableCell colSpan={10} className="h-32 text-center">
                       <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
                     </TableCell>
                   </TableRow>
@@ -888,6 +1097,18 @@ export default function Contatos() {
                       className="group cursor-pointer hover:bg-muted/30 transition-colors"
                       onClick={() => openProfile(contact)}
                     >
+                      <TableCell onClick={(e) => e.stopPropagation()}>
+                        <Checkbox
+                          checked={selectedIds.has(contact.id)}
+                          onCheckedChange={(checked) => {
+                            const next = new Set(selectedIds)
+                            if (checked) next.add(contact.id)
+                            else next.delete(contact.id)
+                            setSelectedIds(next)
+                          }}
+                          aria-label={`Selecionar ${contact.name}`}
+                        />
+                      </TableCell>
                       <TableCell className="text-muted-foreground text-sm">
                         {(currentPage - 1) * itemsPerPage + index + 1}
                       </TableCell>
@@ -1093,7 +1314,7 @@ export default function Contatos() {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={9} className="h-32 text-center">
+                    <TableCell colSpan={10} className="h-32 text-center">
                       <div className="flex flex-col items-center justify-center text-muted-foreground">
                         <Search className="h-8 w-8 mb-2 opacity-50" />
                         <p>Nenhum contato encontrado com os filtros atuais.</p>

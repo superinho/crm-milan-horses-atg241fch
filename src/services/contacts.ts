@@ -75,6 +75,8 @@ export type GetContactsParams = {
   maxInvestment?: number
   minPurchases?: number
   maxPurchases?: number
+  minBids?: number
+  maxBids?: number
   status?: string | null
   breed?: string | null
   location?: string
@@ -254,6 +256,8 @@ export const contactsService = {
     maxInvestment,
     minPurchases,
     maxPurchases,
+    minBids,
+    maxBids,
     status = null,
     breed = null,
     location = '',
@@ -372,6 +376,14 @@ export const contactsService = {
 
       if (maxPurchases !== undefined) {
         query = query.lte('purchase_count', maxPurchases)
+      }
+
+      if (minBids !== undefined) {
+        query = query.gte('bid_count', minBids)
+      }
+
+      if (maxBids !== undefined) {
+        query = query.lte('bid_count', maxBids)
       }
 
       if (hasWhatsapp) {
@@ -577,6 +589,15 @@ export const contactsService = {
     const { error } = await db
       .from('contact_tags')
       .upsert({ contact_id: contactId, tag_id: tagId })
+    if (error) throw error
+  },
+
+  async bulkAddTagToContacts(contactIds: string[], tagId: string) {
+    if (!contactIds.length) return
+    const rows = contactIds.map((contact_id) => ({ contact_id, tag_id }))
+    const { error } = await db
+      .from('contact_tags')
+      .upsert(rows, { onConflict: 'contact_id,tag_id' })
     if (error) throw error
   },
 

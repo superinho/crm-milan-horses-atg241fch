@@ -53,6 +53,8 @@ export interface FilterState {
   maxInvestment: string
   minPurchases: string
   maxPurchases: string
+  minBids: string
+  maxBids: string
   lastContactRange?: DateRange
   status: 'active' | 'inactive' | null
   breed: string | null
@@ -87,6 +89,8 @@ const emptyFilters: FilterState = {
   maxInvestment: '',
   minPurchases: '',
   maxPurchases: '',
+  minBids: '',
+  maxBids: '',
   lastContactRange: undefined,
   status: null,
   breed: null,
@@ -306,28 +310,98 @@ export function AdvancedFilter({
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label>Número de compras</Label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="number"
-                    min={0}
-                    placeholder="Min"
-                    value={filters.minPurchases}
-                    onChange={(e) =>
-                      setFilters({ ...filters, minPurchases: e.target.value })
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Número de compras</Label>
+                  <Select
+                    value={
+                      filters.minPurchases === '0' &&
+                      filters.maxPurchases === '0'
+                        ? '0'
+                        : filters.minPurchases === '1' &&
+                            filters.maxPurchases === '1'
+                          ? '1'
+                          : filters.minPurchases === '2' &&
+                              filters.maxPurchases === '2'
+                            ? '2'
+                            : filters.minPurchases === '3' &&
+                                filters.maxPurchases === ''
+                              ? '3+'
+                              : 'custom'
                     }
-                  />
-                  <span className="text-muted-foreground">-</span>
-                  <Input
-                    type="number"
-                    min={0}
-                    placeholder="Max"
-                    value={filters.maxPurchases}
-                    onChange={(e) =>
-                      setFilters({ ...filters, maxPurchases: e.target.value })
+                    onValueChange={(val) => {
+                      if (val === '0')
+                        setFilters({
+                          ...filters,
+                          minPurchases: '0',
+                          maxPurchases: '0',
+                        })
+                      else if (val === '1')
+                        setFilters({
+                          ...filters,
+                          minPurchases: '1',
+                          maxPurchases: '1',
+                        })
+                      else if (val === '2')
+                        setFilters({
+                          ...filters,
+                          minPurchases: '2',
+                          maxPurchases: '2',
+                        })
+                      else if (val === '3+')
+                        setFilters({
+                          ...filters,
+                          minPurchases: '3',
+                          maxPurchases: '',
+                        })
+                      else
+                        setFilters({
+                          ...filters,
+                          minPurchases: '',
+                          maxPurchases: '',
+                        })
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Qualquer" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="custom">Qualquer</SelectItem>
+                      <SelectItem value="0">0 lotes (Nunca comprou)</SelectItem>
+                      <SelectItem value="1">1 lote</SelectItem>
+                      <SelectItem value="2">2 lotes</SelectItem>
+                      <SelectItem value="3+">3+ lotes</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Lances / Bids</Label>
+                  <Select
+                    value={
+                      filters.minBids === '0' && filters.maxBids === '0'
+                        ? '0'
+                        : filters.minBids === '1' && filters.maxBids === ''
+                          ? '1+'
+                          : 'custom'
                     }
-                  />
+                    onValueChange={(val) => {
+                      if (val === '0')
+                        setFilters({ ...filters, minBids: '0', maxBids: '0' })
+                      else if (val === '1+')
+                        setFilters({ ...filters, minBids: '1', maxBids: '' })
+                      else setFilters({ ...filters, minBids: '', maxBids: '' })
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Qualquer" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="custom">Qualquer</SelectItem>
+                      <SelectItem value="0">Sem lances</SelectItem>
+                      <SelectItem value="1+">Com lances (1+)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
