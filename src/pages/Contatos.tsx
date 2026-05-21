@@ -26,6 +26,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   Pagination,
@@ -822,10 +829,34 @@ export default function Contatos() {
                 currentFilters={filters}
               />
 
+              <div className="flex items-center gap-2 w-full md:w-auto">
+                <span className="text-sm font-medium text-muted-foreground hidden sm:inline-block">
+                  Mostrar:
+                </span>
+                <Select
+                  value={itemsPerPage.toString()}
+                  onValueChange={(val) => {
+                    setItemsPerPage(Number(val))
+                    setCurrentPage(1)
+                  }}
+                >
+                  <SelectTrigger className="w-full sm:w-[100px] h-10 bg-background">
+                    <SelectValue placeholder="Selecione" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="25">25</SelectItem>
+                    <SelectItem value="100">100</SelectItem>
+                    <SelectItem value="500">500</SelectItem>
+                    <SelectItem value="10000">Todos</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
               <Button
                 variant="outline"
                 size="icon"
-                className="hidden md:flex"
+                className="hidden md:flex h-10 w-10 shrink-0"
                 onClick={exportContacts}
                 title="Exportar para Excel/CSV"
               >
@@ -1344,34 +1375,6 @@ export default function Contatos() {
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">
-                  Por página:
-                </span>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="h-8 gap-1">
-                      {itemsPerPage === 10000 ? 'Todos' : itemsPerPage}
-                      <ChevronDown className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="min-w-[80px]">
-                    {[10, 25, 100, 500, 10000].map((size) => (
-                      <DropdownMenuItem
-                        key={size}
-                        onClick={() => {
-                          setItemsPerPage(size)
-                          setCurrentPage(1)
-                        }}
-                        className={itemsPerPage === size ? 'bg-muted' : ''}
-                      >
-                        {size === 10000 ? 'Todos' : size}
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-
               {totalPages > 1 && (
                 <Pagination className="w-auto mx-0">
                   <PaginationContent>
