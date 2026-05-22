@@ -144,16 +144,23 @@ const enrichWithRfmv = async (contacts: Contact[]) => {
   const ids = contacts.map((contact) => contact.id)
   if (!ids.length) return contacts
 
-  const { data, error } = await db
-    .from('customer_rfmv_view')
-    .select(
-      'id, purchase_count, monetary_value, avg_ticket, bid_count, auction_count, bid_value, last_activity_date, segment, rfmv_score',
-    )
-    .in('id', ids)
+  const BATCH_SIZE = 200
+  const rfmvData: any[] = []
 
-  if (error) throw error
+  for (let i = 0; i < ids.length; i += BATCH_SIZE) {
+    const batchIds = ids.slice(i, i + BATCH_SIZE)
+    const { data, error } = await db
+      .from('customer_rfmv_view')
+      .select(
+        'id, purchase_count, monetary_value, avg_ticket, bid_count, auction_count, bid_value, last_activity_date, segment, rfmv_score',
+      )
+      .in('id', batchIds)
 
-  const rfmvById = new Map((data || []).map((row: any) => [row.id, row]))
+    if (error) throw error
+    rfmvData.push(...(data || []))
+  }
+
+  const rfmvById = new Map(rfmvData.map((row: any) => [row.id, row]))
   return contacts.map((contact) => {
     const rfmv = rfmvById.get(contact.id)
     if (!rfmv) return contact
@@ -418,23 +425,27 @@ export const contactsService = {
         return { data: [], count: count || 0, error: null }
       }
 
-      const { data: contactRows, error: contactsError } = await db
-        .from('contacts')
-        .select(
-          `
-          *,
-          contact_tags(tags(id, name, color))
-        `,
-        )
-        .in('id', ids)
+      const IN_BATCH_SIZE = 200
+      const contactRows: any[] = []
 
-      if (contactsError) throw contactsError
+      for (let i = 0; i < ids.length; i += IN_BATCH_SIZE) {
+        const batchIds = ids.slice(i, i + IN_BATCH_SIZE)
+        const { data: batchData, error: batchError } = await db
+          .from('contacts')
+          .select(
+            `
+            *,
+            contact_tags(tags(id, name, color))
+          `,
+          )
+          .in('id', batchIds)
+
+        if (batchError) throw batchError
+        contactRows.push(...(batchData || []))
+      }
 
       const contactsById = new Map(
-        (contactRows || []).map((contact: any) => [
-          contact.id,
-          mapContact(contact),
-        ]),
+        contactRows.map((contact: any) => [contact.id, mapContact(contact)]),
       )
       const contacts = rows.map((row: any) =>
         mergeContactWithRfmv(contactsById.get(row.id) || mapContact(row), row),
