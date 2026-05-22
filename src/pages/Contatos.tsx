@@ -198,6 +198,7 @@ export default function Contatos() {
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [isBulking, setIsBulking] = useState(false)
+  const [bulkProgress, setBulkProgress] = useState(0)
   const [availableTags, setAvailableTags] = useState<Tag[]>([])
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
@@ -410,6 +411,7 @@ export default function Contatos() {
   const handleBulkAddTag = async (tagId: string) => {
     if (selectedIds.size === 0) return
     setIsBulking(true)
+    setBulkProgress(0)
     try {
       const contactIds = Array.from(selectedIds)
       const chunkSize = 500
@@ -421,6 +423,9 @@ export default function Contatos() {
           p_tag_id: tagId,
         })
         if (error) throw error
+        setBulkProgress(
+          Math.round(((i + chunk.length) / contactIds.length) * 100),
+        )
       }
 
       toast({
@@ -440,41 +445,57 @@ export default function Contatos() {
       })
     } finally {
       setIsBulking(false)
+      setBulkProgress(0)
     }
   }
 
   const exportContacts = async () => {
     try {
-      const { data } = await contactsService.getContacts({
-        page: 1,
-        pageSize: 10000,
-        search: searchTerm,
-        tags: filters.tags,
-        segment: filters.segment,
-        minInvestment: filters.minInvestment
-          ? Number(filters.minInvestment)
-          : undefined,
-        maxInvestment: filters.maxInvestment
-          ? Number(filters.maxInvestment)
-          : undefined,
-        minPurchases: filters.minPurchases
-          ? Number(filters.minPurchases)
-          : undefined,
-        maxPurchases: filters.maxPurchases
-          ? Number(filters.maxPurchases)
-          : undefined,
-        minBids: filters.minBids ? Number(filters.minBids) : undefined,
-        maxBids: filters.maxBids ? Number(filters.maxBids) : undefined,
-        lastContactRange: filters.lastContactRange,
-        status: filters.status,
-        breed: filters.breed,
-        location: filters.location,
-        hasWhatsapp: filters.hasWhatsapp,
-        sortBy: sortConfig.key,
-        sortDirection: sortConfig.direction,
-      })
+      toast({ title: 'Iniciando exportação...' })
+      let allData: Contact[] = []
+      let page = 1
+      let hasMore = true
 
-      if (!data || data.length === 0) {
+      while (hasMore) {
+        const { data } = await contactsService.getContacts({
+          page,
+          pageSize: 1000,
+          search: searchTerm,
+          tags: filters.tags,
+          segment: filters.segment,
+          minInvestment: filters.minInvestment
+            ? Number(filters.minInvestment)
+            : undefined,
+          maxInvestment: filters.maxInvestment
+            ? Number(filters.maxInvestment)
+            : undefined,
+          minPurchases: filters.minPurchases
+            ? Number(filters.minPurchases)
+            : undefined,
+          maxPurchases: filters.maxPurchases
+            ? Number(filters.maxPurchases)
+            : undefined,
+          minBids: filters.minBids ? Number(filters.minBids) : undefined,
+          maxBids: filters.maxBids ? Number(filters.maxBids) : undefined,
+          lastContactRange: filters.lastContactRange,
+          status: filters.status,
+          breed: filters.breed,
+          location: filters.location,
+          hasWhatsapp: filters.hasWhatsapp,
+          sortBy: sortConfig.key,
+          sortDirection: sortConfig.direction,
+        })
+
+        if (!data || data.length === 0) {
+          hasMore = false
+        } else {
+          allData.push(...data)
+          if (data.length < 1000) hasMore = false
+          page++
+        }
+      }
+
+      if (allData.length === 0) {
         toast({ title: 'Nenhum dado para exportar' })
         return
       }
@@ -489,7 +510,7 @@ export default function Contatos() {
         'Qtd Compras',
         'Tags',
       ]
-      const rows = data.map((c) => [
+      const rows = allData.map((c) => [
         `"${(c.name || '').replace(/"/g, '""')}"`,
         `"${(c.email || '').replace(/"/g, '""')}"`,
         `"${(c.phone || c.whatsapp || '').replace(/"/g, '""')}"`,
@@ -524,7 +545,7 @@ export default function Contatos() {
       toast({
         variant: 'success',
         title: 'Exportação concluída',
-        description: `Arquivo com ${data.length} contatos foi baixado.`,
+        description: `Arquivo com ${allData.length} contatos foi baixado.`,
       })
     } catch (error) {
       console.error(error)
@@ -888,8 +909,8 @@ export default function Contatos() {
               type="button"
               variant={
                 filters.minPurchases === '1' && filters.maxPurchases === ''
-                  ? 'default'
-                  : 'secondary'
+                  ? 'secondary'
+                  : 'outline'
               }
               size="sm"
               onClick={() =>
@@ -906,7 +927,7 @@ export default function Contatos() {
               type="button"
               variant={
                 filters.minPurchases === '0' && filters.maxPurchases === '0'
-                  ? 'default'
+                  ? 'secondary'
                   : 'outline'
               }
               size="sm"
@@ -922,7 +943,7 @@ export default function Contatos() {
             </Button>
             <Button
               type="button"
-              variant={filters.hasWhatsapp ? 'default' : 'outline'}
+              variant={filters.hasWhatsapp ? 'secondary' : 'outline'}
               size="sm"
               onClick={() =>
                 applyQuickFilter({ hasWhatsapp: !filters.hasWhatsapp })
@@ -932,7 +953,9 @@ export default function Contatos() {
             </Button>
             <Button
               type="button"
-              variant={filters.segment === 'VIP ativo' ? 'default' : 'outline'}
+              variant={
+                filters.segment === 'VIP ativo' ? 'secondary' : 'outline'
+              }
               size="sm"
               onClick={() =>
                 applyQuickFilter({
@@ -1033,6 +1056,7 @@ export default function Contatos() {
                     {isBulking ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        {bulkProgress > 0 ? `${bulkProgress}% ` : ''}
                         Adicionando...
                       </>
                     ) : (

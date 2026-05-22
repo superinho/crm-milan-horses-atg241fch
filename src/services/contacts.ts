@@ -376,17 +376,43 @@ export const contactsService = {
         rfmvScore: 'rfmv_score',
       }
       const sortColumn = sortColumns[sortBy] || sortBy
-      const {
-        data: rfmvRows,
-        count,
-        error,
-      } = await query
-        .order(sortColumn, { ascending: sortDirection === 'asc' })
-        .range(from, to)
 
-      if (error) throw error
+      let rows: any[] = []
+      let count = 0
 
-      const rows = rfmvRows || []
+      if (pageSize > 1000) {
+        // Fetch in chunks of 1000 to prevent Supabase 500 timeouts
+        let currentFrom = from
+        let hasMore = true
+        while (hasMore && currentFrom <= to) {
+          const fetchTo = Math.min(currentFrom + 999, to)
+          const {
+            data,
+            count: c,
+            error,
+          } = await query
+            .order(sortColumn, { ascending: sortDirection === 'asc' })
+            .range(currentFrom, fetchTo)
+
+          if (error) throw error
+          if (c !== null) count = c
+          if (data) rows.push(...data)
+          if (!data || data.length < 1000) hasMore = false
+          currentFrom += 1000
+        }
+      } else {
+        const {
+          data,
+          count: c,
+          error,
+        } = await query
+          .order(sortColumn, { ascending: sortDirection === 'asc' })
+          .range(from, to)
+
+        if (error) throw error
+        rows = data || []
+        count = c || 0
+      }
       const ids = rows.map((row: any) => row.id)
       if (ids.length === 0) {
         return { data: [], count: count || 0, error: null }

@@ -33,6 +33,8 @@ import {
   PlusCircle,
   DatabaseZap,
   ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
 } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -547,12 +549,23 @@ export default function SmartLeiloes() {
                               setLotsSort((prev) => ({
                                 key: 'value',
                                 direction:
-                                  prev.direction === 'asc' ? 'desc' : 'asc',
+                                  prev.key === 'value' &&
+                                  prev.direction === 'asc'
+                                    ? 'desc'
+                                    : 'asc',
                               }))
                             }
                           >
                             Valor do Lance
-                            <ArrowUpDown className="h-3 w-3" />
+                            {lotsSort.key === 'value' ? (
+                              lotsSort.direction === 'asc' ? (
+                                <ArrowUp className="h-3 w-3" />
+                              ) : (
+                                <ArrowDown className="h-3 w-3" />
+                              )
+                            ) : (
+                              <ArrowUpDown className="h-3 w-3 opacity-50" />
+                            )}
                           </Button>
                         </TableHead>
                       </TableRow>
