@@ -74,6 +74,8 @@ import {
   Mail,
   MessageCircle,
   ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
   Eye,
   FileDown,
   Loader2,
@@ -301,6 +303,17 @@ export default function Contatos() {
   })
 
   const totalPages = Math.ceil(totalCount / itemsPerPage)
+
+  const getSortIcon = (columnKey: string) => {
+    if (sortConfig.key === columnKey) {
+      return sortConfig.direction === 'asc' ? (
+        <ArrowUp className="h-3 w-3" />
+      ) : (
+        <ArrowDown className="h-3 w-3" />
+      )
+    }
+    return <ArrowUpDown className="h-3 w-3 opacity-50" />
+  }
 
   const handleSort = (key: string) => {
     const defaultDescKeys = new Set([
@@ -943,6 +956,24 @@ export default function Contatos() {
             </Button>
             <Button
               type="button"
+              variant={
+                filters.minBids === '0' && filters.maxBids === '0'
+                  ? 'secondary'
+                  : 'outline'
+              }
+              size="sm"
+              onClick={() =>
+                applyQuickFilter(
+                  filters.minBids === '0' && filters.maxBids === '0'
+                    ? { minBids: '', maxBids: '' }
+                    : { minBids: '0', maxBids: '0' },
+                )
+              }
+            >
+              Sem lances
+            </Button>
+            <Button
+              type="button"
               variant={filters.hasWhatsapp ? 'secondary' : 'outline'}
               size="sm"
               onClick={() =>
@@ -1132,35 +1163,65 @@ export default function Contatos() {
                   <TableHead className="w-[300px]">
                     <Button
                       variant="ghost"
-                      className="p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1"
+                      className={cn(
+                        'p-0 hover:bg-transparent font-semibold flex items-center gap-1',
+                        sortConfig.key === 'name'
+                          ? 'text-primary'
+                          : 'text-foreground',
+                      )}
                       onClick={() => handleSort('name')}
                     >
                       Nome
-                      <ArrowUpDown className="h-3 w-3" />
+                      {getSortIcon('name')}
                     </Button>
                   </TableHead>
                   <TableHead>Contato</TableHead>
                   <TableHead>Local</TableHead>
                   <TableHead>Perfil</TableHead>
                   <TableHead>
-                    <Button
-                      variant="ghost"
-                      className="p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1"
-                      onClick={() => handleSort('purchaseCount')}
-                    >
-                      Compras
-                      <ArrowUpDown className="h-3 w-3" />
-                    </Button>
+                    <div className="flex flex-col space-y-1 py-1">
+                      <Button
+                        variant="ghost"
+                        className={cn(
+                          'h-6 p-0 hover:bg-transparent font-semibold flex items-center justify-start gap-1',
+                          sortConfig.key === 'purchaseCount'
+                            ? 'text-primary'
+                            : 'text-foreground',
+                        )}
+                        onClick={() => handleSort('purchaseCount')}
+                      >
+                        Compras
+                        {getSortIcon('purchaseCount')}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        className={cn(
+                          'h-6 p-0 hover:bg-transparent text-xs flex items-center justify-start gap-1',
+                          sortConfig.key === 'bidCount'
+                            ? 'text-primary font-semibold'
+                            : 'text-muted-foreground',
+                        )}
+                        onClick={() => handleSort('bidCount')}
+                      >
+                        Lances
+                        {getSortIcon('bidCount')}
+                      </Button>
+                    </div>
                   </TableHead>
                   <TableHead>
                     <div className="flex items-center gap-1">
                       <Button
                         variant="ghost"
-                        className="p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1"
+                        className={cn(
+                          'p-0 hover:bg-transparent font-semibold flex items-center gap-1',
+                          sortConfig.key === 'totalInvested'
+                            ? 'text-primary'
+                            : 'text-foreground',
+                        )}
                         onClick={() => handleSort('totalInvested')}
                       >
                         Valor Investido
-                        <ArrowUpDown className="h-3 w-3" />
+                        {getSortIcon('totalInvested')}
                       </Button>
                       <TooltipProvider>
                         <Tooltip>
@@ -1177,11 +1238,16 @@ export default function Contatos() {
                   <TableHead>
                     <Button
                       variant="ghost"
-                      className="p-0 hover:bg-transparent font-semibold text-foreground flex items-center gap-1"
+                      className={cn(
+                        'p-0 hover:bg-transparent font-semibold flex items-center gap-1',
+                        sortConfig.key === 'lastActivity'
+                          ? 'text-primary'
+                          : 'text-foreground',
+                      )}
                       onClick={() => handleSort('lastActivity')}
                     >
                       Última atividade
-                      <ArrowUpDown className="h-3 w-3" />
+                      {getSortIcon('lastActivity')}
                     </Button>
                   </TableHead>
                   <TableHead className="text-right">Ações</TableHead>
