@@ -106,6 +106,7 @@ import {
   FilterState,
 } from '@/components/contacts/AdvancedFilter'
 import { ContactProfileSheet } from '@/components/contacts/ContactProfileSheet'
+import { supabase } from '@/lib/supabase/client'
 import { birthdaysImportService } from '@/services/birthdays-import'
 import {
   smartLeiloesSyncService,
@@ -196,6 +197,7 @@ export default function Contatos() {
   const [isDeleting, setIsDeleting] = useState(false)
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [isBulking, setIsBulking] = useState(false)
   const [availableTags, setAvailableTags] = useState<Tag[]>([])
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
@@ -407,12 +409,24 @@ export default function Contatos() {
 
   const handleBulkAddTag = async (tagId: string) => {
     if (selectedIds.size === 0) return
+    setIsBulking(true)
     try {
-      await contactsService.bulkAddTagToContacts(Array.from(selectedIds), tagId)
+      const contactIds = Array.from(selectedIds)
+      const chunkSize = 1000
+
+      for (let i = 0; i < contactIds.length; i += chunkSize) {
+        const chunk = contactIds.slice(i, i + chunkSize)
+        const { error } = await supabase.rpc('bulk_add_tag_to_contacts', {
+          p_contact_ids: chunk,
+          p_tag_id: tagId,
+        })
+        if (error) throw error
+      }
+
       toast({
         variant: 'success',
         title: 'Tags adicionadas',
-        description: `A tag foi adicionada a ${selectedIds.size} contato(s).`,
+        description: `A tag foi adicionada a ${selectedIds.size} contato(s) com sucesso.`,
       })
       setSelectedIds(new Set())
       fetchContacts()
@@ -420,9 +434,12 @@ export default function Contatos() {
       console.error(error)
       toast({
         variant: 'destructive',
-        title: 'Erro',
-        description: 'Não foi possível adicionar as tags.',
+        title: 'Erro na operação em lote',
+        description:
+          'Ocorreu um erro ao adicionar as tags a alguns contatos. Por favor, tente novamente.',
       })
+    } finally {
+      setIsBulking(false)
     }
   }
 
@@ -989,8 +1006,16 @@ export default function Contatos() {
                     size="sm"
                     variant="default"
                     className="shadow-none rounded-full h-8 px-4"
+                    disabled={isBulking}
                   >
-                    Adicionar Tag
+                    {isBulking ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Adicionando...
+                      </>
+                    ) : (
+                      'Adicionar Tag'
+                    )}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -1028,6 +1053,7 @@ export default function Contatos() {
                 variant="ghost"
                 className="rounded-full h-8 px-3 text-muted-foreground hover:text-foreground"
                 onClick={() => setSelectedIds(new Set())}
+                disabled={isBulking}
               >
                 Cancelar
               </Button>
