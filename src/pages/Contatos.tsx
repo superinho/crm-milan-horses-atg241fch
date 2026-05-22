@@ -1179,34 +1179,34 @@ export default function Contatos() {
                   <TableHead>Local</TableHead>
                   <TableHead>Perfil</TableHead>
                   <TableHead>
-                    <div className="flex flex-col space-y-1 py-1">
-                      <Button
-                        variant="ghost"
-                        className={cn(
-                          'h-6 p-0 hover:bg-transparent font-semibold flex items-center justify-start gap-1',
-                          sortConfig.key === 'purchaseCount'
-                            ? 'text-primary'
-                            : 'text-foreground',
-                        )}
-                        onClick={() => handleSort('purchaseCount')}
-                      >
-                        Compras
-                        {getSortIcon('purchaseCount')}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        className={cn(
-                          'h-6 p-0 hover:bg-transparent text-xs flex items-center justify-start gap-1',
-                          sortConfig.key === 'bidCount'
-                            ? 'text-primary font-semibold'
-                            : 'text-muted-foreground',
-                        )}
-                        onClick={() => handleSort('bidCount')}
-                      >
-                        Lances
-                        {getSortIcon('bidCount')}
-                      </Button>
-                    </div>
+                    <Button
+                      variant="ghost"
+                      className={cn(
+                        'p-0 hover:bg-transparent font-semibold flex items-center gap-1',
+                        sortConfig.key === 'purchaseCount'
+                          ? 'text-primary'
+                          : 'text-foreground',
+                      )}
+                      onClick={() => handleSort('purchaseCount')}
+                    >
+                      Compras
+                      {getSortIcon('purchaseCount')}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      className={cn(
+                        'p-0 hover:bg-transparent font-semibold flex items-center gap-1',
+                        sortConfig.key === 'bidCount'
+                          ? 'text-primary'
+                          : 'text-foreground',
+                      )}
+                      onClick={() => handleSort('bidCount')}
+                    >
+                      Lances
+                      {getSortIcon('bidCount')}
+                    </Button>
                   </TableHead>
                   <TableHead>
                     <div className="flex items-center gap-1">
@@ -1256,7 +1256,7 @@ export default function Contatos() {
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={10} className="h-32 text-center">
+                    <TableCell colSpan={11} className="h-32 text-center">
                       <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
                     </TableCell>
                   </TableRow>
@@ -1390,9 +1390,11 @@ export default function Contatos() {
                         <span className="font-semibold text-foreground">
                           {contact.purchaseCount || 0}
                         </span>
-                        <div className="text-xs text-muted-foreground">
-                          {contact.bidCount || 0} lances
-                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <span className="font-medium text-foreground">
+                          {contact.bidCount || 0}
+                        </span>
                       </TableCell>
                       <TableCell>
                         <span className="font-medium text-foreground">
@@ -1484,7 +1486,7 @@ export default function Contatos() {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={10} className="h-32 text-center">
+                    <TableCell colSpan={11} className="h-32 text-center">
                       <div className="flex flex-col items-center justify-center text-muted-foreground">
                         <Search className="h-8 w-8 mb-2 opacity-50" />
                         <p>Nenhum contato encontrado com os filtros atuais.</p>
