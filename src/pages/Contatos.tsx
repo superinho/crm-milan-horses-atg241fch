@@ -412,7 +412,7 @@ export default function Contatos() {
     setIsBulking(true)
     try {
       const contactIds = Array.from(selectedIds)
-      const chunkSize = 1000
+      const chunkSize = 500
 
       for (let i = 0; i < contactIds.length; i += chunkSize) {
         const chunk = contactIds.slice(i, i + chunkSize)
@@ -886,37 +886,59 @@ export default function Contatos() {
             <span className="text-sm text-muted-foreground">Atalhos:</span>
             <Button
               type="button"
-              variant="secondary"
+              variant={
+                filters.minPurchases === '1' && filters.maxPurchases === ''
+                  ? 'default'
+                  : 'secondary'
+              }
               size="sm"
               onClick={() =>
-                applyQuickFilter({ minPurchases: '1', maxPurchases: '' })
+                applyQuickFilter(
+                  filters.minPurchases === '1' && filters.maxPurchases === ''
+                    ? { minPurchases: '', maxPurchases: '' }
+                    : { minPurchases: '1', maxPurchases: '' },
+                )
               }
             >
               Compradores
             </Button>
             <Button
               type="button"
-              variant="outline"
+              variant={
+                filters.minPurchases === '0' && filters.maxPurchases === '0'
+                  ? 'default'
+                  : 'outline'
+              }
               size="sm"
               onClick={() =>
-                applyQuickFilter({ minPurchases: '0', maxPurchases: '0' })
+                applyQuickFilter(
+                  filters.minPurchases === '0' && filters.maxPurchases === '0'
+                    ? { minPurchases: '', maxPurchases: '' }
+                    : { minPurchases: '0', maxPurchases: '0' },
+                )
               }
             >
               Sem compras
             </Button>
             <Button
               type="button"
-              variant="outline"
+              variant={filters.hasWhatsapp ? 'default' : 'outline'}
               size="sm"
-              onClick={() => applyQuickFilter({ hasWhatsapp: true })}
+              onClick={() =>
+                applyQuickFilter({ hasWhatsapp: !filters.hasWhatsapp })
+              }
             >
               Com WhatsApp
             </Button>
             <Button
               type="button"
-              variant="outline"
+              variant={filters.segment === 'VIP ativo' ? 'default' : 'outline'}
               size="sm"
-              onClick={() => applyQuickFilter({ segment: 'VIP ativo' })}
+              onClick={() =>
+                applyQuickFilter({
+                  segment: filters.segment === 'VIP ativo' ? null : 'VIP ativo',
+                })
+              }
             >
               VIP ativo
             </Button>

@@ -46,4 +46,36 @@ export const smartLeiloesService = {
       }
     }
   },
+
+  async getLots(params?: {
+    search?: string
+    sortBy?: string
+    sortDirection?: 'asc' | 'desc'
+  }) {
+    try {
+      let query = db
+        .from('smartleiloes_lots')
+        .select('*, auction:smartleiloes_auctions(title)')
+
+      if (params?.search) {
+        query = query.ilike('title', `%${params.search}%`)
+      }
+
+      if (params?.sortBy === 'value') {
+        query = query.order('value', {
+          ascending: params.sortDirection === 'asc',
+          nullsFirst: false,
+        })
+      } else {
+        query = query.order('created_at', { ascending: false })
+      }
+
+      const { data, error } = await query.limit(200)
+      if (error) throw error
+
+      return { data, error: null }
+    } catch (error: any) {
+      return { data: [], error: error.message }
+    }
+  },
 }

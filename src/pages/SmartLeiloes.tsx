@@ -32,6 +32,7 @@ import {
   Search,
   PlusCircle,
   DatabaseZap,
+  ArrowUpDown,
 } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -48,9 +49,11 @@ import {
 export default function SmartLeiloes() {
   const [liveLeiloes, setLiveLeiloes] = useState<SmartLeilao[]>([])
   const [savedAuctions, setSavedAuctions] = useState<Auction[]>([])
+  const [lots, setLots] = useState<any[]>([])
 
   const [loadingLive, setLoadingLive] = useState(true)
   const [loadingSaved, setLoadingSaved] = useState(true)
+  const [loadingLots, setLoadingLots] = useState(false)
   const [errorLive, setErrorLive] = useState<string | null>(null)
 
   const [searchQuery, setSearchQuery] = useState('')
@@ -60,6 +63,10 @@ export default function SmartLeiloes() {
   const [lastSyncSummary, setLastSyncSummary] =
     useState<SmartLeiloesSyncSummary | null>(null)
 
+  const [lotsSort, setLotsSort] = useState<{
+    key: string
+    direction: 'asc' | 'desc'
+  }>({ key: 'value', direction: 'desc' })
   const [dealAuction, setDealAuction] = useState<Auction | null>(null)
   const { toast } = useToast()
 
@@ -91,6 +98,22 @@ export default function SmartLeiloes() {
     }
   }
 
+  const fetchLots = async () => {
+    try {
+      setLoadingLots(true)
+      const result = await smartLeiloesService.getLots({
+        search: searchQuery,
+        sortBy: lotsSort.key,
+        sortDirection: lotsSort.direction,
+      })
+      setLots(result.data || [])
+    } catch (err: any) {
+      console.error(err)
+    } finally {
+      setLoadingLots(false)
+    }
+  }
+
   const handleSemanticSearch = async (e?: React.FormEvent) => {
     if (e) e.preventDefault()
     if (!searchQuery.trim()) {
@@ -116,6 +139,10 @@ export default function SmartLeiloes() {
     fetchLiveLeiloes()
     fetchSavedAuctions()
   }, [])
+
+  useEffect(() => {
+    fetchLots()
+  }, [searchQuery, lotsSort])
 
   useRealtime('smartleiloes_auctions', () => {
     if (!searchQuery.trim()) {
@@ -165,6 +192,7 @@ export default function SmartLeiloes() {
       const summary = await smartLeiloesSyncService.syncAll()
       setLastSyncSummary(summary)
       await fetchSavedAuctions()
+      await fetchLots()
 
       const totalSaved = Object.values(summary).reduce(
         (acc, item) => acc + item.saved,
@@ -197,7 +225,7 @@ export default function SmartLeiloes() {
             Leilões (SmartLeilões)
           </h1>
           <p className="text-muted-foreground mt-1">
-            Navegue pelos eventos externos e salve-os no seu CRM.
+            Navegue pelos eventos e lotes sincronizados.
           </p>
         </div>
         <Button onClick={handleSyncAll} disabled={syncing}>
@@ -233,9 +261,10 @@ export default function SmartLeiloes() {
       )}
 
       <Tabs defaultValue="live" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 max-w-md">
+        <TabsList className="grid w-full grid-cols-3 max-w-2xl">
           <TabsTrigger value="live">Leilões ao Vivo (API)</TabsTrigger>
           <TabsTrigger value="saved">Leilões Salvos (CRM)</TabsTrigger>
+          <TabsTrigger value="lots">Lotes (SmartLeilões)</TabsTrigger>
         </TabsList>
 
         <TabsContent value="live" className="mt-4 space-y-4">
@@ -440,6 +469,114 @@ export default function SmartLeiloes() {
                               <PlusCircle className="mr-2 h-4 w-4" />
                               Criar Negócio
                             </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="lots" className="mt-4 space-y-4">
+          <Card>
+            <CardHeader className="pb-3 space-y-4">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                  <CardTitle>Lotes de Leilões</CardTitle>
+                  <CardDescription>
+                    Lotes sincronizados e valores de lances em destaque.
+                  </CardDescription>
+                </div>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    fetchLots()
+                  }}
+                  className="flex items-center gap-2 w-full md:w-auto"
+                >
+                  <div className="relative w-full md:w-72">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Buscar Lote..."
+                      className="pl-9"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    disabled={loadingLots}
+                    variant="secondary"
+                  >
+                    {loadingLots ? (
+                      <RefreshCw className="h-4 w-4 animate-spin" />
+                    ) : (
+                      'Buscar'
+                    )}
+                  </Button>
+                </form>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {loadingLots ? (
+                <div className="space-y-4">
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                </div>
+              ) : lots.length === 0 ? (
+                <div className="py-8 text-center text-muted-foreground">
+                  Nenhum lote encontrado.
+                </div>
+              ) : (
+                <div className="rounded-md border overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Lote</TableHead>
+                        <TableHead>Título</TableHead>
+                        <TableHead>Leilão</TableHead>
+                        <TableHead>Status Comercial</TableHead>
+                        <TableHead className="text-right">
+                          <Button
+                            variant="ghost"
+                            className="p-0 hover:bg-transparent font-semibold flex items-center gap-1 ml-auto text-foreground"
+                            onClick={() =>
+                              setLotsSort((prev) => ({
+                                key: 'value',
+                                direction:
+                                  prev.direction === 'asc' ? 'desc' : 'asc',
+                              }))
+                            }
+                          >
+                            Valor do Lance
+                            <ArrowUpDown className="h-3 w-3" />
+                          </Button>
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {lots.map((lot) => (
+                        <TableRow key={lot.id}>
+                          <TableCell className="font-medium text-muted-foreground">
+                            {lot.lot_number || '-'}
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            {lot.title}
+                          </TableCell>
+                          <TableCell>{lot.auction?.title || '-'}</TableCell>
+                          <TableCell>
+                            <Badge variant="outline">
+                              {lot.commercial_status || '-'}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {new Intl.NumberFormat('pt-BR', {
+                              style: 'currency',
+                              currency: 'BRL',
+                            }).format(lot.value || 0)}
                           </TableCell>
                         </TableRow>
                       ))}

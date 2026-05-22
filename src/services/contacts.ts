@@ -277,19 +277,9 @@ export const contactsService = {
       const from = (page - 1) * pageSize
       const to = from + pageSize - 1
 
-      let query = db.from('customer_rfmv_view').select('*', { count: 'exact' })
-
-      let candidateIds: string[] | null = null
-      const applyCandidateIds = (ids: string[]) => {
-        const uniqueIds = [...new Set(ids)]
-        if (candidateIds === null) {
-          candidateIds = uniqueIds
-          return
-        }
-
-        const nextIds = new Set(uniqueIds)
-        candidateIds = candidateIds.filter((id) => nextIds.has(id))
-      }
+      let query = db
+        .from('customer_rfmv_extended_view')
+        .select('*', { count: 'exact' })
 
       if (search) {
         query = query.or(
@@ -304,16 +294,7 @@ export const contactsService = {
       if (tags.length > 0) {
         const tagIds = await tagIdsByNames(tags)
         if (tagIds.length === 0) return { data: [], count: 0, error: null }
-
-        const { data: contactTags, error } = await db
-          .from('contact_tags')
-          .select('contact_id')
-          .in('tag_id', tagIds)
-
-        if (error) throw error
-        const ids = (contactTags || []).map((t: any) => t.contact_id)
-        if (ids.length === 0) return { data: [], count: 0, error: null }
-        applyCandidateIds(ids)
+        query = query.contains('tag_ids', tagIds)
       }
 
       if (segment) {
@@ -321,21 +302,7 @@ export const contactsService = {
       }
 
       if (breed) {
-        const { data: breedContacts, error } = await db
-          .from('contacts')
-          .select('id')
-          .contains('preferences', { breeds: [breed] })
-
-        if (error) throw error
-        const ids = (breedContacts || []).map((contact: any) => contact.id)
-        if (ids.length === 0) return { data: [], count: 0, error: null }
-        applyCandidateIds(ids)
-      }
-
-      if (candidateIds !== null) {
-        if (candidateIds.length === 0)
-          return { data: [], count: 0, error: null }
-        query = query.in('id', candidateIds)
+        query = query.contains('preferences', { breeds: [breed] })
       }
 
       if (status === 'active') {
@@ -428,20 +395,33 @@ export const contactsService = {
       const IN_BATCH_SIZE = 200
       const contactRows: any[] = []
 
+      const chunkedIds = []
       for (let i = 0; i < ids.length; i += IN_BATCH_SIZE) {
-        const batchIds = ids.slice(i, i + IN_BATCH_SIZE)
-        const { data: batchData, error: batchError } = await db
-          .from('contacts')
-          .select(
-            `
-            *,
-            contact_tags(tags(id, name, color))
-          `,
-          )
-          .in('id', batchIds)
+        chunkedIds.push(ids.slice(i, i + IN_BATCH_SIZE))
+      }
 
-        if (batchError) throw batchError
-        contactRows.push(...(batchData || []))
+      for (let i = 0; i < chunkedIds.length; i += 5) {
+        const batchPromises = chunkedIds
+          .slice(i, i + 5)
+          .map(async (batchIds) => {
+            const { data, error } = await db
+              .from('contacts')
+              .select(
+                `
+              *,
+              contact_tags(tags(id, name, color))
+            `,
+              )
+              .in('id', batchIds)
+
+            if (error) throw error
+            return data || []
+          })
+
+        const results = await Promise.all(batchPromises)
+        for (const res of results) {
+          contactRows.push(...res)
+        }
       }
 
       const contactsById = new Map(
