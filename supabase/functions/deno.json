@@ -1,9 +1,9 @@
 {
   "_versions": {
     "process-automation-tasks": 26,
-    "send-contact-email": 31,
-    "process-campaigns": 32,
-    "dispatch-campaign": 27,
+    "send-contact-email": 32,
+    "process-campaigns": 33,
+    "dispatch-campaign": 29,
     "send-whatsapp-botconversa": 28,
     "resend-webhook": 26,
     "botconversa-webhook": 26,
