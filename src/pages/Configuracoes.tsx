@@ -287,7 +287,7 @@ export default function Configuracoes() {
                             <FormControl>
                               <Input
                                 type="email"
-                                placeholder="contato@milanhorses.com"
+                                placeholder="nicole.vaz@milanleiloes.com.br"
                                 {...field}
                               />
                             </FormControl>

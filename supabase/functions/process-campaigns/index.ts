@@ -1,13 +1,14 @@
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders } from '../_shared/cors.ts'
+import { embedRemoteImagesForResend } from '../_shared/resend-inline-images.ts'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
 const RESEND_FROM_EMAIL =
   Deno.env.get('RESEND_FROM_EMAIL') ||
-  'Milan Horses <contato@milanhorses.com.br>'
+  'Milan Horses <nicole.vaz@milanleiloes.com.br>'
 const RESEND_REPLY_TO_EMAIL = Deno.env.get('RESEND_REPLY_TO_EMAIL')
 const BOTCONVERSA_WEBHOOK_URL = Deno.env.get('BOTCONVERSA_WEBHOOK_URL')
 const BOTCONVERSA_API_KEY = Deno.env.get('BOTCONVERSA_API_KEY')
@@ -227,11 +228,15 @@ const sendEmail = async (
     contact,
     campaign,
   )
+  console.log(
+    `[process-campaigns] Processing email body for images for recipient: ${to}`,
+  )
+  const preparedEmail = embedRemoteImagesForResend(html)
   const payload: Record<string, unknown> = {
     from: RESEND_FROM_EMAIL,
     to: [to],
     subject,
-    html,
+    html: preparedEmail.html,
     tags: [
       { name: 'campaign_id', value: campaign.id },
       { name: 'recipient_id', value: recipient.contact_id },
@@ -240,6 +245,9 @@ const sendEmail = async (
   }
 
   if (RESEND_REPLY_TO_EMAIL) payload.reply_to = RESEND_REPLY_TO_EMAIL
+  if (preparedEmail.attachments.length) {
+    payload.attachments = preparedEmail.attachments
+  }
 
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -263,7 +271,7 @@ const sendEmail = async (
     provider: 'resend',
     to,
     subject,
-    body: html,
+    body: preparedEmail.html,
     requestPayload: payload,
     responsePayload,
     providerId: providerIdFrom(responsePayload),

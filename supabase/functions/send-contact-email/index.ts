@@ -1,17 +1,15 @@
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
 import { corsHeaders } from '../_shared/cors.ts'
-
-interface Attachment {
-  filename: string
-  content: string // Base64
-  contentType?: string
-}
+import {
+  embedRemoteImagesForResend,
+  type ResendAttachment,
+} from '../_shared/resend-inline-images.ts'
 
 interface EmailRequest {
   to: string[]
   subject: string
   html: string
-  attachments?: Attachment[]
+  attachments?: ResendAttachment[]
 }
 
 Deno.serve(async (req: Request) => {
@@ -46,18 +44,24 @@ Deno.serve(async (req: Request) => {
       )
     }
 
+    console.log(`[send-contact-email] Processing email body for images...`)
+    const preparedEmail = embedRemoteImagesForResend(html, attachments || [])
+
     // Construct Resend payload
     const payload: any = {
-      from: 'Milan Horses Leilões <contato@milanhorses.com.br>',
+      from: 'Milan Horses Leilões <nicole.vaz@milanleiloes.com.br>',
       to: to,
       subject: subject,
-      html: html,
+      html: preparedEmail.html,
     }
 
-    if (attachments && attachments.length > 0) {
-      payload.attachments = attachments.map((att) => ({
+    if (preparedEmail.attachments.length > 0) {
+      payload.attachments = preparedEmail.attachments.map((att) => ({
         filename: att.filename,
         content: att.content,
+        path: att.path,
+        contentType: att.contentType,
+        contentId: att.contentId,
       }))
     }
 
