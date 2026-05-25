@@ -30,13 +30,17 @@ interface TemplateFormProps {
 }
 
 const CATEGORIES: TemplateCategory[] = [
-  'Boas-vindas',
+  'Radar VIP',
+  'Convite VIP',
   'Novo Leilão',
-  'Informações de Lote',
-  'Agradecimento Pós-Compra',
   'Reativação de Cliente',
+  'Underbidder',
+  'Pós-leilão',
   'Aniversário',
   'Follow-up',
+  'Boas-vindas',
+  'Informações de Lote',
+  'Agradecimento Pós-Compra',
 ]
 
 const VARIABLES = [
@@ -55,7 +59,7 @@ export function TemplateForm({
   const [formData, setFormData] = useState<TemplateInsert>({
     title: '',
     category: 'Boas-vindas',
-    type: 'WhatsApp',
+    type: 'E-mail',
     subject: '',
     body: '',
   })
@@ -170,40 +174,18 @@ export function TemplateForm({
           </div>
         </div>
 
-        <div className="space-y-3">
-          <Label>Tipo de Mensagem</Label>
-          <RadioGroup
-            value={formData.type}
-            onValueChange={(val) =>
-              setFormData({ ...formData, type: val as TemplateType })
+        <div className="space-y-2 animate-fade-in">
+          <Label htmlFor="subject">Assunto</Label>
+          <Input
+            id="subject"
+            value={formData.subject || ''}
+            onChange={(e) =>
+              setFormData({ ...formData, subject: e.target.value })
             }
-            className="flex gap-4"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="WhatsApp" id="type-whatsapp" />
-              <Label htmlFor="type-whatsapp">WhatsApp</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="E-mail" id="type-email" />
-              <Label htmlFor="type-email">E-mail</Label>
-            </div>
-          </RadioGroup>
+            placeholder="Assunto do e-mail"
+            required
+          />
         </div>
-
-        {formData.type === 'E-mail' && (
-          <div className="space-y-2 animate-fade-in">
-            <Label htmlFor="subject">Assunto</Label>
-            <Input
-              id="subject"
-              value={formData.subject || ''}
-              onChange={(e) =>
-                setFormData({ ...formData, subject: e.target.value })
-              }
-              placeholder="Assunto do e-mail"
-              required={formData.type === 'E-mail'}
-            />
-          </div>
-        )}
 
         <div className="space-y-2">
           <div className="flex justify-between items-center">
@@ -237,14 +219,12 @@ export function TemplateForm({
           <Label>Visualização (Preview)</Label>
           <Card className="bg-muted/30 border-dashed">
             <CardContent className="p-4 space-y-2">
-              {formData.type === 'E-mail' && (
-                <div className="border-b pb-2 mb-2 text-sm">
-                  <span className="font-semibold text-muted-foreground">
-                    Assunto:
-                  </span>{' '}
-                  {renderPreview(formData.subject || '')}
-                </div>
-              )}
+              <div className="border-b pb-2 mb-2 text-sm">
+                <span className="font-semibold text-muted-foreground">
+                  Assunto:
+                </span>{' '}
+                {renderPreview(formData.subject || '')}
+              </div>
               <div className="whitespace-pre-wrap text-sm leading-relaxed">
                 {renderPreview(formData.body)}
               </div>

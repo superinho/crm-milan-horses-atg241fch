@@ -674,6 +674,13 @@ ${signatureBlock()}
 }
 
 import { Plus } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { TemplateForm } from '@/components/templates/TemplateForm'
 
 export default function Modelos() {
   const [templates, setTemplates] = useState<MessageTemplate[]>([])
@@ -693,6 +700,7 @@ export default function Modelos() {
     'E-mail',
   ])
   const [editingGoalId, setEditingGoalId] = useState<string | null>(null)
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
   const [editGoalForm, setEditGoalForm] = useState<Partial<StudioGoal>>({})
   const [selectedPremiumLayoutId, setSelectedPremiumLayoutId] =
     useState<PremiumLayoutId>('convite-privado')
@@ -1216,10 +1224,10 @@ export default function Modelos() {
   }
 
   const saveTemplate = async (): Promise<MessageTemplate | null> => {
-    if (!draft.title.trim() || !draft.body.trim()) {
+    if (!draft.title.trim() || !draft.body.trim() || !draft.category) {
       toast({
-        title: 'Complete o modelo',
-        description: 'Título e mensagem são obrigatórios.',
+        title: 'Campos obrigatórios',
+        description: 'Título, categoria e mensagem são obrigatórios.',
         variant: 'destructive',
       })
       return null
@@ -1983,6 +1991,10 @@ export default function Modelos() {
                       <Paintbrush className="h-4 w-4 text-primary" />
                       Personalização E-mail
                     </Label>
+                    <p className="text-xs text-muted-foreground">
+                      Banners devem seguir a proporção 16:7 (ex: 1200 x 525
+                      pixels).
+                    </p>
                     <div className="grid gap-2 md:grid-cols-3">
                       {VISUAL_PRESETS.map((visual) => (
                         <button
@@ -2358,10 +2370,15 @@ export default function Modelos() {
               </div>
 
               <div className="space-y-3 rounded-md border bg-muted/10 p-3">
-                <Label className="flex items-center gap-2 font-semibold">
-                  <Image className="h-4 w-4 text-primary" />
-                  Banner principal do e-mail
-                </Label>
+                <div>
+                  <Label className="flex items-center gap-2 font-semibold">
+                    <Image className="h-4 w-4 text-primary" />
+                    Banner principal do e-mail
+                  </Label>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Recomendado: 1200 x 525 pixels (16:7).
+                  </p>
+                </div>
                 <div className="overflow-hidden rounded-md border bg-white">
                   {wizard.bannerUrl ? (
                     <img
@@ -2505,12 +2522,18 @@ export default function Modelos() {
 
       <div className="grid gap-4 xl:grid-cols-[340px_minmax(0,1fr)] 2xl:grid-cols-[360px_minmax(0,1fr)_380px]">
         <Card>
-          <CardHeader className="pb-3">
-            <CardTitle>Modelos salvos</CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Objetivos e canais ficam no criador acima. Aqui aparecem só as
-              mensagens já salvas para reutilizar em campanhas.
-            </p>
+          <CardHeader className="pb-3 flex flex-row items-center justify-between">
+            <div>
+              <CardTitle>Modelos salvos</CardTitle>
+              <p className="text-sm text-muted-foreground mt-1">
+                Aqui aparecem as mensagens já salvas para reutilizar em
+                campanhas.
+              </p>
+            </div>
+            <Button onClick={() => setIsTemplateModalOpen(true)} size="sm">
+              <Plus className="mr-2 h-4 w-4" />
+              Novo Modelo
+            </Button>
           </CardHeader>
           <CardContent className="space-y-3">
             <Input
@@ -2559,37 +2582,144 @@ export default function Modelos() {
                 <div className="flex h-40 items-center justify-center">
                   <Loader2 className="h-6 w-6 animate-spin text-primary" />
                 </div>
-              ) : filteredTemplates.length ? (
-                <div className="space-y-2">
-                  {filteredTemplates.map((template) => (
-                    <button
-                      key={template.id}
-                      type="button"
-                      className={cn(
-                        'w-full rounded-md border p-3 text-left transition-colors hover:border-primary hover:bg-primary/5',
-                        selectedId === template.id &&
-                          'border-primary bg-primary/5',
-                      )}
-                      onClick={() => loadTemplate(template)}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="font-medium">{template.title}</div>
-                        <Badge variant="outline" className="shrink-0">
-                          {template.type}
-                        </Badge>
-                      </div>
-                      <div className="mt-1 text-xs text-muted-foreground">
-                        {template.category}
-                      </div>
-                      <div className="mt-2 line-clamp-2 text-xs text-muted-foreground">
-                        {template.body.replace(/<[^>]+>/g, '')}
-                      </div>
-                    </button>
-                  ))}
-                </div>
               ) : (
-                <div className="rounded-md border border-dashed p-6 text-center text-sm text-muted-foreground">
-                  Nenhum modelo salvo encontrado.
+                <div className="space-y-6">
+                  {(!channel ||
+                    channel === 'Todos' ||
+                    channel === 'E-mail') && (
+                    <div className="space-y-2">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                        <Crown className="h-3.5 w-3.5" />
+                        Super Modelos (Iniciais)
+                      </div>
+                      {PREMIUM_EMAIL_LAYOUTS.filter(
+                        (l) => category === 'Todas' || l.category === category,
+                      )
+                        .filter(
+                          (l) =>
+                            !search ||
+                            l.title
+                              .toLowerCase()
+                              .includes(search.toLowerCase()),
+                        )
+                        .map((layout) => (
+                          <button
+                            key={layout.id}
+                            type="button"
+                            className={cn(
+                              'w-full rounded-md border border-amber-200 bg-amber-50/50 p-3 text-left transition-colors hover:border-amber-400 hover:bg-amber-100/50',
+                              selectedPremiumLayoutId === layout.id &&
+                                !selectedId &&
+                                'border-amber-400 bg-amber-100/50',
+                            )}
+                            onClick={() => {
+                              selectPremiumLayout(layout)
+                              const matchingGoal =
+                                goals.find((g) => g.title === layout.title) ||
+                                goals[0]
+                              const nextWizard: WizardState = {
+                                ...wizard,
+                                goal: matchingGoal?.id || '',
+                                visual: 'hero',
+                                headline: layout.headline,
+                                ctaLabel: layout.ctaLabel,
+                              }
+                              const subject = layout.subject
+                                .replaceAll(
+                                  '{{leilao}}',
+                                  nextWizard.auctionName || '{{leilao}}',
+                                )
+                                .replaceAll(
+                                  '{{data_leilao}}',
+                                  nextWizard.auctionDate || '{{data_leilao}}',
+                                )
+                              const body = buildPremiumLayoutEmail(
+                                layout,
+                                nextWizard,
+                                previewContext,
+                                goals,
+                              )
+
+                              setSelectedId(null)
+                              setVariations([])
+                              setSelectedChannels(['E-mail'])
+                              setWizard(nextWizard)
+                              setDraft({
+                                title: `Cópia: ${layout.title}`,
+                                category: layout.category,
+                                type: 'E-mail',
+                                subject,
+                                body,
+                                variables: extractVariables(
+                                  `${subject} ${body}`,
+                                ),
+                              })
+                              toast({
+                                title: 'Super Modelo carregado',
+                                description:
+                                  'Edite os detalhes no painel e salve como um novo modelo.',
+                              })
+                            }}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="font-medium text-amber-900">
+                                {layout.title}
+                              </div>
+                              <Badge
+                                variant="outline"
+                                className="shrink-0 border-amber-300 text-amber-700 bg-white"
+                              >
+                                E-mail
+                              </Badge>
+                            </div>
+                            <div className="mt-1 text-xs text-amber-800">
+                              {layout.category}
+                            </div>
+                            <div className="mt-2 line-clamp-2 text-xs text-amber-700/80">
+                              {layout.description}
+                            </div>
+                          </button>
+                        ))}
+                    </div>
+                  )}
+
+                  <div className="space-y-2">
+                    <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                      <UserRound className="h-3.5 w-3.5" />
+                      Modelos Customizados
+                    </div>
+                    {filteredTemplates.length > 0 ? (
+                      filteredTemplates.map((template) => (
+                        <button
+                          key={template.id}
+                          type="button"
+                          className={cn(
+                            'w-full rounded-md border p-3 text-left transition-colors hover:border-primary hover:bg-primary/5',
+                            selectedId === template.id &&
+                              'border-primary bg-primary/5',
+                          )}
+                          onClick={() => loadTemplate(template)}
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="font-medium">{template.title}</div>
+                            <Badge variant="outline" className="shrink-0">
+                              {template.type}
+                            </Badge>
+                          </div>
+                          <div className="mt-1 text-xs text-muted-foreground">
+                            {template.category}
+                          </div>
+                          <div className="mt-2 line-clamp-2 text-xs text-muted-foreground">
+                            {template.body.replace(/<[^>]+>/g, '')}
+                          </div>
+                        </button>
+                      ))
+                    ) : (
+                      <div className="rounded-md border border-dashed p-6 text-center text-sm text-muted-foreground">
+                        Nenhum modelo salvo encontrado.
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </ScrollArea>
@@ -2716,7 +2846,8 @@ export default function Modelos() {
                     </div>
                     <p className="text-xs text-muted-foreground">
                       Monte e-mails visuais com imagens públicas, layout de casa
-                      de leilão e CTAs.
+                      de leilão e CTAs. (Recomendado para banners: 1200 x 525
+                      pixels).
                     </p>
                   </div>
                   <Button
@@ -3068,6 +3199,21 @@ export default function Modelos() {
           </CardContent>
         </Card>
       </div>
+      <Dialog open={isTemplateModalOpen} onOpenChange={setIsTemplateModalOpen}>
+        <DialogContent className="sm:max-w-[700px]">
+          <DialogHeader>
+            <DialogTitle>Criar Novo Modelo</DialogTitle>
+          </DialogHeader>
+          <TemplateForm
+            onSuccess={() => {
+              setIsTemplateModalOpen(false)
+              loadTemplates()
+              toast({ title: 'Modelo salvo', variant: 'success' })
+            }}
+            onCancel={() => setIsTemplateModalOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
