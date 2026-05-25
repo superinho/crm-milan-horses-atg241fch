@@ -11,7 +11,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: '14.1'
+    PostgrestVersion: "14.1"
   }
   public: {
     Tables: {
@@ -45,25 +45,25 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'auction_candidate_items_horse_id_fkey'
-            columns: ['horse_id']
+            foreignKeyName: "auction_candidate_items_horse_id_fkey"
+            columns: ["horse_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_horses'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_horses"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'auction_candidate_items_horse_id_fkey'
-            columns: ['horse_id']
+            foreignKeyName: "auction_candidate_items_horse_id_fkey"
+            columns: ["horse_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_horses_enriched'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_horses_enriched"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'auction_candidate_items_list_id_fkey'
-            columns: ['list_id']
+            foreignKeyName: "auction_candidate_items_list_id_fkey"
+            columns: ["list_id"]
             isOneToOne: false
-            referencedRelation: 'auction_candidate_lists'
-            referencedColumns: ['id']
+            referencedRelation: "auction_candidate_lists"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -178,32 +178,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'bids_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "bids_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'bids_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "bids_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'bids_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "bids_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_extended_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_extended_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'bids_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "bids_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -261,39 +261,39 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'campaign_recipients_campaign_id_fkey'
-            columns: ['campaign_id']
+            foreignKeyName: "campaign_recipients_campaign_id_fkey"
+            columns: ["campaign_id"]
             isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_recipients_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "campaign_recipients_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_recipients_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "campaign_recipients_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_recipients_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "campaign_recipients_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_extended_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_extended_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_recipients_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "campaign_recipients_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -336,18 +336,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'campaign_schedules_campaign_id_fkey'
-            columns: ['campaign_id']
+            foreignKeyName: "campaign_schedules_campaign_id_fkey"
+            columns: ["campaign_id"]
             isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_schedules_template_id_fkey'
-            columns: ['template_id']
+            foreignKeyName: "campaign_schedules_template_id_fkey"
+            columns: ["template_id"]
             isOneToOne: false
-            referencedRelation: 'message_templates'
-            referencedColumns: ['id']
+            referencedRelation: "message_templates"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -417,53 +417,53 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'campaign_sends_campaign_id_fkey'
-            columns: ['campaign_id']
+            foreignKeyName: "campaign_sends_campaign_id_fkey"
+            columns: ["campaign_id"]
             isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_sends_campaign_recipient_id_fkey'
-            columns: ['campaign_recipient_id']
+            foreignKeyName: "campaign_sends_campaign_recipient_id_fkey"
+            columns: ["campaign_recipient_id"]
             isOneToOne: false
-            referencedRelation: 'campaign_recipients'
-            referencedColumns: ['id']
+            referencedRelation: "campaign_recipients"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_sends_recipient_id_fkey'
-            columns: ['recipient_id']
+            foreignKeyName: "campaign_sends_recipient_id_fkey"
+            columns: ["recipient_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_sends_recipient_id_fkey'
-            columns: ['recipient_id']
+            foreignKeyName: "campaign_sends_recipient_id_fkey"
+            columns: ["recipient_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_sends_recipient_id_fkey'
-            columns: ['recipient_id']
+            foreignKeyName: "campaign_sends_recipient_id_fkey"
+            columns: ["recipient_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_extended_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_extended_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_sends_recipient_id_fkey'
-            columns: ['recipient_id']
+            foreignKeyName: "campaign_sends_recipient_id_fkey"
+            columns: ["recipient_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'campaign_sends_schedule_id_fkey'
-            columns: ['schedule_id']
+            foreignKeyName: "campaign_sends_schedule_id_fkey"
+            columns: ["schedule_id"]
             isOneToOne: false
-            referencedRelation: 'campaign_schedules'
-            referencedColumns: ['id']
+            referencedRelation: "campaign_schedules"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -578,39 +578,39 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'contact_interactions_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_interactions_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_interactions_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_interactions_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_interactions_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_interactions_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_extended_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_extended_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_interactions_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_interactions_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_interactions_deal_id_fkey'
-            columns: ['deal_id']
+            foreignKeyName: "contact_interactions_deal_id_fkey"
+            columns: ["deal_id"]
             isOneToOne: false
-            referencedRelation: 'deals'
-            referencedColumns: ['id']
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -629,39 +629,39 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'contact_tags_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_tags_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_tags_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_tags_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_tags_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_tags_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_extended_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_extended_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_tags_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "contact_tags_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contact_tags_tag_id_fkey'
-            columns: ['tag_id']
+            foreignKeyName: "contact_tags_tag_id_fkey"
+            columns: ["tag_id"]
             isOneToOne: false
-            referencedRelation: 'tags'
-            referencedColumns: ['id']
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -752,11 +752,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'deal_tasks_deal_id_fkey'
-            columns: ['deal_id']
+            foreignKeyName: "deal_tasks_deal_id_fkey"
+            columns: ["deal_id"]
             isOneToOne: false
-            referencedRelation: 'deals'
-            referencedColumns: ['id']
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -799,32 +799,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'deals_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "deals_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'deals_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "deals_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'deals_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "deals_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_extended_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_extended_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'deals_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "deals_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -864,11 +864,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'global_auction_houses_source_id_fkey'
-            columns: ['source_id']
+            foreignKeyName: "global_auction_houses_source_id_fkey"
+            columns: ["source_id"]
             isOneToOne: false
-            referencedRelation: 'global_auction_sources'
-            referencedColumns: ['id']
+            referencedRelation: "global_auction_sources"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -914,11 +914,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'global_auction_import_runs_source_id_fkey'
-            columns: ['source_id']
+            foreignKeyName: "global_auction_import_runs_source_id_fkey"
+            columns: ["source_id"]
             isOneToOne: false
-            referencedRelation: 'global_auction_sources'
-            referencedColumns: ['id']
+            referencedRelation: "global_auction_sources"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1015,18 +1015,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'global_auction_lots_auction_id_fkey'
-            columns: ['auction_id']
+            foreignKeyName: "global_auction_lots_auction_id_fkey"
+            columns: ["auction_id"]
             isOneToOne: false
-            referencedRelation: 'global_auctions'
-            referencedColumns: ['id']
+            referencedRelation: "global_auctions"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'global_auction_lots_source_id_fkey'
-            columns: ['source_id']
+            foreignKeyName: "global_auction_lots_source_id_fkey"
+            columns: ["source_id"]
             isOneToOne: false
-            referencedRelation: 'global_auction_sources'
-            referencedColumns: ['id']
+            referencedRelation: "global_auction_sources"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1063,18 +1063,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'global_auction_source_snapshots_import_run_id_fkey'
-            columns: ['import_run_id']
+            foreignKeyName: "global_auction_source_snapshots_import_run_id_fkey"
+            columns: ["import_run_id"]
             isOneToOne: false
-            referencedRelation: 'global_auction_import_runs'
-            referencedColumns: ['id']
+            referencedRelation: "global_auction_import_runs"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'global_auction_source_snapshots_source_id_fkey'
-            columns: ['source_id']
+            foreignKeyName: "global_auction_source_snapshots_source_id_fkey"
+            columns: ["source_id"]
             isOneToOne: false
-            referencedRelation: 'global_auction_sources'
-            referencedColumns: ['id']
+            referencedRelation: "global_auction_sources"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1180,18 +1180,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'global_auctions_house_id_fkey'
-            columns: ['house_id']
+            foreignKeyName: "global_auctions_house_id_fkey"
+            columns: ["house_id"]
             isOneToOne: false
-            referencedRelation: 'global_auction_houses'
-            referencedColumns: ['id']
+            referencedRelation: "global_auction_houses"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'global_auctions_source_id_fkey'
-            columns: ['source_id']
+            foreignKeyName: "global_auctions_source_id_fkey"
+            columns: ["source_id"]
             isOneToOne: false
-            referencedRelation: 'global_auction_sources'
-            referencedColumns: ['id']
+            referencedRelation: "global_auction_sources"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1228,46 +1228,46 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'message_events_campaign_id_fkey'
-            columns: ['campaign_id']
+            foreignKeyName: "message_events_campaign_id_fkey"
+            columns: ["campaign_id"]
             isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'message_events_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "message_events_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'message_events_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "message_events_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'message_events_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "message_events_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_extended_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_extended_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'message_events_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "message_events_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'message_events_outbound_message_id_fkey'
-            columns: ['outbound_message_id']
+            foreignKeyName: "message_events_outbound_message_id_fkey"
+            columns: ["outbound_message_id"]
             isOneToOne: false
-            referencedRelation: 'outbound_messages'
-            referencedColumns: ['id']
+            referencedRelation: "outbound_messages"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1277,6 +1277,8 @@ export type Database = {
           category: string
           created_at: string | null
           id: string
+          is_super_model: boolean | null
+          metadata: Json | null
           subject: string | null
           title: string
           type: string
@@ -1288,6 +1290,8 @@ export type Database = {
           category: string
           created_at?: string | null
           id?: string
+          is_super_model?: boolean | null
+          metadata?: Json | null
           subject?: string | null
           title: string
           type: string
@@ -1299,6 +1303,8 @@ export type Database = {
           category?: string
           created_at?: string | null
           id?: string
+          is_super_model?: boolean | null
+          metadata?: Json | null
           subject?: string | null
           title?: string
           type?: string
@@ -1370,53 +1376,53 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'outbound_messages_campaign_id_fkey'
-            columns: ['campaign_id']
+            foreignKeyName: "outbound_messages_campaign_id_fkey"
+            columns: ["campaign_id"]
             isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'outbound_messages_campaign_recipient_id_fkey'
-            columns: ['campaign_recipient_id']
+            foreignKeyName: "outbound_messages_campaign_recipient_id_fkey"
+            columns: ["campaign_recipient_id"]
             isOneToOne: false
-            referencedRelation: 'campaign_recipients'
-            referencedColumns: ['id']
+            referencedRelation: "campaign_recipients"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'outbound_messages_campaign_send_id_fkey'
-            columns: ['campaign_send_id']
+            foreignKeyName: "outbound_messages_campaign_send_id_fkey"
+            columns: ["campaign_send_id"]
             isOneToOne: false
-            referencedRelation: 'campaign_sends'
-            referencedColumns: ['id']
+            referencedRelation: "campaign_sends"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'outbound_messages_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "outbound_messages_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'outbound_messages_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "outbound_messages_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'outbound_messages_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "outbound_messages_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_extended_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_extended_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'outbound_messages_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "outbound_messages_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1465,32 +1471,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'purchases_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "purchases_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'purchases_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "purchases_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'purchases_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "purchases_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_extended_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_extended_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'purchases_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "purchases_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1581,11 +1587,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'smartleiloes_lots_auction_id_fkey'
-            columns: ['auction_id']
+            foreignKeyName: "smartleiloes_lots_auction_id_fkey"
+            columns: ["auction_id"]
             isOneToOne: false
-            referencedRelation: 'smartleiloes_auctions'
-            referencedColumns: ['id']
+            referencedRelation: "smartleiloes_auctions"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1772,18 +1778,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'studbook_horses_breeder_id_fkey'
-            columns: ['breeder_id']
+            foreignKeyName: "studbook_horses_breeder_id_fkey"
+            columns: ["breeder_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_people_orgs'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_people_orgs"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'studbook_horses_owner_id_fkey'
-            columns: ['owner_id']
+            foreignKeyName: "studbook_horses_owner_id_fkey"
+            columns: ["owner_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_people_orgs'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_people_orgs"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1871,32 +1877,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'studbook_offspring_child_id_fkey'
-            columns: ['child_id']
+            foreignKeyName: "studbook_offspring_child_id_fkey"
+            columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_horses'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_horses"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'studbook_offspring_child_id_fkey'
-            columns: ['child_id']
+            foreignKeyName: "studbook_offspring_child_id_fkey"
+            columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_horses_enriched'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_horses_enriched"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'studbook_offspring_parent_id_fkey'
-            columns: ['parent_id']
+            foreignKeyName: "studbook_offspring_parent_id_fkey"
+            columns: ["parent_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_horses'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_horses"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'studbook_offspring_parent_id_fkey'
-            columns: ['parent_id']
+            foreignKeyName: "studbook_offspring_parent_id_fkey"
+            columns: ["parent_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_horses_enriched'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_horses_enriched"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1936,32 +1942,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'studbook_pedigree_links_horse_id_fkey'
-            columns: ['horse_id']
+            foreignKeyName: "studbook_pedigree_links_horse_id_fkey"
+            columns: ["horse_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_horses'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_horses"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'studbook_pedigree_links_horse_id_fkey'
-            columns: ['horse_id']
+            foreignKeyName: "studbook_pedigree_links_horse_id_fkey"
+            columns: ["horse_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_horses_enriched'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_horses_enriched"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'studbook_pedigree_links_related_horse_id_fkey'
-            columns: ['related_horse_id']
+            foreignKeyName: "studbook_pedigree_links_related_horse_id_fkey"
+            columns: ["related_horse_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_horses'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_horses"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'studbook_pedigree_links_related_horse_id_fkey'
-            columns: ['related_horse_id']
+            foreignKeyName: "studbook_pedigree_links_related_horse_id_fkey"
+            columns: ["related_horse_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_horses_enriched'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_horses_enriched"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -2094,39 +2100,39 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'tasks_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "tasks_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contact_segmentation_view'
-            referencedColumns: ['id']
+            referencedRelation: "contact_segmentation_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'tasks_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "tasks_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'contacts'
-            referencedColumns: ['id']
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'tasks_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "tasks_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_extended_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_extended_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'tasks_contact_id_fkey'
-            columns: ['contact_id']
+            foreignKeyName: "tasks_contact_id_fkey"
+            columns: ["contact_id"]
             isOneToOne: false
-            referencedRelation: 'customer_rfmv_view'
-            referencedColumns: ['id']
+            referencedRelation: "customer_rfmv_view"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'tasks_deal_id_fkey'
-            columns: ['deal_id']
+            foreignKeyName: "tasks_deal_id_fkey"
+            columns: ["deal_id"]
             isOneToOne: false
-            referencedRelation: 'deals'
-            referencedColumns: ['id']
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -2321,18 +2327,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'studbook_horses_breeder_id_fkey'
-            columns: ['breeder_id']
+            foreignKeyName: "studbook_horses_breeder_id_fkey"
+            columns: ["breeder_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_people_orgs'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_people_orgs"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'studbook_horses_owner_id_fkey'
-            columns: ['owner_id']
+            foreignKeyName: "studbook_horses_owner_id_fkey"
+            columns: ["owner_id"]
             isOneToOne: false
-            referencedRelation: 'studbook_people_orgs'
-            referencedColumns: ['id']
+            referencedRelation: "studbook_people_orgs"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -2421,33 +2427,33 @@ export type Database = {
   }
 }
 
-type DatabaseWithoutInternals = Omit<Database, '__InternalSupabase'>
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, 'public'>]
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
-        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
-      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])[TableName] extends {
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] &
-        DefaultSchema['Views'])
-    ? (DefaultSchema['Tables'] &
-        DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
         Row: infer R
       }
       ? R
@@ -2456,23 +2462,23 @@ export type Tables<
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema['Tables']
+    | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
-    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
         Insert: infer I
       }
       ? I
@@ -2481,23 +2487,23 @@ export type TablesInsert<
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema['Tables']
+    | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
-    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
         Update: infer U
       }
       ? U
@@ -2506,36 +2512,36 @@ export type TablesUpdate<
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema['Enums']
+    | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums']
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums'][EnumName]
-  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums']
-    ? DefaultSchema['Enums'][DefaultSchemaEnumNameOrOptions]
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema['CompositeTypes']
+    | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes']
-    ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
 
 export const Constants = {
@@ -2543,6 +2549,7 @@ export const Constants = {
     Enums: {},
   },
 } as const
+
 
 // ====== DATABASE EXTENDED CONTEXT (auto-generated) ======
 // This section contains actual PostgreSQL column types, constraints, RLS policies,
@@ -2909,6 +2916,8 @@ export const Constants = {
 //   created_at: timestamp with time zone (nullable, default: now())
 //   updated_at: timestamp with time zone (nullable, default: now())
 //   variables: _text (nullable, default: '{}'::text[])
+//   is_super_model: boolean (nullable, default: false)
+//   metadata: jsonb (nullable, default: '{}'::jsonb)
 // Table: outbound_messages
 //   id: uuid (not null, default: gen_random_uuid())
 //   campaign_id: uuid (nullable)
@@ -3418,6 +3427,9 @@ export const Constants = {
 //     USING: true
 //     WITH CHECK: true
 // Table: message_templates
+//   Policy "Enable all access for authenticated users" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: true
+//     WITH CHECK: true
 //   Policy "Enable delete access for authenticated users" (DELETE, PERMISSIVE) roles={authenticated}
 //     USING: true
 //   Policy "Enable insert access for authenticated users" (INSERT, PERMISSIVE) roles={authenticated}
@@ -3426,6 +3438,7 @@ export const Constants = {
 //     USING: true
 //   Policy "Enable update access for authenticated users" (UPDATE, PERMISSIVE) roles={authenticated}
 //     USING: true
+//     WITH CHECK: true
 // Table: outbound_messages
 //   Policy "Allow authenticated full access outbound_messages" (ALL, PERMISSIVE) roles={authenticated}
 //     USING: true
@@ -3513,7 +3526,7 @@ export const Constants = {
 //     ON CONFLICT (contact_id, tag_id) DO NOTHING;
 //   END;
 //   $function$
-//
+//   
 // FUNCTION create_default_deal_tasks()
 //   CREATE OR REPLACE FUNCTION public.create_default_deal_tasks()
 //    RETURNS trigger
@@ -3528,7 +3541,7 @@ export const Constants = {
 //       RETURN NEW;
 //   END;
 //   $function$
-//
+//   
 // FUNCTION get_studbook_network_rankings(text, text, integer, integer, boolean, boolean, text[], text[], text[], text[], integer, integer, integer, text, integer)
 //   CREATE OR REPLACE FUNCTION public.get_studbook_network_rankings(p_search text DEFAULT NULL::text, p_sex text DEFAULT 'all'::text, p_min_age integer DEFAULT NULL::integer, p_max_age integer DEFAULT NULL::integer, p_include_unknown_age boolean DEFAULT true, p_reproductive_only boolean DEFAULT false, p_breeder_names text[] DEFAULT NULL::text[], p_owner_names text[] DEFAULT NULL::text[], p_sire_names text[] DEFAULT NULL::text[], p_dam_names text[] DEFAULT NULL::text[], p_min_offspring integer DEFAULT NULL::integer, p_data_quality_min integer DEFAULT NULL::integer, p_recent_years integer DEFAULT NULL::integer, p_rank_mode text DEFAULT 'volume'::text, p_limit integer DEFAULT 6)
 //    RETURNS TABLE(entity_id text, entity_kind text, name text, horse_count integer, female_count integer, young_count integer, active_mare_count integer, connected_owner_count integer, avg_quality numeric, latest_birth_year integer, recent_horse_count integer, crm_contact_count integer, total_entities integer)
@@ -3648,9 +3661,9 @@ export const Constants = {
 //       FROM filtered
 //       WHERE is_actionable_studbook_name(breeder_name)
 //       GROUP BY breeder_id, breeder_name
-//
+//   
 //       UNION ALL
-//
+//   
 //       SELECT
 //           owner_id::text AS entity_id,
 //           'owner'::text AS entity_kind,
@@ -3668,9 +3681,9 @@ export const Constants = {
 //       FROM filtered
 //       WHERE is_actionable_studbook_name(owner_name)
 //       GROUP BY owner_id, owner_name
-//
+//   
 //       UNION ALL
-//
+//   
 //       SELECT
 //           LOWER(TRIM(sire_name)) AS entity_id,
 //           'sire'::text AS entity_kind,
@@ -3688,9 +3701,9 @@ export const Constants = {
 //       FROM filtered
 //       WHERE is_actionable_studbook_name(sire_name)
 //       GROUP BY LOWER(TRIM(sire_name))
-//
+//   
 //       UNION ALL
-//
+//   
 //       SELECT
 //           LOWER(TRIM(dam_name)) AS entity_id,
 //           'dam'::text AS entity_kind,
@@ -3747,7 +3760,7 @@ export const Constants = {
 //   WHERE rank_position <= LEAST(GREATEST(COALESCE(p_limit, 6), 1), 20)
 //   ORDER BY entity_kind, rank_position;
 //   $function$
-//
+//   
 // FUNCTION is_actionable_studbook_name(text)
 //   CREATE OR REPLACE FUNCTION public.is_actionable_studbook_name(value text)
 //    RETURNS boolean
@@ -3771,7 +3784,7 @@ export const Constants = {
 //               'DESCONHECIDA'
 //           );
 //   $function$
-//
+//   
 // FUNCTION normalize_studbook_match_name(text)
 //   CREATE OR REPLACE FUNCTION public.normalize_studbook_match_name(value text)
 //    RETURNS text
@@ -3780,7 +3793,7 @@ export const Constants = {
 //   AS $function$
 //       SELECT REGEXP_REPLACE(LOWER(TRIM(COALESCE(value, ''))), '[^a-z0-9]+', ' ', 'g');
 //   $function$
-//
+//   
 // FUNCTION update_updated_at_column()
 //   CREATE OR REPLACE FUNCTION public.update_updated_at_column()
 //    RETURNS trigger
@@ -3791,7 +3804,7 @@ export const Constants = {
 //       RETURN NEW;
 //   END;
 //   $function$
-//
+//   
 
 // --- TRIGGERS ---
 // Table: deals
@@ -3873,3 +3886,4 @@ export const Constants = {
 //   CREATE UNIQUE INDEX studbook_people_orgs_normalized_name_role_key ON public.studbook_people_orgs USING btree (normalized_name, role)
 // Table: tags
 //   CREATE UNIQUE INDEX tags_name_key ON public.tags USING btree (name)
+

@@ -1,14 +1,12 @@
 {
   "_versions": {
-    "process-automation-tasks": 26,
-    "send-contact-email": 31,
-    "process-campaigns": 32,
-    "dispatch-campaign": 27,
-    "send-whatsapp-botconversa": 28,
-    "resend-webhook": 26,
-    "botconversa-webhook": 26,
-    "sync-smartleiloes": 29,
-    "sync-hippomundo-market": 1,
-    "sync-studbook-recent": 1
+    "process-automation-tasks": 25,
+    "send-contact-email": 27,
+    "process-campaigns": 28,
+    "dispatch-campaign": 26,
+    "send-whatsapp-botconversa": 27,
+    "resend-webhook": 25,
+    "botconversa-webhook": 25,
+    "sync-smartleiloes": 28
   }
 }

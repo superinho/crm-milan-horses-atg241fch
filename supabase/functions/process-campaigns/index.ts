@@ -228,9 +228,7 @@ const sendEmail = async (
     contact,
     campaign,
   )
-  console.log(
-    `[process-campaigns] Processing email body for images for recipient: ${to}`,
-  )
+  console.log(`[process-campaigns] Processing email body for images for recipient: ${to}`)
   const preparedEmail = embedRemoteImagesForResend(html)
   const payload: Record<string, unknown> = {
     from: RESEND_FROM_EMAIL,
