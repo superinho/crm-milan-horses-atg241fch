@@ -13,7 +13,7 @@ interface EmailRequest {
 }
 
 Deno.serve(async (req: Request) => {
-  // Handle CORS preflight request
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -65,6 +65,11 @@ Deno.serve(async (req: Request) => {
       }))
     }
 
+    console.log(
+      `[send-contact-email] Sending to Resend with payload:`,
+      JSON.stringify(payload, null, 2),
+    )
+
     // Call Resend API
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -78,18 +83,24 @@ Deno.serve(async (req: Request) => {
     const data = await res.json()
 
     if (!res.ok) {
+      console.error(
+        `[send-contact-email] Resend API error (${res.status}):`,
+        JSON.stringify(data, null, 2),
+      )
       return new Response(JSON.stringify({ error: data }), {
         status: res.status,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
 
+    console.log(`[send-contact-email] Email sent successfully:`, data.id)
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   } catch (error: any) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error(`[send-contact-email] Internal error:`, error)
+    return new Response(JSON.stringify({ error: { message: error.message } }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })

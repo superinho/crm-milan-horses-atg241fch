@@ -8,7 +8,7 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
 const RESEND_FROM_EMAIL =
   Deno.env.get('RESEND_FROM_EMAIL') ||
-  'Milan Horses <nicole.vaz@milanleiloes.com.br>'
+  'Milan Horses Leilões <nicole.vaz@milanleiloes.com.br>'
 const RESEND_REPLY_TO_EMAIL = Deno.env.get('RESEND_REPLY_TO_EMAIL')
 const BOTCONVERSA_WEBHOOK_URL = Deno.env.get('BOTCONVERSA_WEBHOOK_URL')
 const BOTCONVERSA_API_KEY = Deno.env.get('BOTCONVERSA_API_KEY')
@@ -228,7 +228,9 @@ const sendEmail = async (
     contact,
     campaign,
   )
-  console.log(`[process-campaigns] Processing email body for images for recipient: ${to}`)
+  console.log(
+    `[process-campaigns] Processing email body for images for recipient: ${to}`,
+  )
   const preparedEmail = embedRemoteImagesForResend(html)
   const payload: Record<string, unknown> = {
     from: RESEND_FROM_EMAIL,
@@ -258,8 +260,13 @@ const sendEmail = async (
   const responsePayload = await response.json().catch(() => ({}))
 
   if (!response.ok) {
+    console.error(
+      `[process-campaigns] Resend API error (${response.status}):`,
+      JSON.stringify(responsePayload, null, 2),
+    )
     throw new Error(
       responsePayload?.message ||
+        responsePayload?.error?.message ||
         responsePayload?.error ||
         `Resend retornou status ${response.status}`,
     )
@@ -534,8 +541,10 @@ const processSchedule = async (
 }
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS')
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
+  }
 
   try {
     const body = req.method === 'POST' ? await req.json().catch(() => ({})) : {}
