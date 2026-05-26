@@ -132,6 +132,22 @@ const blockTools: Array<{
 
 const uid = () => Math.random().toString(36).slice(2, 10)
 
+const safeImageName = (name: string) =>
+  name
+    .replace(/\.[^/.]+$/, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+
+const imageExtension = (file: File) => {
+  const fromName = file.name.split('.').pop()
+  if (fromName) return fromName.toLowerCase()
+  if (file.type.includes('png')) return 'png'
+  if (file.type.includes('webp')) return 'webp'
+  if (file.type.includes('gif')) return 'gif'
+  return 'jpg'
+}
+
 const createBlock = (type: BlockType): MessageBlock => {
   const id = uid()
 
@@ -974,6 +990,7 @@ export default function ModelosPlaybooks() {
   const [loadingTemplates, setLoadingTemplates] = useState(true)
   const [saving, setSaving] = useState(false)
   const [testing, setTesting] = useState(false)
+  const [uploadingImage, setUploadingImage] = useState(false)
   const [testTarget, setTestTarget] = useState('')
   const [sideTab, setSideTab] = useState<SideTab>('properties')
   const [previewMode, setPreviewMode] = useState<PreviewMode>('desktop')
@@ -1107,7 +1124,7 @@ export default function ModelosPlaybooks() {
     setPreviewMode('desktop')
   }
 
-  const handleImageUpload = (file?: File) => {
+  const handleImageUpload = async (file?: File) => {
     if (!file || selectedBlock?.type !== 'image') return
 
     if (!file.type.startsWith('image/')) {
@@ -1119,14 +1136,39 @@ export default function ModelosPlaybooks() {
       return
     }
 
-    const reader = new FileReader()
-    reader.onload = () => {
+    setUploadingImage(true)
+    try {
+      const filename = safeImageName(file.name) || 'imagem'
+      const path = `studio/${Date.now()}-${filename}.${imageExtension(file)}`
+
+      const { error } = await supabase.storage
+        .from('email-assets')
+        .upload(path, file, {
+          cacheControl: '31536000',
+          contentType: file.type,
+          upsert: false,
+        })
+
+      if (error) throw error
+
+      const { data } = supabase.storage.from('email-assets').getPublicUrl(path)
       updateSelectedBlock({
-        src: String(reader.result || ''),
+        src: data.publicUrl,
         alt: selectedBlock.alt || file.name,
       })
+      toast({
+        title: 'Imagem pronta',
+        description: 'O arquivo foi salvo como URL pública para envio por e-mail.',
+      })
+    } catch (error: any) {
+      toast({
+        title: 'Erro no upload',
+        description: error.message || 'Não foi possível salvar a imagem.',
+        variant: 'destructive',
+      })
+    } finally {
+      setUploadingImage(false)
     }
-    reader.readAsDataURL(file)
   }
 
   const saveTemplate = async () => {
@@ -1665,14 +1707,21 @@ export default function ModelosPlaybooks() {
                               htmlFor="imageUpload"
                               className="flex items-center gap-2"
                             >
-                              <Upload className="h-4 w-4 text-primary" />
-                              Upload da imagem
+                              {uploadingImage ? (
+                                <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                              ) : (
+                                <Upload className="h-4 w-4 text-primary" />
+                              )}
+                              {uploadingImage
+                                ? 'Salvando imagem...'
+                                : 'Upload da imagem'}
                             </Label>
                             <Input
                               id="imageUpload"
                               type="file"
                               accept="image/*"
                               className="cursor-pointer"
+                              disabled={uploadingImage}
                               onChange={(event) => {
                                 handleImageUpload(event.target.files?.[0])
                                 event.currentTarget.value = ''

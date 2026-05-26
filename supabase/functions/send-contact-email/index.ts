@@ -2,6 +2,8 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
 import { corsHeaders } from '../_shared/cors.ts'
 import {
   embedRemoteImagesForResend,
+  ensureEmailDocument,
+  htmlToPlainText,
   type ResendAttachment,
 } from '../_shared/resend-inline-images.ts'
 
@@ -13,6 +15,7 @@ interface EmailRequest {
   to: string[]
   subject: string
   html: string
+  text?: string
   attachments?: ResendAttachment[]
 }
 
@@ -23,7 +26,8 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const { to, subject, html, attachments }: EmailRequest = await req.json()
+    const { to, subject, html, text, attachments }: EmailRequest =
+      await req.json()
 
     // Validate required fields
     if (!to || !to.length || !subject || !html) {
@@ -48,8 +52,14 @@ Deno.serve(async (req: Request) => {
       )
     }
 
+    const emailHtml = ensureEmailDocument(html)
+    const plainText = text || htmlToPlainText(emailHtml)
+
     console.log(`[send-contact-email] Processing email body for images...`)
-    const preparedEmail = embedRemoteImagesForResend(html, attachments || [])
+    const preparedEmail = embedRemoteImagesForResend(
+      emailHtml,
+      attachments || [],
+    )
 
     // Construct Resend payload
     const payload: any = {
@@ -57,6 +67,7 @@ Deno.serve(async (req: Request) => {
       to: to,
       subject: subject,
       html: preparedEmail.html,
+      text: plainText,
     }
 
     if (preparedEmail.attachments.length > 0) {

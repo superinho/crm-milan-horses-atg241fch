@@ -1,7 +1,11 @@
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders } from '../_shared/cors.ts'
-import { embedRemoteImagesForResend } from '../_shared/resend-inline-images.ts'
+import {
+  embedRemoteImagesForResend,
+  ensureEmailDocument,
+  htmlToPlainText,
+} from '../_shared/resend-inline-images.ts'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
@@ -231,12 +235,14 @@ const sendEmail = async (
   console.log(
     `[process-campaigns] Processing email body for images for recipient: ${to}`,
   )
-  const preparedEmail = embedRemoteImagesForResend(html)
+  const emailHtml = ensureEmailDocument(html)
+  const preparedEmail = embedRemoteImagesForResend(emailHtml)
   const payload: Record<string, unknown> = {
     from: RESEND_FROM_EMAIL,
     to: [to],
     subject,
     html: preparedEmail.html,
+    text: htmlToPlainText(emailHtml),
     tags: [
       { name: 'campaign_id', value: campaign.id },
       { name: 'recipient_id', value: recipient.contact_id },
