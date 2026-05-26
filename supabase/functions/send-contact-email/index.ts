@@ -1,12 +1,16 @@
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
+import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders } from '../_shared/cors.ts'
 import {
   embedRemoteImagesForResend,
   ensureEmailDocument,
   htmlToPlainText,
+  replaceDataImagesWithPublicUrls,
   type ResendAttachment,
 } from '../_shared/resend-inline-images.ts'
 
+const SUPABASE_URL = Deno.env.get('SUPABASE_URL')
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
 const RESEND_FROM_EMAIL =
   Deno.env.get('RESEND_FROM_EMAIL') ||
   'Milan Horses Leilões <contato@milanhorses.com.br>'
@@ -17,6 +21,15 @@ interface EmailRequest {
   html: string
   text?: string
   attachments?: ResendAttachment[]
+}
+
+const base64ToBlob = (content: string, contentType: string) => {
+  const binary = atob(content)
+  const bytes = new Uint8Array(binary.length)
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index)
+  }
+  return new Blob([bytes], { type: contentType })
 }
 
 Deno.serve(async (req: Request) => {
@@ -52,7 +65,32 @@ Deno.serve(async (req: Request) => {
       )
     }
 
-    const emailHtml = ensureEmailDocument(html)
+    let emailHtml = ensureEmailDocument(html)
+    if (emailHtml.includes('data:image/')) {
+      if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+        throw new Error('Supabase storage is not configured for email images.')
+      }
+
+      const storage = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+      emailHtml = await replaceDataImagesWithPublicUrls(
+        emailHtml,
+        async ({ content, contentType, extension, index }) => {
+          const path = `studio/email-${Date.now()}-${index}-${crypto.randomUUID()}.${extension}`
+          const { error } = await storage.storage
+            .from('email-assets')
+            .upload(path, base64ToBlob(content, contentType), {
+              cacheControl: '31536000',
+              contentType,
+              upsert: false,
+            })
+
+          if (error) throw error
+          return storage.storage.from('email-assets').getPublicUrl(path).data
+            .publicUrl
+        },
+      )
+    }
+
     const plainText = text || htmlToPlainText(emailHtml)
 
     console.log(`[send-contact-email] Processing email body for images...`)

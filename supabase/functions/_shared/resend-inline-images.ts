@@ -25,57 +25,66 @@ const escapeHtml = (value: string) =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;')
 
-const dataImageAttachment = (
-  src: string,
-  contentId: string,
-  index: number,
-): ResendAttachment | null => {
-  const match = src.match(dataImagePattern)
-  if (!match) return null
+type UploadDataImage = (image: {
+  content: string
+  contentType: string
+  extension: string
+  index: number
+}) => Promise<string>
 
-  const [, contentType, content] = match
-  return {
-    content,
-    filename: `milan-email-image-${index + 1}.${extensionFromContentType(
-      contentType,
-    )}`,
-    contentType,
-    contentId,
+export const replaceDataImagesWithPublicUrls = async (
+  html: string,
+  uploadDataImage: UploadDataImage,
+) => {
+  const srcToPublicUrl = new Map<string, string>()
+  const parts: string[] = []
+  let lastIndex = 0
+  let imageIndex = 0
+
+  for (const match of String(html || '').matchAll(imageSrcPattern)) {
+    const tag = match[0]
+    const quote = match[1]
+    const src = match[2]
+    const matchIndex = match.index || 0
+    const dataImage = src.match(dataImagePattern)
+
+    parts.push(String(html || '').slice(lastIndex, matchIndex))
+    lastIndex = matchIndex + tag.length
+
+    if (!dataImage) {
+      parts.push(tag)
+      continue
+    }
+
+    let publicUrl = srcToPublicUrl.get(src)
+    if (!publicUrl) {
+      const [, contentType, content] = dataImage
+      publicUrl = await uploadDataImage({
+        content,
+        contentType,
+        extension: extensionFromContentType(contentType),
+        index: imageIndex,
+      })
+      srcToPublicUrl.set(src, publicUrl)
+      imageIndex += 1
+    }
+
+    parts.push(
+      tag.replace(`src=${quote}${src}${quote}`, `src=${quote}${publicUrl}${quote}`),
+    )
   }
+
+  parts.push(String(html || '').slice(lastIndex))
+  return parts.join('')
 }
 
 export const embedRemoteImagesForResend = (
   html: string,
   existingAttachments: ResendAttachment[] = [],
 ) => {
-  const srcToAttachment = new Map<string, ResendAttachment>()
-
-  const nextHtml = String(html || '').replace(
-    imageSrcPattern,
-    (tag, quote, src) => {
-      console.log(`[Email Image Auditor] Detected image src: ${src}`)
-      if (!dataImagePattern.test(src)) {
-        return tag
-      }
-
-      let attachment = srcToAttachment.get(src)
-      if (!attachment) {
-        const contentId = `milan-image-${srcToAttachment.size + 1}`
-        attachment = dataImageAttachment(src, contentId, srcToAttachment.size)
-        if (!attachment) return tag
-        srcToAttachment.set(src, attachment)
-      }
-
-      return tag.replace(
-        `src=${quote}${src}${quote}`,
-        `src=${quote}cid:${attachment.contentId}${quote}`,
-      )
-    },
-  )
-
   return {
-    html: nextHtml,
-    attachments: [...existingAttachments, ...srcToAttachment.values()],
+    html: String(html || ''),
+    attachments: existingAttachments,
   }
 }
 

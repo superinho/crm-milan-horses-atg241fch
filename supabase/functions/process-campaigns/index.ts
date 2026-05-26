@@ -5,6 +5,7 @@ import {
   embedRemoteImagesForResend,
   ensureEmailDocument,
   htmlToPlainText,
+  replaceDataImagesWithPublicUrls,
 } from '../_shared/resend-inline-images.ts'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
@@ -19,6 +20,15 @@ const BOTCONVERSA_API_KEY = Deno.env.get('BOTCONVERSA_API_KEY')
 const BOTCONVERSA_DEFAULT_FLOW_ID = Deno.env.get('BOTCONVERSA_DEFAULT_FLOW_ID')
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+
+const base64ToBlob = (content: string, contentType: string) => {
+  const binary = atob(content)
+  const bytes = new Uint8Array(binary.length)
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index)
+  }
+  return new Blob([bytes], { type: contentType })
+}
 
 type Contact = {
   id: string
@@ -235,7 +245,27 @@ const sendEmail = async (
   console.log(
     `[process-campaigns] Processing email body for images for recipient: ${to}`,
   )
-  const emailHtml = ensureEmailDocument(html)
+  let emailHtml = ensureEmailDocument(html)
+  if (emailHtml.includes('data:image/')) {
+    emailHtml = await replaceDataImagesWithPublicUrls(
+      emailHtml,
+      async ({ content, contentType, extension, index }) => {
+        const path = `studio/email-${Date.now()}-${index}-${crypto.randomUUID()}.${extension}`
+        const { error } = await supabase.storage
+          .from('email-assets')
+          .upload(path, base64ToBlob(content, contentType), {
+            cacheControl: '31536000',
+            contentType,
+            upsert: false,
+          })
+
+        if (error) throw error
+        return supabase.storage.from('email-assets').getPublicUrl(path).data
+          .publicUrl
+      },
+    )
+  }
+
   const preparedEmail = embedRemoteImagesForResend(emailHtml)
   const payload: Record<string, unknown> = {
     from: RESEND_FROM_EMAIL,
