@@ -5,6 +5,10 @@ import {
   type ResendAttachment,
 } from '../_shared/resend-inline-images.ts'
 
+const RESEND_FROM_EMAIL =
+  Deno.env.get('RESEND_FROM_EMAIL') ||
+  'Milan Horses Leilões <contato@milanhorses.com.br>'
+
 interface EmailRequest {
   to: string[]
   subject: string
@@ -49,7 +53,7 @@ Deno.serve(async (req: Request) => {
 
     // Construct Resend payload
     const payload: any = {
-      from: 'Milan Horses Leilões <nicole.vaz@milanleiloes.com.br>',
+      from: RESEND_FROM_EMAIL,
       to: to,
       subject: subject,
       html: preparedEmail.html,
