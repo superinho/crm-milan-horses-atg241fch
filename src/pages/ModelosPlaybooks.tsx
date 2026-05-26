@@ -70,13 +70,16 @@ type MessageBlock = {
   href?: string
   src?: string
   alt?: string
-  align?: 'left' | 'center'
+  align?: 'left' | 'center' | 'right'
+  widthPercent?: ImageWidthPercent
   variant?: BlockVariant
   theme?: LuxuryTheme
   eyebrow?: string
   heading?: string
   caption?: string
 }
+
+type ImageWidthPercent = 33 | 50 | 75 | 100
 
 type EditorState = {
   id?: string
@@ -108,6 +111,20 @@ const CATEGORY_OPTIONS: TemplateCategory[] = [
   'Agradecimento Pós-Compra',
   'Aniversário',
 ]
+
+const IMAGE_WIDTH_OPTIONS: ImageWidthPercent[] = [100, 75, 50, 33]
+
+const imageWidthPercent = (block: MessageBlock) => block.widthPercent || 100
+
+const normalizeImageWidthPercent = (
+  value?: string | number | null,
+): ImageWidthPercent => {
+  const numeric = Number(String(value || '').replace('%', ''))
+  if (numeric <= 40) return 33
+  if (numeric <= 62) return 50
+  if (numeric <= 87) return 75
+  return 100
+}
 
 const SAMPLE = {
   nome: 'Mariana',
@@ -230,6 +247,7 @@ const imageBlock = (
   src: '',
   alt,
   align: 'center',
+  widthPercent: 100,
   variant: 'luxuryImage',
   ...options,
 })
@@ -490,6 +508,9 @@ const blockDataAttrs = (block: MessageBlock) =>
     block.eyebrow ? `data-eyebrow="${escapeHtml(block.eyebrow)}"` : '',
     block.heading ? `data-heading="${escapeHtml(block.heading)}"` : '',
     block.caption ? `data-caption="${escapeHtml(block.caption)}"` : '',
+    block.type === 'image'
+      ? `data-width-percent="${imageWidthPercent(block)}"`
+      : '',
   ]
     .filter(Boolean)
     .join(' ')
@@ -593,11 +614,19 @@ const renderBlockHtml = (block: MessageBlock) => {
   }
 
   if (block.type === 'image') {
+    const width = imageWidthPercent(block)
+    const pixelWidth = Math.round(600 * (width / 100))
+    const margin =
+      block.align === 'left'
+        ? 'margin:0 auto 0 0;'
+        : block.align === 'right'
+          ? 'margin:0 0 0 auto;'
+          : 'margin:0 auto;'
     const caption = block.caption
       ? `<div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#7c8796;margin-top:10px">${escapeHtml(block.caption)}</div>`
       : ''
     return block.src
-      ? `<figure ${blockDataAttrs(block)} style="text-align:${block.align || 'center'};margin:18px 0 24px 0"><img src="${escapeHtml(block.src)}" alt="${escapeHtml(block.alt || '')}" style="display:block;max-width:100%;border-radius:8px;border:1px solid #dbe3ef" />${caption}</figure>`
+      ? `<figure ${blockDataAttrs(block)} style="text-align:${block.align || 'center'};margin:18px 0 24px 0"><img src="${escapeHtml(block.src)}" alt="${escapeHtml(block.alt || '')}" width="${pixelWidth}" style="display:block;width:${width}%;max-width:${width}%;height:auto;${margin}border-radius:8px;border:1px solid #dbe3ef" />${caption}</figure>`
       : `<div ${blockDataAttrs(block)} style="border:1px dashed #c8d3e1;background:#f7f3ea;border-radius:8px;padding:42px 24px;text-align:center;margin:18px 0 24px 0;color:#607089;font-size:13px;letter-spacing:0.08em;text-transform:uppercase">Imagem editorial${caption}</div>`
   }
 
@@ -673,17 +702,31 @@ const parseTemplateBlocks = (template: MessageTemplate): MessageBlock[] => {
         ...block,
         label: link?.textContent?.trim() || 'Abrir',
         href: link?.getAttribute('href') || '',
-        align: node.style.textAlign === 'left' ? 'left' : 'center',
+        align:
+          node.style.textAlign === 'left'
+            ? 'left'
+            : node.style.textAlign === 'right'
+              ? 'right'
+              : 'center',
       }
     }
 
     if (type === 'image') {
       const image = node.querySelector('img')
+      const styleWidth = image?.style.width || image?.style.maxWidth
       return {
         ...block,
         src: image?.getAttribute('src') || '',
         alt: image?.getAttribute('alt') || '',
-        align: node.style.textAlign === 'left' ? 'left' : 'center',
+        align:
+          node.style.textAlign === 'left'
+            ? 'left'
+            : node.style.textAlign === 'right'
+              ? 'right'
+              : 'center',
+        widthPercent: normalizeImageWidthPercent(
+          node.dataset.widthPercent || styleWidth,
+        ),
       }
     }
 
@@ -870,7 +913,11 @@ function CanvasBlock({
         <div
           className={cn(
             'pr-24',
-            block.align === 'left' ? 'text-left' : 'text-center',
+            block.align === 'left'
+              ? 'text-left'
+              : block.align === 'right'
+                ? 'text-right'
+                : 'text-center',
           )}
         >
           <span className="inline-flex rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
@@ -883,7 +930,11 @@ function CanvasBlock({
         <div
           className={cn(
             'pr-24',
-            block.align === 'left' ? 'text-left' : 'text-center',
+            block.align === 'left'
+              ? 'text-left'
+              : block.align === 'right'
+                ? 'text-right'
+                : 'text-center',
           )}
         >
           {block.src ? (
@@ -892,6 +943,7 @@ function CanvasBlock({
                 src={block.src}
                 alt={block.alt || ''}
                 className="inline-block max-h-64 max-w-full rounded-lg border object-cover"
+                style={{ width: `${imageWidthPercent(block)}%` }}
               />
               {block.caption ? (
                 <div className="mt-2 text-[11px] font-medium uppercase tracking-[0.08em] text-muted-foreground">
@@ -901,7 +953,10 @@ function CanvasBlock({
             </>
           ) : (
             <>
-              <div className="inline-flex h-36 w-full max-w-md items-center justify-center rounded-lg border border-dashed bg-[#f7f3ea] text-sm text-muted-foreground">
+              <div
+                className="inline-flex h-36 max-w-md items-center justify-center rounded-lg border border-dashed bg-[#f7f3ea] text-sm text-muted-foreground"
+                style={{ width: `${imageWidthPercent(block)}%` }}
+              >
                 Imagem editorial
               </div>
               {block.caption ? (
@@ -1158,7 +1213,8 @@ export default function ModelosPlaybooks() {
       })
       toast({
         title: 'Imagem pronta',
-        description: 'O arquivo foi salvo como URL pública para envio por e-mail.',
+        description:
+          'O arquivo foi salvo como URL pública para envio por e-mail.',
       })
     } catch (error: any) {
       toast({
@@ -1684,6 +1740,7 @@ export default function ModelosPlaybooks() {
                               <SelectContent>
                                 <SelectItem value="center">Centro</SelectItem>
                                 <SelectItem value="left">Esquerda</SelectItem>
+                                <SelectItem value="right">Direita</SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
@@ -1727,6 +1784,60 @@ export default function ModelosPlaybooks() {
                                 event.currentTarget.value = ''
                               }}
                             />
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between gap-3">
+                              <Label>Tamanho</Label>
+                              <span className="text-xs font-medium text-muted-foreground">
+                                {imageWidthPercent(selectedBlock)}%
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-4 gap-2">
+                              {IMAGE_WIDTH_OPTIONS.map((width) => (
+                                <Button
+                                  key={width}
+                                  type="button"
+                                  variant={
+                                    imageWidthPercent(selectedBlock) === width
+                                      ? 'default'
+                                      : 'outline'
+                                  }
+                                  size="sm"
+                                  className="h-9 px-2 text-xs"
+                                  onClick={() =>
+                                    updateSelectedBlock({
+                                      widthPercent: width,
+                                    })
+                                  }
+                                >
+                                  {width}%
+                                </Button>
+                              ))}
+                            </div>
+                            <p className="text-xs leading-5 text-muted-foreground">
+                              Use 100% para banner e 50% ou 33% para fotos
+                              menores, logos e selos.
+                            </p>
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Alinhamento</Label>
+                            <Select
+                              value={selectedBlock.align || 'center'}
+                              onValueChange={(value) =>
+                                updateSelectedBlock({
+                                  align: value as MessageBlock['align'],
+                                })
+                              }
+                            >
+                              <SelectTrigger>
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="center">Centro</SelectItem>
+                                <SelectItem value="left">Esquerda</SelectItem>
+                                <SelectItem value="right">Direita</SelectItem>
+                              </SelectContent>
+                            </Select>
                           </div>
                           <div className="space-y-2">
                             <Label>Texto alternativo</Label>
