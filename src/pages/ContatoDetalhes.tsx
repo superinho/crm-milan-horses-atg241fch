@@ -33,6 +33,11 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { useToast } from '@/hooks/use-toast'
 import { contactsService, type Contact, type Tag } from '@/services/contacts'
+import {
+  BEHAVIOR_TAGS,
+  MANUAL_PRIORITY_TAGS,
+  tagsService,
+} from '@/services/tags'
 import { cn, getContrastColor } from '@/lib/utils'
 import { ContactPurchases } from '@/components/ContactPurchases'
 import { ContactBids } from '@/components/ContactBids'
@@ -95,6 +100,30 @@ export default function ContatoDetalhes() {
       toast({
         title: 'Erro',
         description: 'Não foi possível remover a tag.',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const handleTogglePriorityTag = async (tagName: string) => {
+    if (!contact) return
+    try {
+      const tags = await tagsService.ensureMilanTags()
+      const tag = tags.find((item) => item.name === tagName)
+      if (!tag) throw new Error('Tag não encontrada.')
+
+      const isSelected = contact.tags?.some((item) => item.id === tag.id)
+      if (isSelected) {
+        await contactsService.removeTagFromContact(contact.id, tag.id)
+      } else {
+        await contactsService.addTagToContact(contact.id, tag.id)
+      }
+      fetchContact()
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: 'Erro',
+        description: 'Não foi possível atualizar a classificação do contato.',
         variant: 'destructive',
       })
     }
@@ -317,32 +346,102 @@ export default function ContatoDetalhes() {
                 />
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {contact.tags && contact.tags.length > 0 ? (
-                  contact.tags.map((tag) => (
-                    <Badge
-                      key={tag.id}
-                      className={cn(
-                        'font-normal py-1 pr-1 gap-1',
-                        !tag.color?.startsWith('#') && tag.color,
-                      )}
-                      style={getBadgeStyle(tag)}
-                    >
-                      {tag.name}
-                      <button
-                        onClick={() => handleRemoveTag(tag.id)}
-                        className="rounded-full p-0.5 hover:bg-black/10 focus:outline-none"
+            <CardContent className="space-y-4">
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Curadoria Milan
+                </p>
+                <div className="grid grid-cols-3 gap-2">
+                  {MANUAL_PRIORITY_TAGS.map((tag) => {
+                    const selected = contact.tags?.some(
+                      (item) => item.name === tag.name,
+                    )
+                    return (
+                      <Button
+                        key={tag.name}
+                        type="button"
+                        size="sm"
+                        variant={selected ? 'default' : 'outline'}
+                        className="h-8 text-xs"
+                        style={
+                          selected
+                            ? {
+                                backgroundColor: tag.color,
+                                color: getContrastColor(tag.color),
+                                borderColor: tag.color,
+                              }
+                            : {}
+                        }
+                        onClick={() => handleTogglePriorityTag(tag.name)}
                       >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </Badge>
-                  ))
-                ) : (
-                  <p className="text-sm text-muted-foreground italic">
-                    Nenhuma tag atribuída.
-                  </p>
-                )}
+                        {tag.name}
+                      </Button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <Separator />
+
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Tags do contato
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {contact.tags && contact.tags.length > 0 ? (
+                    contact.tags.map((tag) => (
+                      <Badge
+                        key={tag.id}
+                        className={cn(
+                          'font-normal py-1 pr-1 gap-1',
+                          !tag.color?.startsWith('#') && tag.color,
+                        )}
+                        style={getBadgeStyle(tag)}
+                      >
+                        {tag.name}
+                        <button
+                          onClick={() => handleRemoveTag(tag.id)}
+                          className="rounded-full p-0.5 hover:bg-black/10 focus:outline-none"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </Badge>
+                    ))
+                  ) : (
+                    <p className="text-sm text-muted-foreground italic">
+                      Nenhuma tag atribuída.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Comportamento automático
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {contact.tags?.some((tag) =>
+                    BEHAVIOR_TAGS.some((item) => item.name === tag.name),
+                  ) ? (
+                    contact.tags
+                      .filter((tag) =>
+                        BEHAVIOR_TAGS.some((item) => item.name === tag.name),
+                      )
+                      .map((tag) => (
+                        <Badge
+                          key={tag.id}
+                          variant="outline"
+                          style={getBadgeStyle(tag)}
+                        >
+                          {tag.name}
+                        </Badge>
+                      ))
+                  ) : (
+                    <p className="text-xs text-muted-foreground">
+                      Nenhuma tag comportamental aplicada ainda.
+                    </p>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>

@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase/client'
-import { Tag, tagsService } from './tags'
+import { BEHAVIOR_TAGS, Tag, tagsService } from './tags'
 
 const db = supabase as any
 
@@ -175,6 +175,18 @@ const tagIdsByNames = async (names: string[]) => {
   if (error) throw error
   return (data || []).map((tag: any) => tag.id)
 }
+
+const daysSince = (value?: string | null) => {
+  if (!value) return null
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return null
+  return Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24))
+}
+
+const hasRecentCampaignEngagement = (rows: any[]) =>
+  rows.some((row) =>
+    ['opened', 'clicked', 'responded'].includes(String(row.status || '')),
+  )
 
 export const contactsService = {
   async getTags() {
@@ -482,11 +494,17 @@ export const contactsService = {
     ] as string[]
   },
 
-  async getAudienceCount(filters: { tags?: string[]; segments?: string[] }) {
+  async getAudienceCount(filters: {
+    tags?: string[]
+    segments?: string[]
+    contactIds?: string[]
+    contact_ids?: string[]
+  }) {
     const tags = filters.tags || []
     const segments = filters.segments || []
+    const contactIds = filters.contactIds || filters.contact_ids || []
 
-    if (!tags.length && !segments.length) {
+    if (!tags.length && !segments.length && !contactIds.length) {
       const { count, error } = await db
         .from('customer_rfmv_view')
         .select('id', { count: 'exact', head: true })
@@ -495,7 +513,7 @@ export const contactsService = {
       return count || 0
     }
 
-    const ids = new Set<string>()
+    const ids = new Set<string>(contactIds)
 
     if (tags.length) {
       const tagIds = await tagIdsByNames(tags)
@@ -521,6 +539,168 @@ export const contactsService = {
     }
 
     return ids.size
+  },
+
+  async searchContactsForCampaign(search: string, limit = 12) {
+    const term = search.trim()
+    if (term.length < 2) return []
+
+    const { data, error } = await db
+      .from('contacts')
+      .select('id, name, email, phone, whatsapp, city, state')
+      .or(
+        `name.ilike.%${term}%,email.ilike.%${term}%,phone.ilike.%${term}%,whatsapp.ilike.%${term}%`,
+      )
+      .order('name', { ascending: true })
+      .limit(limit)
+
+    if (error) throw error
+    return data || []
+  },
+
+  async getContactsByIds(ids: string[]) {
+    if (!ids.length) return []
+
+    const { data, error } = await db
+      .from('contacts')
+      .select('id, name, email, phone, whatsapp, city, state')
+      .in('id', ids)
+      .order('name', { ascending: true })
+
+    if (error) throw error
+    return data || []
+  },
+
+  async syncBehaviorTags() {
+    const syncChunkSize = 100
+    const tags = await tagsService.ensureMilanTags()
+    const behaviorTagIds = new Map(
+      tags
+        .filter((tag) => BEHAVIOR_TAGS.some((item) => item.name === tag.name))
+        .map((tag) => [tag.name, tag.id]),
+    )
+
+    if (behaviorTagIds.size !== BEHAVIOR_TAGS.length) {
+      throw new Error('Não foi possível preparar as tags automáticas.')
+    }
+
+    const pageSize = 1000
+    let from = 0
+    const rfmvRows: any[] = []
+
+    while (true) {
+      const { data, error } = await db
+        .from('customer_rfmv_view')
+        .select(
+          'id, purchase_count, monetary_value, bid_count, last_activity_date',
+        )
+        .order('id', { ascending: true })
+        .range(from, from + pageSize - 1)
+
+      if (error) throw error
+
+      rfmvRows.push(...(data || []))
+      if (!data || data.length < pageSize) break
+      from += pageSize
+    }
+
+    const contactIds = (rfmvRows || []).map((row: any) => row.id)
+    if (!contactIds.length) return { tagged: 0, contacts: 0 }
+
+    const engagementRows: any[] = []
+    for (let i = 0; i < contactIds.length; i += syncChunkSize) {
+      const batchIds = contactIds.slice(i, i + syncChunkSize)
+      const { data, error: sendsError } = await db
+        .from('campaign_sends')
+        .select('recipient_id, status, created_at')
+        .in('recipient_id', batchIds)
+        .gte(
+          'created_at',
+          new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+        )
+
+      if (sendsError) throw sendsError
+      engagementRows.push(...(data || []))
+    }
+
+    const engagementByContact = new Map<string, any[]>()
+    engagementRows.forEach((row) => {
+      if (!row.recipient_id) return
+      const current = engagementByContact.get(row.recipient_id) || []
+      current.push(row)
+      engagementByContact.set(row.recipient_id, current)
+    })
+
+    const monetaryValues = (rfmvRows || [])
+      .map((row: any) => Number(row.monetary_value || 0))
+      .filter((value: number) => value > 0)
+      .sort((a: number, b: number) => b - a)
+    const topValueThreshold =
+      monetaryValues[
+        Math.max(0, Math.floor(monetaryValues.length * 0.1) - 1)
+      ] || 100000
+
+    const rowsToInsert: Array<{ contact_id: string; tag_id: string }> = []
+    ;(rfmvRows || []).forEach((row: any) => {
+      const purchaseCount = Number(row.purchase_count || 0)
+      const bidCount = Number(row.bid_count || 0)
+      const monetaryValue = Number(row.monetary_value || 0)
+      const inactivityDays = daysSince(row.last_activity_date)
+      const contactEngagement = engagementByContact.get(row.id) || []
+
+      const tagNames: string[] = []
+      if (
+        purchaseCount > 0 &&
+        inactivityDays !== null &&
+        inactivityDays <= 365
+      ) {
+        tagNames.push('Comprador recente')
+      }
+      if (monetaryValue > 0 && monetaryValue >= topValueThreshold) {
+        tagNames.push('Alto valor')
+      }
+      if (bidCount > 0 && inactivityDays !== null && inactivityDays <= 180) {
+        tagNames.push('Licitante ativo')
+      }
+      if (
+        (purchaseCount > 0 || bidCount > 0) &&
+        (inactivityDays === null || inactivityDays > 180)
+      ) {
+        tagNames.push('Inativo com potencial')
+      }
+      if (hasRecentCampaignEngagement(contactEngagement)) {
+        tagNames.push('Engajado em campanhas')
+      }
+
+      tagNames.forEach((name) => {
+        const tagId = behaviorTagIds.get(name)
+        if (tagId) rowsToInsert.push({ contact_id: row.id, tag_id: tagId })
+      })
+    })
+
+    const behaviorIds = [...behaviorTagIds.values()]
+    for (let i = 0; i < contactIds.length; i += syncChunkSize) {
+      const batchIds = contactIds.slice(i, i + syncChunkSize)
+      const { error: deleteError } = await db
+        .from('contact_tags')
+        .delete()
+        .in('contact_id', batchIds)
+        .in('tag_id', behaviorIds)
+
+      if (deleteError) throw deleteError
+    }
+
+    for (let i = 0; i < rowsToInsert.length; i += 500) {
+      const { error: insertError } = await db
+        .from('contact_tags')
+        .upsert(rowsToInsert.slice(i, i + 500), {
+          onConflict: 'contact_id,tag_id',
+        })
+
+      if (insertError) throw insertError
+    }
+
+    return { tagged: rowsToInsert.length, contacts: contactIds.length }
   },
 
   async deleteContact(id: string) {
@@ -611,7 +791,10 @@ export const contactsService = {
 
   async bulkAddTagToContacts(contactIds: string[], tagId: string) {
     if (!contactIds.length) return
-    const rows = contactIds.map((contact_id) => ({ contact_id, tag_id }))
+    const rows = contactIds.map((contact_id) => ({
+      contact_id,
+      tag_id: tagId,
+    }))
     const { error } = await db
       .from('contact_tags')
       .upsert(rows, { onConflict: 'contact_id,tag_id' })

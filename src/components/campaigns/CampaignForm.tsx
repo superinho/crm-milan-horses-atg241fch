@@ -53,6 +53,7 @@ const campaignSchema = z.object({
   filters: z.object({
     tags: z.array(z.string()),
     segments: z.array(z.string()),
+    contactIds: z.array(z.string()),
   }),
 })
 
@@ -100,6 +101,10 @@ export function CampaignForm({
       filters: {
         tags: campaign?.audience_filters?.tags || [],
         segments: campaign?.audience_filters?.segments || [],
+        contactIds:
+          campaign?.audience_filters?.contactIds ||
+          campaign?.audience_filters?.contact_ids ||
+          [],
       },
     },
   })
@@ -187,13 +192,14 @@ export function CampaignForm({
   const onSubmit = async (values: CampaignFormValues) => {
     if (
       values.filters.tags.length === 0 &&
-      values.filters.segments.length === 0
+      values.filters.segments.length === 0 &&
+      values.filters.contactIds.length === 0
     ) {
       toast({
         variant: 'info',
         title: 'Atenção',
         description:
-          'Você não selecionou listas nem tags. Isso pode resultar em 0 destinatários.',
+          'Você não selecionou listas, tags nem contatos manuais. Isso pode resultar em 0 destinatários.',
       })
     }
 
@@ -327,8 +333,12 @@ export function CampaignForm({
           <AudienceSelector
             selectedTags={filters.tags}
             selectedSegments={filters.segments}
+            selectedContactIds={filters.contactIds}
             onTagsChange={(tags) => form.setValue('filters.tags', tags)}
             onSegmentsChange={(segs) => form.setValue('filters.segments', segs)}
+            onContactIdsChange={(contactIds) =>
+              form.setValue('filters.contactIds', contactIds)
+            }
           />
         </div>
 

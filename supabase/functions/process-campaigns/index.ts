@@ -121,51 +121,73 @@ const resolveAudienceFromFilters = async (
   fallbackContent: string,
   fallbackSubject: string | null,
 ) => {
-  let query = supabase
-    .from('contacts')
-    .select('id, email, phone, whatsapp, name')
-    .limit(5000)
+  const manualContactIds =
+    campaign.audience_filters?.contactIds ||
+    campaign.audience_filters?.contact_ids ||
+    []
+  const audienceIds = new Set<string>(manualContactIds)
 
-  if (campaign.audience_filters?.contact_ids?.length) {
-    query = query.in('id', campaign.audience_filters.contact_ids)
-  } else {
-    const audienceIds = new Set<string>()
-
-    if (campaign.audience_filters?.tags?.length) {
+  if (campaign.audience_filters?.tags?.length) {
+    const pageSize = 1000
+    for (let from = 0; ; from += pageSize) {
       const { data: taggedIds, error: taggedError } = await supabase
         .from('contact_tags')
         .select('contact_id, tags!inner(name)')
         .in('tags.name', campaign.audience_filters.tags)
+        .range(from, from + pageSize - 1)
 
       if (taggedError) throw taggedError
       taggedIds?.forEach((item: any) => audienceIds.add(item.contact_id))
+      if (!taggedIds || taggedIds.length < pageSize) break
     }
+  }
 
-    if (campaign.audience_filters?.segments?.length) {
+  if (campaign.audience_filters?.segments?.length) {
+    const pageSize = 1000
+    for (let from = 0; ; from += pageSize) {
       const { data: segmentedIds, error: segmentError } = await supabase
         .from('customer_rfmv_view')
         .select('id')
         .in('segment', campaign.audience_filters.segments)
+        .order('id', { ascending: true })
+        .range(from, from + pageSize - 1)
 
       if (segmentError) throw segmentError
       segmentedIds?.forEach((item: any) => audienceIds.add(item.id))
-    }
-
-    const hasFilters =
-      campaign.audience_filters?.tags?.length ||
-      campaign.audience_filters?.segments?.length
-
-    if (hasFilters) {
-      const ids = [...audienceIds]
-      if (!ids.length) return []
-      query = query.in('id', ids)
+      if (!segmentedIds || segmentedIds.length < pageSize) break
     }
   }
 
-  const { data: contacts, error } = await query
-  if (error) throw error
+  const hasFilters =
+    manualContactIds.length ||
+    campaign.audience_filters?.tags?.length ||
+    campaign.audience_filters?.segments?.length
 
-  return ((contacts || []) as Contact[]).map((contact) => ({
+  let contacts: Contact[] = []
+  if (hasFilters) {
+    const ids = [...audienceIds]
+    if (!ids.length) return []
+    const chunkSize = 100
+    for (let i = 0; i < ids.length; i += chunkSize) {
+      const { data, error } = await supabase
+        .from('contacts')
+        .select('id, email, phone, whatsapp, name')
+        .in('id', ids.slice(i, i + chunkSize))
+
+      if (error) throw error
+      contacts.push(...((data || []) as Contact[]))
+    }
+  } else {
+    const { data, error } = await supabase
+      .from('contacts')
+      .select('id, email, phone, whatsapp, name')
+      .limit(5000)
+
+    if (error) throw error
+    contacts = (data || []) as Contact[]
+  }
+
+  return contacts.map((contact) => ({
     contact_id: contact.id,
     channel,
     email: contact.email,
