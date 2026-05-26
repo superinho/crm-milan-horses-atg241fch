@@ -32,6 +32,7 @@ export type ScheduleItem = {
   templateId?: string | null
   subject?: string | null
   content: string
+  status?: string
 }
 
 interface CampaignSchedulerProps {
@@ -128,14 +129,16 @@ export function CampaignScheduler({
     !newDate || !newTime || !newContent || !allowedChannels.includes(newChannel)
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="min-w-0 space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <h3 className="font-semibold text-sm">Cronograma de Envios</h3>
-        <Badge variant="outline">{schedules.length} envios programados</Badge>
+        <Badge variant="outline" className="shrink-0">
+          {schedules.length} envios programados
+        </Badge>
       </div>
 
-      <div className="grid gap-4 p-4 border rounded-md bg-muted/10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid min-w-0 gap-4 rounded-md border bg-muted/10 p-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <div className="space-y-2">
             <Label>Data</Label>
             <Input
@@ -181,7 +184,7 @@ export function CampaignScheduler({
           </div>
           <div className="flex items-end">
             <Button
-              className="w-full"
+              className="w-full min-w-0"
               onClick={handleAdd}
               disabled={isAddDisabled}
               type="button"
@@ -238,7 +241,7 @@ export function CampaignScheduler({
         ) : (
           schedules.map((schedule) => (
             <Card key={schedule.id} className="relative overflow-hidden group">
-              <CardContent className="p-4 flex flex-col md:flex-row gap-4 items-start md:items-center">
+              <CardContent className="flex min-w-0 flex-col items-start gap-4 p-4 md:flex-row md:items-center">
                 <div
                   className={`p-2 rounded-full shrink-0 ${schedule.channel === 'email' ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600'}`}
                 >
@@ -250,7 +253,7 @@ export function CampaignScheduler({
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="mb-1 flex flex-wrap items-center gap-2">
                     <span className="font-semibold text-sm capitalize">
                       {schedule.channel}
                     </span>
@@ -260,7 +263,7 @@ export function CampaignScheduler({
                         Estúdio
                       </Badge>
                     ) : null}
-                    <span className="text-xs text-muted-foreground flex items-center gap-1">
+                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Calendar className="h-3 w-3" />
                       {format(
                         new Date(`${schedule.date}T${schedule.time}`),

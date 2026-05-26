@@ -125,6 +125,10 @@ const resolveAudienceFromFilters = async (
     campaign.audience_filters?.contactIds ||
     campaign.audience_filters?.contact_ids ||
     []
+  const excludedContactIds =
+    campaign.audience_filters?.excludedContactIds ||
+    campaign.audience_filters?.excluded_contact_ids ||
+    []
   const audienceIds = new Set<string>(manualContactIds)
 
   if (campaign.audience_filters?.tags?.length) {
@@ -163,28 +167,22 @@ const resolveAudienceFromFilters = async (
     campaign.audience_filters?.tags?.length ||
     campaign.audience_filters?.segments?.length
 
-  let contacts: Contact[] = []
-  if (hasFilters) {
-    const ids = [...audienceIds]
-    if (!ids.length) return []
-    const chunkSize = 100
-    for (let i = 0; i < ids.length; i += chunkSize) {
-      const { data, error } = await supabase
-        .from('contacts')
-        .select('id, email, phone, whatsapp, name')
-        .in('id', ids.slice(i, i + chunkSize))
+  if (!hasFilters) return []
 
-      if (error) throw error
-      contacts.push(...((data || []) as Contact[]))
-    }
-  } else {
+  excludedContactIds.forEach((id: string) => audienceIds.delete(id))
+
+  let contacts: Contact[] = []
+  const ids = [...audienceIds]
+  if (!ids.length) return []
+  const chunkSize = 100
+  for (let i = 0; i < ids.length; i += chunkSize) {
     const { data, error } = await supabase
       .from('contacts')
       .select('id, email, phone, whatsapp, name')
-      .limit(5000)
+      .in('id', ids.slice(i, i + chunkSize))
 
     if (error) throw error
-    contacts = (data || []) as Contact[]
+    contacts.push(...((data || []) as Contact[]))
   }
 
   return contacts.map((contact) => ({
@@ -549,6 +547,12 @@ const processSchedule = async (
 ) => {
   const campaign = schedule.campaign
   const recipients = await resolveRecipients(campaign, schedule)
+  if (!recipients.length) {
+    throw new Error(
+      'Campanha sem destinatários. Adicione listas, tags ou contatos manuais antes do disparo real.',
+    )
+  }
+
   const selectedRecipients = options.limit
     ? recipients.slice(0, Math.max(0, Number(options.limit)))
     : recipients

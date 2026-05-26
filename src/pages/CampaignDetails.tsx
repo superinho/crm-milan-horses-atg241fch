@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import {
   ArrowLeft,
   Calendar,
+  Pencil,
   Mail,
   MessageSquare,
   CheckCircle2,
@@ -21,6 +22,13 @@ import { ptBR } from 'date-fns/locale'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import {
   Card,
   CardContent,
   CardHeader,
@@ -31,7 +39,9 @@ import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useToast } from '@/hooks/use-toast'
 import { campaignsService, Campaign } from '@/services/campaigns'
+import { contactsService } from '@/services/contacts'
 import { WhatsAppSender } from '@/components/campaigns/WhatsAppSender'
+import { CampaignForm } from '@/components/campaigns/CampaignForm'
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart'
 import { Bar, BarChart, XAxis, YAxis, Tooltip } from 'recharts'
 
@@ -42,8 +52,13 @@ export default function CampaignDetails() {
   const [campaign, setCampaign] = useState<Campaign | null>(null)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
+  const [editingCampaign, setEditingCampaign] = useState(false)
+  const [audienceCount, setAudienceCount] = useState<number | null>(null)
   const [testPhone, setTestPhone] = useState('')
-  const [action, setAction] = useState<'test' | 'pilot' | 'full' | null>(null)
+  const [testEmail, setTestEmail] = useState('')
+  const [action, setAction] = useState<
+    'test-email' | 'test-whatsapp' | 'pilot' | 'full' | null
+  >(null)
 
   const fetchCampaign = useCallback(async () => {
     if (!id) return
@@ -69,12 +84,53 @@ export default function CampaignDetails() {
     fetchCampaign()
   }, [fetchCampaign])
 
+  useEffect(() => {
+    if (!campaign) return
+
+    let active = true
+    contactsService
+      .getAudienceCount(campaign.audience_filters || {})
+      .then((count) => {
+        if (active) setAudienceCount(count)
+      })
+      .catch((error) => {
+        console.error(error)
+        if (active) setAudienceCount(null)
+      })
+
+    return () => {
+      active = false
+    }
+  }, [campaign])
+
   const refreshSoon = () => setTimeout(fetchCampaign, 2000)
 
-  const handleTestSend = async () => {
+  const handleEmailTestSend = async () => {
     try {
       if (!id) return
-      setAction('test')
+      setAction('test-email')
+      await campaignsService.sendEmailTest(id, testEmail)
+      toast({
+        title: 'Teste enviado',
+        description: 'E-mail teste enviado com o conteúdo atual da campanha.',
+        variant: 'success',
+      })
+    } catch (error: any) {
+      toast({
+        title: 'Erro no teste',
+        description:
+          error?.message || 'Não foi possível enviar o e-mail teste.',
+        variant: 'destructive',
+      })
+    } finally {
+      setAction(null)
+    }
+  }
+
+  const handleWhatsAppTestSend = async () => {
+    try {
+      if (!id) return
+      setAction('test-whatsapp')
       await campaignsService.sendWhatsAppTest(id, testPhone)
       toast({
         title: 'Teste enviado',
@@ -93,6 +149,15 @@ export default function CampaignDetails() {
   }
 
   const handlePilotProcessing = async () => {
+    if (!audienceCount) {
+      toast({
+        title: 'Audiência vazia',
+        description: 'Adicione listas, tags ou contatos antes do piloto real.',
+        variant: 'destructive',
+      })
+      return
+    }
+
     try {
       setAction('pilot')
       if (id)
@@ -114,6 +179,16 @@ export default function CampaignDetails() {
   }
 
   const handleFullProcessing = async () => {
+    if (!audienceCount) {
+      toast({
+        title: 'Audiência vazia',
+        description:
+          'Adicione listas, tags ou contatos antes de aprovar o disparo.',
+        variant: 'destructive',
+      })
+      return
+    }
+
     try {
       setAction('full')
       if (id) await campaignsService.processCampaign(id, { mode: 'full' })
@@ -134,6 +209,15 @@ export default function CampaignDetails() {
   }
 
   const handleManualProcessing = async () => {
+    if (!audienceCount) {
+      toast({
+        title: 'Audiência vazia',
+        description: 'Adicione destinatários antes de processar a campanha.',
+        variant: 'destructive',
+      })
+      return
+    }
+
     try {
       setRefreshing(true)
       if (id) await campaignsService.processCampaign(id)
@@ -172,8 +256,18 @@ export default function CampaignDetails() {
     open_rate: 0,
     click_rate: 0,
   }
-  const audienceCount = campaign.audience_filters?.contact_ids?.length || 0
   const hasWhatsapp = (campaign.channels || []).includes('whatsapp')
+  const hasEmail = (campaign.channels || []).includes('email')
+  const segments = campaign.audience_filters?.segments || []
+  const tags = campaign.audience_filters?.tags || []
+  const manualContactIds =
+    campaign.audience_filters?.contactIds ||
+    campaign.audience_filters?.contact_ids ||
+    []
+  const excludedContactIds =
+    campaign.audience_filters?.excludedContactIds ||
+    campaign.audience_filters?.excluded_contact_ids ||
+    []
 
   const chartData = [
     { name: 'Enviados', value: stats.emails_sent, fill: 'hsl(var(--primary))' },
@@ -229,10 +323,14 @@ export default function CampaignDetails() {
           </div>
         </div>
         <div className="flex gap-2">
+          <Button variant="outline" onClick={() => setEditingCampaign(true)}>
+            <Pencil className="mr-2 h-4 w-4" />
+            Editar audiência
+          </Button>
           <Button
             variant="outline"
             onClick={handleManualProcessing}
-            disabled={refreshing}
+            disabled={refreshing || !audienceCount}
           >
             <RefreshCcw
               className={`mr-2 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`}
@@ -241,6 +339,27 @@ export default function CampaignDetails() {
           </Button>
         </div>
       </div>
+
+      <Dialog open={editingCampaign} onOpenChange={setEditingCampaign}>
+        <DialogContent className="max-h-[90vh] w-[calc(100vw-2rem)] max-w-4xl overflow-y-auto overflow-x-hidden">
+          <DialogHeader>
+            <DialogTitle>Editar campanha</DialogTitle>
+            <DialogDescription>
+              Ajuste listas, tags, contatos manuais, exclusões e cronograma
+              antes do disparo real.
+            </DialogDescription>
+          </DialogHeader>
+          <CampaignForm
+            key={campaign.id}
+            campaign={campaign}
+            onSuccess={() => {
+              setEditingCampaign(false)
+              fetchCampaign()
+            }}
+            onCancel={() => setEditingCampaign(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
       <Card className="border-t-4 border-t-primary">
         <CardHeader>
@@ -259,35 +378,68 @@ export default function CampaignDetails() {
               Destinatários alvo
             </div>
             <div className="text-3xl font-semibold text-primary">
-              {audienceCount || 'Todos'}
+              {audienceCount ?? '...'}
             </div>
             <div className="text-sm text-muted-foreground">
               Canais: {(campaign.channels || []).join(', ') || 'não definidos'}
             </div>
+            {!audienceCount ? (
+              <div className="rounded-md border border-amber-200 bg-amber-50 p-2 text-xs text-amber-800">
+                Sem audiência selecionada. Testes estão liberados, mas piloto e
+                disparo completo ficam bloqueados.
+              </div>
+            ) : null}
           </div>
 
           <div className="grid gap-3 lg:grid-cols-3">
             <div className="space-y-2 rounded-md border p-3">
               <div className="text-sm font-medium">1. Teste interno</div>
-              <Input
-                value={testPhone}
-                onChange={(event) => setTestPhone(event.target.value)}
-                placeholder="WhatsApp de teste"
-                disabled={!hasWhatsapp || action === 'test'}
-              />
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={handleTestSend}
-                disabled={!hasWhatsapp || !testPhone || Boolean(action)}
-              >
-                {action === 'test' ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Send className="mr-2 h-4 w-4" />
-                )}
-                Enviar teste
-              </Button>
+              {hasEmail ? (
+                <div className="space-y-2">
+                  <Input
+                    value={testEmail}
+                    onChange={(event) => setTestEmail(event.target.value)}
+                    placeholder="E-mail de teste"
+                    disabled={action === 'test-email'}
+                  />
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={handleEmailTestSend}
+                    disabled={!testEmail || Boolean(action)}
+                  >
+                    {action === 'test-email' ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Mail className="mr-2 h-4 w-4" />
+                    )}
+                    Testar e-mail
+                  </Button>
+                </div>
+              ) : null}
+              {hasWhatsapp ? (
+                <div className="space-y-2">
+                  <Input
+                    value={testPhone}
+                    onChange={(event) => setTestPhone(event.target.value)}
+                    placeholder="WhatsApp de teste"
+                    disabled={action === 'test-whatsapp'}
+                  />
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={handleWhatsAppTestSend}
+                    disabled={!testPhone || Boolean(action)}
+                  >
+                    {action === 'test-whatsapp' ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Send className="mr-2 h-4 w-4" />
+                    )}
+                    Testar WhatsApp
+                  </Button>
+                </div>
+              ) : null}
             </div>
 
             <div className="space-y-2 rounded-md border p-3">
@@ -300,7 +452,7 @@ export default function CampaignDetails() {
                 variant="outline"
                 className="w-full"
                 onClick={handlePilotProcessing}
-                disabled={Boolean(action)}
+                disabled={Boolean(action) || !audienceCount}
               >
                 {action === 'pilot' ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -319,7 +471,7 @@ export default function CampaignDetails() {
               <Button
                 className="w-full"
                 onClick={handleFullProcessing}
-                disabled={Boolean(action)}
+                disabled={Boolean(action) || !audienceCount}
               >
                 {action === 'full' ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -457,15 +609,15 @@ export default function CampaignDetails() {
                     Listas selecionadas
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {campaign.audience_filters?.segments?.length > 0 ? (
-                      campaign.audience_filters.segments.map((seg) => (
+                    {segments.length > 0 ? (
+                      segments.map((seg) => (
                         <Badge key={seg} variant="secondary">
                           {seg}
                         </Badge>
                       ))
                     ) : (
                       <span className="text-sm text-muted-foreground">
-                        Todas as listas
+                        Nenhuma lista selecionada
                       </span>
                     )}
                   </div>
@@ -475,8 +627,8 @@ export default function CampaignDetails() {
                     Tags selecionadas
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {campaign.audience_filters?.tags?.length > 0 ? (
-                      campaign.audience_filters.tags.map((tag) => (
+                    {tags.length > 0 ? (
+                      tags.map((tag) => (
                         <Badge key={tag} variant="outline">
                           {tag}
                         </Badge>
@@ -487,6 +639,22 @@ export default function CampaignDetails() {
                       </span>
                     )}
                   </div>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-2">
+                    Contatos manuais
+                  </h4>
+                  <span className="text-sm text-muted-foreground">
+                    {manualContactIds.length} incluído(s) manualmente
+                  </span>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-2">
+                    Exclusões
+                  </h4>
+                  <span className="text-sm text-muted-foreground">
+                    {excludedContactIds.length} removido(s) da audiência
+                  </span>
                 </div>
               </CardContent>
             </Card>

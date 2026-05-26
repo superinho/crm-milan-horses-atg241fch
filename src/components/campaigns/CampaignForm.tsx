@@ -54,13 +54,14 @@ const campaignSchema = z.object({
     tags: z.array(z.string()),
     segments: z.array(z.string()),
     contactIds: z.array(z.string()),
+    excludedContactIds: z.array(z.string()),
   }),
 })
 
 type CampaignFormValues = z.infer<typeof campaignSchema>
 
 interface CampaignFormProps {
-  onSuccess: () => void
+  onSuccess: (campaign?: Campaign) => void
   onCancel: () => void
   initialTemplateId?: string | null
   campaign?: Campaign | null
@@ -104,6 +105,10 @@ export function CampaignForm({
         contactIds:
           campaign?.audience_filters?.contactIds ||
           campaign?.audience_filters?.contact_ids ||
+          [],
+        excludedContactIds:
+          campaign?.audience_filters?.excludedContactIds ||
+          campaign?.audience_filters?.excluded_contact_ids ||
           [],
       },
     },
@@ -184,12 +189,18 @@ export function CampaignForm({
           templateId: schedule.template_id || null,
           subject: schedule.subject || null,
           content: schedule.content || '',
+          status: schedule.status,
         }
       }),
     )
   }, [campaign])
 
   const onSubmit = async (values: CampaignFormValues) => {
+    const hasAudience =
+      values.filters.tags.length > 0 ||
+      values.filters.segments.length > 0 ||
+      values.filters.contactIds.length > 0
+
     if (
       values.filters.tags.length === 0 &&
       values.filters.segments.length === 0 &&
@@ -214,12 +225,18 @@ export function CampaignForm({
 
     setIsSubmitting(true)
     try {
+      const nextStatus =
+        campaign?.status && campaign.status !== 'Rascunho'
+          ? campaign.status
+          : hasAudience
+            ? 'Aguardando aprovação'
+            : 'Rascunho'
       const payload = {
         name: values.name,
         objective: values.objective,
         start_date: values.dates.start.toISOString(),
         end_date: values.dates.end.toISOString(),
-        status: campaign?.status || 'Agendada',
+        status: nextStatus,
         audience_filters: values.filters,
         channels: values.channels,
       }
@@ -229,16 +246,21 @@ export function CampaignForm({
         template_id: s.templateId,
         subject: s.subject,
         content: s.content,
+        status: 'Aguardando aprovação',
       }))
 
+      let savedCampaign: Campaign
       if (campaign?.id) {
-        await campaignsService.updateCampaign(
+        savedCampaign = await campaignsService.updateCampaign(
           campaign.id,
           payload,
           schedulePayload,
         )
       } else {
-        await campaignsService.createCampaign(payload, schedulePayload)
+        savedCampaign = await campaignsService.createCampaign(
+          payload,
+          schedulePayload,
+        )
       }
 
       toast({
@@ -246,9 +268,11 @@ export function CampaignForm({
         title: campaign?.id ? 'Campanha atualizada' : 'Sucesso',
         description: campaign?.id
           ? 'As alterações foram salvas com sucesso.'
-          : 'Campanha criada e agendada com sucesso!',
+          : hasAudience
+            ? 'Campanha criada. Agora envie um teste antes do disparo real.'
+            : 'Campanha criada como rascunho. Adicione audiência quando quiser disparar.',
       })
-      onSuccess()
+      onSuccess(savedCampaign)
     } catch (error) {
       console.error(error)
       toast({
@@ -265,7 +289,10 @@ export function CampaignForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 py-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="min-w-0 space-y-8 py-4"
+      >
         {/* Basic Info */}
         <div className="space-y-4">
           <h3 className="text-lg font-semibold border-b pb-2">
@@ -334,10 +361,14 @@ export function CampaignForm({
             selectedTags={filters.tags}
             selectedSegments={filters.segments}
             selectedContactIds={filters.contactIds}
+            selectedExcludedContactIds={filters.excludedContactIds}
             onTagsChange={(tags) => form.setValue('filters.tags', tags)}
             onSegmentsChange={(segs) => form.setValue('filters.segments', segs)}
             onContactIdsChange={(contactIds) =>
               form.setValue('filters.contactIds', contactIds)
+            }
+            onExcludedContactIdsChange={(contactIds) =>
+              form.setValue('filters.excludedContactIds', contactIds)
             }
           />
         </div>
@@ -474,11 +505,20 @@ export function CampaignForm({
         </div>
 
         {/* Actions */}
-        <div className="flex justify-end gap-2 pt-4 border-t">
-          <Button type="button" variant="outline" onClick={onCancel}>
+        <div className="flex flex-col-reverse gap-2 border-t pt-4 sm:flex-row sm:justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+            className="w-full sm:w-auto"
+          >
             Cancelar
           </Button>
-          <Button type="submit" disabled={isSubmitting} className="bg-primary">
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full bg-primary sm:w-auto"
+          >
             {isSubmitting ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (

@@ -499,18 +499,17 @@ export const contactsService = {
     segments?: string[]
     contactIds?: string[]
     contact_ids?: string[]
+    excludedContactIds?: string[]
+    excluded_contact_ids?: string[]
   }) {
     const tags = filters.tags || []
     const segments = filters.segments || []
     const contactIds = filters.contactIds || filters.contact_ids || []
+    const excludedContactIds =
+      filters.excludedContactIds || filters.excluded_contact_ids || []
 
     if (!tags.length && !segments.length && !contactIds.length) {
-      const { count, error } = await db
-        .from('customer_rfmv_view')
-        .select('id', { count: 'exact', head: true })
-
-      if (error) throw error
-      return count || 0
+      return 0
     }
 
     const ids = new Set<string>(contactIds)
@@ -537,6 +536,8 @@ export const contactsService = {
       if (error) throw error
       ;(segmented || []).forEach((item: any) => ids.add(item.id))
     }
+
+    excludedContactIds.forEach((id) => ids.delete(id))
 
     return ids.size
   },

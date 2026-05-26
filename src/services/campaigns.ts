@@ -116,6 +116,13 @@ const mapCampaign = (item: any): Campaign => ({
   stats: statsFrom(item.campaign_sends || []),
 })
 
+const renderTestTemplate = (content: string, campaignName: string) =>
+  String(content || `Teste de campanha ${campaignName}`)
+    .replace(/{{\s*nome\s*}}/gi, 'Teste CRM Milan')
+    .replace(/{{\s*cliente\s*}}/gi, 'Teste CRM Milan')
+    .replace(/{{\s*leilao\s*}}/gi, campaignName)
+    .replace(/{{\s*campanha\s*}}/gi, campaignName)
+
 export const campaignsService = {
   async getCampaigns() {
     const { data, error } = await db
@@ -163,7 +170,7 @@ export const campaignsService = {
         template_id: schedule.template_id || null,
         subject: schedule.subject || null,
         content: schedule.content || '',
-        status: 'Pendente',
+        status: schedule.status || 'Aguardando aprovação',
       }))
       const { error: scheduleError } = await db
         .from('campaign_schedules')
@@ -208,7 +215,7 @@ export const campaignsService = {
         template_id: schedule.template_id || null,
         subject: schedule.subject || null,
         content: schedule.content || '',
-        status: schedule.status || 'Pendente',
+        status: schedule.status || 'Aguardando aprovação',
       }))
       const { error: scheduleError } = await db
         .from('campaign_schedules')
@@ -341,6 +348,41 @@ export const campaignsService = {
     return data
   },
 
+  async sendEmailTest(campaignId: string, email: string) {
+    const { data: campaign, error } = await db
+      .from('campaigns')
+      .select('*, campaign_schedules(*)')
+      .eq('id', campaignId)
+      .single()
+
+    if (error) throw error
+
+    const schedule =
+      campaign.campaign_schedules?.find(
+        (item: any) => item.channel_type === 'email',
+      ) || campaign.campaign_schedules?.[0]
+    const html = renderTestTemplate(
+      schedule?.content,
+      campaign.name || 'Campanha Milan',
+    )
+    const subject =
+      schedule?.subject || `Teste CRM Milan: ${campaign.name || 'campanha'}`
+
+    const { data, error: invokeError } = await supabase.functions.invoke(
+      'send-contact-email',
+      {
+        body: {
+          to: [email],
+          subject: `[TESTE] ${subject}`,
+          html,
+        },
+      },
+    )
+
+    if (invokeError) throw invokeError
+    return data
+  },
+
   async processCampaign(
     campaignId: string,
     options: { limit?: number; mode?: 'pilot' | 'full' } = {},
@@ -376,7 +418,7 @@ export const campaignsService = {
       ) || campaign.campaign_schedules?.[0]
     const message =
       sampleRecipient?.message ||
-      schedule?.content ||
+      renderTestTemplate(schedule?.content, campaign.name) ||
       `Teste de campanha ${campaign.name}`
 
     const { data, error: invokeError } = await supabase.functions.invoke(

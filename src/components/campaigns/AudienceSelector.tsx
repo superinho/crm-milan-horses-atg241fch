@@ -23,18 +23,22 @@ interface AudienceSelectorProps {
   selectedTags: string[]
   selectedSegments: string[]
   selectedContactIds: string[]
+  selectedExcludedContactIds: string[]
   onTagsChange: (tags: string[]) => void
   onSegmentsChange: (segments: string[]) => void
   onContactIdsChange: (contactIds: string[]) => void
+  onExcludedContactIdsChange: (contactIds: string[]) => void
 }
 
 export function AudienceSelector({
   selectedTags,
   selectedSegments,
   selectedContactIds,
+  selectedExcludedContactIds,
   onTagsChange,
   onSegmentsChange,
   onContactIdsChange,
+  onExcludedContactIdsChange,
 }: AudienceSelectorProps) {
   const [tagOptions, setTagOptions] = useState<Option[]>([])
   const [listOptions, setListOptions] = useState<Option[]>(
@@ -45,7 +49,11 @@ export function AudienceSelector({
   const [contactSearch, setContactSearch] = useState('')
   const [contactResults, setContactResults] = useState<any[]>([])
   const [selectedContacts, setSelectedContacts] = useState<any[]>([])
+  const [exclusionSearch, setExclusionSearch] = useState('')
+  const [exclusionResults, setExclusionResults] = useState<any[]>([])
+  const [excludedContacts, setExcludedContacts] = useState<any[]>([])
   const [searchingContacts, setSearchingContacts] = useState(false)
+  const [searchingExclusions, setSearchingExclusions] = useState(false)
   const [syncingTags, setSyncingTags] = useState(false)
   const { toast } = useToast()
 
@@ -112,6 +120,13 @@ export function AudienceSelector({
   }, [selectedContactIds])
 
   useEffect(() => {
+    contactsService
+      .getContactsByIds(selectedExcludedContactIds)
+      .then(setExcludedContacts)
+      .catch(console.error)
+  }, [selectedExcludedContactIds])
+
+  useEffect(() => {
     const calculate = async () => {
       setLoadingCount(true)
       try {
@@ -119,6 +134,7 @@ export function AudienceSelector({
           tags: selectedTags,
           segments: selectedSegments,
           contactIds: selectedContactIds,
+          excludedContactIds: selectedExcludedContactIds,
         })
         setAudienceCount(count)
       } catch (error) {
@@ -129,7 +145,12 @@ export function AudienceSelector({
     }
 
     calculate()
-  }, [selectedTags, selectedSegments, selectedContactIds])
+  }, [
+    selectedTags,
+    selectedSegments,
+    selectedContactIds,
+    selectedExcludedContactIds,
+  ])
 
   useEffect(() => {
     const term = contactSearch.trim()
@@ -155,6 +176,30 @@ export function AudienceSelector({
     }
   }, [contactSearch])
 
+  useEffect(() => {
+    const term = exclusionSearch.trim()
+    if (term.length < 2) {
+      setExclusionResults([])
+      return
+    }
+
+    let active = true
+    setSearchingExclusions(true)
+    contactsService
+      .searchContactsForCampaign(term)
+      .then((items) => {
+        if (active) setExclusionResults(items)
+      })
+      .catch(console.error)
+      .finally(() => {
+        if (active) setSearchingExclusions(false)
+      })
+
+    return () => {
+      active = false
+    }
+  }, [exclusionSearch])
+
   const selectedCount =
     selectedTags.length + selectedSegments.length + selectedContactIds.length
 
@@ -167,6 +212,19 @@ export function AudienceSelector({
 
   const removeManualContact = (contactId: string) => {
     onContactIdsChange(selectedContactIds.filter((id) => id !== contactId))
+  }
+
+  const addExcludedContact = (contact: any) => {
+    if (selectedExcludedContactIds.includes(contact.id)) return
+    onExcludedContactIdsChange([...selectedExcludedContactIds, contact.id])
+    setExclusionSearch('')
+    setExclusionResults([])
+  }
+
+  const removeExcludedContact = (contactId: string) => {
+    onExcludedContactIdsChange(
+      selectedExcludedContactIds.filter((id) => id !== contactId),
+    )
   }
 
   return (
@@ -213,7 +271,8 @@ export function AudienceSelector({
       <p className="text-sm text-muted-foreground">
         Selecione uma ou várias listas e/ou tags. A campanha envia para qualquer
         contato que esteja em uma das listas escolhidas ou tenha uma das tags,
-        sem duplicar destinatários.
+        sem duplicar destinatários. Se nada for selecionado, a campanha fica sem
+        público e pode ser usada apenas para rascunho/teste.
       </p>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -338,6 +397,98 @@ export function AudienceSelector({
         )}
       </div>
 
+      <div className="space-y-3 rounded-md border bg-background p-3">
+        <div className="flex items-center justify-between gap-3">
+          <Label className="flex items-center gap-2">
+            <X className="h-3.5 w-3.5 text-destructive" />
+            Excluir contatos específicos
+          </Label>
+          <span className="text-xs font-medium text-muted-foreground">
+            {selectedExcludedContactIds.length} excluído(s)
+          </span>
+        </div>
+
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            value={exclusionSearch}
+            onChange={(event) => setExclusionSearch(event.target.value)}
+            className="pl-9"
+            placeholder="Buscar contato para remover da audiência..."
+          />
+        </div>
+
+        {exclusionSearch.trim().length >= 2 ? (
+          <div className="max-h-48 overflow-auto rounded-md border">
+            {searchingExclusions ? (
+              <div className="flex items-center gap-2 p-3 text-sm text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Buscando contatos...
+              </div>
+            ) : exclusionResults.length ? (
+              exclusionResults.map((contact) => {
+                const alreadyExcluded = selectedExcludedContactIds.includes(
+                  contact.id,
+                )
+                return (
+                  <button
+                    key={contact.id}
+                    type="button"
+                    className="flex w-full items-center justify-between gap-3 border-b px-3 py-2 text-left text-sm last:border-0 hover:bg-muted/50"
+                    onClick={() => addExcludedContact(contact)}
+                    disabled={alreadyExcluded}
+                  >
+                    <span className="min-w-0">
+                      <span className="block truncate font-medium">
+                        {contact.name}
+                      </span>
+                      <span className="block truncate text-xs text-muted-foreground">
+                        {contact.email || contact.whatsapp || contact.phone}
+                      </span>
+                    </span>
+                    <Badge variant={alreadyExcluded ? 'secondary' : 'outline'}>
+                      {alreadyExcluded ? 'Excluído' : 'Excluir'}
+                    </Badge>
+                  </button>
+                )
+              })
+            ) : (
+              <div className="p-3 text-sm text-muted-foreground">
+                Nenhum contato encontrado.
+              </div>
+            )}
+          </div>
+        ) : null}
+
+        {excludedContacts.length ? (
+          <div className="flex flex-wrap gap-2">
+            {excludedContacts.map((contact) => (
+              <Badge
+                key={contact.id}
+                variant="outline"
+                className="max-w-full gap-1 border-destructive/30 py-1 text-destructive"
+              >
+                <span className="max-w-44 truncate">{contact.name}</span>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="h-4 w-4 rounded-full p-0 hover:bg-destructive/10"
+                  onClick={() => removeExcludedContact(contact.id)}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </Badge>
+            ))}
+          </div>
+        ) : (
+          <p className="text-xs text-muted-foreground">
+            Use esta área para retirar alguém que entrou por lista ou tag, sem
+            precisar alterar a segmentação principal.
+          </p>
+        )}
+      </div>
+
       {selectedCount > 0 ? (
         <div className="rounded-md border bg-background px-3 py-2 text-xs text-muted-foreground">
           Público combinado:{' '}
@@ -352,9 +503,23 @@ export function AudienceSelector({
           <span className="font-medium text-foreground">
             {selectedContactIds.length} contato(s) manual(is)
           </span>
+          {selectedExcludedContactIds.length ? (
+            <>
+              {' '}
+              menos{' '}
+              <span className="font-medium text-destructive">
+                {selectedExcludedContactIds.length} exclusão(ões)
+              </span>
+            </>
+          ) : null}
           .
         </div>
-      ) : null}
+      ) : (
+        <div className="rounded-md border bg-amber-50 px-3 py-2 text-xs text-amber-800">
+          Nenhuma audiência selecionada. Você pode salvar como rascunho e enviar
+          testes, mas o disparo real ficará bloqueado.
+        </div>
+      )}
 
       {audienceCount === 0 &&
         (selectedTags.length > 0 ||

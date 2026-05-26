@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -57,6 +57,7 @@ export default function Campanhas() {
   )
   const [deleting, setDeleting] = useState(false)
   const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
   const { toast } = useToast()
   const templateId = searchParams.get('template')
 
@@ -165,7 +166,7 @@ export default function Campanhas() {
                 <Plus className="mr-2 h-4 w-4" /> Nova Campanha
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-h-[90vh] w-[calc(100vw-2rem)] max-w-4xl overflow-y-auto overflow-x-hidden">
               <DialogHeader>
                 <DialogTitle>Criar Nova Campanha</DialogTitle>
                 <DialogDescription>
@@ -176,10 +177,13 @@ export default function Campanhas() {
               <CampaignForm
                 key={templateId || 'blank-campaign'}
                 initialTemplateId={templateId}
-                onSuccess={() => {
+                onSuccess={(createdCampaign) => {
                   setIsCreateOpen(false)
                   if (templateId) setSearchParams({})
                   fetchCampaigns()
+                  if (createdCampaign?.id) {
+                    navigate(`/campanhas/${createdCampaign.id}`)
+                  }
                 }}
                 onCancel={() => {
                   setIsCreateOpen(false)
@@ -197,7 +201,7 @@ export default function Campanhas() {
           if (!open) setEditingCampaign(null)
         }}
       >
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-h-[90vh] w-[calc(100vw-2rem)] max-w-4xl overflow-y-auto overflow-x-hidden">
           <DialogHeader>
             <DialogTitle>Editar Campanha</DialogTitle>
             <DialogDescription>
@@ -347,19 +351,29 @@ export default function Campanhas() {
                       <div className="flex items-center gap-2 text-sm">
                         <Users className="h-4 w-4 text-muted-foreground" />
                         <span>
-                          {[
-                            ...(campaign.audience_filters?.segments || []),
-                            ...(campaign.audience_filters?.tags || []).map(
-                              (tag) => `#${tag}`,
-                            ),
-                          ].length > 0
-                            ? [
-                                ...(campaign.audience_filters?.segments || []),
-                                ...(campaign.audience_filters?.tags || []).map(
-                                  (tag) => `#${tag}`,
-                                ),
-                              ].join(', ')
-                            : 'Todas as listas'}
+                          {(() => {
+                            const segments =
+                              campaign.audience_filters?.segments || []
+                            const tags = (
+                              campaign.audience_filters?.tags || []
+                            ).map((tag) => `#${tag}`)
+                            const manual =
+                              campaign.audience_filters?.contactIds ||
+                              campaign.audience_filters?.contact_ids ||
+                              []
+                            const excluded =
+                              campaign.audience_filters?.excludedContactIds ||
+                              campaign.audience_filters?.excluded_contact_ids ||
+                              []
+                            const parts = [...segments, ...tags]
+                            if (manual.length)
+                              parts.push(`${manual.length} manuais`)
+                            if (excluded.length)
+                              parts.push(`-${excluded.length} removidos`)
+                            return parts.length
+                              ? parts.join(', ')
+                              : 'Sem audiência'
+                          })()}
                         </span>
                       </div>
                     </TableCell>
