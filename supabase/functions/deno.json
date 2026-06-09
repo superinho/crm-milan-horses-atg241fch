@@ -1,14 +1,14 @@
 {
   "_versions": {
-    "process-automation-tasks": 26,
-    "send-contact-email": 33,
-    "process-campaigns": 34,
-    "dispatch-campaign": 30,
-    "send-whatsapp-botconversa": 28,
-    "resend-webhook": 26,
-    "botconversa-webhook": 26,
-    "sync-smartleiloes": 29,
-    "sync-hippomundo-market": 1,
-    "sync-studbook-recent": 1
+    "process-automation-tasks": 30,
+    "send-contact-email": 41,
+    "process-campaigns": 46,
+    "dispatch-campaign": 34,
+    "send-whatsapp-botconversa": 32,
+    "resend-webhook": 30,
+    "botconversa-webhook": 30,
+    "sync-smartleiloes": 33,
+    "sync-hippomundo-market": 5,
+    "sync-studbook-recent": 5
   }
 }

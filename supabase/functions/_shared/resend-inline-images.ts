@@ -70,7 +70,10 @@ export const replaceDataImagesWithPublicUrls = async (
     }
 
     parts.push(
-      tag.replace(`src=${quote}${src}${quote}`, `src=${quote}${publicUrl}${quote}`),
+      tag.replace(
+        `src=${quote}${src}${quote}`,
+        `src=${quote}${publicUrl}${quote}`,
+      ),
     )
   }
 

@@ -103,7 +103,9 @@ function AuctionTable({
                 {formatCivilDate(auction.event_date, 'Sem data')}
               </TableCell>
               <TableCell>
-                <Badge variant="outline">{auction.status || 'Sem status'}</Badge>
+                <Badge variant="outline">
+                  {auction.status || 'Sem status'}
+                </Badge>
               </TableCell>
               <TableCell className="max-w-[220px] truncate text-muted-foreground">
                 {auction.event_type || '-'}
@@ -281,7 +283,9 @@ export default function SmartLeiloes() {
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Próximos</CardDescription>
-            <CardTitle className="text-2xl">{upcomingAuctions.length}</CardTitle>
+            <CardTitle className="text-2xl">
+              {upcomingAuctions.length}
+            </CardTitle>
           </CardHeader>
         </Card>
         <Card>

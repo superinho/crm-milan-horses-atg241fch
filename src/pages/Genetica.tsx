@@ -313,7 +313,10 @@ function EvidenceLotCard({ lot }: { lot: GeneticEvidenceLot }) {
               value={number(lot.uniqueBidders)}
             />
             <EvidenceStat label="Contratos" value={number(lot.salesCount)} />
-            <EvidenceStat label="Valor contratado" value={money(lot.salesValue)} />
+            <EvidenceStat
+              label="Valor contratado"
+              value={money(lot.salesValue)}
+            />
           </div>
         </div>
       </CardHeader>
@@ -1041,8 +1044,8 @@ export default function Genetica() {
             Genética Comercial
           </h1>
           <p className="mt-1 max-w-3xl text-muted-foreground">
-            Entenda quais matrizes e garanhões geram lances, contratos e valor nos
-            leilões Milan Horses, sempre com a base de cálculo aberta.
+            Entenda quais matrizes e garanhões geram lances, contratos e valor
+            nos leilões Milan Horses, sempre com a base de cálculo aberta.
           </p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
@@ -1295,8 +1298,9 @@ export default function Genetica() {
                         {rankingLabel[tab]} por tração comercial
                       </h2>
                       <p className="text-sm text-muted-foreground">
-                        Ranking calculado com valor contratado, lances registrados
-                        e maior lance. Clique em uma linha para ver a base.
+                        Ranking calculado com valor contratado, lances
+                        registrados e maior lance. Clique em uma linha para ver
+                        a base.
                       </p>
                     </div>
                     <RankingTable
@@ -1314,7 +1318,8 @@ export default function Genetica() {
                   Top {rankingLabel[mode].toLowerCase()}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Valor contratado e número de lances entre os primeiros colocados.
+                  Valor contratado e número de lances entre os primeiros
+                  colocados.
                 </p>
               </div>
               <div className="h-80">
@@ -1352,8 +1357,8 @@ export default function Genetica() {
                 <div className="text-sm font-semibold">Leitura recomendada</div>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   Abra qualquer linha antes de tomar ação comercial. O card
-                  mostra os lances, contratos, compradores e valores que sustentam o número
-                  exibido.
+                  mostra os lances, contratos, compradores e valores que
+                  sustentam o número exibido.
                 </p>
               </div>
             </aside>
