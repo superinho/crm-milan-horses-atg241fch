@@ -9,14 +9,12 @@ import { useAuth } from '@/hooks/use-auth'
 import { useToast } from '@/hooks/use-toast'
 import logoImg from '@/assets/editedimage_1769630541473-88067.png'
 
-const DEFAULT_EMAIL = 'melanasvaz@gmail.com'
-
 export default function Login() {
   const { user, loading, signIn } = useAuth()
   const { toast } = useToast()
   const navigate = useNavigate()
   const location = useLocation()
-  const [email, setEmail] = useState(DEFAULT_EMAIL)
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [submitting, setSubmitting] = useState(false)
 

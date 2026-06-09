@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { smartLeiloesService, SmartLeilao } from '@/services/smartleiloes'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { auctionsService, Auction } from '@/services/auctions'
 import {
   smartLeiloesSyncService,
@@ -26,21 +25,16 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import {
-  Download,
-  RefreshCw,
-  AlertCircle,
-  Search,
-  PlusCircle,
+  CalendarClock,
   DatabaseZap,
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
+  History,
+  PlusCircle,
+  RefreshCw,
+  Search,
 } from 'lucide-react'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Input } from '@/components/ui/input'
 import { DealForm } from '@/components/deals/DealForm'
-import { formatCivilDate } from '@/lib/dates'
+import { civilDateTime, formatCivilDate } from '@/lib/dates'
 import {
   Dialog,
   DialogContent,
@@ -48,88 +42,137 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 
+const currencyFormatter = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+})
+
+const todayStart = () => {
+  const now = new Date()
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()
+}
+
+const sortUpcoming = (a: Auction, b: Auction) =>
+  civilDateTime(a.event_date) - civilDateTime(b.event_date)
+
+const sortPast = (a: Auction, b: Auction) =>
+  civilDateTime(b.event_date) - civilDateTime(a.event_date)
+
+function AuctionTable({
+  auctions,
+  emptyMessage,
+  onCreateDeal,
+}: {
+  auctions: Auction[]
+  emptyMessage: string
+  onCreateDeal: (auction: Auction) => void
+}) {
+  if (auctions.length === 0) {
+    return (
+      <div className="rounded-md border border-dashed py-10 text-center text-sm text-muted-foreground">
+        {emptyMessage}
+      </div>
+    )
+  }
+
+  return (
+    <div className="overflow-x-auto rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Leilão</TableHead>
+            <TableHead>Data</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Tipo</TableHead>
+            <TableHead>Valor</TableHead>
+            <TableHead className="text-right">Ações</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {auctions.map((auction) => (
+            <TableRow key={auction.id}>
+              <TableCell className="min-w-[280px] font-medium">
+                {auction.title}
+                {auction.external_id && (
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    Smart Leilões #{auction.external_id}
+                  </div>
+                )}
+              </TableCell>
+              <TableCell className="whitespace-nowrap">
+                {formatCivilDate(auction.event_date, 'Sem data')}
+              </TableCell>
+              <TableCell>
+                <Badge variant="outline">{auction.status || 'Sem status'}</Badge>
+              </TableCell>
+              <TableCell className="max-w-[220px] truncate text-muted-foreground">
+                {auction.event_type || '-'}
+              </TableCell>
+              <TableCell className="whitespace-nowrap">
+                {currencyFormatter.format(auction.value || 0)}
+              </TableCell>
+              <TableCell className="text-right">
+                <Button
+                  size="sm"
+                  variant="default"
+                  onClick={() => onCreateDeal(auction)}
+                >
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Criar Negócio
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  )
+}
+
 export default function SmartLeiloes() {
-  const [liveLeiloes, setLiveLeiloes] = useState<SmartLeilao[]>([])
-  const [savedAuctions, setSavedAuctions] = useState<Auction[]>([])
-  const [lots, setLots] = useState<any[]>([])
-
-  const [loadingLive, setLoadingLive] = useState(true)
-  const [loadingSaved, setLoadingSaved] = useState(true)
-  const [loadingLots, setLoadingLots] = useState(false)
-  const [errorLive, setErrorLive] = useState<string | null>(null)
-
+  const [auctions, setAuctions] = useState<Auction[]>([])
+  const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearching, setIsSearching] = useState(false)
-  const [importingId, setImportingId] = useState<string | number | null>(null)
   const [syncing, setSyncing] = useState(false)
   const [lastSyncSummary, setLastSyncSummary] =
     useState<SmartLeiloesSyncSummary | null>(null)
-
-  const [lotsSort, setLotsSort] = useState<{
-    key: string
-    direction: 'asc' | 'desc'
-  }>({ key: 'value', direction: 'desc' })
   const [dealAuction, setDealAuction] = useState<Auction | null>(null)
   const { toast } = useToast()
 
-  const fetchLiveLeiloes = async () => {
+  const fetchAuctions = useCallback(async () => {
     try {
-      setLoadingLive(true)
-      setErrorLive(null)
-      const result = await smartLeiloesService.getLeiloes()
-      setLiveLeiloes(result.data)
-      if (result.error) {
-        setErrorLive(result.error)
-      }
-    } catch (err: any) {
-      setErrorLive('Erro inesperado ao carregar dados.')
-    } finally {
-      setLoadingLive(false)
-    }
-  }
-
-  const fetchSavedAuctions = async () => {
-    try {
-      setLoadingSaved(true)
+      setLoading(true)
       const data = await auctionsService.getAuctions()
-      setSavedAuctions(data)
+      setAuctions(data)
     } catch (err: any) {
-      console.error(err)
-    } finally {
-      setLoadingSaved(false)
-    }
-  }
-
-  const fetchLots = async () => {
-    try {
-      setLoadingLots(true)
-      const result = await smartLeiloesService.getLots({
-        search: searchQuery,
-        sortBy: lotsSort.key,
-        sortDirection: lotsSort.direction,
+      toast({
+        title: 'Erro ao carregar leilões',
+        description:
+          err?.message || 'Não foi possível buscar os leilões sincronizados.',
+        variant: 'destructive',
       })
-      setLots(result.data || [])
-    } catch (err: any) {
-      console.error(err)
     } finally {
-      setLoadingLots(false)
+      setLoading(false)
     }
-  }
+  }, [toast])
 
-  const handleSemanticSearch = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault()
+  const handleSearch = async (event?: React.FormEvent) => {
+    event?.preventDefault()
+
     if (!searchQuery.trim()) {
-      fetchSavedAuctions()
+      await fetchAuctions()
       return
     }
+
     try {
       setIsSearching(true)
-      const data = await auctionsService.searchAuctions(searchQuery)
-      setSavedAuctions(data || [])
+      const data = await auctionsService.searchAuctions(searchQuery.trim())
+      setAuctions(data)
     } catch (err: any) {
       toast({
         title: 'Erro na busca',
-        description: 'Não foi possível realizar a busca semântica.',
+        description: err?.message || 'Não foi possível buscar leilões.',
         variant: 'destructive',
       })
     } finally {
@@ -137,78 +180,29 @@ export default function SmartLeiloes() {
     }
   }
 
-  useEffect(() => {
-    fetchLiveLeiloes()
-    fetchSavedAuctions()
-  }, [])
-
-  useEffect(() => {
-    fetchLots()
-  }, [searchQuery, lotsSort])
-
-  useRealtime('smartleiloes_auctions', () => {
-    if (!searchQuery.trim()) {
-      fetchSavedAuctions()
-    }
-  })
-
-  const handleImport = async (leilao: SmartLeilao) => {
-    try {
-      setImportingId(leilao.id)
-      const name =
-        leilao.title || leilao.name || `Leilão Importado ${leilao.id}`
-      const value = typeof leilao.value === 'number' ? leilao.value : 0
-
-      await auctionsService.saveAuction({
-        external_id: String(leilao.id),
-        title: name,
-        value: value,
-        status: leilao.status || 'Importado',
-        source_url: 'https://api.smartleiloes.digital/',
-      })
-
-      toast({
-        title: 'Leilão Salvo',
-        description: `${name} foi importado com sucesso para o banco de dados.`,
-        variant: 'success',
-      })
-    } catch (err: any) {
-      toast({
-        title: 'Erro na Importação',
-        description: err.message || 'Não foi possível converter o leilão.',
-        variant: 'destructive',
-      })
-    } finally {
-      setImportingId(null)
-    }
-  }
-
-  const handleDealSuccess = () => {
-    setDealAuction(null)
-  }
-
-  const handleSyncAll = async () => {
+  const handleSync = async () => {
     try {
       setSyncing(true)
       setLastSyncSummary(null)
       const summary = await smartLeiloesSyncService.syncAll()
       setLastSyncSummary(summary)
-      await fetchSavedAuctions()
-      await fetchLots()
+      setSearchQuery('')
+      const data = await auctionsService.getAuctions()
+      setAuctions(data)
 
-      const totalSaved = Object.values(summary).reduce(
-        (acc, item) => acc + item.saved,
-        0,
-      )
+      const auctionSummary = summary.event || summary.auctions
+      const saved =
+        auctionSummary?.saved ??
+        Object.values(summary).reduce((acc, item) => acc + item.saved, 0)
 
       toast({
-        title: 'Sincronização concluída',
-        description: `${totalSaved} registros foram salvos no Supabase.`,
+        title: 'Sync concluído',
+        description: `${saved} registros foram atualizados da Smart Leilões.`,
         variant: 'success',
       })
     } catch (err: any) {
       toast({
-        title: 'Erro na sincronização',
+        title: 'Erro no Sync',
         description:
           err?.message ||
           'Não foi possível sincronizar os dados da Smart Leilões.',
@@ -219,31 +213,130 @@ export default function SmartLeiloes() {
     }
   }
 
+  useEffect(() => {
+    fetchAuctions()
+  }, [fetchAuctions])
+
+  useRealtime('smartleiloes_auctions', () => {
+    if (!searchQuery.trim()) {
+      fetchAuctions()
+    }
+  })
+
+  const { upcomingAuctions, pastAuctions, undatedAuctions } = useMemo(() => {
+    const startOfToday = todayStart()
+    const upcoming: Auction[] = []
+    const past: Auction[] = []
+    const undated: Auction[] = []
+
+    for (const auction of auctions) {
+      const dateTime = civilDateTime(auction.event_date)
+      if (!dateTime) {
+        undated.push(auction)
+      } else if (dateTime >= startOfToday) {
+        upcoming.push(auction)
+      } else {
+        past.push(auction)
+      }
+    }
+
+    return {
+      upcomingAuctions: upcoming.sort(sortUpcoming),
+      pastAuctions: past.sort(sortPast),
+      undatedAuctions: undated,
+    }
+  }, [auctions])
+
+  const shownPastAuctions = [...pastAuctions, ...undatedAuctions]
+  const totalSynced = auctions.length
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Leilões (SmartLeilões)
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Navegue pelos eventos e lotes sincronizados.
+          <h1 className="text-3xl font-bold tracking-tight">Leilões</h1>
+          <p className="mt-1 text-muted-foreground">
+            Acompanhe os próximos eventos da Smart Leilões e consulte o
+            histórico já sincronizado no CRM.
           </p>
         </div>
-        <Button onClick={handleSyncAll} disabled={syncing}>
-          <DatabaseZap
-            className={`mr-2 h-4 w-4 ${syncing ? 'animate-pulse' : ''}`}
-          />
-          {syncing ? 'Sincronizando...' : 'Sincronizar Smart Leilões'}
-        </Button>
+
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Button variant="outline" onClick={fetchAuctions} disabled={loading}>
+            <RefreshCw
+              className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`}
+            />
+            Atualizar
+          </Button>
+          <Button onClick={handleSync} disabled={syncing}>
+            <DatabaseZap
+              className={`mr-2 h-4 w-4 ${syncing ? 'animate-pulse' : ''}`}
+            />
+            {syncing ? 'Sincronizando...' : 'Sync Smart Leilões'}
+          </Button>
+        </div>
       </div>
+
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>Próximos</CardDescription>
+            <CardTitle className="text-2xl">{upcomingAuctions.length}</CardTitle>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>Passados</CardDescription>
+            <CardTitle className="text-2xl">{pastAuctions.length}</CardTitle>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>Total sincronizado</CardDescription>
+            <CardTitle className="text-2xl">{totalSynced}</CardTitle>
+          </CardHeader>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader className="gap-4 pb-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <CardTitle>Base Smart Leilões</CardTitle>
+            <CardDescription>
+              Use o Sync para buscar os dados mais recentes e reorganizar os
+              eventos por data.
+            </CardDescription>
+          </div>
+          <form
+            onSubmit={handleSearch}
+            className="flex w-full items-center gap-2 md:w-auto"
+          >
+            <div className="relative w-full md:w-80">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar por leilão, status ou tipo..."
+                className="pl-9"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+              />
+            </div>
+            <Button type="submit" disabled={isSearching} variant="secondary">
+              {isSearching ? (
+                <RefreshCw className="h-4 w-4 animate-spin" />
+              ) : (
+                'Buscar'
+              )}
+            </Button>
+          </form>
+        </CardHeader>
+      </Card>
 
       {lastSyncSummary && (
         <Card>
           <CardHeader>
-            <CardTitle>Última sincronização</CardTitle>
+            <CardTitle>Último Sync</CardTitle>
             <CardDescription>
-              Dados importados da Smart Leilões para o Supabase.
+              Resultado da importação mais recente da Smart Leilões.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -262,345 +355,55 @@ export default function SmartLeiloes() {
         </Card>
       )}
 
-      <Tabs defaultValue="live" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 max-w-2xl">
-          <TabsTrigger value="live">Leilões ao Vivo (API)</TabsTrigger>
-          <TabsTrigger value="saved">Leilões Salvos (CRM)</TabsTrigger>
-          <TabsTrigger value="lots">Lotes (SmartLeilões)</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="live" className="mt-4 space-y-4">
-          <div className="flex justify-end">
-            <Button
-              onClick={fetchLiveLeiloes}
-              disabled={loadingLive}
-              variant="outline"
-            >
-              <RefreshCw
-                className={`mr-2 h-4 w-4 ${loadingLive ? 'animate-spin' : ''}`}
-              />
-              Atualizar da API
-            </Button>
-          </div>
-
-          {errorLive && (
-            <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Aviso de Integração</AlertTitle>
-              <AlertDescription>{errorLive}</AlertDescription>
-            </Alert>
-          )}
-
+      {loading ? (
+        <div className="space-y-4">
+          <Skeleton className="h-28 w-full" />
+          <Skeleton className="h-72 w-full" />
+        </div>
+      ) : (
+        <>
           <Card>
             <CardHeader>
-              <CardTitle>Leilões Disponíveis</CardTitle>
+              <div className="flex items-center gap-2">
+                <CalendarClock className="h-5 w-5 text-primary" />
+                <CardTitle>Próximos Leilões</CardTitle>
+              </div>
               <CardDescription>
-                Eventos listados em api.smartleiloes.digital
+                Eventos de hoje em diante, ordenados pelo leilão mais próximo.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {loadingLive ? (
-                <div className="space-y-4">
-                  <Skeleton className="h-12 w-full" />
-                  <Skeleton className="h-12 w-full" />
-                  <Skeleton className="h-12 w-full" />
-                </div>
-              ) : liveLeiloes.length === 0 ? (
-                <div className="py-8 text-center text-muted-foreground">
-                  Nenhum leilão encontrado na API no momento.
-                </div>
-              ) : (
-                <div className="rounded-md border overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Nome / Título</TableHead>
-                        <TableHead>Data</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead className="text-right">Ações</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {liveLeiloes.map((leilao) => (
-                        <TableRow key={leilao.id}>
-                          <TableCell className="font-medium">
-                            {leilao.title ||
-                              leilao.name ||
-                              `Leilão #${leilao.id}`}
-                            {leilao.description && (
-                              <div className="text-xs text-muted-foreground truncate max-w-xs mt-1">
-                                {leilao.description}
-                              </div>
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            {leilao.date || leilao.start_date
-                              ? formatCivilDate(
-                                  leilao.date || leilao.start_date,
-                                )
-                              : 'N/A'}
-                          </TableCell>
-                          <TableCell>
-                            <Badge
-                              variant={
-                                leilao.status === 'Aberto'
-                                  ? 'default'
-                                  : 'secondary'
-                              }
-                            >
-                              {leilao.status || 'Desconhecido'}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <Button
-                              size="sm"
-                              onClick={() => handleImport(leilao)}
-                              disabled={importingId === leilao.id}
-                            >
-                              {importingId === leilao.id ? (
-                                <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                              ) : (
-                                <Download className="mr-2 h-4 w-4" />
-                              )}
-                              Salvar no CRM
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              )}
+              <AuctionTable
+                auctions={upcomingAuctions}
+                emptyMessage="Nenhum próximo leilão encontrado. Rode o Sync para buscar atualizações."
+                onCreateDeal={setDealAuction}
+              />
             </CardContent>
           </Card>
-        </TabsContent>
 
-        <TabsContent value="saved" className="mt-4 space-y-4">
           <Card>
-            <CardHeader className="pb-3 space-y-4">
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div>
-                  <CardTitle>Leilões Salvos</CardTitle>
-                  <CardDescription>
-                    Eventos já importados para sua base.
-                  </CardDescription>
-                </div>
-
-                <form
-                  onSubmit={handleSemanticSearch}
-                  className="flex items-center gap-2 w-full md:w-auto"
-                >
-                  <div className="relative w-full md:w-72">
-                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Busca Semântica..."
-                      className="pl-9"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-                  <Button
-                    type="submit"
-                    disabled={isSearching}
-                    variant="secondary"
-                  >
-                    {isSearching ? (
-                      <RefreshCw className="h-4 w-4 animate-spin" />
-                    ) : (
-                      'Buscar'
-                    )}
-                  </Button>
-                </form>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <History className="h-5 w-5 text-primary" />
+                <CardTitle>Leilões Passados</CardTitle>
               </div>
+              <CardDescription>
+                Histórico sincronizado, com os eventos mais recentes primeiro.
+                {undatedAuctions.length > 0
+                  ? ` ${undatedAuctions.length} registro(s) sem data aparecem no fim da lista.`
+                  : ''}
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              {loadingSaved ? (
-                <div className="space-y-4">
-                  <Skeleton className="h-12 w-full" />
-                  <Skeleton className="h-12 w-full" />
-                </div>
-              ) : savedAuctions.length === 0 ? (
-                <div className="py-8 text-center text-muted-foreground">
-                  Nenhum leilão salvo encontrado.
-                </div>
-              ) : (
-                <div className="rounded-md border overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Título</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Valor</TableHead>
-                        <TableHead className="text-right">Ações</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {savedAuctions.map((auction) => (
-                        <TableRow key={auction.id}>
-                          <TableCell className="font-medium">
-                            {auction.title}
-                            {(auction as any)._distance !== undefined && (
-                              <Badge
-                                variant="outline"
-                                className="ml-2 text-[10px]"
-                              >
-                                Match:{' '}
-                                {Math.max(
-                                  0,
-                                  100 - (auction as any)._distance * 100,
-                                ).toFixed(1)}
-                                %
-                              </Badge>
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline">{auction.status}</Badge>
-                          </TableCell>
-                          <TableCell>
-                            {new Intl.NumberFormat('pt-BR', {
-                              style: 'currency',
-                              currency: 'BRL',
-                            }).format(auction.value || 0)}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <Button
-                              size="sm"
-                              variant="default"
-                              onClick={() => setDealAuction(auction)}
-                            >
-                              <PlusCircle className="mr-2 h-4 w-4" />
-                              Criar Negócio
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              )}
+              <AuctionTable
+                auctions={shownPastAuctions}
+                emptyMessage="Nenhum leilão passado encontrado."
+                onCreateDeal={setDealAuction}
+              />
             </CardContent>
           </Card>
-        </TabsContent>
-
-        <TabsContent value="lots" className="mt-4 space-y-4">
-          <Card>
-            <CardHeader className="pb-3 space-y-4">
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div>
-                  <CardTitle>Lotes de Leilões</CardTitle>
-                  <CardDescription>
-                    Lotes sincronizados e valores de lances em destaque.
-                  </CardDescription>
-                </div>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    fetchLots()
-                  }}
-                  className="flex items-center gap-2 w-full md:w-auto"
-                >
-                  <div className="relative w-full md:w-72">
-                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Buscar Lote..."
-                      className="pl-9"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-                  <Button
-                    type="submit"
-                    disabled={loadingLots}
-                    variant="secondary"
-                  >
-                    {loadingLots ? (
-                      <RefreshCw className="h-4 w-4 animate-spin" />
-                    ) : (
-                      'Buscar'
-                    )}
-                  </Button>
-                </form>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {loadingLots ? (
-                <div className="space-y-4">
-                  <Skeleton className="h-12 w-full" />
-                  <Skeleton className="h-12 w-full" />
-                </div>
-              ) : lots.length === 0 ? (
-                <div className="py-8 text-center text-muted-foreground">
-                  Nenhum lote encontrado.
-                </div>
-              ) : (
-                <div className="rounded-md border overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Lote</TableHead>
-                        <TableHead>Título</TableHead>
-                        <TableHead>Leilão</TableHead>
-                        <TableHead>Status Comercial</TableHead>
-                        <TableHead className="text-right">
-                          <Button
-                            variant="ghost"
-                            className="p-0 hover:bg-transparent font-semibold flex items-center gap-1 ml-auto text-foreground"
-                            onClick={() =>
-                              setLotsSort((prev) => ({
-                                key: 'value',
-                                direction:
-                                  prev.key === 'value' &&
-                                  prev.direction === 'asc'
-                                    ? 'desc'
-                                    : 'asc',
-                              }))
-                            }
-                          >
-                            Valor do Lance
-                            {lotsSort.key === 'value' ? (
-                              lotsSort.direction === 'asc' ? (
-                                <ArrowUp className="h-3 w-3" />
-                              ) : (
-                                <ArrowDown className="h-3 w-3" />
-                              )
-                            ) : (
-                              <ArrowUpDown className="h-3 w-3 opacity-50" />
-                            )}
-                          </Button>
-                        </TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {lots.map((lot) => (
-                        <TableRow key={lot.id}>
-                          <TableCell className="font-medium text-muted-foreground">
-                            {lot.lot_number || '-'}
-                          </TableCell>
-                          <TableCell className="font-medium">
-                            {lot.title}
-                          </TableCell>
-                          <TableCell>{lot.auction?.title || '-'}</TableCell>
-                          <TableCell>
-                            <Badge variant="outline">
-                              {lot.commercial_status || '-'}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {new Intl.NumberFormat('pt-BR', {
-                              style: 'currency',
-                              currency: 'BRL',
-                            }).format(lot.value || 0)}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+        </>
+      )}
 
       <Dialog
         open={!!dealAuction}
@@ -612,7 +415,7 @@ export default function SmartLeiloes() {
           </DialogHeader>
           {dealAuction && (
             <DealForm
-              onSuccess={handleDealSuccess}
+              onSuccess={() => setDealAuction(null)}
               onCancel={() => setDealAuction(null)}
               initialData={{
                 title: dealAuction.title,
