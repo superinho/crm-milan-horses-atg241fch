@@ -17,6 +17,7 @@ type SyncCounter = { fetched: number; saved: number; failed: number }
 type SyncSummary = Record<string, SyncCounter>
 
 const currentYear = new Date().getFullYear()
+const HISTORY_START_YEAR = currentYear - 8
 const BATCH_SIZE = 100
 
 const endpoints = [
@@ -28,12 +29,12 @@ const endpoints = [
   {
     key: 'events',
     type: 'event',
-    path: `/empresa/eventos?palavra-chave=&id-evento=&data-inicio=${currentYear - 1}-01-01&data-fim=${currentYear + 2}-12-31&situacao=1&tipo-evento=99&formato-resultado=1&limite=5000`,
+    path: `/empresa/eventos?palavra-chave=&id-evento=&data-inicio=${HISTORY_START_YEAR}-01-01&data-fim=${currentYear + 2}-12-31&situacao=99&tipo-evento=99&formato-resultado=1&limite=5000`,
   },
   {
     key: 'lots',
     type: 'lot',
-    path: '/empresa/lotes?palavra-chave=&id-evento=&id-lote=&id-tipo-lote=999999&situacao-comercial=99&situacao=99&formato-resultado=1&ordenacao=1',
+    path: '/empresa/lotes?palavra-chave=&id-evento=&id-lote=&id-tipo-lote=999999&situacao-comercial=99&situacao=99&formato-resultado=1&ordenacao=1&limite=5000',
   },
   {
     key: 'bids',
@@ -43,12 +44,12 @@ const endpoints = [
   {
     key: 'contracts',
     type: 'contract',
-    path: `/empresa/contratos?palavra-chave=&id-contrato=&id-evento=&id-lote=&id-vendedor=&id-comprador=&data-inicio=${currentYear - 8}-01-01&data-fim=${currentYear + 1}-12-31&situacao=99&situacao-assinatura=99&limite=5000`,
+    path: `/empresa/contratos?palavra-chave=&id-contrato=&id-evento=&id-lote=&id-vendedor=&id-comprador=&data-inicio=${HISTORY_START_YEAR}-01-01&data-fim=${currentYear + 1}-12-31&situacao=99&situacao-assinatura=99&limite=5000`,
   },
   {
     key: 'revenues',
     type: 'revenue',
-    path: `/empresa/receitas-eventos?palavra-chave=&id-evento=&id-cliente=&id-tipo-data=1&data-inicio=${currentYear - 8}-01-01&data-fim=${currentYear + 1}-12-31&situacao=99&ordenacao=1&limite=5000`,
+    path: `/empresa/receitas-eventos?palavra-chave=&id-evento=&id-cliente=&id-tipo-data=1&data-inicio=${HISTORY_START_YEAR}-01-01&data-fim=${currentYear + 1}-12-31&situacao=99&ordenacao=1&limite=5000`,
   },
 ] as const
 
@@ -58,6 +59,7 @@ const endpointScopes: Record<string, EndpointKey[]> = {
   contacts: ['clients'],
   auctions: ['events', 'lots'],
   commercial: ['bids', 'contracts'],
+  revenues: ['revenues'],
   all: endpoints.map((endpoint) => endpoint.key),
 }
 
@@ -455,6 +457,53 @@ const fetchIdMap = async (
   return map
 }
 
+const fetchSyncedEventIds = async () => {
+  const ids: string[] = []
+  const pageSize = 1000
+
+  for (let from = 0; ; from += pageSize) {
+    const { data, error } = await supabase
+      .from('smartleiloes_auctions')
+      .select('smartleiloes_id')
+      .range(from, from + pageSize - 1)
+
+    if (error) throw error
+    ids.push(
+      ...((data || [])
+        .map((row) => asString(row.smartleiloes_id))
+        .filter(Boolean) as string[]),
+    )
+    if (!data || data.length < pageSize) break
+  }
+
+  return [...new Set(ids)]
+}
+
+const lotsPathForEvent = (eventId: string) =>
+  `/empresa/lotes?palavra-chave=&id-evento=${encodeURIComponent(
+    eventId,
+  )}&id-lote=&id-tipo-lote=999999&situacao-comercial=99&situacao=99&formato-resultado=1&ordenacao=1&limite=5000`
+
+const fetchLotsByEvent = async (token: string) => {
+  const lots: ApiRecord[] = []
+  const eventIds = await fetchSyncedEventIds()
+
+  for (const eventId of eventIds) {
+    const data = await requestSmart(lotsPathForEvent(eventId), {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    lots.push(
+      ...extractItems(data).map((item) => ({
+        ...item,
+        id_evento: valueOf(item, ['id_evento', 'idEvento']) || eventId,
+      })),
+    )
+  }
+
+  return lots
+}
+
 const rawRowsFor = (type: string, records: ApiRecord[]) =>
   uniqueBy(
     records.map((record, index) => {
@@ -588,6 +637,59 @@ const eventRowsFor = (records: ApiRecord[]) =>
     }),
     (row) => row.smartleiloes_id,
   )
+
+const revenueAuctionRowsFor = (records: ApiRecord[]) => {
+  const byEvent = new Map<string, Record<string, unknown>>()
+
+  records.forEach((record, index) => {
+    const smartleiloesId =
+      eventExternalIdOf(record) || externalId(record, 'revenue-event', index)
+    if (!smartleiloesId) return
+
+    const current = byEvent.get(smartleiloesId)
+    const value = amountOf(record)
+    const title = titleOf(record, `Leilão ${smartleiloesId}`)
+    const status = asString(
+      valueOf(record, [
+        'nome_situacao_evento',
+        'situacao_evento',
+        'situacao',
+        'status',
+      ]),
+    )
+    const eventDate = recordDateOf(record)
+    const eventType = asString(
+      valueOf(record, [
+        'descricao_tipo_evento',
+        'raca_evento',
+        'tipo_evento',
+        'tipo',
+      ]),
+    )
+
+    byEvent.set(smartleiloesId, {
+      smartleiloes_id: smartleiloesId,
+      title: current?.title || title,
+      status: current?.status || status,
+      value: Number(current?.value || 0) + value,
+      event_date: current?.event_date || eventDate,
+      event_type: current?.event_type || eventType,
+      source_url: 'https://api.smartleiloes.digital/',
+      payload: {
+        ...(typeof current?.payload === 'object' && current.payload
+          ? current.payload
+          : {}),
+        revenue_records: [
+          ...((current as any)?.payload?.revenue_records || []),
+          record,
+        ],
+      },
+      updated_at: new Date().toISOString(),
+    })
+  })
+
+  return [...byEvent.values()]
+}
 
 const lotRowsFor = (
   records: ApiRecord[],
@@ -796,6 +898,12 @@ const syncEndpointRows = async (
       await upsertRows('purchases', soldRows, 'smartleiloes_id')
       saved += recordsChunk.length
     }
+
+    if (type === 'revenue') {
+      const rows = revenueAuctionRowsFor(recordsChunk)
+      await upsertRows('smartleiloes_auctions', rows, 'smartleiloes_id')
+      saved += recordsChunk.length
+    }
   }
 
   return saved
@@ -851,7 +959,10 @@ Deno.serve(async (req) => {
         headers: { Authorization: `Bearer ${token}` },
       })
 
-      const items = extractItems(data)
+      let items = extractItems(data)
+      if (endpoint.key === 'lots' && items.length === 0) {
+        items = await fetchLotsByEvent(token)
+      }
       counter.fetched = items.length
 
       try {

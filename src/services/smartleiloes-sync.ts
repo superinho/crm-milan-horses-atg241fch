@@ -18,7 +18,12 @@ export type SmartLeiloesSyncRun = {
   created_at: string | null
 }
 
-type SmartLeiloesSyncScope = 'contacts' | 'auctions' | 'commercial' | 'all'
+type SmartLeiloesSyncScope =
+  | 'contacts'
+  | 'auctions'
+  | 'commercial'
+  | 'revenues'
+  | 'all'
 
 const invokeSmartLeiloesSync = async (
   scope: Exclude<SmartLeiloesSyncScope, 'all'>,
@@ -56,7 +61,12 @@ export const smartLeiloesSyncService = {
 
     const combined: SmartLeiloesSyncSummary = {}
 
-    for (const nextScope of ['contacts', 'auctions', 'commercial'] as const) {
+    for (const nextScope of [
+      'contacts',
+      'auctions',
+      'commercial',
+      'revenues',
+    ] as const) {
       Object.assign(combined, await invokeSmartLeiloesSync(nextScope))
     }
 
