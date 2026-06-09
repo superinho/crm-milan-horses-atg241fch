@@ -41,7 +41,7 @@ No goskip.dev, configure estas variáveis de ambiente no projeto:
 VITE_SUPABASE_URL=https://hllvhxwcgqsksjaudsdn.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_lj9HSTZHShUs5HFi2NvS-Q_jQOnVT6B
 VITE_SUPABASE_ANON_KEY=sb_publishable_lj9HSTZHShUs5HFi2NvS-Q_jQOnVT6B
-VITE_ALLOW_ANON_TEST_MODE=true
+VITE_ALLOW_ANON_TEST_MODE=false
 ```
 
 Não coloque chaves secretas no frontend. As chaves privadas da Resend,

@@ -136,7 +136,7 @@ export type GeneticMetricRow = {
 }
 
 export type GeneticGapRow = {
-  source: 'Lance' | 'Venda'
+  source: 'Lance' | 'Contrato'
   lotId: string
   lotNumber: string
   description: string
@@ -786,7 +786,7 @@ export const geneticIntelligenceService = {
 
         if (gaps.length < 80) {
           gaps.push({
-            source: type === 'bid' ? 'Lance' : 'Venda',
+            source: type === 'bid' ? 'Lance' : 'Contrato',
             lotId,
             lotNumber: clean(String(row.lot_number || ''), '-'),
             description: descriptionOf(row),
@@ -807,7 +807,7 @@ export const geneticIntelligenceService = {
 
         if (gaps.length < 80) {
           gaps.push({
-            source: type === 'bid' ? 'Lance' : 'Venda',
+            source: type === 'bid' ? 'Lance' : 'Contrato',
             lotId,
             lotNumber: clean(String(row.lot_number || ''), '-'),
             description: descriptionOf(row),
