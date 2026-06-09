@@ -8,7 +8,8 @@ import React, {
 import type { Session, User } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase/client'
 
-const allowAnonTestMode = import.meta.env.VITE_ALLOW_ANON_TEST_MODE === 'true'
+const allowAnonTestMode =
+  import.meta.env.DEV && import.meta.env.VITE_ALLOW_ANON_TEST_MODE === 'true'
 
 type AppUser = {
   id: string

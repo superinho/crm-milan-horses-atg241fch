@@ -133,7 +133,7 @@ const evidenceActivityLabel = (row: GeneticMetricRow) => {
   const parts = [
     `${number(row.lotsOffered)} lotes`,
     `${number(row.bidCount)} lances`,
-    `${number(row.salesCount)} vendas`,
+    `${number(row.salesCount)} contratos`,
   ]
 
   return parts.join(' · ')
@@ -312,8 +312,8 @@ function EvidenceLotCard({ lot }: { lot: GeneticEvidenceLot }) {
               label="Licitantes"
               value={number(lot.uniqueBidders)}
             />
-            <EvidenceStat label="Vendas" value={number(lot.salesCount)} />
-            <EvidenceStat label="Vendido" value={money(lot.salesValue)} />
+            <EvidenceStat label="Contratos" value={number(lot.salesCount)} />
+            <EvidenceStat label="Valor contratado" value={money(lot.salesValue)} />
           </div>
         </div>
       </CardHeader>
@@ -357,11 +357,11 @@ function EvidenceLotCard({ lot }: { lot: GeneticEvidenceLot }) {
             emptyText="Nenhum lance vinculado a este lote."
           />
           <CommercialEntriesTable
-            title="Vendas registradas"
+            title="Contratos registrados"
             icon={ReceiptText}
             entries={lot.purchases}
             participantLabel="Comprador"
-            emptyText="Nenhuma venda vinculada a este lote."
+            emptyText="Nenhum contrato vinculado a este lote."
           />
         </div>
       </CardContent>
@@ -397,7 +397,7 @@ function EvidenceSheet({
               </SheetTitle>
               <SheetDescription>
                 {row.secondaryLabel}. Este card lista os lotes, lances,
-                licitantes, vendas e compradores que sustentam o ranking.
+                licitantes, contratos e compradores que sustentam o ranking.
               </SheetDescription>
             </SheetHeader>
 
@@ -408,9 +408,9 @@ function EvidenceSheet({
                 label="Licitantes"
                 value={number(row.uniqueBidders)}
               />
-              <EvidenceStat label="Vendas" value={number(row.salesCount)} />
+              <EvidenceStat label="Contratos" value={number(row.salesCount)} />
               <EvidenceStat
-                label="Valor vendido"
+                label="Valor contratado"
                 value={money(row.salesValue)}
                 helper={`Top lance ${money(row.topBid)}`}
               />
@@ -464,7 +464,7 @@ function RankingTable({
               <TableHead>Genética</TableHead>
               <TableHead>Perfil</TableHead>
               <TableHead>Atividade</TableHead>
-              <TableHead>Vendas</TableHead>
+              <TableHead>Contratos</TableHead>
               <TableHead>Conversão</TableHead>
               <TableHead>Valor</TableHead>
               <TableHead className="w-12" />
@@ -604,10 +604,10 @@ function RankingTable({
                 </TableCell>
                 <TableCell>
                   <div className="font-medium">
-                    {number(row.salesCount)} vendas
+                    {number(row.salesCount)} contratos
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    {number(row.soldLots)} lotes vendidos
+                    {number(row.soldLots)} lotes com contrato
                   </div>
                 </TableCell>
                 <TableCell>
@@ -670,7 +670,7 @@ function OpportunityBoard({
             Radar de oportunidades
           </CardTitle>
           <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-            Sinais calculados apenas a partir de lances, vendas e pedigree
+            Sinais calculados apenas a partir de lances, contratos e pedigree
             rastreáveis no recorte atual.
           </p>
         </div>
@@ -925,7 +925,7 @@ export default function Genetica() {
 
   const chartRows = activeRows.slice(0, 8).map((row) => ({
     name: row.label.length > 18 ? `${row.label.slice(0, 18)}...` : row.label,
-    vendas: row.salesValue,
+    contratos: row.salesValue,
     lances: row.bidCount,
   }))
 
@@ -953,7 +953,7 @@ export default function Genetica() {
         helper: evidenceActivityLabel(topCommercial),
         metric:
           topCommercial.salesValue > 0
-            ? `${money(topCommercial.salesValue)} vendidos`
+            ? `${money(topCommercial.salesValue)} contratados`
             : `${number(topCommercial.bidCount)} lances`,
         badge: rankingLabel[mode],
         row: topCommercial,
@@ -963,10 +963,10 @@ export default function Genetica() {
     if (highDemandNoSale) {
       rows.push({
         id: 'demand-no-sale',
-        title: 'Lances sem venda',
+        title: 'Lances sem contrato',
         label: highDemandNoSale.label,
         helper:
-          'Há lances registrados e nenhuma compra associada neste recorte.',
+          'Há lances registrados e nenhum contrato associado neste recorte.',
         metric: `${number(highDemandNoSale.bidCount)} lances`,
         badge: 'Conferir',
         row: highDemandNoSale,
@@ -976,12 +976,12 @@ export default function Genetica() {
     if (highConversion && highConversion.key !== topCommercial?.key) {
       rows.push({
         id: 'high-conversion',
-        title: 'Vendas confirmadas',
+        title: 'Contratos confirmados',
         label: highConversion.label,
         helper:
-          'O card mostra os lotes vendidos, compradores e valores que compõem a conversão.',
+          'O card mostra os lotes com contrato, compradores e valores que compõem a conversão.',
         metric: `${percent(highConversion.conversionRate)} conversão`,
-        badge: 'Venda',
+        badge: 'Contrato',
         row: highConversion,
       })
     }
@@ -1041,7 +1041,7 @@ export default function Genetica() {
             Genética Comercial
           </h1>
           <p className="mt-1 max-w-3xl text-muted-foreground">
-            Entenda quais matrizes e garanhões geram lances, vendas e valor nos
+            Entenda quais matrizes e garanhões geram lances, contratos e valor nos
             leilões Milan Horses, sempre com a base de cálculo aberta.
           </p>
         </div>
@@ -1062,7 +1062,7 @@ export default function Genetica() {
             <SelectContent>
               <SelectItem value="all">Todos</SelectItem>
               <SelectItem value="active">Com lances</SelectItem>
-              <SelectItem value="sold">Com vendas</SelectItem>
+              <SelectItem value="sold">Com contratos</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -1082,7 +1082,7 @@ export default function Genetica() {
           icon={Sparkles}
         />
         <MetricCard
-          title="Vendas analisadas"
+          title="Contratos analisados"
           value={number(data.summary.salesCountWithPedigree)}
           helper={money(data.summary.salesValueWithPedigree)}
           icon={Trophy}
@@ -1228,7 +1228,7 @@ export default function Genetica() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="score">Tração comercial</SelectItem>
-                  <SelectItem value="sales">Valor vendido</SelectItem>
+                  <SelectItem value="sales">Valor contratado</SelectItem>
                   <SelectItem value="bids">Número de lances</SelectItem>
                   <SelectItem value="conversion">Conversão</SelectItem>
                   <SelectItem value="youngest">Mais jovens</SelectItem>
@@ -1295,7 +1295,7 @@ export default function Genetica() {
                         {rankingLabel[tab]} por tração comercial
                       </h2>
                       <p className="text-sm text-muted-foreground">
-                        Ranking calculado com valor vendido, lances registrados
+                        Ranking calculado com valor contratado, lances registrados
                         e maior lance. Clique em uma linha para ver a base.
                       </p>
                     </div>
@@ -1314,7 +1314,7 @@ export default function Genetica() {
                   Top {rankingLabel[mode].toLowerCase()}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Valor vendido e número de lances entre os primeiros colocados.
+                  Valor contratado e número de lances entre os primeiros colocados.
                 </p>
               </div>
               <div className="h-80">
@@ -1330,13 +1330,13 @@ export default function Genetica() {
                     />
                     <Tooltip
                       formatter={(value, name) =>
-                        name === 'vendas'
-                          ? [money(Number(value)), 'Vendas']
+                        name === 'contratos'
+                          ? [money(Number(value)), 'Contratos']
                           : [number(Number(value)), 'Lances']
                       }
                     />
                     <Bar
-                      dataKey="vendas"
+                      dataKey="contratos"
                       fill="#0b3a75"
                       radius={[0, 4, 4, 0]}
                     />
@@ -1352,7 +1352,7 @@ export default function Genetica() {
                 <div className="text-sm font-semibold">Leitura recomendada</div>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   Abra qualquer linha antes de tomar ação comercial. O card
-                  mostra os lances, compradores e valores que sustentam o número
+                  mostra os lances, contratos, compradores e valores que sustentam o número
                   exibido.
                 </p>
               </div>
